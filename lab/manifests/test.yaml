@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: database
 spec:
-  replicas: 1
+  replicas: 2 # One per zone?
   selector:
     matchLabels:
       app: db
@@ -19,15 +19,24 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+      # The database needs to be on a node with fast storage
       nodeSelector:
         disk: nvme
+      topologySpreadConstraints:
+        - maxSkew: 1
+          # Do not schedule all database pods in the same zone
+          topologyKey: "zone"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: db
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-server
 spec:
-  replicas: 3
+  replicas: 4 #2 per zone?
   selector:
     matchLabels:
       app: web
@@ -58,14 +67,23 @@ spec:
           - labelSelector:
                 matchLabels:
                   app: web
+            # Do not schedule multiple web server pods on the same node
             topologyKey: "kubernetes.io/hostname"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          # Spread the web servers among the different zones
+          topologyKey: "zone"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: web
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backup-worker
 spec:
-  replicas: 2
+  replicas: 4 #2 per zone?
   selector:
     matchLabels:
       app: backup
@@ -87,7 +105,16 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
+          # Do not schedule backup workers on the same node as the database pods
           - labelSelector:
               matchLabels:
                 app: db
             topologyKey: "kubernetes.io/hostname"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          # Spread the backup workers among the different zones
+          topologyKey: "zone"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: backup
