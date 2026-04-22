@@ -1,53 +1,76 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: database-fast
-  labels:
-    app: db
+  name: database
 spec:
-  containers:
-  - name: redis
-    image: redis:alpine
-  nodeSelector:
-    disk: nvme
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+      nodeSelector:
+        disk: nvme
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: web-server-ssd
+  name: web-server
 spec:
-  containers:
-  - name: nginx
-    image: nginx:alpine
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        preference:
-          matchExpressions:
-          - key: disk
-            operator: In
-            values:
-            - ssd
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: disk
+                operator: In
+                values:
+                - ssd
+                - nvme
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: backup-worker
 spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command: ["sh", "-c", "sleep 3600"]
-  nodeSelector:
-    disk: hdd
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app
-            operator: In
-            values:
-            - db
-        topologyKey: "kubernetes.io/hostname"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backup
+  template:
+    metadata:
+      labels:
+        app: backup
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["sh", "-c", "sleep 3600"]
+      nodeSelector:
+        disk: hdd
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: db
+            topologyKey: "kubernetes.io/hostname"
