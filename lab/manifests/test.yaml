@@ -22,9 +22,17 @@ spec:
       # The database needs to be on a node with fast storage
       nodeSelector:
         disk: nvme
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          # Do not schedule multiple database pods on the same node
+          - labelSelector:
+              matchLabels:
+                app: db
+            topologyKey: "kubernetes.io/hostname"
       topologySpreadConstraints:
         - maxSkew: 1
-          # Do not schedule all database pods in the same zone
+          # Spread the database pods among the different zones
           topologyKey: "zone"
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
