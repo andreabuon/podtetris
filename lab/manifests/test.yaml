@@ -15,6 +15,10 @@ spec:
       containers:
       - name: redis
         image: redis:alpine
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
       nodeSelector:
         disk: nvme
 ---
@@ -35,17 +39,26 @@ spec:
       containers:
       - name: nginx
         image: nginx:alpine
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
       affinity:
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
-              matchExpressions:
-              - key: disk
-                operator: In
-                values:
-                - ssd
-                - nvme
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: disk
+                  operator: In
+                  values:
+                  - ssd
+                  - nvme
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+                matchLabels:
+                  app: web
+            topologyKey: "kubernetes.io/hostname"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -65,6 +78,10 @@ spec:
       - name: busybox
         image: busybox
         command: ["sh", "-c", "sleep 3600"]
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "50m"
       nodeSelector:
         disk: hdd
       affinity:
