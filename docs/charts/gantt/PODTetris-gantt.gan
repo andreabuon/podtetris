@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="PODTetris - Gantt" company="Logistics" webLink="" view-date="2026-10-12" view-index="0" gantt-divider-location="485" resource-divider-location="300" version="3.3.3322" locale="en_US">
+<?xml version="1.0" encoding="UTF-8"?><project name="PODTetris - Gantt" company="Logistics" webLink="" view-date="2026-06-28" view-index="0" gantt-divider-location="394" resource-divider-location="300" version="3.3.3322" locale="en_US">
     <description/>
-    <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Name" width="252" order="0"/>
-        <field id="tpd4" name="Begin date" width="107" order="1"/>
-        <field id="tpd5" name="End date" width="109" order="2"/>
+    <view zooming-state="default:7" id="gantt-chart">
+        <field id="tpd3" name="Name" width="222" order="0"/>
+        <field id="tpd4" name="Begin date" width="57" order="1"/>
+        <field id="tpd5" name="End date" width="98" order="2"/>
         <field id="tpd15" name="Notes" width="20" order="3"/>
         <option id="filter.completedTasks" value="false"/>
         <option id="filter.dueTodayTasks" value="false"/>
@@ -80,39 +80,40 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="0" uid="4ef8184054c648a998afb1c065bce706" name="Analisi" color="#009999" meeting="false" start="2026-04-21" duration="18" complete="0" expand="true">
+        <task id="0" uid="4ef8184054c648a998afb1c065bce706" name="Analisi" color="#009999" meeting="false" start="2026-04-21" duration="20" complete="0" expand="true">
             <depend id="1" type="2" difference="0" hardness="Strong"/>
-            <task id="7" uid="dd3923cf02034eeba5807ca2c110d8a6" name="Analisi del problema e dei suoi requisiti" meeting="false" start="2026-04-21" duration="18" complete="0" expand="true"/>
-            <task id="6" uid="f7d162603c6e41bbb190bb9af517cf54" name="Identificazione regole da rispettare" meeting="false" start="2026-04-21" duration="18" complete="0" expand="true"/>
-            <task id="9" uid="3b5f1793001241c6beb7f4c9d0d22ec3" name="Identificazione metriche obiettivo" meeting="false" start="2026-04-21" duration="18" complete="0" expand="true"/>
-            <task id="12" uid="8f84b52c221c405e8f6d5befb1a0afd2" name="Ricerca in letteratura accademica" meeting="false" start="2026-04-21" duration="18" complete="0" expand="true"/>
+            <task id="7" uid="dd3923cf02034eeba5807ca2c110d8a6" name="Analisi del problema e dei requisiti" meeting="false" start="2026-04-21" duration="20" complete="0" expand="true"/>
+            <task id="6" uid="f7d162603c6e41bbb190bb9af517cf54" name="Analisi vincoli di piazzamento" meeting="false" start="2026-04-21" duration="20" complete="0" expand="true"/>
+            <task id="12" uid="8f84b52c221c405e8f6d5befb1a0afd2" name="Ricerca in letteratura accademica" meeting="false" start="2026-04-21" duration="20" complete="0" expand="true"/>
         </task>
-        <task id="1" uid="c582715cbd6141f0a8df6ec675f17ab0" name="Progettazione" color="#9966ff" meeting="false" start="2026-05-18" duration="28" complete="0" expand="true">
+        <task id="1" uid="c582715cbd6141f0a8df6ec675f17ab0" name="Progettazione" color="#9966ff" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true">
             <depend id="2" type="2" difference="0" hardness="Strong"/>
-            <task id="8" uid="940a63255b0d4f3a8a730f92f4f1f140" name="Definizione regole" meeting="false" start="2026-05-18" duration="28" complete="0" expand="true"/>
-            <task id="13" uid="80603403b9c34af199c43e115c2c7a0b" name="Definizione trigger rescheduling" meeting="false" start="2026-05-18" duration="28" complete="0" expand="true"/>
-            <task id="10" uid="6d939e45c6fc4ef890677030f11caa17" name="Definizione algoritmi di rescheduling" meeting="false" start="2026-05-18" duration="28" complete="0" expand="true"/>
-            <task id="17" uid="5236b664ee124391bd364426800d6e61" name="Definizione filtro Pods" meeting="false" start="2026-05-18" duration="28" complete="0" expand="true"/>
+            <task id="13" uid="80603403b9c34af199c43e115c2c7a0b" name="Definizione trigger rescheduling" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true"/>
+            <task id="9" uid="3b5f1793001241c6beb7f4c9d0d22ec3" name="Definizione metriche di successo" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true"/>
+            <task id="10" uid="6d939e45c6fc4ef890677030f11caa17" name="Definizione algoritmi di rescheduling" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true"/>
+            <task id="8" uid="940a63255b0d4f3a8a730f92f4f1f140" name="Definizione regole" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true"/>
+            <task id="17" uid="5236b664ee124391bd364426800d6e61" name="Definizione filtro pods spostabili" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true"/>
+            <task id="30" uid="43a75da37caa410fae62c260eb28c93f" name="Progettazione sistema di configurazione" meeting="false" start="2026-05-20" duration="27" complete="0" expand="true"/>
         </task>
-        <task id="2" uid="fd29a406a09d45288ac8b848713c3eea" name="Implementazione" color="#ff6666" meeting="false" start="2026-06-26" duration="28" complete="0" expand="true">
+        <task id="2" uid="fd29a406a09d45288ac8b848713c3eea" name="Implementazione" color="#ff6666" meeting="false" start="2026-06-30" duration="34" complete="0" expand="true">
             <depend id="3" type="2" difference="0" hardness="Strong"/>
             <depend id="5" type="2" difference="0" hardness="Strong"/>
-            <task id="18" uid="cc75c99ee6c34f09855331e65e556129" name="Sviluppo modulo osservazione dello stato del cluster" meeting="false" start="2026-06-26" duration="28" complete="0" expand="true"/>
-            <task id="19" uid="8927fba38ded46eba7427b70cbb4a2a8" name="Sviluppo planner rescheduling" meeting="false" start="2026-06-26" duration="28" complete="0" expand="true"/>
-            <task id="20" uid="fad15fe2dd0c4396befecb436c9a919b" name="Sviluppo rescheduler" meeting="false" start="2026-06-26" duration="28" complete="0" expand="true"/>
-            <task id="21" uid="0b8f0ec42c814877836208cb32b93b0e" name="Sviluppo sistema di configurazione dinamica" meeting="false" start="2026-06-26" duration="28" complete="0" expand="true"/>
+            <task id="18" uid="cc75c99ee6c34f09855331e65e556129" name="Sviluppo modulo osservazione dello stato del cluster" meeting="false" start="2026-06-30" duration="34" complete="0" expand="true"/>
+            <task id="19" uid="8927fba38ded46eba7427b70cbb4a2a8" name="Sviluppo planner rescheduling" meeting="false" start="2026-06-30" duration="34" complete="0" expand="true"/>
+            <task id="20" uid="fad15fe2dd0c4396befecb436c9a919b" name="Sviluppo rescheduler" meeting="false" start="2026-06-30" duration="34" complete="0" expand="true"/>
+            <task id="21" uid="0b8f0ec42c814877836208cb32b93b0e" name="Sviluppo sistema di configurazione dinamica" meeting="false" start="2026-06-30" duration="34" complete="0" expand="true"/>
         </task>
-        <task id="3" uid="c0eb266bf75649ce9e88d627fed20405" name="Validazione" color="#cccc00" meeting="false" start="2026-08-10" duration="37" complete="0" expand="true">
-            <task id="14" uid="866cabceb44547a9ad3baadb48d38bbe" name="Creazione ambiente di test" meeting="false" start="2026-08-10" duration="5" complete="0" expand="true">
+        <task id="3" uid="c0eb266bf75649ce9e88d627fed20405" name="Validazione" color="#cccc00" meeting="false" start="2026-08-17" duration="15" complete="0" expand="true">
+            <task id="14" uid="866cabceb44547a9ad3baadb48d38bbe" name="Creazione ambiente di test" meeting="false" start="2026-08-17" duration="3" complete="0" expand="true">
                 <depend id="22" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="22" uid="40ca0b69621741428ce463365e606cdc" name="Esecuzione dei test" meeting="false" start="2026-08-17" duration="11" complete="0" expand="true">
+            <task id="22" uid="40ca0b69621741428ce463365e606cdc" name="Esecuzione dei test" meeting="false" start="2026-08-20" duration="5" complete="0" expand="true">
                 <depend id="15" type="2" difference="0" hardness="Strong"/>
                 <depend id="29" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="15" uid="287fa683a25748149b7469b951484c3f" name="Analisi dei risultati" meeting="false" start="2026-09-01" duration="6" complete="0" expand="true"/>
-            <task id="29" uid="1e327c3f48824a00b3a5466396583eda" name="Comparazione dei risultati prima/dopo" meeting="false" start="2026-09-01" duration="6" complete="0" expand="true"/>
-            <task id="16" uid="e993a0c05d7a4e9b9c3aeec87df257ea" name="Analisi delle limitazioni d'uso" meeting="false" start="2026-08-19" duration="30" complete="0" expand="true"/>
+            <task id="15" uid="287fa683a25748149b7469b951484c3f" name="Analisi dei risultati" meeting="false" start="2026-08-27" duration="7" complete="0" expand="true"/>
+            <task id="29" uid="1e327c3f48824a00b3a5466396583eda" name="Comparazione dei risultati prima/dopo" meeting="false" start="2026-08-27" duration="7" complete="0" expand="true"/>
+            <task id="16" uid="e993a0c05d7a4e9b9c3aeec87df257ea" name="Analisi delle limitazioni d'uso" meeting="false" start="2026-08-19" duration="13" complete="0" expand="true"/>
         </task>
         <task id="5" uid="ef763ec406734f7ca59f5494a9a20ead" name="Perfezionamento e ottimizzazioni" color="#ccff66" meeting="false" start="2026-09-01" duration="36" complete="0" expand="true">
             <task id="23" uid="fe3f5616af04440ea89d9f7dc9e1dc0d" name="Identificazione possibili miglioramenti" meeting="false" start="2026-09-01" duration="36" complete="0" expand="true"/>
