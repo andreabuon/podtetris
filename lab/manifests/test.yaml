@@ -33,7 +33,7 @@ spec:
       topologySpreadConstraints:
         - maxSkew: 1
           # Spread the database pods among the different zones
-          topologyKey: "zone"
+          topologyKey: "topology.kubernetes.io/zone"
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
@@ -80,7 +80,7 @@ spec:
       topologySpreadConstraints:
         - maxSkew: 1
           # Spread the web servers among the different zones
-          topologyKey: "zone"
+          topologyKey: "topology.kubernetes.io/zone"
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
@@ -121,7 +121,7 @@ spec:
       topologySpreadConstraints:
         - maxSkew: 1
           # Spread the backup workers among the different zones
-          topologyKey: "zone"
+          topologyKey: "topology.kubernetes.io/zone"
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
