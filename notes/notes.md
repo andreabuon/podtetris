@@ -1,6 +1,13 @@
-node selector
-affinity + anti affinity
+**To study**:
+- Kubernetes Autoscaler
+- `PodDisruptionBudget`
 
-Kubernetes descheduler:
-HighNodeUtilization policy + node auto-scaling
-This strategy must be used with the scheduler scoring strategy MostAllocated
+- Kubernetes Descheduler:
+    `HighNodeUtilization` policy + node auto-scaling
+    This strategy must be used with the scheduler scoring strategy `MostAllocated`
+
+**Studied**:
+- Labels
+- NodeSelector
+- Node/Pod Affinity (& Anti Affinity)
+- Taints & Tolerations
