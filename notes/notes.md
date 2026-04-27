@@ -1,13 +1,14 @@
 **To study**:
 - Kubernetes Autoscaler
-- `PodDisruptionBudget`
+- Kubernetes Descheduler
 
-- Kubernetes Descheduler:
-    `HighNodeUtilization` policy + node auto-scaling
-    This strategy must be used with the scheduler scoring strategy `MostAllocated`
+- `PodDisruptionBudget`
+- Karpenter
 
 **Studied**:
 - Labels
 - NodeSelector
 - Node/Pod Affinity (& Anti Affinity)
 - Taints & Tolerations
+- Kubernetes Autoscaler
+- Kubernetes Descheduler
