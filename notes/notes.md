@@ -1,14 +1,15 @@
-**To study**:
-- Kubernetes Autoscaler
-- Kubernetes Descheduler
+#### To do:
+- Read more papers
+- Study Karpenter
+- Study FogAtlas rescheduler
 
-- `PodDisruptionBudget`
-- Karpenter
+---
 
-**Studied**:
+#### Done:
 - Labels
 - NodeSelector
 - Node/Pod Affinity (& Anti Affinity)
 - Taints & Tolerations
 - Kubernetes Autoscaler
 - Kubernetes Descheduler
+- `PodDisruptionBudget`
