@@ -1,0 +1,3528 @@
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:bib="http://purl.org/net/biblio#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:link="http://purl.org/rss/1.0/modules/link/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/"
+ xmlns:vcard="http://nwalsh.com/rdf/vCard#">
+    <rdf:Description rdf:about="https://ieeexplore.ieee.org/document/11160865">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1938-1883"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Gouaouri</foaf:surname>
+                        <foaf:givenName>Mohammed Dhiya Eddine</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Bagaa</foaf:surname>
+                        <foaf:givenName>Miloud</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ouahouah</foaf:surname>
+                        <foaf:givenName>Sihem</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ouameur</foaf:surname>
+                        <foaf:givenName>Messaoud Ahmed</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ksentini</foaf:surname>
+                        <foaf:givenName>Adlen</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_106"/>
+        <link:link rdf:resource="#item_3"/>
+        <link:link rdf:resource="#item_107"/>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cloud-Edge Computing Continuum</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Clustering algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Load management</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Memory management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Multi-Objective Optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Power demand</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Processor scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Real-time systems</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scalability</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Simulation</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Enabling Power-Awareness for Kubernetes Scheduling Through Multi-Criteria Optimization</dc:title>
+        <dcterms:abstract>This paper proposes a new scheduling framework to optimize the placement of cloud workloads submitted online by users within a Kubernetes-orchestrated environment. The proposed method aims to incorporate power awareness during the scheduling process, along with other criteria, such, load balancing, and bin packing. The framework equitably distributes workloads across cluster nodes while also selecting the most resource-efficient node to reduce the number of active nodes and prevent resource fragmentation. Existing strategies often focus on a single criterion, leading to suboptimal and unsatisfactory workload placements. The proposed framework utilizes the Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS), a well-known multi-criteria decision analysis algorithm, to account for power consumption and other criteria defined by cloud operators, such as load balancing and bin packing. The algorithm is implemented as a Kubernetes scheduling plugin to rank worker nodes based on these criteria and the submitted workloads. Simulation results demonstrate the effectiveness of the proposed strategy across various scenarios, reducing power consumption by 26.46% and comparable CPU and memory load balancing performance within a large Kubernetes cluster under heavy workloads.</dcterms:abstract>
+        <dc:date>2025-06</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/document/11160865</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 13:44:08</dcterms:dateSubmitted>
+        <z:libraryCatalog>IEEE Xplore</z:libraryCatalog>
+        <dc:description>ISSN: 1938-1883</dc:description>
+        <bib:pages>1500-1505</bib:pages>
+        <bib:presentedAt>
+            <bib:Conference>
+                <dc:title>ICC 2025 - IEEE International Conference on Communications</dc:title>
+            </bib:Conference>
+        </bib:presentedAt>
+    </rdf:Description>
+    <bib:Journal rdf:about="urn:issn:1938-1883">
+        <dc:identifier>DOI 10.1109/ICC52391.2025.11160865</dc:identifier>
+        <dc:identifier>ISSN 1938-1883</dc:identifier>
+        <dc:title>ICC 2025 - IEEE International Conference on Communications</dc:title>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_106">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;utile per scelta di criteri multipli&lt;/p&gt;
+&lt;p&gt;NO rescheduling&lt;/p&gt;
+&lt;p&gt;si concentra su power consumption&lt;/p&gt;
+&lt;p&gt;reference dimostrazione bin packing è NP hard&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_3">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=11160865&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 13:44:11</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_107">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=11160865&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 13:44:11</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <rdf:Description rdf:about="urn:isbn:979-8-3315-2223-0">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2837-6471"/>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Moorthi</foaf:surname>
+                        <foaf:givenName>Soundharya</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Mon</foaf:surname>
+                        <foaf:givenName>Ei Ei</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Aswakul</foaf:surname>
+                        <foaf:givenName>Chaodit</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Energy consumption</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Energy efficiency</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Heuristic algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Information technology</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Kubernetes cluster</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Measurement</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Nonhomogeneous media</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>resource utilization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Scheduling algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Telecommunications</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>workload scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Enhancing Energy Efficiency in Kubernetes Cluster Through Resource and Energy Aware Scheduling</dc:title>
+        <dcterms:abstract>As the demand for cloud-native infrastructure grows, managing energy becomes increasingly essential for small-scale and large-scale Kubernetes clusters, including those within the IoTcloudServeTEIN environment. The research introduces a resource and energy aware scheduler to optimize energy usage by dynamically managing node status and workload assignment. By considering workload demands, the scheduler enables worker nodes to be activated and deactivated, optimizing energy efficiency and resource allocation. The proposed algorithm is implemented as an extender on top of the default Kubernetes scheduler. The study shows the performance of the proposed scheduler against the default Kubernetes scheduler and the bin packing scheduler by focusing on energy and power utilization metrics. Experimental results reveal that the proposed resource and energy aware scheduler can significantly reduce energy consumption by up to 17% compared to the default Kubernetes scheduler and up to 18% compared to the bin-packing scheduler.</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: Electrical Engineering/Electronics, Computer, Telecommunications and Information Technology, ECTI-CON, International Conference on</dc:description>
+        <bib:pages>1–6</bib:pages>
+    </rdf:Description>
+    <bib:Journal rdf:about="urn:issn:2837-6471">
+        <dc:identifier>DOI 10.1109/ECTI-CON64996.2025.11101082</dc:identifier>
+        <dc:identifier>ISBN 979-8-3315-2223-0</dc:identifier>
+        <dc:identifier>ISSN 2837-6471</dc:identifier>
+    </bib:Journal>
+    <bib:Article rdf:about="#item_5">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2468-4376"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Naseer Ahamed Mohammed</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_110"/>
+        <link:link rdf:resource="#item_6"/>
+        <link:link rdf:resource="#item_111"/>
+        <dc:title>Resource Optimization and Cost Management in Kubernetes Clusters: A Framework for Container Orchestration Platforms</dc:title>
+        <dcterms:abstract>The use of container orchestration platforms has changed the application deployment patterns, but cost management has remained an operational issue. Kubernetes environments are often resource inefficient due to over-provisioning, node fragmentation, workload imbalance, too much storage allocation, and high network transfer costs. This framework introduces systematic approaches to cost optimization in Kubernetes clusters, leveraging built-in visibility strategies, configuration tuning, and workload-based optimization strategies. The proposed approach integrates a cluster telemetry system and allocation tracking to create end-to-end cost visibility for containerized infrastructure. This optimization of resources can be achieved by right-sizing using utilization signals, vertical scaling policy, horizontal scaling policy, and bin-packing efficiency-enhancing techniques that minimize idle capacity by using dynamic provisioning policies. Mixed-instance node fleet deployment, the adoption of spot instances with disruption-aware scheduling, and long-term capacity planning based on savings plans are among the compute cost reduction methods.   These strategies and practical tips help companies using Kubernetes to consistently save on infrastructure costs while ensuring that their workloads remain reliable, perform well, and meet compliance requirements during production.</dcterms:abstract>
+        <dc:date>2026</dc:date>
+        <z:shortTitle>Resource Optimization and Cost Management in Kubernetes Clusters</z:shortTitle>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>117–124</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:2468-4376">
+        <dc:identifier>DOI 10.52783/jisem.v11i2s.14355</dc:identifier>
+        <prism:volume>11</prism:volume>
+        <dc:title>Journal of information systems engineering &amp; management</dc:title>
+        <dc:identifier>ISSN 2468-4376</dc:identifier>
+        <prism:number>2s</prism:number>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_110">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;riassunto generale di come risparmiare (es. Karpenter)&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_6">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.jisem-journal.com/index.php/journal/article/download/14355/6891</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:06:36</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_111">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.jisem-journal.com/index.php/journal/article/download/14355/6891</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:06:36</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_7">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2456-3307"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Chandrasekhar Anuganti</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_8"/>
+        <link:link rdf:resource="#item_113"/>
+        <dc:title>AI-Driven Cloud Optimization: A Machine Learning Approach to Kubernetes Autoscaling in Financial Platforms</dc:title>
+        <dcterms:abstract>Cloud cost efficiency remains a critical concern for enterprises, especially in always-on Kubernetes environments. This paper details a cost optimization strategy using AI-driven intelligent autoscaling to dynamically provision compute nodes based on real-time workload demands. The solution incorporates usage telemetry, machine learning-based bin-packing algorithms, and custom eviction policies to balance performance and cost. Deployed in a high-availability, HIPAA-aligned payment integrity platform, the framework demonstrated monthly cloud savings of over 40%, while maintaining SLA adherence. This extended analysis provides comprehensive technical details of the ML algorithms, architectural components, implementation specifics, and performance characteristics. The approach serves as a replicable model for financial and healthcare institutions aiming to control operational costs without compromising reliability or compliance.</dcterms:abstract>
+        <dc:date>2024</dc:date>
+        <z:shortTitle>AI-Driven Cloud Optimization</z:shortTitle>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>1151–1158</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:2456-3307">
+        <dc:identifier>DOI 10.32628/CSEIT24102152</dc:identifier>
+        <prism:volume>10</prism:volume>
+        <dc:title>International Journal of Scientific Research in Computer Science Engineering and Information Technology</dc:title>
+        <dc:identifier>ISSN 2456-3307</dc:identifier>
+        <prism:number>2</prism:number>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_8">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ijsrcseit.com/index.php/home/article/download/CSEIT24102152/CSEIT24102152</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:24:34</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_113">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ijsrcseit.com/index.php/home/article/download/CSEIT24102152/CSEIT24102152</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:24:34</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="https://kubernetes.io/docs/concepts/cluster-administration/node-autoscaling/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>Kubernetes</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_10"/>
+        <link:link rdf:resource="#item_115"/>
+        <dc:title>Node Autoscaling</dc:title>
+        <dcterms:abstract>Automatically provision and consolidate the Nodes in your cluster to adapt to demand and optimize cost.</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/cluster-administration/node-autoscaling/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:26:46</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <dc:description>Section: docs</dc:description>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_10">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/cluster-administration/node-autoscaling/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:26:48</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_115">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/cluster-administration/node-autoscaling/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:26:48</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Data rdf:about="https://github.com/kubernetes-sigs/descheduler">
+        <z:itemType>computerProgram</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>Kubernetes SIGs</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>k8s-sig-scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>kubernetes-sigs/descheduler</dc:title>
+        <dcterms:abstract>Descheduler for Kubernetes</dcterms:abstract>
+        <dc:date>2026-04-15T10:23:53Z</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://github.com/kubernetes-sigs/descheduler</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:27:04</dcterms:dateSubmitted>
+        <z:libraryCatalog>GitHub</z:libraryCatalog>
+        <dc:rights>Apache-2.0</dc:rights>
+        <dc:description>original-date: 2017-07-28T17:11:38Z</dc:description>
+        <z:programmingLanguage>Go</z:programmingLanguage>
+    </bib:Data>
+    <rdf:Description rdf:about="urn:isbn:979-8-3315-5989-2">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:identifier>DOI 10.1109/SITA67914.2025.11273406</dc:identifier>
+                <dc:identifier>ISBN 979-8-3315-5989-2</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Malik</foaf:surname>
+                        <foaf:givenName>Aneeq</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Syed</foaf:surname>
+                        <foaf:givenName>Ali</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sheraz</foaf:surname>
+                        <foaf:givenName>Syed Muhammad</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sohail</foaf:surname>
+                        <foaf:givenName>Hassan</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Rehman</foaf:surname>
+                        <foaf:givenName>Sabih ur</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Faiq</foaf:surname>
+                        <foaf:givenName>Rao</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_118"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>autoscaling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Costs</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Energy efficiency</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Measurement</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>metrics-server</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Monitoring</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>resource allocation</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Runtime</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Servers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Virtual machines</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Enhancing Energy Efficiency Through Kubernetes Scheduling Techniques</dc:title>
+        <dcterms:abstract>This work explores the utilization of Kubernetes' (HPA) and (VPA) mechanisms to enhance energy efficiency in server infrastructures. The work proposes a merged approach of Kubernetes scheduling techniques to optimize resource allocation based on different workload requirements. The objective is to achieve energy-efficient solutions that improve performance and reduce cost liabilities for organizations. The methodology includes a two-dimensional bin packing problem for long-running services, where pods are allocated with the least number of cluster nodes based on CPU and memory requests. The runtime monitor fields on nodes help group applications with comparable runtime and forecast resource use until the subsequent scaling cycle. Autoscaling techniques, including HPA and VPA, are implemented for long-term processing applications. While VPA modifies the resource requests and limits of containers inside of already-existing pods, HPA modifies the number of replicas based on CPU utilization or custom metrics. The study highlights the difference between HPA and VPA in terms of capacity adjustments. While HPA scales by creating or deleting pods, VPA scales by dynamically altering the CPU or memory in the current pod containers. The work emphasizes synergy between VPA and HPA, where VPA calculates and adjusts the appropriate resource allocation, while HPA scale pods horizontally using custom metrics. The work explores the influence of container and virtual machine (VM) differences on enhancing energy efficiency through Kubernetes' HPA and VPA mechanisms. It delves into how these mechanisms address resource allocation challenges and optimize energy consumption. The paper concludes by highlighting the potential of software-based solutions, specifically Kubernetes, for improving energy efficiency in server infrastructures.</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: 2025 International Conference on Intelligent Systems: Theories and Applications (SITA)</dc:description>
+        <bib:pages>1–6</bib:pages>
+    </rdf:Description>
+    <bib:Memo rdf:about="#item_118">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;roba su HPA, VPA&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <rdf:Description rdf:about="urn:isbn:978-1-7281-2411-7">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2474-0756"/>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Tantawi</foaf:surname>
+                        <foaf:givenName>Asser N.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Steinder</foaf:surname>
+                        <foaf:givenName>Malgorzata</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>bin packing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>cloud optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>cloud placement</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Clustering algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Kubernetes scheduler</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Linear programming</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Load management</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Autonomic Cloud Placement of Mixed Workload: An Adaptive Bin Packing Algorithm</dc:title>
+        <dcterms:abstract>Cloud computing offers a platform where virtual entities, such as virtual machines, containers, and pods, are hosted in a physical infrastructure. Such virtual entities request resources, such as CPU, memory, and GPU, among other constraints. The cloud placement engine, also referred to as the scheduler, needs to place, in real time, such virtual entities in the cloud. Typically, resource demand is heterogeneous and the mix varies over time. Therefore, the scheduler needs to change its placement policy dynamically in order to accommodate the change in the mixed demand, resulting in lower rejection probability. A novel, autonomic, Adaptive Bin Packing (ABP) algorithm which attempts to equalize measures of variability in the demand and the allocated resources in the cloud, without the need to set any configuration, is introduced. ABP is compared to simplistic, extreme packing policies (spread and pack) as well an optimized packing policy. Experimental results based on simulations are presented, and the behavior of ABP and its adaptability to the demand mix is demonstrated. Further, ABP performs close to the optimized policy, yet evolves to an extreme policy as the mix becomes homogeneous.</dcterms:abstract>
+        <dc:date>2019</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://ieeexplore.ieee.org/document/8831212</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 14:34:36</dcterms:dateSubmitted>
+        <z:shortTitle>Autonomic Cloud Placement of Mixed Workload</z:shortTitle>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: Proceedings / International Conference on Autonomic Computing</dc:description>
+        <bib:pages>187–193</bib:pages>
+    </rdf:Description>
+    <bib:Journal rdf:about="urn:issn:2474-0756">
+        <dc:identifier>DOI 10.1109/ICAC.2019.00030</dc:identifier>
+        <dc:identifier>ISBN 978-1-7281-2411-7</dc:identifier>
+        <dc:identifier>ISSN 2474-0756</dc:identifier>
+    </bib:Journal>
+    <bib:Thesis rdf:about="#item_15">
+        <z:itemType>thesis</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>Politecnico di Torino</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Cicchiello</foaf:surname>
+                        <foaf:givenName>Federico</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <bib:contributors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Risso</foaf:surname>
+                        <foaf:givenName>Fulvio Giovanni Ottavio</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:contributors>
+        <dc:title>Analysis, modeling and implementation of cost models for a multi-cloud Kubernetes context</dc:title>
+        <dcterms:abstract>In the last years cloud computing is becoming more and more important for companies. They start developing their applications to be cloud-native, composed by a bunch of containerized micro-services cooperating each other in order to exploit the horizontal scalability capabilities. Having many containers require a component able to manage their life cycle: the widely used solution is Kubernetes.  More and more companies are interested in diversifying their cloud infrastructure in two main ways: multi-cloud, that is having clusters at different public cloud providers, or hybrid cloud, an owned physical data center and a virtual infrastructure at one or more cloud providers. Diversifying the infrastructure allows to increase resiliency, to be present on different geographical regions, to avoid lock-in to a single provider and gives the opportunity of saving costs.  The last point is what this thesis wants to investigate. How can we exploit that kind of infrastructures optimizing costs?  Public cloud clusters are elastic: the number of nodes can increase and decrease in time to adapt their overall capacity to the actual workload in execution. This has to be kept into consideration when modeling their costs.  Knowing how Kubernetes cluster costs are structured can be very useful for many reasons: for teams to increase awareness on how much are spending, to compare what cloud provider is more convenient for some requirements, to estimate the costs of having a private datacenter and comparing it to having virtual infrastructures.  Cloud providers bills, unfortunately, does not give at all details on how costs are distributed, so having a model can make them more clear.  An effort has been made on modeling container costs since they are the smallest execution unit in Kubernetes. Two kind of models have been defined: the overall Kubernetes cluster cost model (one for the public cloud, one for the private cloud) and the container cost model.  The knowledge of the container cost model has been then applied to a multi-cluster scheduling scenario to increase the cost efficiency of the container distribution among the clusters thanks to their cost information., Corso di laurea magistrale in Ingegneria Informatica (Computer Engineering)</dcterms:abstract>
+        <dc:date>2021</dc:date>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: Analysis, modeling and implementation of cost models for a multi-cloud Kubernetes context</dc:description>
+    </bib:Thesis>
+    <rdf:Description rdf:about="urn:isbn:978-1-6654-9650-6">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2768-4156"/>
+        <dc:publisher>
+            <foaf:Organization>
+                <foaf:name>IEEE</foaf:name>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Piscataway</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Chen</foaf:surname>
+                        <foaf:givenName>Hung-Ming</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Chen</foaf:surname>
+                        <foaf:givenName>Shih-Ying</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wang</foaf:surname>
+                        <foaf:givenName>Sheng-Kai</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Chen</foaf:surname>
+                        <foaf:givenName>Jian-Qun</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>5G mobile communication</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Energy conservation</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Energy-Saving</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Idling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Learning</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Network function virtualization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Network slicing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>NFV</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Nodes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Processor scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Q-learning</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Reinforcement Learning</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource utilization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scheduler</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Shutdowns</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Technological innovation</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Designing a Reinforcement Learning Approach for the NFV Orchestration System with Energy Saving Optimization</dc:title>
+        <dcterms:abstract>With the development of 5G mobile system, the concept of Network Functions Virtualization (NFV) is gaining importance. In the 3GPP standards organization's fifth generation mobile technology network specification, network slicing composed of virtualized network functions (VNFs) is proposed as one of the key technologies for 5G. In addition, for telecom operators, they are more concerned about how to deploy VNFs composed of network slices to optimize resource utilization and reduce resource wastage, in order to achieve operational cost savings. This study designs an energy-saving scheduler module for Kubernetes-based NFV orchestration system. And reinforcement learning approach is applied to make placement decisions for VNFs in network slices, scheduling to place the required VNFs in the least number of compute nodes without affecting deployed services. Further, the scheduler can leave idle compute nodes in shutdown or standby state to reduce resource usage and achieve energy efficiency.</dcterms:abstract>
+        <dc:date>2022</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://ieeexplore.ieee.org/document/9774455</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 15:55:12</dcterms:dateSubmitted>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: International Conference on Applied System Innovation (Online)</dc:description>
+        <bib:pages>98–101</bib:pages>
+    </rdf:Description>
+    <bib:Journal rdf:about="urn:issn:2768-4156">
+        <dc:identifier>DOI 10.1109/ICASI55125.2022.9774455</dc:identifier>
+        <dc:identifier>ISBN 978-1-6654-9650-6</dc:identifier>
+        <dc:identifier>ISSN 2768-4156</dc:identifier>
+    </bib:Journal>
+    <rdf:Description rdf:about="urn:isbn:979-8-3503-9376-7">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2472-8144"/>
+        <dc:publisher>
+            <foaf:Organization>
+                <foaf:name>IEEE</foaf:name>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Piscataway</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Cretti</foaf:surname>
+                        <foaf:givenName>Silvio</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zambianco</foaf:surname>
+                        <foaf:givenName>Marco</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Siracusa</foaf:surname>
+                        <foaf:givenName>Domenico</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_123"/>
+        <link:link rdf:resource="#item_20"/>
+        <link:link rdf:resource="#item_124"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Algorithms</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Applications programs</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cost minimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Costs</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Elasticity</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice architectures</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Rescheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Runtime</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Software algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Technological innovation</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Demonstrating Runtime Microservice Rescheduling in Hybrid Clouds for Cost Minimization</dc:title>
+        <dcterms:abstract>The migration of software applications to the public cloud unlocks a number of advantages, such as flexibility and elasticity, that can be tampered by an inappropriate and inefficient usage of computational resources producing uncontrollable Operational Expenses. In this work we experiment with a cost-aware rescheduling algorithm and show how its integration with Kubernetes in a hybrid cloud environment can yield relevant advantages in terms of cost savings.</dcterms:abstract>
+        <dc:date>2024</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/document/10494495</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 15:55:31</dcterms:dateSubmitted>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: 2024 27th Conference on Innovation in Clouds, Internet and Networks (ICIN)</dc:description>
+        <bib:pages>103–105</bib:pages>
+    </rdf:Description>
+    <bib:Journal rdf:about="urn:issn:2472-8144">
+        <dc:identifier>DOI 10.1109/ICIN60470.2024.10494495</dc:identifier>
+        <dc:identifier>ISBN 979-8-3503-9376-7</dc:identifier>
+        <dc:identifier>ISSN 2472-8144</dc:identifier>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_123">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;demo / dimostrazione dell’altro paper (il primo?) con FogAtlas&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_20">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=10494495&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 15:55:36</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_124">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=10494495&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-15 15:55:36</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://arxiv.org/abs/1812.00300">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+               <dc:identifier>DOI 10.48550/arxiv.1812.00300</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Rodriguez</foaf:surname>
+                        <foaf:givenName>Maria A.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Buyya</foaf:surname>
+                        <foaf:givenName>Rajkumar</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Computer Science - Distributed, Parallel, and Cluster Computing</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Containers Orchestration with Cost-Efficient Autoscaling in Cloud Computing Environments</dc:title>
+        <dcterms:abstract>Containers are standalone, self-contained units that package software and its dependencies together. They offer lightweight performance isolation, fast and flexible deployment, and fine-grained resource sharing. They have gained popularity in better application management and deployment in recent years and are being widely used by organizations to deploy their increasingly diverse workloads such as web services, big data, and IoT in either proprietary clusters or cloud data centres. This has led to the emergence of container orchestration platforms, which are designed to manage the deployment of containerized applications in large-scale clusters. The majority of these platforms are tailored to optimize the scheduling of containers on a fixed-sized private cluster but are not enabled to autoscale the size of the cluster nor to consider features specific to public cloud environments. In this work, we propose a comprehensive container resource management approach that has three different objectives. The first one is to optimize the initial placement of containers by efficiently scheduling them on existing resources. The second one is to autoscale the number of resources at runtime based on the current cluster's workload. The third one is a rescheduling mechanism to further support the efficient use of resources by consolidating applications into fewer VMs when possible. Our algorithms are implemented as a plugin-scheduler for Kubernetes platform. We evaluated our framework and the effectiveness of the proposed algorithms on an Australian national cloud infrastructure. Our experiments demonstrate that considerable cost savings can be achieved by dynamically managing the cluster size and placement of applications. We find that our proposed approaches are capable of reducing the cost by 58% when compared to the default Kubernetes scheduler.</dcterms:abstract>
+        <dc:date>2018</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://arxiv.org/abs/1812.00300</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-17 16:27:17</dcterms:dateSubmitted>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+    </bib:Article>
+    <bib:Article rdf:about="https://ieeexplore.ieee.org/document/11219337">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1045-9219"/>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Chen</foaf:surname>
+                        <foaf:givenName>Ming</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Islam</foaf:surname>
+                        <foaf:givenName>Muhammed Tawfiqul</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Read</foaf:surname>
+                        <foaf:givenName>Maria Rodriguez</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Buyya</foaf:surname>
+                        <foaf:givenName>Rajkumar</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Delays</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Dynamic scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Microservice</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice architectures</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>performance optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Quality of service</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Real-time systems</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Servers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Stress</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Time factors</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>TraDE: Network and Traffic-Aware Adaptive Scheduling for Microservices Under Dynamics</dc:title>
+        <dcterms:abstract>The transition from monolithic architecture to microservices has enhanced flexibility in application design and its scalable execution. This approach typically uses a computing cluster managed by a container orchestration platform to deploy microservices. However, this shift introduces significant challenges, particularly in the efficient scheduling of containerized services. These challenges are compounded by unpredictable scenarios such as dynamic incoming workloads with various execution traffic and variable communication delays among cluster nodes. Existing works often overlook the real-time traffic impacts of dynamic requests on running microservices, as well as the varied communication delays across cluster nodes. Consequently, even optimally deployed microservices could suffer from significant performance degradation over time. To address these issues, we propose a network and traffic-aware adaptive scheduling framework, TraDE , which can adaptively redeploy microservice instances to maintain desired performance amid changing traffic and network conditions within the hosting cluster. We have implemented TraDE as an extension to the Kubernetes platform. Additionally, we deployed realistic microservice applications in a real compute cluster and conducted extensive experiments to assess our framework's performance in various scenarios. The results demonstrate the effectiveness of TraDE in rescheduling running microservices to enhance end-to-end performance while maintaining a high goodput ratio. Compared with the existing method NetMARKS, TraDE outperforms it by reducing the average response time of the application by up to 48.3%, and improving the throughput by up to 1.2-1.5 × across workloads while maintaining a goodput ratio of 95.36%, and showing robust adaptive capability to meet QoS targets under sustained workloads and dynamic networking conditions.</dcterms:abstract>
+        <dc:date>2026</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/document/11219337</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-17 16:39:57</dcterms:dateSubmitted>
+        <z:shortTitle>TraDE</z:shortTitle>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>76–89</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1045-9219">
+        <dc:identifier>DOI 10.1109/TPDS.2025.3626424</dc:identifier>
+        <prism:volume>37</prism:volume>
+        <dc:title>IEEE transactions on parallel and distributed systems</dc:title>
+        <dc:identifier>ISSN 1045-9219</dc:identifier>
+        <prism:number>1</prism:number>
+    </bib:Journal>
+    <rdf:Description rdf:about="urn:isbn:979-8-3315-0934-7">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2993-2114"/>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kang</foaf:surname>
+                        <foaf:givenName>Minwoo</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kang</foaf:surname>
+                        <foaf:givenName>Taeshin</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Gil</foaf:surname>
+                        <foaf:givenName>Joonmin</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Yu</foaf:surname>
+                        <foaf:givenName>Heonchang</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_129"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Bandwidth</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computer architecture</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Edge-Cloud Continuum</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice architectures</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>microservice deployment</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>peak load</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Processor scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scalability</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Schedules</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Time factors</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>SUPLEC:Microservice Scheduling Under Unexpected Peak Load in the Edge-Cloud Continuum</dc:title>
+        <dcterms:abstract>Microservice architectures have become widely adopted due to their scalability and flexibility. These applications are commonly deployed in edge-cloud environments. However, in such environments, unexpected peak loads on microservices often lead to violations of service level objectives (SLOs) due to limited compute resources and bandwidth. Moreover, resource utilization of nodes and network states are constantly changing, making it essential to reschedule microservices to ensure SLO compliance. To minimize downtime during rescheduling, the microservice temporarily occupies additional resources until the process is complete. Therefore, frequent rescheduling can result in inefficient resource utilization. In this paper, we introduce SUPLEC, a new scheduling technique that optimally schedules container-based microservices and minimizes the number of reschedules to handle unexpected peak loads in Edge-Cloud environments. SUPLEC consists of two components: Placer and Rescheduler. The Placer identifies frequently interacting microservices, clusters them into groups, and places them on nodes using a worst-fit approach. The Rescheduler analyzes the response times of recent requests to determine whether rescheduling should be performed and, if so, it reschedules a microservice to a better node. Experiment results show that the proposed strategy reduces the average response time by up to 68.5 % under dynamic cluster conditions and loads and reduces the number of reschedules by up to 80 %.</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <z:shortTitle>SUPLEC</z:shortTitle>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: IEEE/ACM International Symposium on Cluster, Cloud and Grid Computing</dc:description>
+        <bib:pages>01–10</bib:pages>
+    </rdf:Description>
+    <bib:Journal rdf:about="urn:issn:2993-2114">
+        <dc:identifier>DOI 10.1109/CCGRID64434.2025.00039</dc:identifier>
+        <dc:identifier>ISBN 979-8-3315-0934-7</dc:identifier>
+        <dc:identifier>ISSN 2993-2114</dc:identifier>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_129">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;minimizes the number of reschedules to handle unexpected peak loads in Edge-Cloud environments&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <bib:Article rdf:about="#item_29">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:0920-8542"/>
+        <dc:publisher>
+            <foaf:Organization>
+                <foaf:name>Springer US</foaf:name>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>New York</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Li</foaf:surname>
+                        <foaf:givenName>Hongjian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Shen</foaf:surname>
+                        <foaf:givenName>Jie</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zheng</foaf:surname>
+                        <foaf:givenName>Lei</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Cui</foaf:surname>
+                        <foaf:givenName>Yuzheng</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Mao</foaf:surname>
+                        <foaf:givenName>Zhi</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Algorithms</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Antennae</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Applications programs</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Beetles</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Communication</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Compilers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computer Science</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Costs</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Fourier transforms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Interpreters</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Linear programming</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Processor Architectures</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Programming Languages</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Rescheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Time series</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Workloads</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Cost-efficient scheduling algorithms based on beetle antennae search for containerized applications in Kubernetes clouds</dc:title>
+        <dcterms:abstract>With the development of cloud-native technologies, Kubernetes becomes the standard of fact for container scheduling. Kubernetes provides service discovery and scheduling of containers, load balancing, service self-healing, elastic scaling, storage volumes, etc. Although Kubernetes is mature with advanced features, it does not consider reducing the cost in Kubernetes clouds using the factor of communication frequent between pods while scheduling pods, nor does it have a rescheduling mechanism to save cost. Hence, we propose a cost-efficient scheduling algorithm and a rescheduling algorithm to reduce the cost of communication-intensive and periodically changing web applications deployed in Kubernetes, respectively. Network communication-intensive pods are scheduled to the same node by the scheduling algorithm based on Improved Beetle Antennae Search. According to the changing pod intimacy relationship, the rescheduling algorithm is completed through the replacement of new and old pods to reduce the cost. In addition, this paper evaluates the proposed algorithms in terms of cost and performance on a Kubernetes cloud. The result shows that the cost consumption of Kubernetes clusters in cloud environment is reduced by 20.97% on average compared with the default Kubernetes framework.</dcterms:abstract>
+        <dc:date>2023</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>10300–10334</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:0920-8542">
+        <dc:identifier>DOI 10.1007/s11227-023-05077-7</dc:identifier>
+        <prism:volume>79</prism:volume>
+        <dc:title>The Journal of supercomputing</dc:title>
+        <dc:identifier>ISSN 0920-8542</dc:identifier>
+        <prism:number>9</prism:number>
+    </bib:Journal>
+    <bib:Article rdf:about="#item_31">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1532-0626"/>
+        <dc:publisher>
+            <foaf:Organization>
+                <foaf:name>Wiley Subscription Services, Inc</foaf:name>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Hoboken</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Joseph</foaf:surname>
+                        <foaf:givenName>Christina Terese</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Chandrasekaran</foaf:surname>
+                        <foaf:givenName>Kandasamy</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_132"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>CPU throttling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Data centers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Docker containers</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>genetic algorithm</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Heuristic methods</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>microservices</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>multiverse optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Performance degradation</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Rescheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Response time</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Schedules</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Solution space</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Throttling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Nature‐inspired resource management and dynamic rescheduling of microservices in Cloud datacenters</dc:title>
+        <dcterms:abstract>Distributed Cloud environments are now resorting to Cloud applications composed of heterogeneous microservices. Cloud service providers strive to provide high quality of service (QoS) and response time is one of the key QoS attributes for microservices. The dynamism of microservice ecosystems necessitates runtime adaptations and microservices rescheduling to avoid performance degradation. Existing works target rescheduling in hypervisor‐based systems, while ignoring the influence of configuration parameters of container‐based microservices. In an effort to address these challenges, this article describes a novel microservice rescheduling framework, throttling and interaction‐aware anticorrelated rescheduling for microservices, to proactively perform rescheduling activities whilst ensuring timely service responses. Based on periodic monitoring of the performance attributes, the framework schedules container migrations. Considering the exponentially large solution space, a metaheuristic approach based on multiverse optimization is developed to generate the near‐optimal mapping of microservices to the datacenter resources. Experimental results indicate that our framework provides superior performance with a reduction of up to 13.97% in the average response time, when compared with systems with no support for rescheduling.</dcterms:abstract>
+        <dc:date>2021</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>n/a</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1532-0626">
+        <dc:identifier>DOI 10.1002/cpe.6290</dc:identifier>
+        <prism:volume>33</prism:volume>
+        <dc:title>Concurrency and computation</dc:title>
+        <dc:identifier>ISSN 1532-0626</dc:identifier>
+        <prism:number>17</prism:number>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_132">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;pdf non scaricabile&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <bib:Document rdf:about="https://kubernetes.io/docs/concepts/scheduling-eviction/resource-bin-packing/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>Kubernetes</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_35"/>
+        <link:link rdf:resource="#item_134"/>
+        <dc:title>Resource Bin Packing</dc:title>
+        <dcterms:abstract>In the scheduling-plugin NodeResourcesFit of kube-scheduler, there are two scoring strategies that support the bin packing of resources: MostAllocated and RequestedToCapacityRatio.
+Enabling bin packing using MostAllocated strategy The MostAllocated strategy scores the nodes based on the utilization of resources, favoring the ones with higher allocation. For each resource type, you can set a weight to modify its influence in the node score.
+To set the MostAllocated strategy for the NodeResourcesFit plugin, use a scheduler configuration similar to the following:</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/resource-bin-packing/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-22 15:33:56</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <dc:description>Section: docs</dc:description>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_35">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/resource-bin-packing/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-22 15:34:01</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_134">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/resource-bin-packing/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-22 15:34:01</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>Kubernetes</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_37"/>
+        <link:link rdf:resource="#item_136"/>
+        <dc:title>Assigning Pods to Nodes</dc:title>
+        <dcterms:abstract>You can constrain a Pod so that it is restricted to run on particular node(s), or to prefer to run on particular nodes. There are several ways to do this and the recommended approaches all use label selectors to facilitate the selection. Often, you do not need to set any such constraints; the scheduler will automatically do a reasonable placement (for example, spreading your Pods across nodes so as not place Pods on a node with insufficient free resources).</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-23 08:44:30</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <dc:description>Section: docs</dc:description>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_37">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-23 08:44:36</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_136">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-23 08:44:36</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Data rdf:about="https://github.com/kubernetes/autoscaler">
+        <z:itemType>computerProgram</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>Kubernetes</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <dc:title>kubernetes/autoscaler</dc:title>
+        <dcterms:abstract>Autoscaling components for Kubernetes</dcterms:abstract>
+        <dc:date>2026-04-23T15:36:54Z</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://github.com/kubernetes/autoscaler</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-23 15:56:55</dcterms:dateSubmitted>
+        <z:libraryCatalog>GitHub</z:libraryCatalog>
+        <dc:rights>Apache-2.0</dc:rights>
+        <dc:description>original-date: 2017-04-12T00:03:40Z</dc:description>
+        <z:programmingLanguage>Go</z:programmingLanguage>
+    </bib:Data>
+    <bib:Article rdf:about="https://ieeexplore.ieee.org/document/11144757">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1939-1374"/>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zambianco</foaf:surname>
+                        <foaf:givenName>Marco</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Cretti</foaf:surname>
+                        <foaf:givenName>Silvio</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Siracusa</foaf:surname>
+                        <foaf:givenName>Domenico</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_139"/>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Approximation algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>cost minimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Costs</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Heuristic algorithms</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Kubernetes scheduler</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice architectures</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice re-orchestration</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Minimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>multi-cloud systems</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Quality of service</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>service disruption minimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Training</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Disruption-Aware Microservice Re-Orchestration for Cost-Efficient Multi-Cloud Deployments</dc:title>
+        <dcterms:abstract>Multi-cloud environments enable a cost-efficient scaling of cloud-native applications across geographically distributed virtual nodes with different pricing models. In this context, the resource fragmentation caused by frequent changes in the resource demands of deployed microservices, along with the allocation or termination of new and existing microservices, increases the deployment cost. Therefore, re-orchestrating deployed microservices on a cheaper configuration of multi-cloud nodes offers a practical solution to restore the cost efficiency of deployment. However, the rescheduling procedure causes frequent service interruptions due to the continuous termination and rebooting of the containerized microservices. Moreover, it may potentially interfere with and delay other deployment operations, compromising the stability of the running applications. To address this issue, we formulate a multi-objective integer linear programming (ILP) problem that computes a microservice rescheduling solution capable of providing minimum deployment cost without significantly affecting the service continuity. At the same time, the proposed formulation also preserves the quality of service (QoS) requirements, including latency, expressed through microservice co-location constraints. Additionally, we present a heuristic algorithm to approximate the optimal solution, striking a balance between cost reduction and service disruption mitigation. We integrate the proposed approach as a custom plugin of the Kubernetes (K8s) scheduler. Results reveal that our approach significantly reduces multi-cloud deployment costs and service disruptions compared to the benchmark schemes, while ensuring QoS requirements are consistently met.</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/document/11144757</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-24 13:30:56</dcterms:dateSubmitted>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>2754–2767</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1939-1374">
+        <dc:identifier>DOI 10.1109/TSC.2025.3604373</dc:identifier>
+        <prism:volume>18</prism:volume>
+        <dc:title>IEEE transactions on services computing</dc:title>
+        <dc:identifier>ISSN 1939-1374</dc:identifier>
+        <prism:number>5</prism:number>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_139">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;evoluzione di “Cost minimization in multi-cloud systems with runtime microservice re-orchestration” ma con ““to also include the minimization of the number of rescheduled microservices and of the rescheduling duration””&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <bib:Document rdf:about="https://locust.io/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_48"/>
+        <link:link rdf:resource="#item_141"/>
+        <dc:title>Locust.io</dc:title>
+        <dcterms:abstract>An open source load testing tool. Define user behaviour with Python code, and swarm your system with millions of simultaneous users.</dcterms:abstract>
+        <dc:identifier>
+           <dcterms:URI><rdf:value>https://locust.io/</rdf:value></dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:27:21</dcterms:dateSubmitted>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_48">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+           <dcterms:URI><rdf:value>https://locust.io/</rdf:value></dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:27:25</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_141">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+           <dcterms:URI><rdf:value>https://locust.io/</rdf:value></dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:27:25</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Data rdf:about="https://github.com/GoogleCloudPlatform/microservices-demo">
+        <z:itemType>computerProgram</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>Google Cloud Platform</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>gcp</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>gke</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>google-cloud</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>grpc</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>istio</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>kustomize</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>sample-application</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>samples</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>skaffold</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>terraform</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>GoogleCloudPlatform/microservices-demo</dc:title>
+        <dcterms:abstract>Sample cloud-first application with 10 microservices showcasing Kubernetes, Istio, and gRPC.</dcterms:abstract>
+        <dc:date>2026-04-28T07:09:54Z</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://github.com/GoogleCloudPlatform/microservices-demo</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:27:33</dcterms:dateSubmitted>
+        <z:libraryCatalog>GitHub</z:libraryCatalog>
+        <dc:rights>Apache-2.0</dc:rights>
+        <dc:description>original-date: 2018-08-03T18:32:18Z</dc:description>
+        <z:programmingLanguage>Go</z:programmingLanguage>
+    </bib:Data>
+    <rdf:Description rdf:about="http://arxiv.org/abs/2401.01408">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:identifier>DOI 10.1109/ICIN60470.2024.10494463</dc:identifier>
+                <dc:title>2024 27th Conference on Innovation in Clouds, Internet and Networks (ICIN)</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zambianco</foaf:surname>
+                        <foaf:givenName>Marco</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Cretti</foaf:surname>
+                        <foaf:givenName>Silvio</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Siracusa</foaf:surname>
+                        <foaf:givenName>Domenico</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_144"/>
+        <dcterms:isReferencedBy rdf:resource="#item_175"/>
+        <link:link rdf:resource="#item_52"/>
+        <link:link rdf:resource="#item_145"/>
+        <link:link rdf:resource="#item_51"/>
+        <link:link rdf:resource="#item_146"/>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Computer Science - Networking and Internet Architecture</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Cost Minimization in Multi-cloud Systems with Runtime Microservice Re-orchestration</dc:title>
+        <dcterms:abstract>Multi-cloud systems facilitate a cost-efficient and geographically-distributed deployment of microservice-based applications by temporary leasing virtual nodes with diverse pricing models. To preserve the cost-efficiency of multi-cloud deployments, it is essential to redeploy microservices onto the available nodes according to a dynamic resource configuration, which is often performed to better accommodate workload variations. However, this approach leads to frequent service disruption since applications are continuously shutdown and redeployed in order to apply the new resource assignment. To overcome this issue, we propose a re-orchestration scheme that migrates microservice at runtime based on a rolling update scheduling logic. Specifically, we propose an integer linear optimization problem that minimizes the cost associated to multi-cloud virtual nodes and that ensures that delay-sensitive microservices are co-located on the same regional cluster. The resulting rescheduling order guarantees no service disruption by repacking microservices between the available nodes without the need to turn off the outdated microservice instance before redeploying the updated version. In addition, we propose a two-step heuristic scheme that effectively approximates the optimal solution at the expense of close-to-zero service disruption and QoS violation probability. Results show that proposed schemes achieve better performance in terms of cost mitigation, low service disruption and low QoS violation probability compared to baseline schemes replicating Kubernetes scheduler functionalities.</dcterms:abstract>
+        <dc:date>2024-3-11</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://arxiv.org/abs/2401.01408</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:30:39</dcterms:dateSubmitted>
+        <z:libraryCatalog>arXiv.org</z:libraryCatalog>
+        <dc:description>arXiv:2401.01408 [cs]</dc:description>
+        <bib:pages>65-72</bib:pages>
+    </rdf:Description>
+    <bib:Memo rdf:about="#item_144">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;considerano solo scaling verticale&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <bib:Memo rdf:about="#item_175">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;ottima formulazione matematica del problema&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_52">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Preprint PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://arxiv.org/pdf/2401.01408v4</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:30:39</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_145">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Preprint PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://arxiv.org/pdf/2401.01408v4</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:30:39</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_51">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://arxiv.org/abs/2401.01408</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:30:39</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_146">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://arxiv.org/abs/2401.01408</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:30:39</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="https://karpenter.sh/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_54"/>
+        <link:link rdf:resource="#item_148"/>
+        <dc:title>Karpenter</dc:title>
+        <dcterms:abstract>Just-in-time Nodes for Any Kubernetes Cluster</dcterms:abstract>
+        <dc:identifier>
+           <dcterms:URI><rdf:value>https://karpenter.sh/</rdf:value></dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:55:40</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_54">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+           <dcterms:URI><rdf:value>https://karpenter.sh/</rdf:value></dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:55:45</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_148">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+           <dcterms:URI><rdf:value>https://karpenter.sh/</rdf:value></dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 08:55:45</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://doi.org/10.1007/s42979-025-03712-z">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2661-8907"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Marchese</foaf:surname>
+                        <foaf:givenName>Angelo</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Tomarchio</foaf:surname>
+                        <foaf:givenName>Orazio</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_150"/>
+        <link:link rdf:resource="#item_56"/>
+        <link:link rdf:resource="#item_151"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud continuum</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Container technology</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Kubernetes descheduler</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Kubernetes scheduler</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice architecture</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Enhancing the Kubernetes Platform with a Load-Aware Orchestration Strategy</dc:title>
+        <dcterms:abstract>Microservice architecture is increasingly favored for building large-scale applications designed for deployment in distributed and resource-constrained cloud-to-edge computing environments. As a cloud-native approach, microservices are particularly powerful due to their loosely coupled, independently deployable, and scalable characteristics. These features enable distributed deployment and flexible integration across robust cloud data centers and heterogeneous, often resource-limited, edge nodes. To fully leverage these advantages, there is a need for advanced placement algorithms that can optimize application performance by utilizing the strengths of microservices. In response to these challenges, we propose to extend Kubernetes with a load-aware orchestration strategy, which enhances its capability to deploy microservice applications within shared clusters characterized by dynamic resource usage patterns. Our approach orchestrates applications dynamically, based on real-time resource usage, allowing for continuous adjustment of their placement to match evolving conditions. Evaluation of a prototype system in a testbed environment demonstrates that this approach offers substantial benefits compared to the standard Kubernetes scheduler.</dcterms:abstract>
+        <dc:date>2025-02-25</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://doi.org/10.1007/s42979-025-03712-z</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 09:15:28</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <z:libraryCatalog>Springer Link</z:libraryCatalog>
+        <bib:pages>224</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:2661-8907">
+        <dc:identifier>DOI 10.1007/s42979-025-03712-z</dc:identifier>
+        <prism:volume>6</prism:volume>
+        <dc:title>SN Computer Science</dc:title>
+        <dc:identifier>ISSN 2661-8907</dc:identifier>
+        <prism:number>3</prism:number>
+        <dcterms:alternative>SN COMPUT. SCI.</dcterms:alternative>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_150">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;real-time telemetry through metrics server&lt;/p&gt;
+&lt;p&gt;load-aware scheduling/descheduling&lt;/p&gt;
+&lt;p&gt;buon riassunto di tutta la parte di scheduling&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_56">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://link.springer.com/content/pdf/10.1007%2Fs42979-025-03712-z.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 09:15:29</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_151">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://link.springer.com/content/pdf/10.1007%2Fs42979-025-03712-z.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 09:15:29</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://dl.acm.org/doi/10.1145/3378447">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1533-5399"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zhong</foaf:surname>
+                        <foaf:givenName>Zhiheng</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Buyya</foaf:surname>
+                        <foaf:givenName>Rajkumar</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_153"/>
+        <link:link rdf:resource="#item_61"/>
+        <link:link rdf:resource="#item_154"/>
+        <dc:title>A Cost-Efficient Container Orchestration Strategy in Kubernetes-Based Cloud Computing Infrastructures with Heterogeneous Resources</dc:title>
+        <dcterms:abstract>Containers, as a lightweight application virtualization technology, have recently gained immense popularity in mainstream cluster management systems like Google Borg and Kubernetes. Prevalently adopted by these systems for task deployments of diverse workloads such as big data, web services, and IoT, they support agile application deployment, environmental consistency, OS distribution portability, application-centric management, and resource isolation. Although most of these systems are mature with advanced features, their optimization strategies are still tailored to the assumption of a static cluster. Elastic compute resources would enable heterogeneous resource management strategies in response to the dynamic business volume for various types of workloads. Hence, we propose a heterogeneous task allocation strategy for cost-efficient container orchestration through resource utilization optimization and elastic instance pricing with three main features. The first one is to support heterogeneous job configurations to optimize the initial placement of containers into existing resources by task packing. The second one is cluster size adjustment to meet the changing workload through autoscaling algorithms. The third one is a rescheduling mechanism to shut down underutilized VM instances for cost saving and reallocate the relevant jobs without losing task progress. We evaluate our approach in terms of cost and performance on the Australian National Cloud Infrastructure (Nectar). Our experiments demonstrate that the proposed strategy could reduce the overall cost by 23% to 32% for different types of cloud workload patterns when compared to the default Kubernetes framework.</dcterms:abstract>
+        <dc:date>April 17, 2020</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://dl.acm.org/doi/10.1145/3378447</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 09:29:53</dcterms:dateSubmitted>
+        <z:libraryCatalog>ACM Digital Library</z:libraryCatalog>
+        <bib:pages>15:1–15:24</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1533-5399">
+        <dc:identifier>DOI 10.1145/3378447</dc:identifier>
+        <prism:volume>20</prism:volume>
+        <dc:title>ACM Trans. Internet Technol.</dc:title>
+        <dc:identifier>ISSN 1533-5399</dc:identifier>
+        <prism:number>2</prism:number>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_153">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;meccanismo di rescheduling come autoscaler&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_61">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://dl.acm.org/doi/pdf/10.1145/3378447?download=true</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 09:29:55</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_154">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://dl.acm.org/doi/pdf/10.1145/3378447?download=true</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 09:29:55</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://jisem-journal.com/index.php/journal/article/view/8895">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:identifier>DOI 10.52783/jisem.v10i45s.8895</dc:identifier>
+                <prism:volume>10</prism:volume>
+                <dc:title>Journal of Information Systems Engineering and Management</dc:title>
+                <dc:identifier>ISSN 2468-4376</dc:identifier>
+                <prism:number>45s</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Pinnapareddy</foaf:surname>
+                        <foaf:givenName>Nishanth Reddy</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_63"/>
+        <link:link rdf:resource="#item_156"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Autoscaling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cloud Cost Optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Green Computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Multicluster Orchestration</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Policy Management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource Management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Sustainability</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Cloud Cost Optimization and Sustainability in Kubernetes</dc:title>
+        <dcterms:abstract>The examination investigates how cloud cost optimization must fit dual requirements of environmental sustainability when applied to Kubernetes-based deployments, as these serve as crucial elements in modern cloud-native environments. Due to its remarkable operational features, Kubernetes became the leading container orchestration system after Google initially developed it, as it provides flexibility and resilience alongside scalability. Resource management proves challenging within Kubernetes deployments owing to their properties, which lead to high cloud costs and adverse environmental outcomes. Three crucial aspects of Kubernetes deployment management are evaluated in this research: technical elements, operational methods, and strategic sustainability models. The research investigates Kubernetes resource distribution factors where CPU, memory, and storage take center stage with descriptions of right-sizing features and autoscaling methods while exploring cost-efficient scheduling techniques. The study evaluates the connection between security practice implementation and environmental protection while reducing costs through improved monitoring capabilities. The study conducts an environmental assessment of cloud operations and develops sustainability methods that use workload consolidation with green cloud vendor selection and energy-efficient node infrastructure. The document solves multicluster orchestration issues by explaining workload distribution methods that keep cloud region expenses at their best. The paper shows practical sustainability features through Kubecost applications, Kyverno, and Open Policy Agent implementation. The section provides concrete guidelines that organizations must execute based on best practice standards for implementing Kubernetes to improve their financial condition while enhancing environmental sustainability. The recommended method promotes sustained security-based Kubernetes operations by implementing cloud-native insights with policy structures while conducting ongoing assessments to ensure sustainability.</dcterms:abstract>
+        <dc:date>2025-04-30</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://jisem-journal.com/index.php/journal/article/view/8895</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 10:06:48</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <z:libraryCatalog>jisem-journal.com</z:libraryCatalog>
+        <dc:rights>Copyright (c) 2025</dc:rights>
+        <bib:pages>533-551</bib:pages>
+    </bib:Article>
+    <z:Attachment rdf:about="#item_63">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://jisem-journal.com/index.php/journal/article/download/8895/4108</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 10:06:50</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_156">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://jisem-journal.com/index.php/journal/article/download/8895/4108</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-28 10:06:50</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.6436">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1532-0634"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Aldwyan</foaf:surname>
+                        <foaf:givenName>Yasser</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sinnott</foaf:surname>
+                        <foaf:givenName>Richard O.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Jayaputera</foaf:surname>
+                        <foaf:givenName>Glenn T.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_71"/>
+        <link:link rdf:resource="#item_158"/>
+        <link:link rdf:resource="#item_72"/>
+        <link:link rdf:resource="#item_159"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Docker</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>dynamic deployment</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>multi-cluster</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>placement.</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Elastic deployment of container clusters across geographically distributed cloud data centers for web applications</dc:title>
+        <dcterms:abstract>Containers such as Docker provide a lightweight virtualization technology. They have gained popularity in developing, deploying and managing applications in and across Cloud platforms. Container management and orchestration platforms such as Kubernetes run application containers in virtual clusters that abstract the overheads in managing the underlying infrastructures to simplify the deployment of container solutions. These platforms are well suited for modern web applications that can give rise to geographic fluctuations in use based on the location of users. Such fluctuations often require dynamic global deployment solutions. A key issue is to decide how to adapt the number and placement of clusters to maintain performance, whilst incurring minimum operating and adaptation costs. Manual decisions are naive and can give rise to: over-provisioning and hence cost issues; improper placement and performance issues, and/or unnecessary relocations resulting in adaptation issues. Elastic deployment solutions are essential to support automated and intelligent adaptation of container clusters in geographically distributed Clouds. In this article, we propose an approach that continuously makes elastic deployment plans aimed at optimizing cost and performance, even during adaptation processes, to meet service level objectives (SLOs) at lower costs. Meta-heuristics are used for cluster placement and adjustment. We conduct experiments on the Australia-wide National eResearch Collaboration Tools and Resources Research Cloud using Docker and Kubernetes. Results show that with only a 0.5 ms sacrifice in SLO for the 95th percentile of response times we are able to achieve up to 44.44% improvement (reduction) in cost compared to a naive over-provisioning deployment approach.</dcterms:abstract>
+        <dc:date>2021</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.6436</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 07:54:09</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <z:libraryCatalog>Wiley Online Library</z:libraryCatalog>
+        <dc:description>_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/cpe.6436</dc:description>
+        <bib:pages>e6436</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1532-0634">
+        <dc:identifier>DOI 10.1002/cpe.6436</dc:identifier>
+        <prism:volume>33</prism:volume>
+        <dc:title>Concurrency and Computation: Practice and Experience</dc:title>
+        <dc:identifier>ISSN 1532-0634</dc:identifier>
+        <prism:number>21</prism:number>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_71">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://onlinelibrary-wiley-com.ezproxy.biblio.polito.it/doi/pdfdirect/10.1002/cpe.6436</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 07:54:11</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_158">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://onlinelibrary-wiley-com.ezproxy.biblio.polito.it/doi/pdfdirect/10.1002/cpe.6436</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 07:54:11</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_72">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.6436</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 07:54:12</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_159">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.6436</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 07:54:12</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_73">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2169-3536"/>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Piao</foaf:surname>
+                        <foaf:givenName>Chengzhi</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kim</foaf:surname>
+                        <foaf:givenName>Eunsam</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Lee</foaf:surname>
+                        <foaf:givenName>Choonhwa</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_74"/>
+        <link:link rdf:resource="#item_162"/>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Benchmark testing</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cloud-native computing</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>cluster scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>energy efficiency</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Hardware</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Job shop scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>multi objective optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Power demand</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Processor scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Program processors</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Servers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Videos</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Optimizing Cloud Service Efficiency With Infrastructure-Aware Scheduling</dc:title>
+        <dcterms:abstract>With the rapid development of cloud-native computing technologies, containers have become an integral part of cloud infrastructure. At the same time, Kubernetes has positioned itself as a solid foundation for cloud-native orchestration platforms. However, the exponential growth of the container adoption raises a concern over energy usage. Existing Kubernetes scheduling approaches are not sophisticated enough to factor energy efficiency and infrastructure differences into the scheduling decisions. To address these shortages, we propose a novel scheduling system for Kubernetes clusters that considers infrastructure specifics and further task requirements. The system uses a benchmarking suite to model node performance, selects appropriate scheduling algorithms based on the number of tasks, and further optimizes cluster power consumption through re-scheduling. Our evaluation results show that the proposed approach achieves a power consumption reduction of18.46% compared to the Kubernetes scheduler.</dcterms:abstract>
+        <dc:date>2026</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>24686–24699</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:2169-3536">
+        <dc:identifier>DOI 10.1109/ACCESS.2026.3663565</dc:identifier>
+        <prism:volume>14</prism:volume>
+        <dc:title>IEEE access</dc:title>
+        <dc:identifier>ISSN 2169-3536</dc:identifier>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_74">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=11392787&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 09:25:10</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_162">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=11392787&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 09:25:10</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:BookSection rdf:about="urn:isbn:9789819550142">
+        <z:itemType>bookSection</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:0302-9743"/>
+        <dc:publisher>
+            <foaf:Organization>
+                <foaf:name>Springer Nature Singapore</foaf:name>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Singapore</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Aslan</foaf:surname>
+                        <foaf:givenName>Haci Ismail</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Haque</foaf:surname>
+                        <foaf:givenName>Syed Muhammad Mahmudul</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Witzke</foaf:surname>
+                        <foaf:givenName>Joel</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kao</foaf:surname>
+                        <foaf:givenName>Odej</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <bib:contributors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Georgievski</foaf:surname>
+                        <foaf:givenName>Ilche</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Deng</foaf:surname>
+                        <foaf:givenName>Shuiguang</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wang</foaf:surname>
+                        <foaf:givenName>Zhongjie</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Murillo</foaf:surname>
+                        <foaf:givenName>Juan-Manuel</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Aiello</foaf:surname>
+                        <foaf:givenName>Marco</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Benatallah</foaf:surname>
+                        <foaf:givenName>Boualem</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:contributors>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cloud-fog-edge continuum</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice placement and migration</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Orchestration</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>QoS-aware deployment</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Self-optimizing clusters</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>QONNECT: A QoS-Aware Orchestration System for Distributed Kubernetes Clusters</dc:title>
+        <dcterms:abstract>Modern applications increasingly span cloud, fog, and edge environments, requiring orchestration systems that adapt to diverse contexts while meeting Quality-of-Service (QoS) goals. Standard Kubernetes schedulers do not account for user-defined objectives such as energy efficiency, cost optimization, and performance, leaving operators to make manual placement decisions. We present QONNECT, a vendor-agnostic orchestration framework that enables declarative, QoS-driven deployment across heterogeneous Kubernetes and K3s clusters. Through a minimal YAML interface, users specify high-level QoS goals, which the system translates into placement and migration actions. Our prototype, evaluated on a federated testbed of nine clusters with the Istio Bookinfo application, demonstrates dynamic microservice placement, automated failover, and QoS-compliant rescheduling without manual intervention. By bridging declarative deployment with operational QoS, QONNECT advances the cloud–edge continuum toward a unified, self-optimizing platform.</dcterms:abstract>
+        <dc:date>2026</dc:date>
+        <z:shortTitle>QONNECT</z:shortTitle>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>149–156</bib:pages>
+    </bib:BookSection>
+    <bib:Book rdf:about="urn:issn:0302-9743">
+        <dcterms:isPartOf>
+            <bib:Series>
+               <dc:title>Lecture Notes in Computer Science</dc:title>
+            </bib:Series>
+        </dcterms:isPartOf>
+        <dc:identifier>DOI 10.1007/978-981-95-5015-9_11</dc:identifier>
+        <dc:identifier>ISBN 9789819550142</dc:identifier>
+        <dc:identifier>ISSN 0302-9743</dc:identifier>
+        <dc:title>Service-Oriented Computing</dc:title>
+    </bib:Book>
+    <rdf:Description rdf:about="urn:isbn:979-8-3315-3626-8">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:identifier>DOI 10.1109/ICSP65755.2025.11086961</dc:identifier>
+                <dc:identifier>ISBN 979-8-3315-3626-8</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>IEEE</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Qiu</foaf:surname>
+                        <foaf:givenName>Rixuan</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Li</foaf:surname>
+                        <foaf:givenName>Tianzhe</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Luo</foaf:surname>
+                        <foaf:givenName>Zhiyuan</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>He</foaf:surname>
+                        <foaf:givenName>Qun</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Xu</foaf:surname>
+                        <foaf:givenName>Tianfu</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Fan</foaf:surname>
+                        <foaf:givenName>Yingkai</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Zhou</foaf:surname>
+                        <foaf:givenName>Naqin</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_89"/>
+        <link:link rdf:resource="#item_165"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Adsorption</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computational modeling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Dynamic scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Dynamics</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>honeypot</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Load modeling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>load prediction</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Power system dynamics</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Processor scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>scheduler</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Dynamic Rescheduling of Trapping Resources Based on Electric Power Environment</dc:title>
+        <dcterms:abstract>In the realm of intelligent transformation of modern power systems, the deep collaboration between honeypot technology and Kubernetes has emerged as the cornerstone of establishing an active defence system. Nevertheless, the conventional rescheduling mechanism in large-scale power Kubernetes clusters encounters three principal challenges: recurrent conflicts of affinity/anti-affinity rules under topological constraints, complicating the coverage of critical control nodes by honeypots; frequent migrations undermining the continuity of attack forensic links; and a mismatch in heterogeneous resource allocation policies, which intensifies resource fragmentation at the periphery and delays response in the core. This paper proposes a honeypot container scheduling scheme utilising dynamic particle adsorption. It employs particle system modelling and the Fibonacci algorithm to achieve a uniform distribution of nodes in three-dimensional space, abstracted as dynamic particles with gravitational repulsive forces. The particle force model facilitates autonomous optimisation and precise node matching. Experiments demonstrate that, compared to Descheduler, this method enhances cluster resource utilisation by 10% and increases affinity relationship satisfaction by 30%, thereby significantly improving honeypot deployment efficiency and resource utilisation, while offering robust technical support for the network security defence of power systems.</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <dc:description>Book Title: 2025 10th International Conference on Intelligent Computing and Signal Processing (ICSP)</dc:description>
+        <bib:pages>864–874</bib:pages>
+    </rdf:Description>
+    <z:Attachment rdf:about="#item_89">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=11086961&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:58:17</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_165">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&amp;arnumber=11086961&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:58:17</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_78">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1064-7570"/>
+        <dc:publisher>
+            <foaf:Organization>
+                <foaf:name>Springer US</foaf:name>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>New York</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Bracke</foaf:surname>
+                        <foaf:givenName>Vincent</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Santos</foaf:surname>
+                        <foaf:givenName>José</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Wauters</foaf:surname>
+                        <foaf:givenName>Tim</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>De Turck</foaf:surname>
+                        <foaf:givenName>Filip</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Volckaert</foaf:surname>
+                        <foaf:givenName>Bruno</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_79"/>
+        <link:link rdf:resource="#item_167"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Algorithms</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Application</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Autonomic and cognitive management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Central processing units</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cloud computing services</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Combinatorial analysis</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Communications Engineering</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Communications traffic</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computer Communication Networks</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computer Science</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Computer Systems Organization and Communication Networks</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Consolidation</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Container scheduling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Containers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>CPUs</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Experiments</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Heuristic</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Heuristic methods</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Information Systems and Communication Service</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Kubernetes</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Mathematical optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Mathematical programming</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Multiple objective analysis</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Networks</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Operations Research/Decision Theory</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>OPTIMIZATION</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>ORCHESTRATION</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Performance management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Rescheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Response time</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Saturation</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>SCHEME</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Simulated annealing</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Technology and Engineering</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Throttling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Time</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Traveling salesman problem</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Vans</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Workloads</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>A Multiobjective Metaheuristic-Based Container Consolidation Model for Cloud Application Performance Improvement</dc:title>
+        <dcterms:abstract>This work describes an approach to enhance container orchestration platforms with an autonomous and dynamic rescheduling system that aims at improving application service time by co-locating highly interdependent containers for network delay reduction. Unreasonable container consolidation may however lead to host CPU saturation, in turn impairing the service time. The multiobjective approach proposed in this work aims to improve application service-time by minimizing both inter-server network traffic and CPU throttling on overloaded servers. To this extent, the Simulated Annealing combinatorial optimization heuristic is used and compared on its relative performance towards the optimal solution obtained by Mathematical Programming. Additionally, the impact of the proposed system is validated on a Kubernetes cluster hosting three concurrent applications, and this under varying load scenarios. The proposed rescheduling system systematically i) improves the application service-time (up to 27.2% from our experiments) and ii) surpasses the improvement reached by the Kubernetes descheduler.</dcterms:abstract>
+        <dc:date>2024</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>pico.polito.it</z:libraryCatalog>
+        <bib:pages>61-</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1064-7570">
+        <dc:identifier>DOI 10.1007/s10922-024-09835-7</dc:identifier>
+        <prism:volume>32</prism:volume>
+        <dc:title>Journal of network and systems management</dc:title>
+        <dc:identifier>ISSN 1064-7570</dc:identifier>
+        <prism:number>3</prism:number>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_79">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Submitted Version</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://biblio.ugent.be/publication/01J179H04EWB6Z42RZ1KEP43JS/file/01J179KH9XVZ4FN5EJRRP3CCKY.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 09:53:22</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_167">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Submitted Version</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://biblio.ugent.be/publication/01J179H04EWB6Z42RZ1KEP43JS/file/01J179KH9XVZ4FN5EJRRP3CCKY.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 09:53:22</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_81">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:0360-0300"/>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>Association for Computing Machinery</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Tirel</foaf:surname>
+                        <foaf:givenName>Nicolas</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Roose</foaf:surname>
+                        <foaf:givenName>Philippe</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ilarri</foaf:surname>
+                        <foaf:givenName>Sergio</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Noureddine</foaf:surname>
+                        <foaf:givenName>Adel</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Le Goaër</foaf:surname>
+                        <foaf:givenName>Olivier</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_82"/>
+        <link:link rdf:resource="#item_169"/>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>computing demand</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computing survey</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>data management</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>shifting techniques</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Sustainable computing</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Workload Shifting Techniques: From Digital Inebriation to Sobriety</dc:title>
+        <dcterms:abstract>Computing demand in cloud environments has grown exponentially over the past decade, due to the increase in cloud workload related to new services such as artificial intelligence, autonomous vehicles, augmented reality, etc. As a result, the ICT sector has seen its carbon emissions increase. It is possible to adopt less energy-intensive strategies and consume electricity produced by renewable energy to limit the increase in carbon emissions. In this article, we present a review of the workload-shifting techniques available for sustainable workload deployment, providing an innovative framework that can be used to analyze energy-aware approaches that apply any type of shifting technique. We identified three main concepts: compute a workload at a different time, deploy a workload and/or its data in a different location, or use alternative processing to provide a good-enough option for a workload. A definition and some examples are given for each shifting concept, and then we explore the opportunities and challenges of combining different shifting techniques. © 2025 Copyright held by the owner/author(s).</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <z:shortTitle>Workload Shifting Techniques</z:shortTitle>
+        <z:language>English</z:language>
+        <z:libraryCatalog>Scopus</z:libraryCatalog>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:0360-0300">
+        <dc:identifier>DOI 10.1145/3769301</dc:identifier>
+        <prism:volume>58</prism:volume>
+        <dc:title>ACM Computing Surveys</dc:title>
+        <dc:identifier>ISSN 0360-0300</dc:identifier>
+        <prism:number>5</prism:number>
+        <dcterms:alternative>ACM Comput Surv</dcterms:alternative>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_82">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.scopus.com/pages/publications/105026661167?origin=resultslist</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:36:02</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_169">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.scopus.com/pages/publications/105026661167?origin=resultslist</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:36:02</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_83">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2405-609X"/>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>University of Kerbala</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Vadapalli</foaf:surname>
+                        <foaf:givenName>V.K.S.K. Sai</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Gurujukota</foaf:surname>
+                        <foaf:givenName>Ramesh Babu</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Chintalapati</foaf:surname>
+                        <foaf:givenName>Phaneendra Varma</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Murty</foaf:surname>
+                        <foaf:givenName>P.T. Satyanarayana</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kumar</foaf:surname>
+                        <foaf:givenName>G. Sai Chaitanya</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kode</foaf:surname>
+                        <foaf:givenName>Satish Kumar</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>CMROA</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>HPC2N</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Multi-cloud</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>NASA</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Task scheduling</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>An Effective Secure Multi-objective Task Scheduling Algorithm in Multi-cloud Environment</dc:title>
+        <dcterms:abstract>In cloud environments, task scheduling is essential for improving performance. Nevertheless, the existence of several heterogeneous clouds makes scheduling extremely difficult, requiring increasingly advanced algorithms to manage these environments' diversity and dynamic nature. To solve this, numerous authors have created a variety of task schedulers utilizing heuristic and metaheuristic techniques. Nevertheless, it remains dynamic and challenging because task scheduling is an NP-hard issue. Furthermore, in many complicated situations, it is still problematic to guarantee security throughout the task's execution. Therefore, this paper introduces a multi-objective security-aware task scheduler using the Crayfish Mud Ring Optimization Algorithm for a multi-cloud environment. This approach combines the Mud Ring Optimization approach and the Crayfish Optimization Algorithm to improve the results and overcome their shortcomings. Due to this hybridization, the proposed algorithm can avoid local optima and converge toward globally optimal solutions. Thus, the suggested scheduling algorithm offers the best work allocation, considering four objectives: makespan, cost energy, and security limitations (risk assessment). Comprehensive simulations are run on two real-world workloads, such as High-Performance Computing Center North and NASA Ames iPSC/860, and outperforming all comparison algorithms with an average improvement of 46 % makespan, 55 % energy, 61 % cost, and 52 % security risk in all the examined scenarios. The outcomes show that the suggested CMROA performs better and is suitable for a multi-cloud environment. © 2025 University of Kerbala.</dcterms:abstract>
+        <dc:date>2025</dc:date>
+        <z:language>English</z:language>
+        <z:libraryCatalog>Scopus</z:libraryCatalog>
+        <bib:pages>178-198</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:2405-609X">
+        <dc:identifier>DOI 10.33640/2405-609X.3396</dc:identifier>
+        <prism:volume>11</prism:volume>
+        <dc:title>Karbala International Journal of Modern Science</dc:title>
+        <dc:identifier>ISSN 2405-609X</dc:identifier>
+        <prism:number>1</prism:number>
+        <dcterms:alternative>Karbala Int. J. Modern Sci.</dcterms:alternative>
+    </bib:Journal>
+    <bib:Article rdf:about="#item_84">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1551-3203"/>
+        <dc:publisher>
+            <foaf:Organization>
+               <foaf:name>IEEE Computer Society</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Liu</foaf:surname>
+                        <foaf:givenName>Yuxiang</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Yang</foaf:surname>
+                        <foaf:givenName>Bo</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Huang</foaf:surname>
+                        <foaf:givenName>Kaili</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Liu</foaf:surname>
+                        <foaf:givenName>Sicheng</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Liu</foaf:surname>
+                        <foaf:givenName>Qi</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Guan</foaf:surname>
+                        <foaf:givenName>Xinping</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_172"/>
+        <link:link rdf:resource="#item_87"/>
+        <link:link rdf:resource="#item_173"/>
+        <link:link rdf:resource="#item_85"/>
+        <link:link rdf:resource="#item_174"/>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud computing</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Cloud service</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>column generation</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computational modeling</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>cost optimization</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Costs</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Decision making</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Graphics processing units</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Microservice architectures</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Optimization</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Production</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Resource management</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Servers</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>service deployment</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>total cost of ownership</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Efficient Optimization of User Costs in Microservice Deployment Through Distributed Column Generation</dc:title>
+        <dcterms:abstract>In microservice architecture, each industrial application is decomposed into multiple microservices and deployed on cloud servers to provide timely services to users. However, existing methods rarely optimize service deployment strategies from the user's perspective to reduce the leasing costs of cloud servers. Furthermore, accurately estimating the required number of instances and resource utilization for microservices remains challenging, and decision-making in large-scale scenarios also faces significant timeliness constraints. To solve this problem, this article proposes a Column Generation deployment strategy, which decomposes the microservice deployment problem into a master problem for scheme selection and subproblems for scheme generation and proves the gap between its convergent solution and the optimal solution. A Distributed Column Generation strategy is further introduced to enable efficient problem-solving. Experimental results based on real-world server pricing demonstrate that the proposed method exhibits a high degree of consistency with the theoretically optimal solution. Compared to the baseline methods, it reduces the average total cost of ownership (TCO) for users by 11.3%, while the decision-making time is only 21.5% of that of the comparative methods. At the same time we used our approach to make deployment decisions for real industrial microservices and deployed them on real cloud servers. Compared to the baseline approach, it reduces TCO by 4%, but decision-making is 97% faster.  © 2026 IEEE.</dcterms:abstract>
+        <dc:date>2026</dc:date>
+        <z:language>English</z:language>
+        <z:libraryCatalog>Scopus</z:libraryCatalog>
+        <bib:pages>2897-2908</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1551-3203">
+        <dc:identifier>DOI 10.1109/TII.2025.3647942</dc:identifier>
+        <prism:volume>22</prism:volume>
+        <dc:title>IEEE Transactions on Industrial Informatics</dc:title>
+        <dc:identifier>ISSN 1551-3203</dc:identifier>
+        <prism:number>4</prism:number>
+        <dcterms:alternative>IEEE Trans. Ind. Inf.</dcterms:alternative>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_172">
+        <rdf:value>&lt;div data-schema-version=&quot;9&quot;&gt;&lt;p&gt;stable, long-running industrial microservices&lt;/p&gt;
+&lt;p&gt;propose a proactive method for optimizing the selection and allocation of heterogeneous server types, aiming to minimize TCO for stable, long-running industrial microservices&lt;/p&gt;
+&lt;p&gt;a systematic and automated approach for identifying cost-optimal deployment configurations, leveraging the diverse characteristics of available cloud instance types and the heterogeneous demands of industrial microservices&lt;/p&gt;
+&lt;/div&gt;</rdf:value>
+    </bib:Memo>
+    <z:Attachment rdf:about="#item_87">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore-ieee-org.ezproxy.biblio.polito.it/stampPDF/getPDF.jsp?tp=&amp;arnumber=11349664&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:55:27</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_173">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ieeexplore-ieee-org.ezproxy.biblio.polito.it/stampPDF/getPDF.jsp?tp=&amp;arnumber=11349664&amp;ref=</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:55:27</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_85">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.scopus.com/pages/publications/105028175648?origin=resultslist</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:36:34</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_174">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.scopus.com/pages/publications/105028175648?origin=resultslist</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 10:36:34</dcterms:dateSubmitted>
+        <z:linkMode>3</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Recording rdf:about="https://www.youtube.com/watch?v=THj__UYiq90">
+        <z:itemType>videoRecording</z:itemType>
+        <z:creators>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Is it Observable</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </z:creators>
+        <dc:title>Say Goodbye to Cluster Autoscaler: Meet Karpenter for Kubernetes Scaling</dc:title>
+        <dcterms:abstract>Are traditional Kubernetes autoscaling methods slowing you down? Say hello to Karpenter, the open source alternative redefining Cluster Autoscaler functionality.</dcterms:abstract>
+        <dc:date>2025-01-13</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://www.youtube.com/watch?v=THj__UYiq90</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-29 15:22:36</dcterms:dateSubmitted>
+        <z:shortTitle>Say Goodbye to Cluster Autoscaler</z:shortTitle>
+        <z:libraryCatalog>YouTube</z:libraryCatalog>
+        <z:runningTime>31:59</z:runningTime>
+    </bib:Recording>
+    <bib:Document rdf:about="https://gitlab.fbk.eu/fogatlas-k8s/kubectl-reschedule">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>GitLab</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_96"/>
+        <dc:title>fogatlas-k8s / kubectl-reschedule · GitLab</dc:title>
+        <dcterms:abstract>GitLab Enterprise Edition</dcterms:abstract>
+        <dc:date>2025-05-26</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://gitlab.fbk.eu/fogatlas-k8s/kubectl-reschedule</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 09:26:52</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_96">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://gitlab.fbk.eu/fogatlas-k8s/kubectl-reschedule</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 09:26:53</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="https://kwok.sigs.k8s.io/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>KWOK</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_98"/>
+        <dc:title>KWOK | Kubernetes without kubelet</dc:title>
+        <dcterms:abstract>KWOK (Kubernetes WithOut Kubelet) # KWOK is pronounced as /kwɔk/.
+KWOK is a toolkit that enables setting up a cluster of thousands of Nodes in seconds. Under the scene, all Nodes are simulated to behave like real ones, so the overall approach employs a pretty low resource footprint that you can easily play around on your laptop.
+What is KWOK? # KWOK stands for Kubernetes WithOut Kubelet. So far, it provides two tools:</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://kwok.sigs.k8s.io/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 09:28:45</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_98">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://kwok.sigs.k8s.io/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 09:28:49</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="https://www.stormforge.io/kubernetes-autoscaling/karpenter-consolidation/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <dc:title>Understanding Karpenter Consolidation: Detailed Overview</dc:title>
+        <dcterms:abstract>Understanding how consolidation works within Karpenter is crucial to ensuring resource allocation efficiency and reducing waste.</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.stormforge.io/kubernetes-autoscaling/karpenter-consolidation/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 13:43:25</dcterms:dateSubmitted>
+        <z:shortTitle>Understanding Karpenter Consolidation</z:shortTitle>
+    </bib:Document>
+    <rdf:Description rdf:about="https://en.wikipedia.org/w/index.php?title=Bin_packing_problem&amp;oldid=1347548451">
+        <z:itemType>encyclopediaArticle</z:itemType>
+        <dcterms:isPartOf>
+           <bib:Book><dc:title>Wikipedia</dc:title></bib:Book>
+        </dcterms:isPartOf>
+        <dc:title>Bin packing problem</dc:title>
+        <dcterms:abstract>The bin packing problem is an optimization problem, in which items of different sizes must be packed into a finite number of bins or containers, each of a fixed given capacity, in a way that minimizes the number of bins used. The problem has many applications, such as filling up containers, loading trucks with weight capacity constraints, creating file backups in media, splitting a network prefix into multiple subnets, and technology mapping in FPGA semiconductor chip design.
+Computationally, the problem is NP-hard, and the corresponding decision problem, deciding if items can fit into a specified number of bins, is NP-complete. Despite its worst-case hardness, optimal solutions to very large instances of the problem can be produced with sophisticated algorithms. In addition, many approximation algorithms exist. For example, the first fit algorithm provides a fast but often non-optimal solution, involving placing each item into the first bin in which it will fit. It requires Θ(n log n) time, where n is the number of items to be packed. The algorithm can be made much more effective by first sorting the list of items into decreasing order (sometimes known as the first-fit decreasing algorithm), although this still does not guarantee an optimal solution and for longer lists may increase the running time of the algorithm. It is known, however, that there always exists at least one ordering of items that allows first-fit to produce an optimal solution.
+There are many variations of this problem, such as 2D packing, linear packing, packing by weight, packing by cost, and so on. The bin packing problem can also be seen as a special case of the cutting stock problem. When the number of bins is restricted to 1 and each item is characterized by both a volume and a value, the problem of maximizing the value of items that can fit in the bin is known as the knapsack problem.
+A variant of bin packing that occurs in practice is when items can share space when packed into a bin. Specifically,  a set of items could occupy less space when packed together than the sum of their individual sizes. This variant is known as VM packing since when virtual machines (VMs) are packed in a server, their total memory requirement could decrease due to pages shared by the VMs that need only be stored once. If items can share space in arbitrary ways, the bin packing problem is hard to even approximate. However, if space sharing fits into a hierarchy, as is the case with memory sharing in virtual machines, the bin packing problem can be efficiently approximated.
+Another variant of bin packing of interest in practice is the so-called online bin packing. Here the items of different volume are supposed to arrive sequentially, and the decision maker has to decide whether to select and pack the currently observed item, or else to let it pass. Each decision is without recall. In contrast, offline bin packing allows rearranging the items in the hope of achieving a better packing once additional items arrive. This of course requires additional storage for holding the items to be rearranged.</dcterms:abstract>
+        <dc:date>2026-04-07T10:37:37Z</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://en.wikipedia.org/w/index.php?title=Bin_packing_problem&amp;oldid=1347548451</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 13:15:48</dcterms:dateSubmitted>
+        <z:libraryCatalog>Wikipedia</z:libraryCatalog>
+        <dc:rights>Creative Commons Attribution-ShareAlike License</dc:rights>
+        <dc:description>Page Version ID: 1347548451</dc:description>
+    </rdf:Description>
+    <bib:Document rdf:about="https://aws.amazon.com/eks/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>Amazon Web Services, Inc.</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_102"/>
+        <dc:title>Managed Kubernetes - Amazon Elastic Kubernetes Service (EKS) - AWS</dc:title>
+        <dcterms:abstract>Amazon Elastic Kubernetes Service (EKS) is a managed service and certified Kubernetes conformant to run Kubernetes on AWS and on-premises.</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://aws.amazon.com/eks/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 14:40:44</dcterms:dateSubmitted>
+        <z:language>en-US</z:language>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_102">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://aws.amazon.com/eks/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 14:40:49</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <bib:Document rdf:about="https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website><dc:title>Kubernetes</dc:title></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_104"/>
+        <dc:title>Kubernetes Scheduler</dc:title>
+        <dcterms:abstract>In Kubernetes, scheduling refers to making sure that Pods are matched to Nodes so that Kubelet can run them.
+Scheduling overview A scheduler watches for newly created Pods that have no Node assigned. For every Pod that the scheduler discovers, the scheduler becomes responsible for finding the best Node for that Pod to run on. The scheduler reaches this placement decision taking into account the scheduling principles described below.</dcterms:abstract>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 15:26:07</dcterms:dateSubmitted>
+        <z:language>en</z:language>
+        <dc:description>Section: docs</dc:description>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_104">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Snapshot</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2026-04-30 15:26:12</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>text/html</link:type>
+    </z:Attachment>
+    <z:Collection rdf:about="#collection_13">
+        <dc:title>articles</dc:title>
+        <dcterms:hasPart rdf:resource="#collection_9"/>
+        <dcterms:hasPart rdf:resource="#collection_4"/>
+        <dcterms:hasPart rdf:resource="#collection_8"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_9">
+        <dc:title>not-useful</dc:title>
+        <dcterms:hasPart rdf:resource="urn:isbn:979-8-3315-2223-0"/>
+        <dcterms:hasPart rdf:resource="#item_7"/>
+        <dcterms:hasPart rdf:resource="urn:isbn:979-8-3315-5989-2"/>
+        <dcterms:hasPart rdf:resource="#item_15"/>
+        <dcterms:hasPart rdf:resource="urn:isbn:978-1-6654-9650-6"/>
+        <dcterms:hasPart rdf:resource="https://ieeexplore.ieee.org/document/11219337"/>
+        <dcterms:hasPart rdf:resource="urn:isbn:979-8-3315-0934-7"/>
+        <dcterms:hasPart rdf:resource="https://doi.org/10.1007/s42979-025-03712-z"/>
+        <dcterms:hasPart rdf:resource="#item_84"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_4">
+        <dc:title>to-read</dc:title>
+        <dcterms:hasPart rdf:resource="urn:isbn:978-1-7281-2411-7"/>
+        <dcterms:hasPart rdf:resource="#item_29"/>
+        <dcterms:hasPart rdf:resource="#item_31"/>
+        <dcterms:hasPart rdf:resource="https://jisem-journal.com/index.php/journal/article/view/8895"/>
+        <dcterms:hasPart rdf:resource="https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.6436"/>
+        <dcterms:hasPart rdf:resource="urn:isbn:9789819550142"/>
+        <dcterms:hasPart rdf:resource="urn:isbn:979-8-3315-3626-8"/>
+        <dcterms:hasPart rdf:resource="#item_81"/>
+        <dcterms:hasPart rdf:resource="#item_83"/>
+        <dcterms:hasPart rdf:resource="https://www.youtube.com/watch?v=THj__UYiq90"/>
+        <dcterms:hasPart rdf:resource="https://www.stormforge.io/kubernetes-autoscaling/karpenter-consolidation/"/>
+        <dcterms:hasPart rdf:resource="https://aws.amazon.com/eks/"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_8">
+        <dc:title>useful</dc:title>
+        <dcterms:hasPart rdf:resource="#collection_10"/>
+        <dcterms:hasPart rdf:resource="https://ieeexplore.ieee.org/document/11160865"/>
+        <dcterms:hasPart rdf:resource="#item_5"/>
+        <dcterms:hasPart rdf:resource="https://arxiv.org/abs/1812.00300"/>
+        <dcterms:hasPart rdf:resource="https://dl.acm.org/doi/10.1145/3378447"/>
+        <dcterms:hasPart rdf:resource="#item_73"/>
+        <dcterms:hasPart rdf:resource="#item_78"/>
+        <dcterms:hasPart rdf:resource="https://en.wikipedia.org/w/index.php?title=Bin_packing_problem&amp;oldid=1347548451"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_10">
+        <dc:title>Fondazione Kessler - Cretti, Siracusa, Zambianco</dc:title>
+        <dcterms:hasPart rdf:resource="urn:isbn:979-8-3503-9376-7"/>
+        <dcterms:hasPart rdf:resource="https://ieeexplore.ieee.org/document/11144757"/>
+        <dcterms:hasPart rdf:resource="http://arxiv.org/abs/2401.01408"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_12">
+        <dc:title>docs-kubernetes</dc:title>
+        <dcterms:hasPart rdf:resource="https://kubernetes.io/docs/concepts/cluster-administration/node-autoscaling/"/>
+        <dcterms:hasPart rdf:resource="https://kubernetes.io/docs/concepts/scheduling-eviction/resource-bin-packing/"/>
+        <dcterms:hasPart rdf:resource="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/"/>
+        <dcterms:hasPart rdf:resource="https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/"/>
+    </z:Collection>
+    <z:Collection rdf:about="#collection_11">
+        <dc:title>tools</dc:title>
+        <dcterms:hasPart rdf:resource="https://github.com/kubernetes-sigs/descheduler"/>
+        <dcterms:hasPart rdf:resource="https://github.com/kubernetes/autoscaler"/>
+        <dcterms:hasPart rdf:resource="https://locust.io/"/>
+        <dcterms:hasPart rdf:resource="https://github.com/GoogleCloudPlatform/microservices-demo"/>
+        <dcterms:hasPart rdf:resource="https://karpenter.sh/"/>
+        <dcterms:hasPart rdf:resource="https://gitlab.fbk.eu/fogatlas-k8s/kubectl-reschedule"/>
+        <dcterms:hasPart rdf:resource="https://kwok.sigs.k8s.io/"/>
+    </z:Collection>
+</rdf:RDF>
