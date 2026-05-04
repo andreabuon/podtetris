@@ -22,7 +22,7 @@ Please note, in current implementation, **descheduler does not schedule replacem
 
 Balance low utilization nodes
 
-[from HignNodeUtilization user guide](https://github.com/kubernetes-sigs/descheduler/blob/master/docs/user-guide.md#balance-low-utilization-nodes)
+[from HighNodeUtilization user guide](https://github.com/kubernetes-sigs/descheduler/blob/master/docs/user-guide.md#balance-low-utilization-nodes)
 Using `HighNodeUtilization`, descheduler will rebalance the cluster based on memory by evicting pods from nodes with memory utilization lower than 20%.
 This should be use `NodeResourcesFit` with the `MostAllocated` scoring strategy based on these doc.
 The evicted pods will be compacted into minimal set of nodes.
