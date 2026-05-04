@@ -1,0 +1,4 @@
+nodeCount: 5
+
+createControlPlane: true
+controlPlaneName: "kwok-control-plane"

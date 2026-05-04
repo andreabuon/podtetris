@@ -1,0 +1,31 @@
+{{- if .Values.createControlPlane }}
+apiVersion: v1
+kind: Node
+metadata:
+  name: {{ .Values.controlPlaneName }}
+  labels:
+    # Key labels that identify a Control Plane node
+    node-role.kubernetes.io/control-plane: ""
+    node-role.kubernetes.io/master: ""
+    kubernetes.io/hostname: {{ .Values.controlPlaneName }}
+    type: kwok
+spec:
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+status:
+  allocatable:
+    cpu: 4
+    memory: 8Gi
+    pods: 110
+  capacity:
+    cpu: 4
+    memory: 16Gi
+    pods: 110
+  nodeInfo:
+    architecture: amd64
+    operatingSystem: linux
+  phase: Running
+{{- end }}
