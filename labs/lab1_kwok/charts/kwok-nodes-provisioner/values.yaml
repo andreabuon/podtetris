@@ -1,4 +1,7 @@
-nodeCount: 5
-
 createControlPlane: true
 controlPlaneName: "kwok-control-plane"
+
+nodeDefaults:
+  countPerType: 2
+  zones: ["eu-1", "eu-2"]
+  disks: ["nvme", "ssd", "hdd"]

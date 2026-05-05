@@ -1,20 +1,20 @@
-{{- range $i := until (int .Values.nodeCount) }}
+{{- $root := . -}}
+{{- range $zone := .Values.nodeDefaults.zones }}
+  {{- range $disk := $root.Values.nodeDefaults.disks }}
+    {{- range $i := until (int $root.Values.nodeDefaults.countPerType) }}
 ---
 apiVersion: v1
 kind: Node
 metadata:
-  name: kwok-node-{{ $i }}
+  name: kwok-{{ $zone }}-{{ $disk }}-{{ $i }}
   annotations:
     node.alpha.kubernetes.io/ttl: "0"
-  labels: # This must be indented under metadata
-    beta.kubernetes.io/arch: amd64
-    beta.kubernetes.io/os: linux
-    kubernetes.io/arch: amd64
-    kubernetes.io/hostname: kwok-node-{{ $i }}
-    kubernetes.io/os: linux
-    kubernetes.io/role: agent
-    node-role.kubernetes.io/agent: ""
+  labels:
+    kubernetes.io/hostname: kwok-{{ $zone }}-{{ $disk }}-{{ $i }}
+    topology.kubernetes.io/zone: {{ $zone }}
+    disk: {{ $disk }}
     type: kwok
+    kubernetes.io/os: linux
 status:
   allocatable:
     cpu: 32
@@ -36,4 +36,6 @@ status:
     osImage: ""
     systemUUID: ""
   phase: Running
+    {{- end }}
+  {{- end }}
 {{- end }}

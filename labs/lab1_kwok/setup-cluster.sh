@@ -16,7 +16,7 @@ helm install kwok-nodes-provisioner charts/kwok-nodes-provisioner/
 
 kubectl apply -f manifests/fake-pods.yaml
 
-//FIXME right now the following pods are not scheduled because disk labels are missing on the nodes.
+# //FIXME right now the following pods are not scheduled because disk labels are missing on the nodes.
 # kubectl apply -f manifests/databases.yaml
 # kubectl apply -f manifests/fake-backups.yaml
 # kubectl apply -f manifests/web-servers.yaml
