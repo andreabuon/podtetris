@@ -14,6 +14,8 @@ metadata:
     topology.kubernetes.io/zone: {{ $zone }}
     disk: {{ $disk }}
     type: kwok
+    beta.kubernetes.io/arch: amd64
+    kubernetes.io/arch: amd64
     kubernetes.io/os: linux
 status:
   allocatable:
