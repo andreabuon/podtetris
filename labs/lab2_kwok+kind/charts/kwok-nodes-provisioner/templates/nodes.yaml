@@ -1,0 +1,44 @@
+{{- $root := . -}}
+{{- range $zone := .Values.workerNodes.zones }}
+  {{- range $disk := $root.Values.workerNodes.disks }}
+    {{- range $i := until (int $root.Values.workerNodes.countPerType) }}
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: kwok-{{ $zone }}-{{ $disk }}-{{ $i }}
+  annotations:
+    node.alpha.kubernetes.io/ttl: "0"
+    kwok.x-k8s.io/node: fake
+  labels:
+    kubernetes.io/hostname: kwok-{{ $zone }}-{{ $disk }}-{{ $i }}
+    topology.kubernetes.io/zone: {{ $zone }}
+    disk: {{ $disk }}
+    type: kwok
+    beta.kubernetes.io/arch: amd64
+    kubernetes.io/arch: amd64
+    kubernetes.io/os: linux
+status:
+  allocatable:
+    cpu: 32
+    memory: 232Gi
+    pods: 110
+  capacity:
+    cpu: 32
+    memory: 256Gi
+    pods: 110
+  nodeInfo:
+    architecture: amd64
+    bootID: ""
+    containerRuntimeVersion: ""
+    kernelVersion: ""
+    kubeProxyVersion: fake
+    kubeletVersion: fake
+    machineID: ""
+    operatingSystem: linux
+    osImage: ""
+    systemUUID: ""
+  phase: Running
+    {{- end }}
+  {{- end }}
+{{- end }}
