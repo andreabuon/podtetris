@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  labels:
+    app: web-server
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      schedulerName: my-scheduler
+      containers:
+      - name: web-server
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"

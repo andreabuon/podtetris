@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: scheduler-test-pod-3
+spec:
+  schedulerName: my-scheduler
+  containers:
+  - name: nginx
+    image: nginx:stable-alpine
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "128Mi"
+        cpu: "100m"

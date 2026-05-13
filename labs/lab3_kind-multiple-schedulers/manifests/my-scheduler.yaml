@@ -81,7 +81,7 @@ spec:
     matchLabels:
       component: scheduler
       tier: control-plane
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:
