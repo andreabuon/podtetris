@@ -66,7 +66,7 @@ data:
               - name: memory
                 weight: 1
     leaderElection:
-      leaderElect: true
+      leaderElect: false
       resourceNamespace: kube-system
       resourceName: my-scheduler
 ---
@@ -83,7 +83,7 @@ spec:
     matchLabels:
       component: scheduler
       tier: control-plane
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
