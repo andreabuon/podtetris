@@ -21,18 +21,31 @@ Notes taken from the [official FAQ](https://github.com/kubernetes/autoscaler/blo
 > Cluster Autoscaler makes sure that all pods in the cluster have a place to run, no matter if there is any CPU load or not. Moreover, it tries to ensure that there are no unneeded nodes in the cluster.
 > CPU-usage-based (or any metric-based) cluster/node group autoscalers don't care about pods when scaling up and down. As a result, they may add a node that will not have any pods, or remove a node that has some system-critical pods on it, like kube-dns. Usage of these autoscalers with Kubernetes is discouraged.
 
-> **How does Cluster Autoscaler remove nodes?**
-> Cluster Autoscaler terminates the underlying instance in a cloud-provider-dependent manner.
-> It does not delete the Node object from Kubernetes. Cleaning up Node objects corresponding to terminated instances is the responsibility of the cloud node controller, which can run as part of kube-controller-manager or cloud-controller-manager.
+---
 
-> **I'm running cluster with nodes in multiple zones for HA purposes. Is that supported by Cluster Autoscaler?**
-> CA 0.6 introduced --balance-similar-node-groups flag to support this use case. If you set the flag to true, CA will automatically identify node groups with the same instance type and the same set of labels (except for automatically added zone label) and try to keep the sizes of those node groups balanced.
-> This does not guarantee similar node groups will have exactly the same sizes:
-> - Currently the balancing is only done at scale-up. Cluster Autoscaler will still scale down underutilized nodes regardless of the relative sizes of underlying node groups. We plan to take balancing into account in scale-down in the future.
-> - Cluster Autoscaler will only add as many nodes as required to run all existing pods. If the number of nodes is not divisible by the number of balanced node groups, some groups will get 1 more node than others.
-> - Cluster Autoscaler will only balance between node groups that can support the same set of pending pods. If you run pods that can only go to a single node group (for example due to nodeSelector on zone label) CA will only add nodes to this particular node group.
-> You can opt-out a node group from being automatically balanced with other node groups using the same instance type by giving it any custom label.
+**How does scale-down work?**
 
-> **How can I monitor Cluster Autoscaler?**
-> Cluster Autoscaler provides metrics and livenessProbe endpoints. By default they're available on port 8085 (configurable with --address flag), respectively under /metrics and /health-check.
-> Metrics are provided in Prometheus format and their detailed description is available here.
+Every 10 seconds (configurable by --scan-interval flag), if no scale-up is needed, Cluster Autoscaler checks which nodes are unneeded. A node is considered for removal when all below conditions hold:
+
+- The sum of cpu requests and sum of memory requests of all pods running on this node (DaemonSet pods and Mirror pods are included by default but this is configurable with --ignore-daemonsets-utilization and --ignore-mirror-pods-utilization flags) are smaller than 50% of the node's allocatable. (Before 1.1.0, node capacity was used instead of allocatable.) Utilization threshold can be configured using `--scale-down-utilization-threshold` flag.
+    All pods running on the node (except these that run on all nodes by default, like manifest-run pods or pods created by daemonsets) can be moved to other nodes. See What types of pods can prevent CA from removing a node? section for more details on what pods don't fulfill this condition, even if there is space for them elsewhere. While checking this condition, the new locations of all movable pods are memorized. With that, Cluster Autoscaler knows where each pod can be moved, and which nodes depend on which other nodes in terms of pod migration. Of course, it may happen that eventually the scheduler will place the pods somewhere else.
+
+- It doesn't have scale-down disabled annotation (see How can I prevent Cluster Autoscaler from scaling down a particular node?)
+
+If a node is unneeded for more than 10 minutes, it will be terminated. (This time can be configured by flags - please see I have a couple of nodes with low utilization, but they are not scaled down. Why? section for a more detailed explanation.) Cluster Autoscaler terminates one non-empty node at a time to reduce the risk of creating new unschedulable pods. The next node may possibly be terminated just after the first one, if it was also unneeded for more than 10 min and didn't rely on the same nodes in simulation (see below example scenario), but not together. Empty nodes, on the other hand, can be terminated in bulk, up to 10 nodes at a time (configurable by --max-empty-bulk-delete flag.)
+
+What happens when a non-empty node is terminated? As mentioned above, all pods should be migrated elsewhere. Cluster Autoscaler does this by evicting them and tainting the node, so they aren't scheduled there again.
+
+DaemonSet pods may also be evicted. This can be configured separately for empty (i.e. containing only DaemonSet pods) and non-empty nodes with --daemonset-eviction-for-empty-nodes and --daemonset-eviction-for-occupied-nodes flags, respectively. Note that the default behavior is different on each flag: by default DaemonSet pods eviction will happen only on occupied nodes. Individual DaemonSet pods can also explicitly choose to be evicted (or not). See How can I enable/disable eviction for a specific DaemonSet for more details.
+
+Example scenario:
+
+Nodes A, B, C, X, Y. A, B, C are below utilization threshold. In simulation, pods from A fit on X, pods from B fit on X, and pods from C fit on Y.
+
+Node A was terminated. OK, but what about B and C, which were also eligible for deletion? Well, it depends.
+
+Pods from B may no longer fit on X after pods from A were moved there. Cluster Autoscaler has to find place for them somewhere else, and it is not sure that if A had been terminated much earlier than B, there would always have been a place for them. So the condition of having been unneeded for 10 min may not be true for B anymore.
+
+But for node C, it's still true as long as nothing happened to Y. So C can be terminated immediately after A, but B may not.
+
+Cluster Autoscaler does all of this accounting based on the simulations and memorized new pod location. They may not always be precise (pods can be scheduled elsewhere in the end), but it seems to be a good heuristic so far.
