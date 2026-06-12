@@ -12,7 +12,6 @@
 // - executes the moves to consolidate the cluster to the desired state.
 
 const { Allocation } = require('./allocation.js');
-const kwok = require('./kwok.js');
 const simulator = require('./simulator.js');
 const utils = require('./utils.js');
 
@@ -21,8 +20,9 @@ const UNDERUTILIZED_CPU_THRESHOLD = 0.6;
 const UNDERUTILIZED_MEMORY_THRESHOLD = 0.6;
 const CLUSTER = "cluster";
 
+let PREFERRED_METRIC = 'freedNodesCount'
+
 function main() {
-    // Get a subset of nodes to consolidate
     let consolidatableNodes = CLUSTER.getNodes()
         .filter(node => utils.isConsolidatable(node) )
         .sortByUsage()
@@ -30,32 +30,48 @@ function main() {
 
     // Save the current allocation state of the cluster.
     let currentAllocation = Allocation.fromClusterNodes(consolidatableNodes);
+    let currentNodesCount = consolidatableNodes.length
     let fixedPods = currentAllocation.getFixedPods();
-    let movablePods = currentAllocation.getMovablePods();
-
-    // Sort movable pods by resource usage to try to pack them more efficiently on the fake nodes during the simulation.
-    let podsOrder1 = movablePods.sort((a, b) => a.cpu - b.cpu);
-    //TODO: compute different ordering of pods?
 
     // ** RE-SCHEDULING ** //
-    let newAllocation = new Allocation();
-
-    // Re-assign the fixed pods to the same nodes they are currently allocated to,
-    // This is to ensure they are not moved during the consolidation process.
+    // Re-assign the fixed pods to the same nodes they are currently allocated to. 
+    let fixedAllocation = new Allocation();
     for (let fixedPod of fixedPods) {
-        newAllocation.addPodLocation(fixedPod, currentAllocation.getPodLocation(fixedPod));
+        fixedAllocation.addPodLocation(fixedPod, currentAllocation.getPodLocation(fixedPod));
     }
 
-    simulator.simulateScheduling(podsOrder1, consolidatableNodes, newAllocation);
+    let movablePods = currentAllocation.getMovablePods();
+    let sortingAlgorithms = [byCPUusage, byMemoryUsage]
+    let results = [];
     
-    if (newAllocation.getRequiredNodesNum() >= consolidatableNodes.length) {
-        console.log("No consolidation possible at this time.");
+    // Reschedule the same set of pods many times (using different pods orderings) and save the results.
+    for(let algorithm of sortingAlgorithms){
+        // Sort movable pods by resource usage to try to pack them more efficiently on the fake nodes during the simulation.
+        let podsOrder = movablePods.sort(algorithm);
+        
+        let newAllocation = fixedAllocation;
+        simulator.simulateScheduling(podsOrder, newAllocation);
+        
+        let newNodesCount = newAllocation.getRequiredNodesNum();
+        let freedNodesCount = currentNodesCount - newNodesCount;
+        if ( freedNodesCount <= 0 ) {
+            console.log("No consolidation is possible with the algorithm: " + algorithm.name);
+            continue;
+        }
+
+        let moves = newAllocation.computeMovesFrom(currentAllocation);
+
+        results.add(simulator.SimulationResult(freedNodesCount, moves.length, moves))
+    }
+
+    if(results.length == 0){
+        console.log("No consolidation is possible with any algorithm.");
         return;
     }
-
-    let moves = newAllocation.computeMovesFrom(currentAllocation);
-    for (let move of moves) {
-        CLUSTER.movePod(move.pod, move.targetNode); // how to do this?
+    
+    bestSimulationResult = results.sortBy(PREFERRED_METRIC).take(1)
+    for (let move of bestSimulationResult.moves) {
+            CLUSTER.perform(move); // how to implement this? 
     }
 
     console.log("Consolidation completed successfully.");

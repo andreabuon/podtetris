@@ -1,4 +1,30 @@
-const 
+const kwok = require ("kwok")
+
+export class SimulationResult {
+    constructor (freeNodes, movesNum, moves){
+        this.freeNodes = freeNodes
+        this.movesNum = movesNum
+        this.moves = moves
+    }
+}
+
+export class PodMovement {
+    constructor(pod, prevNode, newNode){
+        this.pod = pod
+        this.prevNode = prevNode
+        this.newNode
+    }
+}
+
+function createFakeNodesFrom(realNodes) {
+    let fakeNodes = [];
+    for (let node of realNodes) {
+        let fakeNode = kwok.createFakeNode(node);
+        fakeNode.setLabel("fake-node", "true");
+        fakeNodes.push(fakeNode);
+    }
+    return fakeNodes;
+}
 
 function simulateScheduling(podsList, nodes, allocation) {
     let fakeNodes = createFakeNodesFrom(nodes);

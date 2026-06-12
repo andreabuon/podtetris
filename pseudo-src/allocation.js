@@ -1,4 +1,6 @@
-class Allocation {
+const { PodMovement } = require('./simulator.js') 
+
+export class Allocation {
     constructor() {     
         this.pods = new Set(); // Set<Pod> // change data structure for better performance (rank pods by resource usage when inserting them in the list?)
         this.nodes = new Set(); // Set<Node> // change data structure for better performance (rank nodes by resource usage when inserting them in the list?)
@@ -12,7 +14,7 @@ class Allocation {
         for (let node of nodes) {
             allocation.nodes.add(node);
 
-            for (let pod of node.getPods()) {
+            for (let pod of node.getPods()) { // what about other stuff? such as deployments
                 allocation.pods.add(pod);
                 allocation.addPodLocation(pod, node);
             }
@@ -61,12 +63,12 @@ class Allocation {
     computeMovesFrom(previousAllocation) {
         let moves = [];
 
-        for (let pod of this.getAllPods()) {
-            let currentNode = this.getPodLocation(pod);
-            let previousNode = previousAllocation.getPodLocation(pod);
+        for (let pod of this.getPods()) {
+            let newNode = this.getPodLocation(pod);
+            let prevNode = previousAllocation.getPodLocation(pod);
 
-            if (currentNode !== previousNode) {
-                moves.push({ pod: pod, targetNode: currentNode });
+            if (newNode !== previousNode) {
+                moves.push(PodMovement(pod, prevNode, newNode));
             }
         }
 
