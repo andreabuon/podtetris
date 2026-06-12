@@ -1,9 +1,9 @@
 const kwok = require ("kwok")
 
 export class SimulationResult {
-    constructor (freeNodes, movesNum, moves){
+    constructor (freeNodes, moves){
         this.freeNodes = freeNodes
-        this.movesNum = movesNum
+        this.movesNum = movesNum.length
         this.moves = moves
     }
 }

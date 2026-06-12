@@ -61,7 +61,7 @@ function main() {
 
         let moves = newAllocation.computeMovesFrom(currentAllocation);
 
-        results.add(simulator.SimulationResult(freedNodesCount, moves.length, moves))
+        results.add(simulator.SimulationResult(freedNodesCount, moves))
     }
 
     if(results.length == 0){
