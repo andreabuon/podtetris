@@ -49,7 +49,7 @@ function main() {
         // Sort movable pods by resource usage to try to pack them more efficiently on the fake nodes during the simulation.
         let podsOrder = movablePods.sort(algorithm);
         
-        let newAllocation = fixedAllocation;
+        let newAllocation = structuredClone(fixedAllocation);
         simulator.simulateScheduling(podsOrder, newAllocation);
         
         let newNodesCount = newAllocation.getRequiredNodesNum();
@@ -61,7 +61,7 @@ function main() {
 
         let moves = newAllocation.computeMovesFrom(currentAllocation);
 
-        results.add(simulator.SimulationResult(freedNodesCount, moves))
+        results.push(new simulator.SimulationResult(freedNodesCount, moves))
     }
 
     if(results.length == 0){

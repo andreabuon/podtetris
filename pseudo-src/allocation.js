@@ -14,7 +14,7 @@ export class Allocation {
         for (let node of nodes) {
             allocation.nodes.add(node);
 
-            for (let pod of node.getPods()) { // what about other stuff? such as deployments
+            for (let pod of node.getPods()) {
                 allocation.pods.add(pod);
                 allocation.addPodLocation(pod, node);
             }
@@ -57,7 +57,7 @@ export class Allocation {
 
     // This method calculates how many nodes are required to host all the pods in the current allocation. It counts only the nodes that have at least one pod allocated to them.
     getRequiredNodesNum() {
-        return this.getNodes().filter( node => this.getNodeWorkloads(node).size > 0 ).length;
+        return Array.from(this.getNodes()).filter( node => this.getNodeWorkloads(node).size > 0 ).length;
     }
 
     computeMovesFrom(previousAllocation) {
@@ -67,8 +67,8 @@ export class Allocation {
             let newNode = this.getPodLocation(pod);
             let prevNode = previousAllocation.getPodLocation(pod);
 
-            if (newNode !== previousNode) {
-                moves.push(PodMovement(pod, prevNode, newNode));
+            if (newNode !== prevNode) {
+                moves.push(new PodMovement(pod, prevNode, newNode));
             }
         }
 

@@ -3,7 +3,7 @@ const kwok = require ("kwok")
 export class SimulationResult {
     constructor (freeNodes, moves){
         this.freeNodes = freeNodes
-        this.movesNum = movesNum.length
+        this.movesNum = moves.length
         this.moves = moves
     }
 }
@@ -12,7 +12,7 @@ export class PodMovement {
     constructor(pod, prevNode, newNode){
         this.pod = pod
         this.prevNode = prevNode
-        this.newNode
+        this.newNode = newNode
     }
 }
 
@@ -26,12 +26,12 @@ function createFakeNodesFrom(realNodes) {
     return fakeNodes;
 }
 
-function simulateScheduling(podsList, nodes, allocation) {
-    let fakeNodes = createFakeNodesFrom(nodes);
+export function simulateScheduling(podsList, allocation) {
+    let fakeNodes = createFakeNodesFrom(allocation.getNodes());
 
     // Duplicate movable pods and simulate their scheduling on the fake nodes.
     let fakePods = duplicatePods(podsList);
-    schedulePods(fakePods, fakeNodes);
+    schedulePods(fakePods, fakeNodes, allocation);
 }
 
 function schedulePods(pods, nodes, allocation) {
