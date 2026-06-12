@@ -19,7 +19,7 @@ function duplicatePods(realPods) {
     let fakePods = [];
     for (let pod of realPods) {
         let fakePod = kwok.createFakePod(pod);
-        fakePod.setNodeSelector("fakePods");
+        fakePod.setNodeSelector("fake-pod", "true");
         fakePods.push(fakePod);
     }
     return fakePods;

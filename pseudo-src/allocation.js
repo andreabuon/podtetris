@@ -1,7 +1,23 @@
 class Allocation {
-    constructor() {        
+    constructor() {     
+        this.pods = new Set(); // Set<Pod> // change data structure for better performance (rank pods by resource usage when inserting them in the list?)
+        this.nodes = new Set(); // Set<Node> // change data structure for better performance (rank nodes by resource usage when inserting them in the list?)
+
         this.NodesWorkloads = new Map(); // Map<Node, Set<Pod>>
         this.PodLocations = new Map(); // Map<Pod, Node>
+    }
+
+    static fromClusterNodes(nodes) {
+        let allocation = new Allocation(nodes);
+        for (let node of nodes) {
+            allocation.nodes.add(node);
+
+            for (let pod of node.getPods()) {
+                allocation.pods.add(pod);
+                allocation.addPodLocation(pod, node);
+            }
+        }
+        return allocation;
     }
 
     addPodLocation(pod, node) {
@@ -13,25 +29,33 @@ class Allocation {
         this.PodLocations.set(pod, node);
     };
 
-    getPodLocation(pod) {
-        return this.PodLocations.get(pod);
-    };
+    getPods() {
+        return this.pods;
+    }
+
+    getMovablePods() {
+        return Array.from(this.getPods()).filter(pod => pod.isMovable());
+    }
+
+    getFixedPods() {
+        return Array.from(this.getPods()).filter(pod => !pod.isMovable());
+    }
+
+    getNodes() {
+        return this.nodes;
+    }
 
     getNodeWorkloads(node) {
         return this.NodesWorkloads.get(node) || new Set();
     };
 
-    getNodes() {
-        return this.NodesWorkloads.keys();
-    }
+    getPodLocation(pod) {
+        return this.PodLocations.get(pod);
+    };
 
     // This method calculates how many nodes are required to host all the pods in the current allocation. It counts only the nodes that have at least one pod allocated to them.
-    getRequiredNodes() {
+    getRequiredNodesNum() {
         return this.getNodes().filter( node => this.getNodeWorkloads(node).size > 0 ).length;
-    }
-
-    getAllPods() {
-        return this.PodLocations.keys();
     }
 
     computeMovesFrom(previousAllocation) {

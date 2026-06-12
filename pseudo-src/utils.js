@@ -1,4 +1,4 @@
-function isConsolidable(node) {
+function isConsolidatable(node) {
     return true;
     // return node.reservedCPU < UNDERUTILIZED_CPU_THRESHOLD && node.reservedMemory < UNDERUTILIZED_MEMORY_THRESHOLD ;
 }
