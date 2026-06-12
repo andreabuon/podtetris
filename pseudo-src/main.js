@@ -69,7 +69,9 @@ function main() {
         return;
     }
     
-    bestSimulationResult = results.sortBy(PREFERRED_METRIC).take(1)
+    bestSimulationResult = results.sort((a, b) => b.score - a.score)[0]
+    //bestSimulationResult = results.sortBy(PREFERRED_METRIC)[0]
+
     for (let move of bestSimulationResult.moves) {
             CLUSTER.perform(move); // how to implement this? 
     }

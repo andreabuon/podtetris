@@ -1,10 +1,14 @@
 const kwok = require ("kwok")
 
+const MOVE_PENALTY = 30;
+const FREE_NODE_REWARD = 100;
+
 export class SimulationResult {
     constructor (freeNodes, moves){
         this.freeNodes = freeNodes
         this.movesNum = moves.length
         this.moves = moves
+        this.score = this.freeNodes * FREE_NODE_REWARD- ( this.movesNum * MOVE_PENALTY )
     }
 }
 
