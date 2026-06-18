@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	apiv1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -96,5 +97,62 @@ func main() {
 			pod := podInfo.GetPod()
 			fmt.Printf("    - [Pod] %s/%s\n", pod.Namespace, pod.Name)
 		}
+	}
+
+	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD FORCEFULLY, CHECK AND REVERT
+
+	snapshot.Fork()
+	fmt.Println("\n--- Snapshot Forked (Checkpoint Created) ---")
+
+	// Target the first node from your cluster for the injection simulation
+	if len(nodeInfos) == 0 {
+		log.Fatalf("No nodes available in snapshot to simulate pod injection.")
+	}
+	targetNodeName := nodeInfos[0].Node().Name
+
+	fakePod := &apiv1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "simulated-burst-pod-xyz",
+			Namespace: "default",
+			UID:       "simulated-uid-12345",
+		},
+		Spec: apiv1.PodSpec{
+			Containers: []apiv1.Container{
+				{
+					Name:  "nginx",
+					Image: "nginx:latest",
+					Resources: apiv1.ResourceRequirements{
+						Requests: apiv1.ResourceList{
+							apiv1.ResourceCPU:    resource.MustParse("500m"),
+							apiv1.ResourceMemory: resource.MustParse("512Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	// Force inject the fake pod into the snapshot
+	fmt.Printf("Simulating placement of fake pod '%s' onto Node '%s'...\n", fakePod.Name, targetNodeName)
+	err = snapshot.ForceAddPod(fakePod, targetNodeName)
+	if err != nil {
+		log.Fatalf("Failed to force add pod to snapshot: %v", err)
+	}
+
+	// Verify the pod exists inside the snapshot post-injection
+	updatedNodeInfo, err := snapshot.NodeInfos().Get(targetNodeName)
+	if err == nil {
+		fmt.Printf("Verified: Node '%s' now has %d pod(s) running in simulation.\n",
+			targetNodeName, len(updatedNodeInfo.GetPods()))
+	}
+
+	fmt.Println("\n--- Reverting Snapshot to Baseline ---")
+	snapshot.Revert()
+
+	// Verify the pod was cleanly removed by the revert operation
+	revertedNodeInfo, err := snapshot.NodeInfos().Get(targetNodeName)
+	if err == nil {
+		fmt.Printf("Verified after Revert: Node '%s' is back to %d pod(s).\n",
+			targetNodeName, len(revertedNodeInfo.GetPods()))
 	}
 }
