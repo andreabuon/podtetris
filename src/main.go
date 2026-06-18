@@ -84,12 +84,8 @@ func main() {
 	informerFactory.Start(stopCh)
 	informerFactory.WaitForCacheSync(stopCh)
 
-	// Create the snapshot and populate it with the live cluster data
 	snapshotStore := store.NewDeltaSnapshotStore(PARALLELISM)
-
-	// Wrap it to get the full ClusterSnapshot, which DOES implement SchedulePod.
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, PARALLELISM, false)
-
 	err = snapshot.SetClusterState(nodePointers, podPointers, nil, nil)
 	if err != nil {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
@@ -118,6 +114,8 @@ func main() {
 			fmt.Printf("    - [Pod] %s/%s\n", pod.Namespace, pod.Name)
 		}
 	}
+
+	simulator := scheduling.NewHintingSimulator()
 
 	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD FORCEFULLY, CHECK AND REVERT
 	fmt.Println("\n--- TEST #1---")
@@ -183,8 +181,6 @@ func main() {
 	snapshot.Fork()
 	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
 
-	simulator := scheduling.NewHintingSimulator()
-
 	fakePod2 := &apiv1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "simulated-burst-pod-xyz",
@@ -208,6 +204,45 @@ func main() {
 	}
 
 	statuses, _, err := simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod2}, scheduling.ScheduleAnywhere, false)
+
+	if len(statuses) > 0 && statuses[0].NodeName != "" {
+		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
+	} else {
+		fmt.Println("Simulation Complete: Pod is unschedulable on current cluster capacity.")
+	}
+
+	fmt.Println("\nReverting Snapshot to Baseline...")
+	snapshot.Revert()
+
+	// TEST: FORK THE SNAPSHOT, ADD A GIANT FAKE POD, SCHEDULE IT, CHECK AND REVERT
+	fmt.Println("\n--- TEST #3---")
+
+	snapshot.Fork()
+	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
+
+	fakePod3 := &apiv1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "simulated-burst-pod-xyz",
+			Namespace: "default",
+			UID:       "simulated-uid-12345",
+		},
+		Spec: apiv1.PodSpec{
+			Containers: []apiv1.Container{
+				{
+					Name:  "nginx",
+					Image: "nginx:latest",
+					Resources: apiv1.ResourceRequirements{
+						Requests: apiv1.ResourceList{
+							apiv1.ResourceCPU:    resource.MustParse("500000000m"),
+							apiv1.ResourceMemory: resource.MustParse("512000000Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	statuses, _, err = simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod3}, scheduling.ScheduleAnywhere, false)
 
 	if len(statuses) > 0 && statuses[0].NodeName != "" {
 		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
