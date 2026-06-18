@@ -25,57 +25,22 @@ const PARALLELISM = 1
 
 func main() {
 	klog.InitFlags(nil)
-	defer klog.Flush()
 
-	home := homedir.HomeDir()
-	if home == "" {
-		log.Fatalf("Critical: Could not locate home directory to read kubeconfig.")
-	}
-	kubeconfig := filepath.Join(home, ".kube", "config")
-
-	// Build the configuration client context
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 	if err != nil {
 		log.Fatalf("Error loading local kubeconfig: %v", err)
 	}
 
-	// Create the standard client-go clientset
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
 	ctx := context.Background()
-	fmt.Println("Reading live state from active Kubernetes cluster...")
 
-	// Query active Nodes
-	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
-	if err != nil {
-		log.Fatalf("API Error fetching active cluster nodes: %v", err)
-	}
-
-	// Query active Pods across ALL namespaces
-	pods, err := clientset.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
-	if err != nil {
-		log.Fatalf("API Error fetching active cluster pods: %v", err)
-	}
-
-	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodes.Items), len(pods.Items))
-
-	// Convert concrete API slices to the pointer slices (*apiv1.Node and *apiv1.Pod) that the Autoscaler's SetClusterState signature strictly expects.
-	var nodePointers []*apiv1.Node
-	for i := range nodes.Items {
-		nodePointers = append(nodePointers, &nodes.Items[i])
-	}
-
-	var podPointers []*apiv1.Pod
-	for i := range pods.Items {
-		podPointers = append(podPointers, &pods.Items[i])
-	}
-
-	// Build an informer factory and a scheduler framework handle.
 	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
-	fwHandle, err := framework.NewHandle(informerFactory, nil /* SchedulerConfig */, false /* DynamicResourceAllocationEnabled */, false)
+	fwHandle, err := framework.NewHandle(informerFactory, nil, false, false)
 	if err != nil {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
@@ -84,6 +49,29 @@ func main() {
 	informerFactory.Start(stopCh)
 	informerFactory.WaitForCacheSync(stopCh)
 
+	// CREATE THE CLUSTER STATE SNAPSHOT
+
+	fmt.Println("Reading live state from active Kubernetes cluster...")
+	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		log.Fatalf("API Error fetching active cluster nodes: %v", err)
+	}
+	pods, err := clientset.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
+	if err != nil {
+		log.Fatalf("API Error fetching active cluster pods: %v", err)
+	}
+	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodes.Items), len(pods.Items))
+
+	// Create pointer slices for the Autoscaler's SetClusterState function.
+	var nodePointers []*apiv1.Node
+	for i := range nodes.Items {
+		nodePointers = append(nodePointers, &nodes.Items[i])
+	}
+	var podPointers []*apiv1.Pod
+	for i := range pods.Items {
+		podPointers = append(podPointers, &pods.Items[i])
+	}
+
 	snapshotStore := store.NewDeltaSnapshotStore(PARALLELISM)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, PARALLELISM, false)
 	err = snapshot.SetClusterState(nodePointers, podPointers, nil, nil)
@@ -91,19 +79,23 @@ func main() {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
 	}
 
+	// DISPLAY THE SNAPSHOT DATA
+
+	fmt.Println("### SNAPSHOT DATA ###")
+
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	fmt.Printf("The cluster contains the following nodes:\n")
+	fmt.Printf("\nThe cluster contains the following nodes:\n")
 	for _, nodeInfo := range nodeInfos {
 		fmt.Printf("- %s\n", nodeInfo.Node().Name)
 	}
+
 	fmt.Printf("\n--------------\n")
 
-	fmt.Printf("The pods assigned to each node are:\n")
-
+	fmt.Printf("\nThe pods assigned to each node are:\n")
 	for _, nodeInfo := range nodeInfos {
 		node := nodeInfo.Node()
 		nodePodsInfos := nodeInfo.GetPods()
@@ -115,15 +107,19 @@ func main() {
 		}
 	}
 
+	fmt.Printf("\n#### TESTS #####\n")
+
+	// ** TESTS ** //
+
 	simulator := scheduling.NewHintingSimulator()
 
-	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD FORCEFULLY, CHECK AND REVERT
+	// TEST: Create and schedule a fake pod on a specific node of the cluster.
 	fmt.Println("\n--- TEST #1---")
 
+	fmt.Print("Forking the snapshot... ")
 	snapshot.Fork()
-	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
+	fmt.Print("OK")
 
-	// Target the first node from your cluster for the injection simulation
 	if len(nodeInfos) == 0 {
 		log.Fatalf("No nodes available in snapshot to simulate pod injection.")
 	}
@@ -151,22 +147,21 @@ func main() {
 		},
 	}
 
-	// Force inject the fake pod into the snapshot
-	fmt.Printf("Simulating placement of fake pod '%s' onto Node '%s'...\n", fakePod.Name, targetNodeName)
+	fmt.Printf("\nSimulating forced placement of fake pod '%s' onto Node '%s'...\n", fakePod.Name, targetNodeName)
 	err = snapshot.ForceAddPod(fakePod, targetNodeName)
 	if err != nil {
 		log.Fatalf("Failed to force add pod to snapshot: %v", err)
 	}
 
-	// Verify the pod exists inside the snapshot post-injection
 	updatedNodeInfo, err := snapshot.NodeInfos().Get(targetNodeName)
 	if err == nil {
 		fmt.Printf("Verified: Node '%s' now has %d pod(s) running in simulation.\n",
 			targetNodeName, len(updatedNodeInfo.GetPods()))
 	}
 
-	fmt.Println("\nReverting Snapshot to Baseline")
+	fmt.Print("Reverting Snapshot to Baseline... ")
 	snapshot.Revert()
+	fmt.Println("OK.")
 
 	// Verify the pod was cleanly removed by the revert operation
 	revertedNodeInfo, err := snapshot.NodeInfos().Get(targetNodeName)
@@ -178,8 +173,11 @@ func main() {
 	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD, SCHEDULE IT, CHECK AND REVERT
 	fmt.Println("\n--- TEST #2---")
 
+	fmt.Printf("Simulating the scheduling of a normal fake pod '%s' in the cluster...\n", fakePod.Name)
+
+	fmt.Print("Forking the snapshot... ")
 	snapshot.Fork()
-	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
+	fmt.Println("OK")
 
 	fakePod2 := &apiv1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
@@ -211,14 +209,18 @@ func main() {
 		fmt.Println("Simulation Complete: Pod is unschedulable on current cluster capacity.")
 	}
 
-	fmt.Println("\nReverting Snapshot to Baseline...")
+	fmt.Print("Reverting Snapshot to Baseline... ")
 	snapshot.Revert()
+	fmt.Println("OK")
 
 	// TEST: FORK THE SNAPSHOT, ADD A GIANT FAKE POD, SCHEDULE IT, CHECK AND REVERT
 	fmt.Println("\n--- TEST #3---")
 
+	fmt.Printf("Simulating the scheduling of giant fake pod '%s' in the cluster...\n", fakePod.Name)
+
+	fmt.Print("Forking the snapshot... ")
 	snapshot.Fork()
-	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
+	fmt.Println("OK")
 
 	fakePod3 := &apiv1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
@@ -250,6 +252,7 @@ func main() {
 		fmt.Println("Simulation Complete: Pod is unschedulable on current cluster capacity.")
 	}
 
-	fmt.Println("\nReverting Snapshot to Baseline...")
+	fmt.Print("Reverting Snapshot to Baseline... ")
 	snapshot.Revert()
+	fmt.Println("OK")
 }
