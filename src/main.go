@@ -14,8 +14,14 @@ import (
 	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
 
+	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
+	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
+	"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
+	"k8s.io/client-go/informers"
 )
+
+const PARALLELISM = 1
 
 func main() {
 	klog.InitFlags(nil)
@@ -67,8 +73,22 @@ func main() {
 		podPointers = append(podPointers, &pods.Items[i])
 	}
 
+	// Build an informer factory and a scheduler framework handle.
+	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
+	fwHandle, err := framework.NewHandle(informerFactory, nil /* SchedulerConfig */, false /* DynamicResourceAllocationEnabled */, false)
+	if err != nil {
+		log.Fatalf("Error creating framework handle: %v", err)
+	}
+
+	stopCh := make(chan struct{})
+	informerFactory.Start(stopCh)
+	informerFactory.WaitForCacheSync(stopCh)
+
 	// Create the snapshot and populate it with the live cluster data
-	snapshot := store.NewDeltaSnapshotStore(1)
+	snapshotStore := store.NewDeltaSnapshotStore(PARALLELISM)
+
+	// Wrap it to get the full ClusterSnapshot, which DOES implement SchedulePod.
+	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, PARALLELISM, false)
 
 	err = snapshot.SetClusterState(nodePointers, podPointers, nil, nil)
 	if err != nil {
@@ -100,9 +120,10 @@ func main() {
 	}
 
 	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD FORCEFULLY, CHECK AND REVERT
+	fmt.Println("\n--- TEST #1---")
 
 	snapshot.Fork()
-	fmt.Println("\n--- Snapshot Forked (Checkpoint Created) ---")
+	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
 
 	// Target the first node from your cluster for the injection simulation
 	if len(nodeInfos) == 0 {
@@ -146,7 +167,7 @@ func main() {
 			targetNodeName, len(updatedNodeInfo.GetPods()))
 	}
 
-	fmt.Println("\n--- Reverting Snapshot to Baseline ---")
+	fmt.Println("\nReverting Snapshot to Baseline")
 	snapshot.Revert()
 
 	// Verify the pod was cleanly removed by the revert operation
@@ -155,4 +176,45 @@ func main() {
 		fmt.Printf("Verified after Revert: Node '%s' is back to %d pod(s).\n",
 			targetNodeName, len(revertedNodeInfo.GetPods()))
 	}
+
+	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD, SCHEDULE IT, CHECK AND REVERT
+	fmt.Println("\n--- TEST #2---")
+
+	snapshot.Fork()
+	fmt.Println("\nSnapshot Forked (Checkpoint Created)")
+
+	simulator := scheduling.NewHintingSimulator()
+
+	fakePod2 := &apiv1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "simulated-burst-pod-xyz",
+			Namespace: "default",
+			UID:       "simulated-uid-12345",
+		},
+		Spec: apiv1.PodSpec{
+			Containers: []apiv1.Container{
+				{
+					Name:  "nginx",
+					Image: "nginx:latest",
+					Resources: apiv1.ResourceRequirements{
+						Requests: apiv1.ResourceList{
+							apiv1.ResourceCPU:    resource.MustParse("500m"),
+							apiv1.ResourceMemory: resource.MustParse("512Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	statuses, _, err := simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod2}, scheduling.ScheduleAnywhere, false)
+
+	if len(statuses) > 0 && statuses[0].NodeName != "" {
+		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
+	} else {
+		fmt.Println("Simulation Complete: Pod is unschedulable on current cluster capacity.")
+	}
+
+	fmt.Println("\nReverting Snapshot to Baseline...")
+	snapshot.Revert()
 }
