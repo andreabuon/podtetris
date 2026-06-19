@@ -25,6 +25,7 @@ import (
 )
 
 const SCHEDULER_CONFIG_PATH = "scheduler-config.yaml"
+const CANDIDATE_NODES_NUMBER = 5
 
 const PARALLELISM = 8
 const YAML_BUFFER_SIZE = 4096
@@ -115,7 +116,7 @@ func main() {
 		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
 	})
 
-	candidateNodes := nodeInfos[:5]
+	candidateNodes := nodeInfos[:CANDIDATE_NODES_NUMBER]
 
 	fmt.Printf("\nThe candidate nodes for rescheduling are the:\n")
 	for _, nodeInfo := range candidateNodes {
