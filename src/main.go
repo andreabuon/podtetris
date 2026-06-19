@@ -9,20 +9,21 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
-	schedulerconfig "k8s.io/kubernetes/pkg/scheduler/apis/config"
 
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
-	"k8s.io/client-go/informers"
+	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
 )
 
 const PARALLELISM = 8
+const SCHEDULER_CONFIG_PATH = "scheduler-config.yaml"
 
 func main() {
 	klog.InitFlags(nil)
@@ -42,26 +43,9 @@ func main() {
 
 	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
 
-	schedulerConfig := &schedulerconfig.KubeSchedulerConfiguration{
-		Profiles: []schedulerconfig.KubeSchedulerProfile{
-			{
-				SchedulerName: "default-scheduler",
-				PluginConfig: []schedulerconfig.PluginConfig{
-					{
-						Name: "NodeResourcesFit",
-						Args: &schedulerconfig.NodeResourcesFitArgs{
-							ScoringStrategy: &schedulerconfig.ScoringStrategy{
-								Type: schedulerconfig.MostAllocated,
-								Resources: []schedulerconfig.ResourceSpec{
-									{Name: "cpu", Weight: 1},
-									{Name: "memory", Weight: 1},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
+	schedulerConfig, err := cascheduler.ConfigFromPath(SCHEDULER_CONFIG_PATH)
+	if err != nil {
+		log.Fatalf("Error loading scheduler config: %v", err)
 	}
 
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
