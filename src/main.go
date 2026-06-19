@@ -13,6 +13,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
+	schedulerconfig "k8s.io/kubernetes/pkg/scheduler/apis/config"
 
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
@@ -21,7 +22,7 @@ import (
 	"k8s.io/client-go/informers"
 )
 
-const PARALLELISM = 1
+const PARALLELISM = 8
 
 func main() {
 	klog.InitFlags(nil)
@@ -40,7 +41,30 @@ func main() {
 	ctx := context.Background()
 
 	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
-	fwHandle, err := framework.NewHandle(informerFactory, nil, false, false)
+
+	schedulerConfig := &schedulerconfig.KubeSchedulerConfiguration{
+		Profiles: []schedulerconfig.KubeSchedulerProfile{
+			{
+				SchedulerName: "default-scheduler",
+				PluginConfig: []schedulerconfig.PluginConfig{
+					{
+						Name: "NodeResourcesFit",
+						Args: &schedulerconfig.NodeResourcesFitArgs{
+							ScoringStrategy: &schedulerconfig.ScoringStrategy{
+								Type: schedulerconfig.MostAllocated,
+								Resources: []schedulerconfig.ResourceSpec{
+									{Name: "cpu", Weight: 1},
+									{Name: "memory", Weight: 1},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
 	if err != nil {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
