@@ -112,21 +112,6 @@ func main() {
 
 	fmt.Printf("\n--------------\n")
 
-	sort.Slice(nodeInfos, func(i, j int) bool {
-		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
-	})
-
-	candidateNodes := nodeInfos[:CANDIDATE_NODES_NUMBER]
-
-	/*
-		fmt.Printf("\nThe candidate nodes for rescheduling are the:\n")
-		for _, nodeInfo := range candidateNodes {
-			fmt.Printf("- %s\n", nodeInfo.Node().Name)
-		}
-	*/
-
-	fmt.Printf("\n--------------\n")
-
 	fmt.Printf("\nThe pods assigned to each node are:\n")
 	for _, nodeInfo := range nodeInfos {
 		node := nodeInfo.Node()
@@ -141,42 +126,49 @@ func main() {
 
 	fmt.Printf("\n--------------\n")
 
+	// Selecting candidate nodes for rescheduling.
+
+	sort.Slice(nodeInfos, func(i, j int) bool {
+		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
+	})
+
+	candidateNodes := nodeInfos[:CANDIDATE_NODES_NUMBER]
+
 	// Evict pods from candidate nodes
-	fmt.Printf("\nSelected N=%d Least-Allocated Target Nodes for Compaction:\n", CANDIDATE_NODES_NUMBER)
+	fmt.Printf("\nSelected %d Least-Allocated Nodes for pods consolidation:\n", CANDIDATE_NODES_NUMBER)
 	for _, ni := range candidateNodes {
-		fmt.Printf(" -> Target Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
+		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
+	}
+
+	var evictedPods []*apiv1.Pod
+	for _, ni := range candidateNodes {
+		nodeName := ni.Node().Name
+		// Copy the pod references out before we start deleting them from the underlying map
+		var podsOnNode []*apiv1.Pod
+		for _, podInfo := range ni.GetPods() {
+			podsOnNode = append(podsOnNode, podInfo.GetPod())
+		}
+
+		fmt.Printf("\nVirtually evicting %d pods from node %s...\n", len(podsOnNode), nodeName)
+		for _, pod := range podsOnNode {
+			err := snapshot.UnschedulePod(pod.Namespace, pod.Name, ni.Node().Name)
+			if err != nil {
+				fmt.Printf("Warning: Failed to virtually evict pod %s/%s: %v\n", pod.Namespace, pod.Name, err)
+				continue
+			} else {
+				fmt.Println("- Evicted Pod:", pod.Name)
+			}
+			evictedPods = append(evictedPods, pod)
+		}
 	}
 
 	/*
-		var evictedPods []*apiv1.Pod
-		for _, ni := range candidateNodes {
-			nodeName := ni.Node().Name
-				// Copy the pod references out before we start deleting them from the underlying map
-				var podsOnNode []*apiv1.Pod
-				for _, podInfo := range ni.GetPods() {
-					podsOnNode = append(podsOnNode, podInfo.Pod)
-				}
-
-				fmt.Printf("Virtually evicting %d pods from node %s...\n", len(podsOnNode), nodeName)
-				for _, pod := range podsOnNode {
-					// RemovePod typically expects (namespace, podName)
-					err := snapshot.RemovePod(pod.Namespace, pod.Name)
-					if err != nil {
-						fmt.Printf("  Warning: Failed to virtually evict pod %s/%s: %v\n", pod.Namespace, pod.Name, err)
-						continue
-					}
-					evictedPods = append(evictedPods, pod)
-				}
-		}
-
-		// 4. SORT THE COLLECTED WORKLOADS (Largest CPU requests first)
-		// This step is mathematically critical for multi-dimensional Vector Bin Packing (VBPP).
+		// Sort the evicted pods - this is necessary for bin packing during the rescheduling
 		sort.Slice(evictedPods, func(i, j int) bool {
-			reqI := clustersnapshot.GetPodResourceRequest(evictedPods[i]) // Helper or manual aggregation
-			reqJ := clustersnapshot.GetPodResourceRequest(evictedPods[j])
+			reqI := snapshot.GetPodResourceRequest(evictedPods[i]) // Helper or manual aggregation
+			reqJ := snapshot.GetPodResourceRequest(evictedPods[j])
 			return reqI.MilliCPU > reqJ.MilliCPU
 		})
-
 	*/
 
 	fmt.Printf("\n#### TESTS #####\n")
