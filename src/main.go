@@ -157,6 +157,19 @@ func main() {
 
 		fmt.Printf("\nVirtually evicting %d pods from node %s...\n", len(podsOnNode), nodeName)
 		for _, pod := range podsOnNode {
+			// Skip evicting DaemonSet pods
+			isDaemonSet := false
+			for _, owner := range pod.GetOwnerReferences() {
+				if owner.Kind == "DaemonSet" {
+					isDaemonSet = true
+					break
+				}
+			}
+			if isDaemonSet {
+				fmt.Printf(" -> Skipping DaemonSet pod: %s/%s\n", pod.Namespace, pod.Name)
+				continue
+			}
+
 			err := snapshot.UnschedulePod(pod.Namespace, pod.Name, ni.Node().Name)
 			if err != nil {
 				fmt.Printf("Warning: Failed to virtually evict pod %s/%s: %v\n", pod.Namespace, pod.Name, err)
