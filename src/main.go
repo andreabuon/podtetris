@@ -4,22 +4,22 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 
 	apiv1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/informers"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
-	"k8s.io/klog/v2"
-
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
 	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
+	"k8s.io/client-go/informers"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
+	"k8s.io/klog/v2"
 )
 
 const PARALLELISM = 8
@@ -121,6 +121,11 @@ func main() {
 
 	simulator := scheduling.NewHintingSimulator()
 
+	fakePod, err := PodFromPath("pods/normal.yaml")
+	if err != nil {
+		log.Fatalf("Error loading pod: %v", err)
+	}
+
 	// TEST: Create and schedule a fake pod on a specific node of the cluster.
 	fmt.Println("\n--- TEST #1---")
 
@@ -132,28 +137,6 @@ func main() {
 		log.Fatalf("No nodes available in snapshot to simulate pod injection.")
 	}
 	targetNodeName := nodeInfos[0].Node().Name
-
-	fakePod := &apiv1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "simulated-burst-pod-xyz",
-			Namespace: "default",
-			UID:       "simulated-uid-12345",
-		},
-		Spec: apiv1.PodSpec{
-			Containers: []apiv1.Container{
-				{
-					Name:  "nginx",
-					Image: "nginx:latest",
-					Resources: apiv1.ResourceRequirements{
-						Requests: apiv1.ResourceList{
-							apiv1.ResourceCPU:    resource.MustParse("500m"),
-							apiv1.ResourceMemory: resource.MustParse("512Mi"),
-						},
-					},
-				},
-			},
-		},
-	}
 
 	fmt.Printf("\nSimulating forced placement of fake pod '%s' onto Node '%s'...\n", fakePod.Name, targetNodeName)
 	err = snapshot.ForceAddPod(fakePod, targetNodeName)
@@ -187,29 +170,7 @@ func main() {
 	snapshot.Fork()
 	fmt.Println("OK")
 
-	fakePod2 := &apiv1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "simulated-burst-pod-xyz",
-			Namespace: "default",
-			UID:       "simulated-uid-12345",
-		},
-		Spec: apiv1.PodSpec{
-			Containers: []apiv1.Container{
-				{
-					Name:  "nginx",
-					Image: "nginx:latest",
-					Resources: apiv1.ResourceRequirements{
-						Requests: apiv1.ResourceList{
-							apiv1.ResourceCPU:    resource.MustParse("500m"),
-							apiv1.ResourceMemory: resource.MustParse("512Mi"),
-						},
-					},
-				},
-			},
-		},
-	}
-
-	statuses, _, err := simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod2}, scheduling.ScheduleAnywhere, false)
+	statuses, _, err := simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod}, scheduling.ScheduleAnywhere, false)
 
 	if len(statuses) > 0 && statuses[0].NodeName != "" {
 		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
@@ -230,29 +191,12 @@ func main() {
 	snapshot.Fork()
 	fmt.Println("OK")
 
-	fakePod3 := &apiv1.Pod{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "simulated-burst-pod-xyz",
-			Namespace: "default",
-			UID:       "simulated-uid-12345",
-		},
-		Spec: apiv1.PodSpec{
-			Containers: []apiv1.Container{
-				{
-					Name:  "nginx",
-					Image: "nginx:latest",
-					Resources: apiv1.ResourceRequirements{
-						Requests: apiv1.ResourceList{
-							apiv1.ResourceCPU:    resource.MustParse("500000000m"),
-							apiv1.ResourceMemory: resource.MustParse("512000000Mi"),
-						},
-					},
-				},
-			},
-		},
+	giantPod, err := PodFromPath("pods/giant.yaml")
+	if err != nil {
+		log.Fatalf("Error loading pod: %v", err)
 	}
 
-	statuses, _, err = simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod3}, scheduling.ScheduleAnywhere, false)
+	statuses, _, err = simulator.TrySchedulePods(snapshot, []*apiv1.Pod{giantPod}, scheduling.ScheduleAnywhere, false)
 
 	if len(statuses) > 0 && statuses[0].NodeName != "" {
 		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
@@ -263,4 +207,23 @@ func main() {
 	fmt.Print("Reverting Snapshot to Baseline... ")
 	snapshot.Revert()
 	fmt.Println("OK")
+}
+
+func PodFromPath(path string) (*apiv1.Pod, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("error reading pod file: %v", err)
+	}
+
+	obj, _, err := scheme.Codecs.UniversalDeserializer().Decode(data, nil, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error decoding pod yaml: %v", err)
+	}
+
+	pod, ok := obj.(*apiv1.Pod)
+	if !ok {
+		return nil, fmt.Errorf("yaml did not decode to a Pod")
+	}
+
+	return pod, nil
 }
