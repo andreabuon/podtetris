@@ -66,7 +66,9 @@ func main() {
 	// CREATE THE CLUSTER STATE SNAPSHOT
 
 	fmt.Println("Reading live state from active Kubernetes cluster...")
-	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
+	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{
+		LabelSelector: "!node-role.kubernetes.io/control-plane",
+	})
 	if err != nil {
 		log.Fatalf("API Error fetching active cluster nodes: %v", err)
 	}
