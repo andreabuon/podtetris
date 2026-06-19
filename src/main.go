@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -103,6 +104,19 @@ func main() {
 
 	fmt.Printf("\nThe cluster contains the following nodes:\n")
 	for _, nodeInfo := range nodeInfos {
+		fmt.Printf("- %s\n", nodeInfo.Node().Name)
+	}
+
+	fmt.Printf("\n--------------\n")
+
+	sort.Slice(nodeInfos, func(i, j int) bool {
+		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
+	})
+
+	candidateNodes := nodeInfos[:5]
+
+	fmt.Printf("\nThe candidate nodes for rescheduling are the:\n")
+	for _, nodeInfo := range candidateNodes {
 		fmt.Printf("- %s\n", nodeInfo.Node().Name)
 	}
 
