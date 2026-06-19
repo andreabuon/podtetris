@@ -50,7 +50,13 @@ func main() {
 	}
 
 	ctx := context.Background()
-	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
+	informerFactory := informers.NewSharedInformerFactoryWithOptions(
+		clientset,
+		0,
+		informers.WithTweakListOptions(func(options *metav1.ListOptions) {
+			options.LabelSelector = "!node-role.kubernetes.io/control-plane"
+		}),
+	)
 	informerFactory.Start(ctx.Done())
 
 	for _, synced := range informerFactory.WaitForCacheSync(ctx.Done()) {
