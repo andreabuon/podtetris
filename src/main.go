@@ -174,6 +174,9 @@ func main() {
 	fmt.Println("OK")
 
 	statuses, _, err := simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod}, scheduling.ScheduleAnywhere, false)
+	if err != nil {
+		log.Fatalf("Scheduling simulation failed: %v", err)
+	}
 
 	if len(statuses) > 0 && statuses[0].NodeName != "" {
 		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
