@@ -74,18 +74,18 @@ func main() {
 	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodes.Items), len(pods.Items))
 
 	// Create pointer slices for the Autoscaler's SetClusterState function.
-	var nodePointers []*apiv1.Node
+	nodesPointers := make([]*apiv1.Node, len(nodes.Items))
 	for i := range nodes.Items {
-		nodePointers = append(nodePointers, &nodes.Items[i])
+		nodesPointers[i] = &nodes.Items[i]
 	}
-	var podPointers []*apiv1.Pod
+	podsPointers := make([]*apiv1.Pod, len(pods.Items))
 	for i := range pods.Items {
-		podPointers = append(podPointers, &pods.Items[i])
+		podsPointers[i] = &pods.Items[i]
 	}
 
 	snapshotStore := store.NewDeltaSnapshotStore(PARALLELISM)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, PARALLELISM, false)
-	err = snapshot.SetClusterState(nodePointers, podPointers, nil, nil)
+	err = snapshot.SetClusterState(nodesPointers, podsPointers, nil, nil)
 	if err != nil {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
 	}
