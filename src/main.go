@@ -42,23 +42,25 @@ func main() {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
-	ctx := context.Background()
-
-	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
-
 	schedulerConfig, err := cascheduler.ConfigFromPath(SCHEDULER_CONFIG_PATH)
 	if err != nil {
 		log.Fatalf("Error loading scheduler config: %v", err)
+	}
+
+	ctx := context.Background()
+	informerFactory := informers.NewSharedInformerFactory(clientset, 0)
+	informerFactory.Start(ctx.Done())
+
+	for _, synced := range informerFactory.WaitForCacheSync(ctx.Done()) {
+		if !synced {
+			log.Fatalf("Informer caches failed to sync")
+		}
 	}
 
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
 	if err != nil {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
-
-	stopCh := make(chan struct{})
-	informerFactory.Start(stopCh)
-	informerFactory.WaitForCacheSync(stopCh)
 
 	// CREATE THE CLUSTER STATE SNAPSHOT
 
