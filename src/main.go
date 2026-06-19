@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
@@ -9,6 +10,7 @@ import (
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
@@ -16,14 +18,15 @@ import (
 	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
 )
 
-const PARALLELISM = 8
 const SCHEDULER_CONFIG_PATH = "scheduler-config.yaml"
+
+const PARALLELISM = 8
+const YAML_BUFFER_SIZE = 4096
 
 func main() {
 	klog.InitFlags(nil)
@@ -215,15 +218,12 @@ func PodFromPath(path string) (*apiv1.Pod, error) {
 		return nil, fmt.Errorf("error reading pod file: %v", err)
 	}
 
-	obj, _, err := scheme.Codecs.UniversalDeserializer().Decode(data, nil, nil)
-	if err != nil {
+	decoder := yaml.NewYAMLOrJSONDecoder(bytes.NewReader(data), YAML_BUFFER_SIZE)
+
+	var pod apiv1.Pod
+	if err := decoder.Decode(&pod); err != nil {
 		return nil, fmt.Errorf("error decoding pod yaml: %v", err)
 	}
 
-	pod, ok := obj.(*apiv1.Pod)
-	if !ok {
-		return nil, fmt.Errorf("yaml did not decode to a Pod")
-	}
-
-	return pod, nil
+	return &pod, nil
 }
