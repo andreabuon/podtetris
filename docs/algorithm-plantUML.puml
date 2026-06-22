@@ -1,0 +1,60 @@
+@startuml
+
+title PodTetris Algorithm architecture
+
+start
+
+partition "Snaphost acquisition & Isolation" {
+    :Capture a snapshot of the real cluster;
+    note right: The nodes in the cluster and their Pods
+    :Initialize the isolated simulation sandbox;
+}
+
+partition "Permutations generation" {
+    :Select a subset of Nodes in the sandbox;
+    note right: e.g., the N=5 least-allocated nodes
+    :Save the list of allocated Pods in the the selected nodes;
+    :Virtually evict all Pods from the selected nodes;
+    :Generate multiple Pod permutations;
+    note right: Different strategies are possible: decreasing Request size, Priority-based ordering, random, etc.
+    note right: Pods with PodAffinity might need to be next to each other in the scheduling ordering
+}
+
+partition "Bin-Packing simulation" {
+    while (Are there remaining Pods permutations to evaluate?) is (Yes)
+        :Initialize a temporary sandbox;
+        while (Are there remaining Pods in the current permutation?) is (Yes)
+            :Simulate the Pod scheduling onto the WHOLE cluster;
+            note right: leveraging the Kubernetes scheduler with the MostAllocated scoring strategy
+        endwhile (No)
+        :Calculate the related metrics of the resulting new state;
+        note right
+            - Number of Nodes emptied
+            - Number of Pods relocations (disruption cost)
+        endnote
+    endwhile (No)
+    
+    :Select the best simulated new cluster state;
+}
+
+partition "Consolidation Execution" {
+    if (Does the chosen new optimal state reduce the Node count?) then (Yes)
+        :Calculate the optimal temporal migration sequence;
+        
+        while (Are there remaining Pods to migrate in the sequence?) is (Yes)
+            :"Move" the Pod;
+            note right
+                1. Create a new Pod on the target Node
+                2. Await "Running" status
+                3. Delete the legacy Pod
+            endnote
+        endwhile (No)
+        
+        :Cluster Autoscaler terminates remaining empty nodes;
+    else (No)
+        :No safe infrastructure cost reduction found;
+    endif
+}
+
+stop
+@endum
