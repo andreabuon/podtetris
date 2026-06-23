@@ -14,7 +14,8 @@ partition "Permutations generation" {
     :Select a subset of Nodes in the sandbox;
     note right: e.g., the N=5 least-allocated nodes
     :Save the list of allocated Pods in the the selected nodes;
-    :Virtually evict all Pods from the selected nodes;
+    :Virtually evict movable Pods from the selected nodes;
+    note right: The following Pods types are not evicted: kube-system Pods, DaemonSets, Jobs, Terminating Pods, Pods with local storage.
     :Generate multiple Pod permutations;
     note right: Different strategies are possible: decreasing Request size, Priority-based ordering, random, etc.
     note right: Pods with PodAffinity might need to be next to each other in the scheduling ordering
