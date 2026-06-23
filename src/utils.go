@@ -4,6 +4,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
+const AnnotationFixed = "reply.com/podtetris/fixed"
+
 // EvictionSkipReason describes why a pod was not evicted
 type EvictionSkipReason string
 
@@ -12,7 +14,8 @@ const (
 	SkipJob          EvictionSkipReason = "Job pod"
 	SkipEmptyDir     EvictionSkipReason = "pod uses emptyDir volume"
 	SkipStaticPod    EvictionSkipReason = "static pod"
-	SkipLocalStorage EvictionSkipReason = "pod uses local storage (hostPath)"
+	SkipLocalStorage EvictionSkipReason = "pod uses local storage"
+	SkipFixed        EvictionSkipReason = "pod is fixed to the node"
 )
 
 // isEvictable returns (true, "") if the pod can be evicted or (false, reason) explaining why it was skipped.
@@ -40,6 +43,10 @@ func isEvictable(pod *corev1.Pod) (bool, EvictionSkipReason) {
 		if vol.HostPath != nil {
 			return false, SkipLocalStorage
 		}
+	}
+
+	if val, ok := pod.Annotations[AnnotationFixed]; ok && val == "true" {
+		return false, SkipFixed
 	}
 
 	return true, ""
