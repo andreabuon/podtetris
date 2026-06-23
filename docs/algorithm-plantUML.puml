@@ -4,18 +4,27 @@ title PodTetris Algorithm architecture
 
 start
 
-partition "Snaphost acquisition & Isolation" {
+partition "Snapshot acquisition & Isolation" {
     :Capture a snapshot of the real cluster;
-    note right: The nodes in the cluster and their Pods
+    note right: The nodes in the cluster and the Pods allocated on them
     :Initialize the isolated simulation sandbox;
 }
 
 partition "Permutations generation" {
     :Select a subset of Nodes in the sandbox;
     note right: e.g., the N=5 least-allocated nodes
+    note right: at least 1 node must not contain any fixed pods!
     :Save the list of allocated Pods in the the selected nodes;
     :Virtually evict movable Pods from the selected nodes;
-    note right: The following Pods types are not evicted: kube-system Pods, DaemonSets, Jobs, Terminating Pods, Pods with local storage.
+    note right
+    The following Pods types are not evicted: 
+    - Pods with "fixed" annotation
+    - kube-system Pods
+    - DaemonSets
+    - Jobs
+    - Terminating Pods
+    - Pods with local storage.
+    end note
     :Generate multiple Pod permutations;
     note right: Different strategies are possible: decreasing Request size, Priority-based ordering, random, etc.
     note right: Pods with PodAffinity might need to be next to each other in the scheduling ordering
@@ -30,9 +39,11 @@ partition "Bin-Packing simulation" {
         endwhile (No)
         :Calculate the related metrics of the resulting new state;
         note right
-            - Number of Nodes emptied
-            - Number of Pods relocations (disruption cost)
-        endnote
+        The success metric is a combination of: 
+        - the number of Nodes reduced by the re-allocation
+        - the total number and cost of the pods relocation
+          the cost is calculated by adding the cost of each relocated pod 
+        end note
     endwhile (No)
     
     :Select the best simulated new cluster state;
