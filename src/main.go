@@ -157,16 +157,8 @@ func main() {
 
 		fmt.Printf("\nVirtually evicting %d pods from node %s...\n", len(podsOnNode), nodeName)
 		for _, pod := range podsOnNode {
-			// Skip evicting DaemonSet pods
-			isDaemonSet := false
-			for _, owner := range pod.GetOwnerReferences() {
-				if owner.Kind == "DaemonSet" {
-					isDaemonSet = true
-					break
-				}
-			}
-			if isDaemonSet {
-				fmt.Printf(" -> Skipping DaemonSet pod: %s/%s\n", pod.Namespace, pod.Name)
+			if ok, reason := isEvictable(pod); !ok {
+				fmt.Printf(" -> Skipping pod %s/%s: %s\n", pod.Namespace, pod.Name, reason)
 				continue
 			}
 
