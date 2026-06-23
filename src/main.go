@@ -1,17 +1,14 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"path/filepath"
 	"sort"
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/yaml"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
@@ -175,6 +172,8 @@ func main() {
 
 	// PERMUTATIONS GENERATION
 
+	permutations := [][]*apiv1.Pod{}
+
 	// Permutation 1: by CPU requests, decreasing
 	podsByCPU := make([]*apiv1.Pod, len(evictedPods))
 	copy(podsByCPU, evictedPods)
@@ -189,118 +188,31 @@ func main() {
 		return getPodMemoryRequests(podsByMemory[i]) > getPodMemoryRequests(podsByMemory[j])
 	})
 
-	fmt.Printf("\n#### TESTS #####\n")
+	permutations = append(permutations, podsByCPU, podsByMemory)
 
-	// ** TESTS ** //
+	// SIMULATION
 
 	simulator := scheduling.NewHintingSimulator()
 
-	fakePod, err := PodFromPath("pods/normal.yaml")
-	if err != nil {
-		log.Fatalf("Error loading pod: %v", err)
+	for permutationIndex, orderedPods := range permutations {
+		fmt.Printf("\nTesting the permutation #%d...\n", permutationIndex)
+		fmt.Println("Forking the snapshot... ")
+		snapshot.Fork()
+
+		statuses, _, err := simulator.TrySchedulePods(snapshot, orderedPods, scheduling.ScheduleAnywhere, true)
+		if err != nil {
+			log.Fatalf("Error during the scheduling simulation of the permutation #%d.", permutationIndex)
+		}
+		for _, status := range statuses {
+			if status.NodeName == "" {
+				log.Fatalf("Error during the scheduling simulation of the permutation #%d: a pod could not be scheduled!", permutationIndex)
+			}
+		}
+		fmt.Printf("Success! The simulator scheduled all the pods of the permutation: %d\n", permutationIndex)
+
+		fmt.Println("Reverting Snapshot to Baseline... ")
+		snapshot.Revert()
+		fmt.Println("Test completed. Proceding...")
 	}
 
-	// TEST: Create and schedule a fake pod on a specific node of the cluster.
-	fmt.Println("\n--- TEST #1---")
-
-	fmt.Print("Forking the snapshot... ")
-	snapshot.Fork()
-	fmt.Print("OK")
-
-	if len(nodeInfos) == 0 {
-		log.Fatalf("No nodes available in snapshot to simulate pod injection.")
-	}
-	targetNodeName := nodeInfos[0].Node().Name
-
-	fmt.Printf("\nSimulating forced placement of fake pod '%s' onto Node '%s'...\n", fakePod.Name, targetNodeName)
-	err = snapshot.ForceAddPod(fakePod, targetNodeName)
-	if err != nil {
-		log.Fatalf("Failed to force add pod to snapshot: %v", err)
-	}
-
-	updatedNodeInfo, err := snapshot.NodeInfos().Get(targetNodeName)
-	if err == nil {
-		fmt.Printf("Verified: Node '%s' now has %d pod(s) running in simulation.\n",
-			targetNodeName, len(updatedNodeInfo.GetPods()))
-	}
-
-	fmt.Print("Reverting Snapshot to Baseline... ")
-	snapshot.Revert()
-	fmt.Println("OK.")
-
-	// Verify the pod was cleanly removed by the revert operation
-	revertedNodeInfo, err := snapshot.NodeInfos().Get(targetNodeName)
-	if err == nil {
-		fmt.Printf("Verified after Revert: Node '%s' is back to %d pod(s).\n",
-			targetNodeName, len(revertedNodeInfo.GetPods()))
-	}
-
-	// TEST: FORK THE SNAPSHOT, ADD A FAKE POD, SCHEDULE IT, CHECK AND REVERT
-	fmt.Println("\n--- TEST #2---")
-
-	fmt.Printf("Simulating the scheduling of a normal fake pod '%s' in the cluster...\n", fakePod.Name)
-
-	fmt.Print("Forking the snapshot... ")
-	snapshot.Fork()
-	fmt.Println("OK")
-
-	statuses, _, err := simulator.TrySchedulePods(snapshot, []*apiv1.Pod{fakePod}, scheduling.ScheduleAnywhere, false)
-	if err != nil {
-		log.Fatalf("Scheduling simulation failed: %v", err)
-	}
-
-	if len(statuses) > 0 && statuses[0].NodeName != "" {
-		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
-	} else {
-		fmt.Println("Simulation Complete: Pod is unschedulable on current cluster capacity.")
-	}
-
-	fmt.Print("Reverting Snapshot to Baseline... ")
-	snapshot.Revert()
-	fmt.Println("OK")
-
-	// TEST: FORK THE SNAPSHOT, ADD A GIANT FAKE POD, SCHEDULE IT, CHECK AND REVERT
-	fmt.Println("\n--- TEST #3---")
-
-	fmt.Printf("Simulating the scheduling of giant fake pod '%s' in the cluster...\n", fakePod.Name)
-
-	fmt.Print("Forking the snapshot... ")
-	snapshot.Fork()
-	fmt.Println("OK")
-
-	giantPod, err := PodFromPath("pods/giant.yaml")
-	if err != nil {
-		log.Fatalf("Error loading pod: %v", err)
-	}
-
-	statuses, _, err = simulator.TrySchedulePods(snapshot, []*apiv1.Pod{giantPod}, scheduling.ScheduleAnywhere, false)
-	if err != nil {
-		log.Fatalf("Scheduling simulation failed: %v", err)
-	}
-
-	if len(statuses) > 0 && statuses[0].NodeName != "" {
-		fmt.Printf("Success! The simulator scheduled the pod onto Node: %s\n", statuses[0].NodeName)
-	} else {
-		fmt.Println("Simulation Complete: Pod is unschedulable on current cluster capacity.")
-	}
-
-	fmt.Print("Reverting Snapshot to Baseline... ")
-	snapshot.Revert()
-	fmt.Println("OK")
-}
-
-func PodFromPath(path string) (*apiv1.Pod, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("error reading pod file: %v", err)
-	}
-
-	decoder := yaml.NewYAMLOrJSONDecoder(bytes.NewReader(data), YAML_BUFFER_SIZE)
-
-	var pod apiv1.Pod
-	if err := decoder.Decode(&pod); err != nil {
-		return nil, fmt.Errorf("error decoding pod yaml: %v", err)
-	}
-
-	return &pod, nil
 }
