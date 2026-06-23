@@ -173,14 +173,21 @@ func main() {
 		}
 	}
 
-	/*
-		// Sort the evicted pods - this is necessary for bin packing during the rescheduling
-		sort.Slice(evictedPods, func(i, j int) bool {
-			reqI := snapshot.GetPodResourceRequest(evictedPods[i]) // Helper or manual aggregation
-			reqJ := snapshot.GetPodResourceRequest(evictedPods[j])
-			return reqI.MilliCPU > reqJ.MilliCPU
-		})
-	*/
+	// PERMUTATIONS GENERATION
+
+	// Permutation 1: by CPU requests, decreasing
+	podsByCPU := make([]*apiv1.Pod, len(evictedPods))
+	copy(podsByCPU, evictedPods)
+	sort.Slice(podsByCPU, func(i, j int) bool {
+		return getPodCPURequests(podsByCPU[i]) > getPodCPURequests(podsByCPU[j])
+	})
+
+	// Permutation 2: by memory requests, decreasing
+	podsByMemory := make([]*apiv1.Pod, len(evictedPods))
+	copy(podsByMemory, evictedPods)
+	sort.Slice(podsByMemory, func(i, j int) bool {
+		return getPodMemoryRequests(podsByMemory[i]) > getPodMemoryRequests(podsByMemory[j])
+	})
 
 	fmt.Printf("\n#### TESTS #####\n")
 

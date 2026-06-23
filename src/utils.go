@@ -1,6 +1,7 @@
 package main
 
 import (
+	apiv1 "k8s.io/api/core/v1"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -50,4 +51,22 @@ func isEvictable(pod *corev1.Pod) (bool, EvictionSkipReason) {
 	}
 
 	return true, ""
+}
+
+func getPodCPURequests(pod *apiv1.Pod) int64 {
+	var total int64
+	for _, c := range pod.Spec.Containers {
+		total += c.Resources.Requests.Cpu().Value()
+	}
+	return total
+	//FIXME Overflow
+}
+
+func getPodMemoryRequests(pod *apiv1.Pod) int64 {
+	var total int64
+	for _, c := range pod.Spec.Containers {
+		total += c.Resources.Requests.Memory().Value()
+	}
+	return total
+	//FIXME Overflow
 }
