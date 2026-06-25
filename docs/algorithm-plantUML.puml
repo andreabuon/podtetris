@@ -11,10 +11,10 @@ partition "Snapshot acquisition & Isolation" {
 }
 
 partition "Node selection" {
-    if (Is there at least a Node with no fixed Pods?) then (Yes)
+    if (Is there at least a Node with no user-fixed Pods?) then (Yes)
         repeat :Select a subset of Nodes in the sandbox;
         note right: e.g., the N=5 least-allocated Nodes
-        repeat while (Does the subset include at least one Node with no fixed Pods?) is (No)
+        repeat while (Does the subset include at least one Node with no user-fixed Pods?) is (No)
     else (No)
         stop
     endif
@@ -25,7 +25,7 @@ partition "Permutations generation" {
     :Virtually evict movable Pods from the selected nodes;
     note right
         The following Pods types are not evicted:
-        - Pods with "fixed" annotation
+        - Pods fixed to the Node by the user
         - kube-system Pods
         - DaemonSets
         - Jobs
