@@ -101,33 +101,35 @@ func main() {
 
 	// DISPLAY THE SNAPSHOT DATA
 
-	fmt.Println("### SNAPSHOT DATA ###")
-
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	fmt.Printf("\nThe cluster contains the following nodes:\n")
-	for _, nodeInfo := range nodeInfos {
-		fmt.Printf("- %s\n", nodeInfo.Node().Name)
-	}
+	fmt.Printf("\nThe cluster contains %d nodes.\n", len(nodeInfos))
 
-	fmt.Printf("\n--------------\n")
-
-	fmt.Printf("\nThe pods assigned to each node are:\n")
-	for _, nodeInfo := range nodeInfos {
-		node := nodeInfo.Node()
-		nodePodsInfos := nodeInfo.GetPods()
-
-		fmt.Printf("\n[Node] %s\n", node.Name)
-		for _, podInfo := range nodePodsInfos {
-			pod := podInfo.GetPod()
-			fmt.Printf("    - [Pod] %s/%s\n", pod.Namespace, pod.Name)
+	/*
+		fmt.Printf("\nThe cluster contains the following nodes:\n")
+		for _, nodeInfo := range nodeInfos {
+			fmt.Printf("- %s\n", nodeInfo.Node().Name)
 		}
-	}
 
-	fmt.Printf("\n--------------\n")
+		fmt.Printf("\n--------------\n")
+
+		fmt.Printf("\nThe pods assigned to each node are:\n")
+		for _, nodeInfo := range nodeInfos {
+			node := nodeInfo.Node()
+			nodePodsInfos := nodeInfo.GetPods()
+
+			fmt.Printf("\n[Node] %s\n", node.Name)
+			for _, podInfo := range nodePodsInfos {
+				pod := podInfo.GetPod()
+				fmt.Printf("    - [Pod] %s/%s\n", pod.Namespace, pod.Name)
+			}
+		}
+
+		fmt.Printf("\n--------------\n")
+	*/
 
 	// Selecting candidate nodes for rescheduling.
 
@@ -153,9 +155,10 @@ func main() {
 		}
 
 		fmt.Printf("\nVirtually evicting %d pods from node %s...\n", len(podsOnNode), nodeName)
+		evictedPodsNum := 0
 		for _, pod := range podsOnNode {
 			if ok, reason := isEvictable(pod); !ok {
-				fmt.Printf(" -> Skipping pod %s/%s: %s\n", pod.Namespace, pod.Name, reason)
+				fmt.Printf("  -> Skipping pod %s/%s: %s\n", pod.Namespace, pod.Name, reason)
 				continue
 			}
 
@@ -164,10 +167,12 @@ func main() {
 				fmt.Printf("Warning: Failed to virtually evict pod %s/%s: %v\n", pod.Namespace, pod.Name, err)
 				continue
 			} else {
-				fmt.Println("- Evicted Pod:", pod.Name)
+				fmt.Println("  - Evicted Pod:", pod.Name)
+				evictedPodsNum++
 			}
 			evictedPods = append(evictedPods, pod)
 		}
+		fmt.Printf("Evicted %d pods.", evictedPodsNum)
 	}
 
 	// PERMUTATIONS GENERATION
@@ -193,6 +198,8 @@ func main() {
 	// SIMULATION
 
 	simulator := scheduling.NewHintingSimulator()
+
+	fmt.Println("\n\n ### Pods schedulation simulation ### ")
 
 	for permutationIndex, orderedPods := range permutations {
 		fmt.Printf("\nTesting the permutation #%d...\n", permutationIndex)
