@@ -14,9 +14,8 @@ partition "Node selection" {
     if (Is there at least a Node with no fixed Pods?) then (Yes)
         repeat :Select a subset of Nodes in the sandbox;
         note right: e.g., the N=5 least-allocated Nodes
-    repeat while (Does the subset include at least one Node with no fixed Pods?) is (No)
+        repeat while (Does the subset include at least one Node with no fixed Pods?) is (No)
     else (No)
-        :Abort;
         stop
     endif
 }
@@ -33,13 +32,14 @@ partition "Permutations generation" {
         - Terminating Pods
         - Pods with local storage.
     end note
-    
+
     :Generate multiple Pod permutations;
     note right
-        Different strategies are possible: decreasing Request size, 
+        Different strategies are possible: decreasing Request size,
         Priority-based ordering, random, etc.
-        --
-        Pods with PodAffinity might need to be next to 
+    end note
+    note right
+        Pods with PodAffinity might need to be next to
         each other in the scheduling ordering.
     end note
 }
@@ -51,37 +51,44 @@ partition "Bin-Packing simulation" {
             :Simulate the Pod scheduling onto the WHOLE cluster;
             note right: Leveraging the Kubernetes scheduler with the MostAllocated scoring strategy
         endwhile (No)
-        
-        :Calculate the related metrics of the resulting new state;
-        note right
-            The success metric is a combination of:
-            - the number of Nodes reduced by the re-allocation
-            - the total number and cost of the pods relocation
-            
-            The cost is calculated by adding the cost of each relocated pod.
-        end note
+
+        if (Does the new cluster state contain any empty Nodes?) then (Yes)
+            :Calculate the related metrics of the resulting new state;
+            note right
+                The success metric is a combination of:
+                - the number of Nodes reduced by the re-allocation
+                - the total number and cost of the pods relocation
+                The cost is calculated by adding the cost/weight of each relocated pod.
+            end note
+            :Save the permutation result metrics;
+        else (No)
+            :Skip this permutation;
+        endif
+
     endwhile (No)
 
-    :Select the best simulated new cluster state;
+    if (Did any permutation reduce the total Nodes count?) then (Yes)
+        :Select the best simulated new cluster state;
+    else (No)
+        :No safe infrastructure cost reduction found;
+        stop
+    endif
+
 }
 
 partition "Consolidation Execution" {
-    if (Does the chosen new optimal state reduce the Node count?) then (Yes)
-        :Calculate the optimal temporal migration sequence;
+    :Calculate the optimal temporal migration sequence;
 
-        while (Are there remaining Pods to migrate in the sequence?) is (Yes)
-            :"Move" the Pod;
-            note right
-                1. Create a new Pod on the target Node
-                2. Await "Running" status
-                3. Delete the legacy Pod
-            end note
-        endwhile (No)
+    while (Are there remaining Pods to migrate in the sequence?) is (Yes)
+        :"Move" the Pod;
+        note right
+            1. Create a new Pod on the target Node
+            2. Await "Running" status
+            3. Delete the legacy Pod
+        end note
+    endwhile
 
-        :Cluster Autoscaler terminates remaining empty nodes;
-    else (No)
-        :No safe infrastructure cost reduction found;
-    endif
+    :Cluster Autoscaler terminates remaining empty nodes;
 }
 
 stop
