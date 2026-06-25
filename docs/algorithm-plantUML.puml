@@ -53,8 +53,15 @@ partition "Bin-Packing simulation" {
         endwhile (No)
 
         if (Does the new cluster state contain any empty Nodes?) then (Yes)
-            :Calculate the related metrics of the resulting new state;
             note right
+                A Node is considered Empty if it contains no user Pods.
+                The following are excluded from this check:
+                - DaemonSets
+                - Jobs / CronJobs
+                - kube-system Pods
+            endnote
+            :Calculate the related metrics of the resulting new state;
+            note left
                 The success metric is a combination of:
                 - the number of Nodes reduced by the re-allocation
                 - the total number and cost of the pods relocation
