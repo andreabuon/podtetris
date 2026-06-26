@@ -11,6 +11,7 @@ import (
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
+	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
 func main() {
@@ -54,6 +55,17 @@ func main() {
 	fmt.Printf("\nSelected %d Least-Allocated Nodes for pods consolidation:\n", CANDIDATE_NODES_NUMBER)
 	for _, ni := range candidateNodes {
 		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
+	}
+
+	oldPodAllocation := make(map[kubeframework.PodInfo]kubeframework.NodeInfo)
+	for _, nodeInfo := range candidateNodes {
+		pods := nodeInfo.GetPods()
+		if pods == nil {
+			continue
+		}
+		for _, podInfo := range pods {
+			oldPodAllocation[podInfo] = nodeInfo
+		}
 	}
 
 	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
