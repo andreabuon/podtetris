@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"sort"
 
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
@@ -59,6 +60,16 @@ func main() {
 
 	permutations := generatePermutations(evictedPods)
 
-	runSchedulingSimulation(snapshot, permutations)
+	schedulingResults := runSchedulingSimulation(snapshot, permutations)
 
+	sort.Slice(schedulingResults, func(i, j int) bool {
+		return schedulingResults[i].cost < schedulingResults[j].cost
+	})
+
+	if len(schedulingResults) >= 1 {
+		bestPermutationResult := schedulingResults[0]
+		fmt.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
+	} else {
+		fmt.Println("\n The simulation finished with no viable scheduling results.")
+	}
 }

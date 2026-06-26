@@ -12,6 +12,11 @@ import (
 	//caframework "k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 )
 
+type SchedulingResult struct {
+	permutation []*apiv1.Pod
+	cost        int
+}
+
 func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo) []kubeframework.NodeInfo {
 	sort.Slice(nodeInfos, func(i, j int) bool {
 		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
@@ -73,9 +78,11 @@ func generatePermutations(evictedPods []*apiv1.Pod) [][]*apiv1.Pod {
 	return [][]*apiv1.Pod{podsByCPU, podsByMemory}
 }
 
-func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod) {
-	simulator := scheduling.NewHintingSimulator()
+func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod) []SchedulingResult {
 	fmt.Println("\n\n ### Pods scheduling simulation ###")
+
+	simulator := scheduling.NewHintingSimulator()
+	var schedulingResults []SchedulingResult
 
 	for idx, orderedPods := range permutations {
 		fmt.Printf("\nTesting permutation #%d...\n", idx)
@@ -92,7 +99,13 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			}
 		}
 
-		fmt.Printf("Success! All pods scheduled successfully for permutation #%d\n", idx)
+		fmt.Printf("Success! All pods have been scheduled successfully for permutation #%d\n", idx)
+		result := SchedulingResult{
+			permutation: orderedPods,
+			cost:        100, //TODO calculate this
+		}
+		schedulingResults = append(schedulingResults, result)
 		snapshot.Revert()
 	}
+	return schedulingResults
 }
