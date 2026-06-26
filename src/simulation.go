@@ -139,12 +139,12 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 
 		fmt.Printf("Success! All pods have been scheduled successfully for permutation #%d\n", idx)
 
-		emptyNodesNum := 0
+		emptyNodesNum := 0 //FIXME this should be calculated
 		result := SchedulingResult{
 			permutation:   orderedPods,
 			emptyNodesNum: emptyNodesNum,
 			cost:          permutationCost,
-			score:         (EMPTY_NODES_SCORE_WEIGHT * emptyNodesNum) - (COST_SCORE_WEIGHT*permutationCost)/(EMPTY_NODES_SCORE_WEIGHT+COST_SCORE_WEIGHT),
+			score:         (EMPTY_NODES_SCORE_WEIGHT * emptyNodesNum) - (COST_SCORE_WEIGHT * permutationCost),
 		}
 		schedulingResults = append(schedulingResults, result)
 		snapshot.Revert()
