@@ -7,7 +7,6 @@ import (
 	"sort"
 
 	apiv1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
@@ -38,27 +37,8 @@ func main() {
 	// CREATE THE CLUSTER STATE SNAPSHOT
 
 	fmt.Println("Reading live state from active Kubernetes cluster...")
-	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{
-		LabelSelector: "!node-role.kubernetes.io/control-plane",
-	})
-	if err != nil {
-		log.Fatalf("API Error fetching active cluster nodes: %v", err)
-	}
-	pods, err := clientset.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
-	if err != nil {
-		log.Fatalf("API Error fetching active cluster pods: %v", err)
-	}
-	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodes.Items), len(pods.Items))
-
-	// Create pointer slices for the Autoscaler's SetClusterState function.
-	nodesPointers := make([]*apiv1.Node, len(nodes.Items))
-	for i := range nodes.Items {
-		nodesPointers[i] = &nodes.Items[i]
-	}
-	podsPointers := make([]*apiv1.Pod, len(pods.Items))
-	for i := range pods.Items {
-		podsPointers[i] = &pods.Items[i]
-	}
+	nodesPointers, podsPointers := fetchClusterState(ctx, clientset)
+	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodesPointers), len(podsPointers))
 
 	snapshotStore := store.NewDeltaSnapshotStore(PARALLELISM)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, PARALLELISM, false)
@@ -67,37 +47,12 @@ func main() {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
 	}
 
-	// DISPLAY THE SNAPSHOT DATA
-
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
 	fmt.Printf("\nThe cluster contains %d nodes.\n", len(nodeInfos))
-
-	/*
-		fmt.Printf("\nThe cluster contains the following nodes:\n")
-		for _, nodeInfo := range nodeInfos {
-			fmt.Printf("- %s\n", nodeInfo.Node().Name)
-		}
-
-		fmt.Printf("\n--------------\n")
-
-		fmt.Printf("\nThe pods assigned to each node are:\n")
-		for _, nodeInfo := range nodeInfos {
-			node := nodeInfo.Node()
-			nodePodsInfos := nodeInfo.GetPods()
-
-			fmt.Printf("\n[Node] %s\n", node.Name)
-			for _, podInfo := range nodePodsInfos {
-				pod := podInfo.GetPod()
-				fmt.Printf("    - [Pod] %s/%s\n", pod.Namespace, pod.Name)
-			}
-		}
-
-		fmt.Printf("\n--------------\n")
-	*/
 
 	// Selecting candidate nodes for rescheduling.
 
