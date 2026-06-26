@@ -13,8 +13,10 @@ import (
 )
 
 type SchedulingResult struct {
-	permutation []*apiv1.Pod
-	cost        int
+	permutation   []*apiv1.Pod
+	emptyNodesNum int
+	cost          int
+	score         int
 }
 
 func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo) []kubeframework.NodeInfo {
@@ -100,9 +102,14 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		}
 
 		fmt.Printf("Success! All pods have been scheduled successfully for permutation #%d\n", idx)
+
+		emptyNodesNum := 0
+		cost := 100 //TODO calculate this
 		result := SchedulingResult{
-			permutation: orderedPods,
-			cost:        100, //TODO calculate this
+			permutation:   orderedPods,
+			emptyNodesNum: emptyNodesNum,
+			cost:          cost,
+			score:         (EMPTY_NODES_SCORE_WEIGHT * emptyNodesNum) - (COST_SCORE_WEIGHT*cost)/EMPTY_NODES_SCORE_WEIGHT + COST_SCORE_WEIGHT,
 		}
 		schedulingResults = append(schedulingResults, result)
 		snapshot.Revert()

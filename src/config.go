@@ -12,9 +12,12 @@ import (
 )
 
 const (
-	SCHEDULER_CONFIG_PATH  = "scheduler-config.yaml"
-	CANDIDATE_NODES_NUMBER = 5
-	PARALLELISM            = 8
+	SCHEDULER_CONFIG_PATH        = "scheduler-config.yaml"
+	CANDIDATE_NODES_NUMBER       = 5
+	PARALLELISM                  = 8
+	EMPTY_NODES_SCORE_WEIGHT     = 100
+	COST_SCORE_WEIGHT            = 100
+	AUTO_CONSOLIDATION_THRESHOLD = 12345
 )
 
 func loadKubeConfig() *rest.Config {

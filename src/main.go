@@ -63,13 +63,18 @@ func main() {
 	schedulingResults := runSchedulingSimulation(snapshot, permutations)
 
 	sort.Slice(schedulingResults, func(i, j int) bool {
-		return schedulingResults[i].cost < schedulingResults[j].cost
+		return schedulingResults[i].score > schedulingResults[j].score
 	})
 
-	if len(schedulingResults) >= 1 {
-		bestPermutationResult := schedulingResults[0]
-		fmt.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
-	} else {
+	if len(schedulingResults) < 1 {
 		fmt.Println("\n The simulation finished with no viable scheduling results.")
+		return
+	}
+	bestPermutationResult := schedulingResults[0]
+	fmt.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
+
+	if bestPermutationResult.score > AUTO_CONSOLIDATION_THRESHOLD {
+		fmt.Printf("Auto applying consolidation...")
+		//executeConsolidation()
 	}
 }
