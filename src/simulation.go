@@ -109,7 +109,7 @@ func generatePermutations(evictedPods []*apiv1.Pod) [][]*apiv1.Pod {
 	return [][]*apiv1.Pod{podsByCPU, podsByMemory}
 }
 
-func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, previousPodAllocations map[string]kubeframework.NodeInfo) []SchedulingResult {
+func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, previousPodAllocations map[string]string) []SchedulingResult {
 	fmt.Println("\n\n ### Pods scheduling simulation ###")
 
 	simulator := scheduling.NewHintingSimulator()
@@ -132,7 +132,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			}
 
 			podKey := fmt.Sprintf("%s/%s", status.Pod.Namespace, status.Pod.Name)
-			if status.NodeName != previousPodAllocations[podKey].Node().Name {
+			if status.NodeName != previousPodAllocations[podKey] {
 				permutationCost += POD_MOVE_COST
 			}
 		}

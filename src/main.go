@@ -48,30 +48,15 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
-	fmt.Printf("\nThe cluster contains %d nodes.\n", len(nodeInfos))
 
 	candidateNodes := selectCandidateNodes(nodeInfos)
 
-	fmt.Printf("\nSelected %d Least-Allocated Nodes for pods consolidation:\n", CANDIDATE_NODES_NUMBER)
+	fmt.Printf("\nSelected %d Least-Allocated Nodes for Pods consolidation:\n", CANDIDATE_NODES_NUMBER)
 	for _, ni := range candidateNodes {
 		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
 	}
 
-	previousPodAllocations := make(map[string]kubeframework.NodeInfo)
-	for _, nodeInfo := range candidateNodes {
-		pods := nodeInfo.GetPods()
-		if pods == nil {
-			continue
-		}
-		for _, podInfo := range pods {
-			pod := podInfo.GetPod()
-			if pod == nil {
-				continue
-			}
-			mapKey := fmt.Sprintf("%s/%s", pod.Namespace, pod.Name)
-			previousPodAllocations[mapKey] = nodeInfo
-		}
-	}
+	previousPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
 
@@ -94,4 +79,23 @@ func main() {
 		fmt.Printf("Auto applying consolidation...")
 		//executeConsolidation()
 	}
+}
+
+func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[string]string {
+	previousPodAllocations := make(map[string]string)
+	for _, nodeInfo := range candidateNodes {
+		pods := nodeInfo.GetPods()
+		if pods == nil {
+			continue
+		}
+		for _, podInfo := range pods {
+			pod := podInfo.GetPod()
+			if pod == nil {
+				continue
+			}
+			mapKey := fmt.Sprintf("%s/%s", pod.Namespace, pod.Name)
+			previousPodAllocations[mapKey] = nodeInfo.Node().Name
+		}
+	}
+	return previousPodAllocations
 }
