@@ -31,8 +31,6 @@ func main() {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
 
-	// CREATE THE CLUSTER STATE SNAPSHOT
-
 	fmt.Println("Reading live state from active Kubernetes cluster...")
 	nodesPointers, podsPointers := fetchClusterState(ctx, clientset)
 	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodesPointers), len(podsPointers))
@@ -52,7 +50,6 @@ func main() {
 
 	candidateNodes := selectCandidateNodes(nodeInfos)
 
-	// Evict pods from candidate nodes
 	fmt.Printf("\nSelected %d Least-Allocated Nodes for pods consolidation:\n", CANDIDATE_NODES_NUMBER)
 	for _, ni := range candidateNodes {
 		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
