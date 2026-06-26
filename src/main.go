@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"path/filepath"
 	"sort"
 
 	apiv1 "k8s.io/api/core/v1"
@@ -13,54 +12,23 @@ import (
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
-	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
-	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
 	"k8s.io/klog/v2"
 )
 
-const SCHEDULER_CONFIG_PATH = "scheduler-config.yaml"
-const CANDIDATE_NODES_NUMBER = 5
-
-const PARALLELISM = 8
-const YAML_BUFFER_SIZE = 4096
-
 func main() {
 	klog.InitFlags(nil)
+	ctx := context.Background()
 
-	kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
-	if err != nil {
-		log.Fatalf("Error loading local kubeconfig: %v", err)
-	}
+	kubeconfig := loadKubeConfig()
+	schedulerConfig := loadSchedulerConfig()
 
-	clientset, err := kubernetes.NewForConfig(config)
+	clientset, err := kubernetes.NewForConfig(kubeconfig)
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
-	schedulerConfig, err := cascheduler.ConfigFromPath(SCHEDULER_CONFIG_PATH)
-	if err != nil {
-		log.Fatalf("Error loading scheduler config: %v", err)
-	}
-
-	ctx := context.Background()
-	informerFactory := informers.NewSharedInformerFactoryWithOptions(
-		clientset,
-		0,
-		informers.WithTweakListOptions(func(options *metav1.ListOptions) {
-			options.LabelSelector = "!node-role.kubernetes.io/control-plane"
-		}),
-	)
-	informerFactory.Start(ctx.Done())
-
-	for _, synced := range informerFactory.WaitForCacheSync(ctx.Done()) {
-		if !synced {
-			log.Fatalf("Informer caches failed to sync")
-		}
-	}
+	informerFactory := initInformerFactory(ctx, clientset)
 
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
 	if err != nil {
