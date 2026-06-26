@@ -18,6 +18,7 @@ const (
 	EMPTY_NODES_SCORE_WEIGHT     = 100
 	COST_SCORE_WEIGHT            = 100
 	AUTO_CONSOLIDATION_THRESHOLD = 12345
+	POD_MOVE_COST                = 10
 )
 
 func loadKubeConfig() *rest.Config {

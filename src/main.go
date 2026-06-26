@@ -57,14 +57,19 @@ func main() {
 		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
 	}
 
-	oldPodAllocation := make(map[kubeframework.PodInfo]kubeframework.NodeInfo)
+	previousPodAllocations := make(map[string]kubeframework.NodeInfo)
 	for _, nodeInfo := range candidateNodes {
 		pods := nodeInfo.GetPods()
 		if pods == nil {
 			continue
 		}
 		for _, podInfo := range pods {
-			oldPodAllocation[podInfo] = nodeInfo
+			pod := podInfo.GetPod()
+			if pod == nil {
+				continue
+			}
+			mapKey := fmt.Sprintf("%s/%s", pod.Namespace, pod.Name)
+			previousPodAllocations[mapKey] = nodeInfo
 		}
 	}
 
@@ -72,7 +77,7 @@ func main() {
 
 	permutations := generatePermutations(evictedPods)
 
-	schedulingResults := runSchedulingSimulation(snapshot, permutations)
+	schedulingResults := runSchedulingSimulation(snapshot, permutations, previousPodAllocations)
 
 	sort.Slice(schedulingResults, func(i, j int) bool {
 		return schedulingResults[i].score > schedulingResults[j].score
