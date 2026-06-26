@@ -19,15 +19,44 @@ type SchedulingResult struct {
 	score         int
 }
 
+func AllContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
+	if len(nodeInfos) == 0 {
+		return false
+	}
+
+	for _, nodeInfo := range nodeInfos {
+		foundFixedInCurrentNode := false
+		for _, podInfo := range nodeInfo.GetPods() {
+			pod := podInfo.GetPod()
+			if pod == nil {
+				continue
+			}
+
+			if annotationValue, ok := pod.Annotations[AnnotationFixed]; ok && annotationValue == "true" {
+				foundFixedInCurrentNode = true
+				break
+			}
+		}
+		if !foundFixedInCurrentNode {
+			return false
+		}
+	}
+	return true
+}
+
 func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo) []kubeframework.NodeInfo {
 	sort.Slice(nodeInfos, func(i, j int) bool {
 		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
 	})
 
-	if len(nodeInfos) < CANDIDATE_NODES_NUMBER {
-		return nodeInfos
+	candidateNodes := nodeInfos[:CANDIDATE_NODES_NUMBER]
+
+	if !AllContainFixedPods(candidateNodes) {
+		return candidateNodes
+	} else {
+		//TODO select other nodes.
+		return nil
 	}
-	return nodeInfos[:CANDIDATE_NODES_NUMBER]
 }
 
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
