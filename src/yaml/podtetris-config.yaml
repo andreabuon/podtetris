@@ -1,0 +1,24 @@
+piVersion: v1
+kind: Namespace
+metadata:
+  name: podtetris
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: podtetris-config
+  namespace: podtetris
+data:
+  config.yaml: |
+    candidateNodesNumber: 5
+    parallelism: 8
+    emptyNodesScoreWeight: 100
+    costScoreWeight: 100
+    autoConsolidationScoreThreshold: 12345
+    podMoveCost: 10
+    candidateNodesSelectionMaxRetries: 15
+    fixedPodAnnotation: "reply.com/podtetris/fixed"
+    enabledPermutationStrategies:
+      - cpu_desc
+      - memory_desc
+      - random

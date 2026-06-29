@@ -33,7 +33,7 @@ func isEvictable(pod *corev1.Pod) (bool, EvictionSkipReason) {
 		}
 	}
 
-	if val, ok := pod.Annotations[FIXED_POD_ANNOTATION]; ok && val == "true" {
+	if val, ok := pod.Annotations[Config.FixedPodAnnotation]; ok && val == "true" {
 		return false, SkipFixed
 	}
 

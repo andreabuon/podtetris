@@ -34,7 +34,7 @@ func AllContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
 				continue
 			}
 
-			if annotationValue, ok := pod.Annotations[FIXED_POD_ANNOTATION]; ok && annotationValue == "true" {
+			if annotationValue, ok := pod.Annotations[Config.FixedPodAnnotation]; ok && annotationValue == "true" {
 				foundFixedInCurrentNode = true
 				break
 			}
@@ -83,7 +83,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) ([
 			return candidateNodes, nil
 		}
 
-		if attemptNum >= CANDIDATE_NODES_SELECTION_MAX_RETRIES {
+		if attemptNum >= Config.CandidateNodesSelectionMaxRetries {
 			return nil, errors.New("Max candidate nodes selection retries reached")
 		}
 	}
@@ -150,7 +150,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 
 			podKey := fmt.Sprintf("%s/%s", status.Pod.Namespace, status.Pod.Name)
 			if status.NodeName != previousPodAllocations[podKey] {
-				permutationCost += POD_MOVE_COST
+				permutationCost += Config.PodMoveCost
 			}
 		}
 		if scheduleFailed {
@@ -170,7 +170,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			permutation:   orderedPods,
 			emptyNodesNum: emptyNodesNum,
 			cost:          permutationCost,
-			score:         (EMPTY_NODES_SCORE_WEIGHT * emptyNodesNum) - (COST_SCORE_WEIGHT * permutationCost),
+			score:         (Config.EmptyNodesScoreWeight * emptyNodesNum) - (Config.EmptyNodesScoreWeight * permutationCost),
 		}
 		schedulingResults = append(schedulingResults, result)
 

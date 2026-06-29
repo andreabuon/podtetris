@@ -14,6 +14,8 @@ import (
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
+var Config AppConfig
+
 func main() {
 	klog.InitFlags(nil)
 	ctx := context.Background()
@@ -23,6 +25,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
+
+	Config = loadAppConfig(ctx, clientset)
 
 	informerFactory := initInformerFactory(ctx, clientset)
 	schedulerConfig := loadSchedulerConfig()
@@ -35,8 +39,8 @@ func main() {
 	nodesPointers, podsPointers := fetchClusterState(ctx, clientset)
 	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodesPointers), len(podsPointers))
 
-	snapshotStore := store.NewDeltaSnapshotStore(PARALLELISM)
-	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, PARALLELISM, false)
+	snapshotStore := store.NewDeltaSnapshotStore(Config.Parallelism)
+	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, false)
 	err = snapshot.SetClusterState(nodesPointers, podsPointers, nil, nil)
 	if err != nil {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
@@ -47,12 +51,12 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes, err := selectCandidateNodes(nodeInfos, CANDIDATE_NODES_NUMBER)
+	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.CandidateNodesNumber)
 	if err != nil {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	fmt.Printf("\nSelected %d Least-Allocated Nodes for Pods consolidation:\n", CANDIDATE_NODES_NUMBER)
+	fmt.Printf("\nSelected %d Least-Allocated Nodes for Pods consolidation:\n", Config.CandidateNodesNumber)
 	for _, ni := range candidateNodes {
 		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
 	}
@@ -76,7 +80,7 @@ func main() {
 	bestPermutationResult := schedulingResults[0]
 	fmt.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
 
-	if bestPermutationResult.score > AUTO_CONSOLIDATION_THRESHOLD {
+	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
 		fmt.Printf("Auto applying consolidation...")
 		//executeConsolidation()
 	}
