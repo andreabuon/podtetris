@@ -85,18 +85,13 @@ func main() {
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[string]string {
-	previousPodAllocations := make(map[string]string)
+	previousPodAllocations := make(map[string]string, len(candidateNodes))
+
 	for _, nodeInfo := range candidateNodes {
 		pods := nodeInfo.GetPods()
-		if pods == nil {
-			continue
-		}
 		for _, podInfo := range pods {
 			pod := podInfo.GetPod()
-			if pod == nil {
-				continue
-			}
-			mapKey := fmt.Sprintf("%s/%s", pod.Namespace, pod.Name)
+			mapKey := pod.Namespace + "/" + pod.Name
 			previousPodAllocations[mapKey] = nodeInfo.Node().Name
 		}
 	}
