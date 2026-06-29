@@ -19,15 +19,13 @@ func main() {
 	ctx := context.Background()
 
 	kubeconfig := loadKubeConfig()
-	schedulerConfig := loadSchedulerConfig()
-
 	clientset, err := kubernetes.NewForConfig(kubeconfig)
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
 	informerFactory := initInformerFactory(ctx, clientset)
-
+	schedulerConfig := loadSchedulerConfig()
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
 	if err != nil {
 		log.Fatalf("Error creating framework handle: %v", err)

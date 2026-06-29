@@ -20,6 +20,7 @@ const (
 	AUTO_CONSOLIDATION_THRESHOLD          = 12345
 	POD_MOVE_COST                         = 10
 	CANDIDATE_NODES_SELECTION_MAX_RETRIES = 15
+	FIXED_POD_ANNOTATION                  = "reply.com/podtetris/fixed"
 )
 
 func loadKubeConfig() *rest.Config {

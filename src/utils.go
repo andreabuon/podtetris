@@ -5,8 +5,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-const AnnotationFixed = "reply.com/podtetris/fixed"
-
 // EvictionSkipReason describes why a pod was not evicted
 type EvictionSkipReason string
 
@@ -35,7 +33,7 @@ func isEvictable(pod *corev1.Pod) (bool, EvictionSkipReason) {
 		}
 	}
 
-	if val, ok := pod.Annotations[AnnotationFixed]; ok && val == "true" {
+	if val, ok := pod.Annotations[FIXED_POD_ANNOTATION]; ok && val == "true" {
 		return false, SkipFixed
 	}
 

@@ -34,7 +34,7 @@ func AllContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
 				continue
 			}
 
-			if annotationValue, ok := pod.Annotations[AnnotationFixed]; ok && annotationValue == "true" {
+			if annotationValue, ok := pod.Annotations[FIXED_POD_ANNOTATION]; ok && annotationValue == "true" {
 				foundFixedInCurrentNode = true
 				break
 			}
