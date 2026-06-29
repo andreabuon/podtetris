@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"sort"
+	"strconv"
 
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot"
@@ -150,7 +151,13 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 
 			podKey := fmt.Sprintf("%s/%s", status.Pod.Namespace, status.Pod.Name)
 			if status.NodeName != previousPodAllocations[podKey] {
-				permutationCost += Config.PodMoveCost
+				podMoveCost := Config.PodMoveCost //default value
+				if annotationValue, ok := status.Pod.Annotations[Config.PodMoveCostAnnotation]; ok {
+					if customCost, err := strconv.Atoi(annotationValue); err == nil {
+						podMoveCost = customCost
+					}
+				}
+				permutationCost += podMoveCost
 			}
 		}
 		if scheduleFailed {

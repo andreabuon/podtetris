@@ -34,6 +34,7 @@ type AppConfig struct {
 	PodMoveCost                       int      `yaml:"podMoveCost"`
 	CandidateNodesSelectionMaxRetries int      `yaml:"candidateNodesSelectionMaxRetries"`
 	FixedPodAnnotation                string   `yaml:"fixedPodAnnotation"`
+	PodMoveCostAnnotation             string   `yaml:"podMoveCostAnnotation"`
 	EnabledPermutationStrategies      []string `yaml:"enabledPermutationStrategies"`
 }
 
