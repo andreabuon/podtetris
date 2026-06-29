@@ -26,21 +26,3 @@ spec:
           limits:
             memory: "64Mi"
             cpu: "100m"
-      nodeSelector:
-        disk: hdd
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          # Do not schedule backup workers on the same node as the database pods
-          - labelSelector:
-              matchLabels:
-                app: db
-            topologyKey: "kubernetes.io/hostname"
-      topologySpreadConstraints:
-        - maxSkew: 1
-          # Spread the backup workers among the different zones
-          topologyKey: "topology.kubernetes.io/zone"
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app: backup
