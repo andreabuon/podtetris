@@ -146,19 +146,24 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 	var schedulingResults []SchedulingResult
 
 	for idx, orderedPods := range permutations {
-		permutationCost := 0
-
 		fmt.Printf("\nTesting permutation #%d...\n", idx)
+
 		snapshot.Fork()
+		permutationCost := 0
 
 		statuses, _, err := simulator.TrySchedulePods(snapshot, orderedPods, scheduling.ScheduleAnywhere, true)
 		if err != nil {
-			log.Fatalf("Error during scheduling simulation of permutation #%d: %v", idx, err)
+			log.Printf("Error during scheduling simulation of permutation #%d: %v", idx, err)
+			snapshot.Revert()
+			continue
 		}
 
+		scheduleFailed := false
 		for _, status := range statuses {
 			if status.NodeName == "" {
-				log.Fatalf("Error during simulation: pod could not be scheduled in permutation #%d!", idx)
+				log.Printf("Error during simulation: pod could not be scheduled in permutation #%d!", idx)
+				scheduleFailed = true
+				break
 			}
 
 			podKey := fmt.Sprintf("%s/%s", status.Pod.Namespace, status.Pod.Name)
@@ -166,11 +171,16 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 				permutationCost += POD_MOVE_COST
 			}
 		}
+		if scheduleFailed {
+			snapshot.Revert()
+			continue
+		}
 
 		fmt.Printf("Success! All pods have been scheduled successfully for permutation #%d\n", idx)
 
 		emptyNodesNum := 0 //FIXME this should be calculated
 		if emptyNodesNum <= 0 {
+			snapshot.Revert()
 			continue
 		}
 
