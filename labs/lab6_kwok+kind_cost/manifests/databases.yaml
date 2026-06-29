@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+spec:
+  replicas: 2 # One per zone?
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+      annotations:
+        podtetris/fixed: "no"
+        podtetris/moveCost: "75"
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      # The database needs to be on a node with fast storage
+      nodeSelector:
+        disk: nvme
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          # Do not schedule multiple database pods on the same node
+          - labelSelector:
+              matchLabels:
+                app: db
+            topologyKey: "kubernetes.io/hostname"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          # Spread the database pods among the different zones
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: db
