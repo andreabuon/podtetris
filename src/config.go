@@ -12,13 +12,14 @@ import (
 )
 
 const (
-	SCHEDULER_CONFIG_PATH        = "scheduler-config.yaml"
-	CANDIDATE_NODES_NUMBER       = 5
-	PARALLELISM                  = 8
-	EMPTY_NODES_SCORE_WEIGHT     = 100
-	COST_SCORE_WEIGHT            = 100
-	AUTO_CONSOLIDATION_THRESHOLD = 12345
-	POD_MOVE_COST                = 10
+	SCHEDULER_CONFIG_PATH                 = "scheduler-config.yaml"
+	CANDIDATE_NODES_NUMBER                = 5
+	PARALLELISM                           = 8
+	EMPTY_NODES_SCORE_WEIGHT              = 100
+	COST_SCORE_WEIGHT                     = 100
+	AUTO_CONSOLIDATION_THRESHOLD          = 12345
+	POD_MOVE_COST                         = 10
+	CANDIDATE_NODES_SELECTION_MAX_RETRIES = 15
 )
 
 func loadKubeConfig() *rest.Config {

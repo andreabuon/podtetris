@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"sort"
 
 	apiv1 "k8s.io/api/core/v1"
@@ -44,18 +45,47 @@ func AllContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
 	return true
 }
 
-func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo) []kubeframework.NodeInfo {
-	sort.Slice(nodeInfos, func(i, j int) bool {
-		return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
-	})
-
-	candidateNodes := nodeInfos[:CANDIDATE_NODES_NUMBER]
-
-	if !AllContainFixedPods(candidateNodes) {
-		return candidateNodes
-	} else {
-		//TODO select other nodes.
+func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) []kubeframework.NodeInfo {
+	if nodeInfos == nil {
 		return nil
+	}
+
+	if len(nodeInfos) <= nodesToGet {
+		if !AllContainFixedPods(nodeInfos) {
+			return nodeInfos
+		}
+		fmt.Println("The cluster environment entirely blocked by fixed pods.")
+		return nil
+	}
+
+	// TODO add multiple ways to select the nodes
+	sort.Slice(
+		nodeInfos,
+		func(i, j int) bool {
+			return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
+		})
+
+	var candidateNodes []kubeframework.NodeInfo
+
+	attemptNum := 0
+	for {
+		candidateNodes = nil
+		attemptNum++
+
+		randomIndices := rand.Perm(len(nodeInfos))
+		for i := 0; i < nodesToGet; i++ {
+			randomIndex := randomIndices[i]
+			candidateNodes = append(candidateNodes, nodeInfos[randomIndex])
+		}
+
+		if !AllContainFixedPods(candidateNodes) {
+			return candidateNodes
+		}
+
+		if attemptNum >= CANDIDATE_NODES_SELECTION_MAX_RETRIES {
+			fmt.Printf("Warning: Max selection retries (%d) reached without finding a zero-fixed-pod nodes set\n", CANDIDATE_NODES_SELECTION_MAX_RETRIES)
+			return nil
+		}
 	}
 }
 

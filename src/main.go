@@ -49,7 +49,7 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes := selectCandidateNodes(nodeInfos)
+	candidateNodes := selectCandidateNodes(nodeInfos, CANDIDATE_NODES_NUMBER)
 
 	fmt.Printf("\nSelected %d Least-Allocated Nodes for Pods consolidation:\n", CANDIDATE_NODES_NUMBER)
 	for _, ni := range candidateNodes {
