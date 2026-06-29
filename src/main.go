@@ -73,6 +73,11 @@ func main() {
 		return schedulingResults[i].score > schedulingResults[j].score
 	})
 
+	fmt.Println("\nScheduling results:")
+	for index, result := range schedulingResults {
+		fmt.Printf("Result #%d: cost %d  \n", index, result.cost)
+	}
+
 	if len(schedulingResults) < 1 {
 		fmt.Println("\n The simulation finished with no viable scheduling results.")
 		return

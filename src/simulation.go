@@ -157,7 +157,10 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 						podMoveCost = customCost
 					}
 				}
+				fmt.Printf("- [Pod: %s] Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
 				permutationCost += podMoveCost
+			} else {
+				fmt.Printf("- [Pod: %s] No cost added - pod has been re-assigned to the same node.\n", status.Pod.Name)
 			}
 		}
 		if scheduleFailed {
@@ -168,10 +171,12 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		fmt.Printf("Success! All pods have been scheduled successfully for permutation #%d\n", idx)
 
 		emptyNodesNum := 0 //FIXME this should be calculated
-		if emptyNodesNum <= 0 {
-			snapshot.Revert()
-			continue
-		}
+		/*
+			if emptyNodesNum <= 0 {
+				snapshot.Revert()
+				continue
+			}
+		*/
 
 		result := SchedulingResult{
 			permutation:   orderedPods,
