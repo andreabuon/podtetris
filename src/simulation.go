@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -45,17 +46,17 @@ func AllContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
 	return true
 }
 
-func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) []kubeframework.NodeInfo {
+func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
-		return nil
+		return nil, errors.New("No available candidate nodes")
+	}
+
+	if AllContainFixedPods(nodeInfos) {
+		return nil, errors.New("Every node in the cluster contains fixed pods")
 	}
 
 	if len(nodeInfos) <= nodesToGet {
-		if !AllContainFixedPods(nodeInfos) {
-			return nodeInfos
-		}
-		fmt.Println("The cluster environment entirely blocked by fixed pods.")
-		return nil
+		return nodeInfos, nil
 	}
 
 	// TODO add multiple ways to select the nodes
@@ -79,12 +80,11 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) []
 		}
 
 		if !AllContainFixedPods(candidateNodes) {
-			return candidateNodes
+			return candidateNodes, nil
 		}
 
 		if attemptNum >= CANDIDATE_NODES_SELECTION_MAX_RETRIES {
-			fmt.Printf("Warning: Max selection retries (%d) reached without finding a zero-fixed-pod nodes set\n", CANDIDATE_NODES_SELECTION_MAX_RETRIES)
-			return nil
+			return nil, errors.New("Max candidate nodes selection retries reached")
 		}
 	}
 }

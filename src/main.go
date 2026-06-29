@@ -49,7 +49,10 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes := selectCandidateNodes(nodeInfos, CANDIDATE_NODES_NUMBER)
+	candidateNodes, err := selectCandidateNodes(nodeInfos, CANDIDATE_NODES_NUMBER)
+	if err != nil {
+		log.Fatalf("Error during the candidate nodes selection: %v", err)
+	}
 
 	fmt.Printf("\nSelected %d Least-Allocated Nodes for Pods consolidation:\n", CANDIDATE_NODES_NUMBER)
 	for _, ni := range candidateNodes {
