@@ -121,24 +121,6 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func generatePermutations(evictedPods []*apiv1.Pod) [][]*apiv1.Pod {
-	// Permutation 1: CPU requests decreasing
-	podsByCPU := make([]*apiv1.Pod, len(evictedPods))
-	copy(podsByCPU, evictedPods)
-	sort.Slice(podsByCPU, func(i, j int) bool {
-		return getPodCPURequests(podsByCPU[i]) > getPodCPURequests(podsByCPU[j])
-	})
-
-	// Permutation 2: Memory requests decreasing
-	podsByMemory := make([]*apiv1.Pod, len(evictedPods))
-	copy(podsByMemory, evictedPods)
-	sort.Slice(podsByMemory, func(i, j int) bool {
-		return getPodMemoryRequests(podsByMemory[i]) > getPodMemoryRequests(podsByMemory[j])
-	})
-
-	return [][]*apiv1.Pod{podsByCPU, podsByMemory}
-}
-
 func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, previousPodAllocations map[string]string) []SchedulingResult {
 	fmt.Println("\n\n ### Pods scheduling simulation ###")
 

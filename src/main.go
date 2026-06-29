@@ -61,7 +61,7 @@ func main() {
 
 	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
 
-	permutations := generatePermutations(evictedPods)
+	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERTATION_STRATEGIES)
 
 	schedulingResults := runSchedulingSimulation(snapshot, permutations, previousPodAllocations)
 

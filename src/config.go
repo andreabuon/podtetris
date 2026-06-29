@@ -23,6 +23,12 @@ const (
 	FIXED_POD_ANNOTATION                  = "reply.com/podtetris/fixed"
 )
 
+var ENABLED_PERMUTATION_GENERTATION_STRATEGIES = []string{
+	"cpu_desc",
+	"memory_desc",
+	"random",
+}
+
 func loadKubeConfig() *rest.Config {
 	kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
