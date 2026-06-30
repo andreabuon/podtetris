@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"sort"
 	"strconv"
 
 	apiv1 "k8s.io/api/core/v1"
@@ -60,11 +59,13 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) ([
 	}
 
 	// TODO add multiple ways to select the nodes
-	sort.Slice(
-		nodeInfos,
-		func(i, j int) bool {
-			return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
-		})
+	/*
+		sort.Slice(
+			nodeInfos,
+			func(i, j int) bool {
+				return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
+			})
+	*/
 
 	var candidateNodes []kubeframework.NodeInfo
 

@@ -11,3 +11,8 @@ profiles:
                 weight: 1
               - name: memory
                 weight: 1
+    plugins:
+      score:
+        enabled:
+          - name: NodeResourcesFit
+            weight: 500
