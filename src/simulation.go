@@ -126,10 +126,12 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int) []SchedulingResult {
 	fmt.Println("\n\n ### Pods scheduling simulation ###")
 
-	simulator := scheduling.NewHintingSimulator()
 	var schedulingResults []SchedulingResult
 
 	for idx, orderedPods := range permutations {
+		simulator := scheduling.NewHintingSimulator()
+		//simulator.DropOldHints()
+
 		fmt.Printf("\nTesting permutation #%d...\n", idx)
 
 		snapshot.Fork()
