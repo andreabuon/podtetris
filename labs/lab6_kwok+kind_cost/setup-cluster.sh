@@ -31,13 +31,13 @@ kubectl wait --for=condition=Ready nodes --all --timeout=60s
 
 ### KWOK ###
  
-helm repo add kwok https://kwok.sigs.k8s.io/charts/
-helm upgrade --namespace kube-system --install kwok kwok/kwok
-helm upgrade --install kwok kwok/stage-fast
-# helm upgrade --install kwok kwok/metrics-usage
+#helm repo add kwok https://kwok.sigs.k8s.io/charts/
+#helm upgrade --namespace kube-system --install kwok kwok/kwok
+#helm upgrade --install kwok kwok/stage-fast
+#helm upgrade --install kwok kwok/metrics-usage
 
 ## Create fake kwok nodes
-helm install kwok-nodes-provisioner charts/kwok-nodes-provisioner/
+#helm install kwok-nodes-provisioner charts/kwok-nodes-provisioner/
 
 kubectl apply -f manifests/databases.yaml
 kubectl apply -f manifests/fake-backups.yaml

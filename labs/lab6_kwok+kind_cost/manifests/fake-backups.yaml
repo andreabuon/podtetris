@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backup-worker
 spec:
-  replicas: 4 #2 per zone?
+  replicas: 3
   selector:
     matchLabels:
       app: backup

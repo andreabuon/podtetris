@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: database
 spec:
-  replicas: 2 # One per zone?
+  replicas: 7
   selector:
     matchLabels:
       app: db
