@@ -123,89 +123,74 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int) []SchedulingResult {
-	fmt.Println("\n\n ### Pods scheduling simulation ###")
+func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutation []*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int) (*SchedulingResult, error) {
+	simulator := scheduling.NewHintingSimulator()
+	//simulator.DropOldHints()
+	snapshot.Fork()
 
-	var schedulingResults []SchedulingResult
+	permutationCost := 0
 
-	for idx, orderedPods := range permutations {
-		simulator := scheduling.NewHintingSimulator()
-		//simulator.DropOldHints()
+	statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
+	if err != nil {
+		fmt.Printf("Error during scheduling simulation: %v", err)
+		snapshot.Revert()
+		return nil, err
+	}
 
-		fmt.Printf("\nTesting permutation #%d...\n", idx)
-
-		snapshot.Fork()
-		permutationCost := 0
-
-		statuses, _, err := simulator.TrySchedulePods(snapshot, orderedPods, scheduling.ScheduleAnywhere, true)
-		if err != nil {
-			fmt.Printf("Error during scheduling simulation of permutation #%d: %v", idx, err)
+	for _, status := range statuses {
+		if status.NodeName == "" {
+			fmt.Printf("Error: The pod %s could not be scheduled.", status.Pod.Name)
 			snapshot.Revert()
-			continue
+			return nil, errors.New("A pod could not be scheduled")
 		}
 
-		scheduleFailed := false
-		for _, status := range statuses {
-			if status.NodeName == "" {
-				fmt.Printf("Error: The pod %s could not be scheduled.", status.Pod.Name)
-				scheduleFailed = true
-				break
-			}
-
-			podKey := fmt.Sprintf("%s/%s", status.Pod.Namespace, status.Pod.Name)
-			if status.NodeName != previousPodAllocations[podKey] {
-				podMoveCost := Config.PodMoveCost //default value
-				if annotationValue, ok := status.Pod.Annotations[Config.PodMoveCostAnnotation]; ok {
-					if customCost, err := strconv.Atoi(annotationValue); err == nil {
-						podMoveCost = customCost
-					}
+		podKey := status.Pod.Namespace + "/" + status.Pod.Name
+		if status.NodeName != previousPodAllocations[podKey] {
+			podMoveCost := Config.PodMoveCost //default value
+			if annotationValue, ok := status.Pod.Annotations[Config.PodMoveCostAnnotation]; ok {
+				if customCost, err := strconv.Atoi(annotationValue); err == nil {
+					podMoveCost = customCost
 				}
-				fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
-				permutationCost += podMoveCost
-			} else {
-				fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", status.Pod.Name)
 			}
+			fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
+			permutationCost += podMoveCost
+		} else {
+			fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", status.Pod.Name)
 		}
-		if scheduleFailed {
-			snapshot.Revert()
+	}
+
+	fmt.Printf("All pods have been scheduled successfully.")
+
+	newEmptyNodesNum := 0
+	for _, candidate := range candidateNodesToDrain {
+		nodeName := candidate.Node().Name
+
+		updatedNodeInfo, err := snapshot.NodeInfos().Get(nodeName)
+		if err != nil {
+			fmt.Printf("Warning: failed to get updated node %s from snapshot: %v", nodeName, err)
 			continue
 		}
 
-		fmt.Printf("All pods have been scheduled successfully for permutation #%d\n", idx)
-
-		newEmptyNodesNum := 0
-		for _, candidate := range candidateNodesToDrain {
-			nodeName := candidate.Node().Name
-
-			updatedNodeInfo, err := snapshot.NodeInfos().Get(nodeName)
-			if err != nil {
-				fmt.Printf("Warning: failed to get updated node %s from snapshot: %v", nodeName, err)
-				continue
-			}
-
-			if isConsideredEmpty(updatedNodeInfo) {
-				newEmptyNodesNum++
-			}
+		if isConsideredEmpty(updatedNodeInfo) {
+			newEmptyNodesNum++
 		}
+	}
 
-		freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
-		fmt.Printf("The permutation #%d freed %d nodes.\n", idx, freedNodesNum)
-		if freedNodesNum <= 0 {
-			snapshot.Revert()
-			continue
-		}
-
-		result := SchedulingResult{
-			permutation:   orderedPods,
-			emptyNodesNum: freedNodesNum,
-			cost:          permutationCost,
-			score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.EmptyNodesScoreWeight * permutationCost),
-		}
-		schedulingResults = append(schedulingResults, result)
-
+	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
+	fmt.Printf("This permutation freed %d nodes.\n", freedNodesNum)
+	if freedNodesNum <= 0 {
 		snapshot.Revert()
 	}
-	return schedulingResults
+
+	result := &SchedulingResult{
+		permutation:   permutation,
+		emptyNodesNum: freedNodesNum,
+		cost:          permutationCost,
+		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.EmptyNodesScoreWeight * permutationCost),
+	}
+	snapshot.Revert()
+
+	return result, nil
 }
 
 func isConsideredEmpty(node kubeframework.NodeInfo) bool {

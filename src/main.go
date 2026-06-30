@@ -75,7 +75,17 @@ func main() {
 
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERTATION_STRATEGIES)
 
-	schedulingResults := runSchedulingSimulation(snapshot, permutations, candidateNodes, previousPodAllocations, prevEmptyNodesNum)
+	fmt.Println("\n\n ### Scheduling simulation for the pods permutations ###")
+	var schedulingResults []*SchedulingResult
+	for permutationIndex, permutation := range permutations {
+		fmt.Printf("\nTesting permutation #%d...\n", permutationIndex)
+		schedulingResult, err := runSchedulingSimulation(snapshot, permutation, candidateNodes, previousPodAllocations, prevEmptyNodesNum)
+		if err != nil {
+			fmt.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
+			continue
+		}
+		schedulingResults = append(schedulingResults, schedulingResult)
+	}
 
 	sort.Slice(schedulingResults, func(i, j int) bool {
 		return schedulingResults[i].score > schedulingResults[j].score
