@@ -188,7 +188,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			}
 		}
 
-		freedNodesNum := previousEmptyNodesNum - newEmptyNodesNum
+		freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
 		fmt.Printf("The permutation #%d freed %d nodes.\n", idx, freedNodesNum)
 		if freedNodesNum <= 0 {
 			snapshot.Revert()
