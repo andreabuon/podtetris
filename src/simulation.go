@@ -92,18 +92,19 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) ([
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
 	var evictedPods []*apiv1.Pod
 
-	for _, ni := range candidateNodes {
-		nodeName := ni.Node().Name
+	fmt.Printf("\nSimulating the pods eviction from the candidate nodes in the snapshot...\n")
+	for nodeIndex, nodeInfo := range candidateNodes {
+		nodeName := nodeInfo.Node().Name
 		var podsOnNode []*apiv1.Pod
-		for _, podInfo := range ni.GetPods() {
+		for _, podInfo := range nodeInfo.GetPods() {
 			podsOnNode = append(podsOnNode, podInfo.GetPod())
 		}
 
-		fmt.Printf("\nVirtually evicting %d pods from node %s...\n", len(podsOnNode), nodeName)
+		fmt.Printf("\n[#%d] Node: %s\n", nodeIndex, nodeName)
 		evictedPodsNum := 0
 		for _, pod := range podsOnNode {
 			if ok, reason := isEvictable(pod); !ok {
-				fmt.Printf("  -> Skipping pod %s/%s: %s\n", pod.Namespace, pod.Name, reason)
+				fmt.Printf("  > Skipping pod %s/%s: %s\n", pod.Namespace, pod.Name, reason)
 				continue
 			}
 

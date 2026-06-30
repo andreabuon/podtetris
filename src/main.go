@@ -35,9 +35,9 @@ func main() {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
 
-	fmt.Println("Reading live state from active Kubernetes cluster...")
+	fmt.Print("Reading live state from active Kubernetes cluster... ")
 	nodesPointers, podsPointers := fetchClusterState(ctx, clientset)
-	fmt.Printf("Cluster discovery completed. Found %d Nodes and %d Pods.\n", len(nodesPointers), len(podsPointers))
+	fmt.Printf("Found %d Nodes and %d Pods.\n", len(nodesPointers), len(podsPointers))
 
 	snapshotStore := store.NewDeltaSnapshotStore(Config.Parallelism)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, false)
@@ -67,7 +67,7 @@ func main() {
 			prevEmptyNodesNum++
 		}
 	}
-	fmt.Printf("Before the rescheduling simulation there are %d empty candidate nodes.", prevEmptyNodesNum)
+	fmt.Printf("Before the rescheduling simulation there are %d empty candidate nodes.\n", prevEmptyNodesNum)
 
 	previousPodAllocations := createPodAllocationsMap(candidateNodes)
 
