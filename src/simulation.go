@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"math/rand"
 	"sort"
 	"strconv"
@@ -122,7 +121,7 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, previousPodAllocations map[string]string) []SchedulingResult {
+func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutations [][]*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int) []SchedulingResult {
 	fmt.Println("\n\n ### Pods scheduling simulation ###")
 
 	simulator := scheduling.NewHintingSimulator()
@@ -136,7 +135,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 
 		statuses, _, err := simulator.TrySchedulePods(snapshot, orderedPods, scheduling.ScheduleAnywhere, true)
 		if err != nil {
-			log.Printf("Error during scheduling simulation of permutation #%d: %v", idx, err)
+			fmt.Printf("Error during scheduling simulation of permutation #%d: %v", idx, err)
 			snapshot.Revert()
 			continue
 		}
@@ -144,7 +143,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		scheduleFailed := false
 		for _, status := range statuses {
 			if status.NodeName == "" {
-				log.Printf("Error during simulation: pod could not be scheduled in permutation #%d!", idx)
+				fmt.Printf("Error: The pod %s could not be scheduled.", status.Pod.Name)
 				scheduleFailed = true
 				break
 			}
@@ -157,10 +156,10 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 						podMoveCost = customCost
 					}
 				}
-				fmt.Printf("- [Pod: %s] Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
+				fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
 				permutationCost += podMoveCost
 			} else {
-				fmt.Printf("- [Pod: %s] No cost added - pod has been re-assigned to the same node.\n", status.Pod.Name)
+				fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", status.Pod.Name)
 			}
 		}
 		if scheduleFailed {
@@ -168,25 +167,51 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			continue
 		}
 
-		fmt.Printf("Success! All pods have been scheduled successfully for permutation #%d\n", idx)
+		fmt.Printf("All pods have been scheduled successfully for permutation #%d\n", idx)
 
-		emptyNodesNum := 0 //FIXME this should be calculated
-		/*
-			if emptyNodesNum <= 0 {
-				snapshot.Revert()
+		newEmptyNodesNum := 0
+		for _, candidate := range candidateNodesToDrain {
+			nodeName := candidate.Node().Name
+
+			updatedNodeInfo, err := snapshot.NodeInfos().Get(nodeName)
+			if err != nil {
+				fmt.Printf("Warning: failed to get updated node %s from snapshot: %v", nodeName, err)
 				continue
 			}
-		*/
+
+			if isConsideredEmpty(updatedNodeInfo) {
+				newEmptyNodesNum++
+			}
+		}
+
+		freedNodesNum := previousEmptyNodesNum - newEmptyNodesNum
+		fmt.Printf("The permutation #%d freed %d nodes.\n", idx, freedNodesNum)
+		if freedNodesNum <= 0 {
+			snapshot.Revert()
+			continue
+		}
 
 		result := SchedulingResult{
 			permutation:   orderedPods,
-			emptyNodesNum: emptyNodesNum,
+			emptyNodesNum: freedNodesNum,
 			cost:          permutationCost,
-			score:         (Config.EmptyNodesScoreWeight * emptyNodesNum) - (Config.EmptyNodesScoreWeight * permutationCost),
+			score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.EmptyNodesScoreWeight * permutationCost),
 		}
 		schedulingResults = append(schedulingResults, result)
 
 		snapshot.Revert()
 	}
 	return schedulingResults
+}
+
+func isConsideredEmpty(node kubeframework.NodeInfo) bool {
+	pods := node.GetPods()
+
+	for _, pod := range pods {
+		evictable, _ := isEvictable(pod.GetPod())
+		if evictable {
+			return false
+		}
+	}
+	return true
 }

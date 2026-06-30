@@ -61,13 +61,21 @@ func main() {
 		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
 	}
 
+	prevEmptyNodesNum := 0
+	for _, candidate := range candidateNodes {
+		if isConsideredEmpty(candidate) {
+			prevEmptyNodesNum++
+		}
+	}
+	fmt.Printf("Before the rescheduling simulation there are %d empty candidate nodes.", prevEmptyNodesNum)
+
 	previousPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
 
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERTATION_STRATEGIES)
 
-	schedulingResults := runSchedulingSimulation(snapshot, permutations, previousPodAllocations)
+	schedulingResults := runSchedulingSimulation(snapshot, permutations, candidateNodes, previousPodAllocations, prevEmptyNodesNum)
 
 	sort.Slice(schedulingResults, func(i, j int) bool {
 		return schedulingResults[i].score > schedulingResults[j].score

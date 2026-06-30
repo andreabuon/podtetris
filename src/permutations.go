@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"math/rand"
 	"sort"
 
@@ -47,7 +47,7 @@ func generatePermutations(evictedPods []*apiv1.Pod, enabledStrategies []string) 
 	for _, strategy := range enabledStrategies {
 		strategyFn, ok := permutationStrategies[strategy]
 		if !ok {
-			log.Printf("Warning: unknown permutation strategy %q, skipping", strategy)
+			fmt.Printf("Warning: unknown permutation strategy %q, skipping", strategy)
 			continue
 		}
 		generatedPermutations = append(generatedPermutations, strategyFn(evictedPods))
