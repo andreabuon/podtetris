@@ -130,6 +130,18 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 
 	permutationCost := 0
 
+	for _, candidate := range candidateNodesToDrain {
+		nodeInfo, err := snapshot.NodeInfos().Get(candidate.Node().Name)
+		if err == nil && nodeInfo.Node() != nil {
+			nodeInfo.Node().Spec.Taints = append(nodeInfo.Node().Spec.Taints, apiv1.Taint{
+				Key:    "podtetris/draining",
+				Value:  "true",
+				Effect: apiv1.TaintEffectNoSchedule,
+			})
+			fmt.Printf("Node %s has been virtually marked as draining.\n", nodeInfo.Node().Name)
+		}
+	}
+
 	statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
 	if err != nil {
 		fmt.Printf("Error during scheduling simulation: %v", err)
@@ -137,15 +149,23 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		return nil, err
 	}
 
+	fmt.Printf("Statuses: %v", statuses)
+	fmt.Printf("Iterating over statuses...\n")
+
 	for _, status := range statuses {
+		fmt.Printf("Status: %v", status)
 		if status.NodeName == "" {
 			fmt.Printf("Error: The pod %s could not be scheduled.", status.Pod.Name)
 			snapshot.Revert()
 			return nil, errors.New("A pod could not be scheduled")
 		}
 
+		fmt.Printf("Pod %s has been scheduled on node %s\n", status.Pod.Name, status.NodeName)
+
 		podKey := status.Pod.Namespace + "/" + status.Pod.Name
-		if status.NodeName != previousPodAllocations[podKey] {
+		if status.NodeName == previousPodAllocations[podKey] {
+			fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", status.Pod.Name)
+		} else {
 			podMoveCost := Config.PodMoveCost //default value
 			if annotationValue, ok := status.Pod.Annotations[Config.PodMoveCostAnnotation]; ok {
 				if customCost, err := strconv.Atoi(annotationValue); err == nil {
@@ -154,12 +174,8 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			}
 			fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
 			permutationCost += podMoveCost
-		} else {
-			fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", status.Pod.Name)
 		}
 	}
-
-	fmt.Printf("All pods have been scheduled successfully.")
 
 	newEmptyNodesNum := 0
 	for _, candidate := range candidateNodesToDrain {
