@@ -13,6 +13,8 @@ profiles:
                 weight: 1
     plugins:
       score:
+        disabled:
+          - name: "*"
         enabled:
           - name: NodeResourcesFit
             weight: 500
