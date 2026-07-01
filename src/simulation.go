@@ -130,18 +130,6 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 
 	permutationCost := 0
 
-	for _, candidate := range candidateNodesToDrain {
-		nodeInfo, err := snapshot.NodeInfos().Get(candidate.Node().Name)
-		if err == nil && nodeInfo.Node() != nil {
-			nodeInfo.Node().Spec.Taints = append(nodeInfo.Node().Spec.Taints, apiv1.Taint{
-				Key:    "podtetris/draining",
-				Value:  "true",
-				Effect: apiv1.TaintEffectNoSchedule,
-			})
-			fmt.Printf("Node %s has been virtually marked as draining.\n", nodeInfo.Node().Name)
-		}
-	}
-
 	statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
 	if err != nil {
 		fmt.Printf("Error during scheduling simulation: %v", err)
