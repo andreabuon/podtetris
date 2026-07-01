@@ -12,6 +12,9 @@ spec:
     metadata:
       labels:
         app: test-app-alpha
+      annotations:
+        "podtetris/fixed": "true" 
+        "podtetris/moveCost": "75"
     spec:
       topologySpreadConstraints:
         - maxSkew: 1
@@ -45,6 +48,9 @@ spec:
     metadata:
       labels:
         app: test-app-beta
+      annotations:
+        "podtetris/fixed": "true" 
+        "podtetris/moveCost": "50"
     spec:
       topologySpreadConstraints:
         - maxSkew: 1
