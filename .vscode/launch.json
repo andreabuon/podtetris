@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "Debug PodTetris",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/src/",
+            "args": [
+                "-logtostderr=true",
+                "-v=5"
+            ],
+            "preLaunchTask": "Apply PODTetris ConfigMap and RBAC"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Apply PODTetris ConfigMap and RBAC",
+            "type": "shell",
+            "command": "cd src && make apply-configmap apply-rbac",
+            "problemMatcher": []
+        }
+    ]
+}

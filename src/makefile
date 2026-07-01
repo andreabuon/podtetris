@@ -19,7 +19,7 @@ apply-rbac:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-rbac.yaml
 
 run: build apply-configmap apply-rbac
-	./podtetris
+	./podtetris -logtostderr=true -v=5
 
 clean:
 	rm -f ./podtetris
