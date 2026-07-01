@@ -137,11 +137,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		return nil, err
 	}
 
-	fmt.Printf("Statuses: %v", statuses)
-	fmt.Printf("Iterating over statuses...\n")
-
 	for _, status := range statuses {
-		fmt.Printf("Status: %v", status)
 		if status.NodeName == "" {
 			fmt.Printf("Error: The pod %s could not be scheduled.", status.Pod.Name)
 			snapshot.Revert()
