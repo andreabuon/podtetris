@@ -39,8 +39,9 @@ kubectl wait --for=condition=Ready nodes --all --timeout=60s
 ## Create fake kwok nodes
 #helm install kwok-nodes-provisioner charts/kwok-nodes-provisioner/
 
-kubectl apply -f manifests/databases.yaml
-kubectl apply -f manifests/fake-backups.yaml
-kubectl apply -f manifests/web-servers.yaml
+#kubectl apply -f manifests/databases.yaml
+#kubectl apply -f manifests/fake-backups.yaml
+#kubectl apply -f manifests/web-servers.yaml
+kubectl apply -f manifests/podtetris-test-workloads.yaml
 
 echo "Cluster setup completed."

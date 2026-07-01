@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app-alpha
+  namespace: default
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: test-app-alpha
+  template:
+    metadata:
+      labels:
+        app: test-app-alpha
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: test-app-alpha
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.9
+        resources:
+          requests:
+            cpu: "128m"
+            memory: "128Mi"
+          limits:
+            cpu: "256m"
+            memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app-beta
+  namespace: default
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: test-app-beta
+  template:
+    metadata:
+      labels:
+        app: test-app-beta
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: test-app-beta
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.9
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fixed-workload
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fixed-app
+  template:
+    metadata:
+      labels:
+        app: fixed-app
+      annotations:
+        "podtetris/fixed": "true" 
+    spec:
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.9
+        resources:
+          requests:
+            cpu: "123m"
+            memory: "123Mi"
+          limits:
+            cpu: "246m"
+            memory: "246Mi"
