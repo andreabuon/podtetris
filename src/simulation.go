@@ -186,7 +186,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		permutation:   permutation,
 		emptyNodesNum: freedNodesNum,
 		cost:          permutationCost,
-		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.EmptyNodesScoreWeight * permutationCost),
+		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.CostScoreWeight * permutationCost),
 	}
 	snapshot.Revert()
 
