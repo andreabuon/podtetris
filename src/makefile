@@ -2,9 +2,12 @@ KUBECTL = kubectl
 GO = go
 MANIFESTS_DIR = ./yaml
 
-.PHONY: all build apply-configmap apply-rbac run clean
+.PHONY: all build apply-configmap apply-rbac run clean cluster
 
 all: run
+
+cluster:
+	cd ../labs/lab6_kwok+kind_cost && ./setup-cluster.sh
 
 build:
 	$(GO) build
