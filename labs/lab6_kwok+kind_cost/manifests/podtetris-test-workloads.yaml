@@ -13,7 +13,6 @@ spec:
       labels:
         app: test-app-alpha
       annotations:
-        "podtetris/fixed": "true" 
         "podtetris/moveCost": "75"
     spec:
       topologySpreadConstraints:
@@ -49,7 +48,6 @@ spec:
       labels:
         app: test-app-beta
       annotations:
-        "podtetris/fixed": "true" 
         "podtetris/moveCost": "50"
     spec:
       topologySpreadConstraints:
