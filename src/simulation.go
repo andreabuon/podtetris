@@ -161,6 +161,7 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		}
 	}
 
+	// count the new free nodes number after scheduling the pods
 	newEmptyNodesNum := 0
 	for _, candidate := range candidateNodesToDrain {
 		nodeName := candidate.Node().Name
@@ -175,12 +176,8 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 			newEmptyNodesNum++
 		}
 	}
-
 	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
 	fmt.Printf("This permutation freed %d nodes.\n", freedNodesNum)
-	if freedNodesNum <= 0 {
-		snapshot.Revert()
-	}
 
 	result := &SchedulingResult{
 		permutation:   permutation,
@@ -188,8 +185,8 @@ func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutati
 		cost:          permutationCost,
 		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.CostScoreWeight * permutationCost),
 	}
-	snapshot.Revert()
 
+	snapshot.Revert()
 	return result, nil
 }
 

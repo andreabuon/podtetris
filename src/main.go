@@ -84,7 +84,10 @@ func main() {
 			fmt.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue
 		}
-		schedulingResults = append(schedulingResults, schedulingResult)
+
+		if schedulingResult.emptyNodesNum > 0 {
+			schedulingResults = append(schedulingResults, schedulingResult)
+		}
 	}
 
 	sort.Slice(schedulingResults, func(i, j int) bool {
