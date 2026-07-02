@@ -2,15 +2,14 @@ KUBECTL = kubectl
 GO = go
 MANIFESTS_DIR = ./yaml
 
-.PHONY: all build apply-configmap apply-rbac run clean cluster
+SRCS := $(find . -name '*.go')
+
+.PHONY: all cluster apply-configmap apply-rbac run clean 
 
 all: run
 
 cluster:
 	cd ../labs/lab6_kwok+kind_cost && ./setup-cluster.sh
-
-build:
-	$(GO) build
 
 apply-configmap:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-config.yaml
@@ -18,7 +17,10 @@ apply-configmap:
 apply-rbac:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-rbac.yaml
 
-run: build apply-configmap apply-rbac
+podtetris: $(SRCS)
+	$(GO) build -o podtetris
+
+run: apply-configmap apply-rbac podtetris
 	./podtetris
 #	./podtetris -logtostderr=true -v=3
 
