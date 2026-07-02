@@ -15,13 +15,6 @@ spec:
       annotations:
         "podtetris/moveCost": "75"
     spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app: test-app-alpha
       containers:
       - name: pause
         image: registry.k8s.io/pause:3.9
@@ -50,13 +43,6 @@ spec:
       annotations:
         "podtetris/moveCost": "50"
     spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-          labelSelector:
-            matchLabels:
-              app: test-app-beta
       containers:
       - name: pause
         image: registry.k8s.io/pause:3.9
