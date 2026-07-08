@@ -57,6 +57,9 @@ func main() {
 		fwkruntime.WithInformerFactory(informerFactory),
 		fwkruntime.WithSnapshotSharedLister(snapshotStore),
 	)
+	if err != nil {
+		log.Fatalf("Error creating the Framework: %v", err)
+	}
 
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
