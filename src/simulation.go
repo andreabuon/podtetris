@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math/rand"
@@ -8,8 +9,10 @@ import (
 
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot"
-	"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
+
+	//"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
 	kubeframework "k8s.io/kube-scheduler/framework"
+	schedframework "k8s.io/kubernetes/pkg/scheduler/framework"
 	//caframework "k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 )
 
@@ -123,40 +126,78 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(snapshot clustersnapshot.ClusterSnapshot, permutation []*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int) (*SchedulingResult, error) {
-	simulator := scheduling.NewHintingSimulator()
+func runSchedulingSimulation(realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, permutation []*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int, ctx context.Context) (*SchedulingResult, error) {
+	//simulator := scheduling.NewHintingSimulator()
 	//simulator.DropOldHints()
 	snapshot.Fork()
 
 	permutationCost := 0
 
-	statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
-	if err != nil {
-		fmt.Printf("Error during scheduling simulation: %v", err)
-		snapshot.Revert()
-		return nil, err
-	}
-
-	for _, status := range statuses {
-		if status.NodeName == "" {
-			fmt.Printf("Error: The pod %s could not be scheduled.", status.Pod.Name)
+	/*
+		statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
+		if err != nil {
+			fmt.Printf("Error during scheduling simulation: %v", err)
 			snapshot.Revert()
-			return nil, errors.New("A pod could not be scheduled")
+			return nil, err
+		}
+	*/
+	for _, pod := range permutation {
+		state := NewCycleState()
+
+		// Step 1: Filter — which candidate nodes can take this pod?
+		var feasible []kubeframework.NodeInfo
+		for _, nodeInfo := range candidateNodesToDrain {
+			status := realFramework.RunFilterPlugins(ctx, state, pod, nodeInfo)
+			if status.IsSuccess() {
+				feasible = append(feasible, nodeInfo)
+			}
+		}
+		if len(feasible) == 0 {
+			// no node works for this pod
+			//FIXME this should return an error
+			continue
 		}
 
-		fmt.Printf("Pod %s has been scheduled on node %s\n", status.Pod.Name, status.NodeName)
+		// Step 2: Score — rank the feasible nodes
+		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasible)
 
-		podKey := status.Pod.Namespace + "/" + status.Pod.Name
-		if status.NodeName == previousPodAllocations[podKey] {
-			fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", status.Pod.Name)
+		if !preScoreStatus.IsSuccess() {
+			fmt.Printf("Error: PreScorePlugins failed")
+			snapshot.Revert()
+			return nil, errors.New("Error: PreScorePlugins failed")
+		}
+
+		scores, status := realFramework.RunScorePlugins(ctx, state, pod, feasible)
+		if !status.IsSuccess() {
+			fmt.Printf("Error: ScorePlugins failed")
+			snapshot.Revert()
+			return nil, errors.New("Error: ScorePlugins failed")
+		}
+
+		// Step 3: pick the winner — highest combined score
+		bestNode, err := pickHighestScoreNode(feasible, scores)
+		if err != nil {
+			fmt.Printf("Error: pickHighestScoreNode failed")
+			snapshot.Revert()
+			return nil, errors.New("Error: pickHighestScoreNode failed")
+		}
+
+		// Step 4: apply it to the snapshot, same as before
+		snapshot.ForceAddPod(pod, bestNode.Node().Name)
+
+		fmt.Printf("Pod %s has been scheduled on node %s\n", pod.Name, bestNode.Node().Name)
+
+		podKey := pod.Namespace + "/" + pod.Name
+		if bestNode.Node().Name == previousPodAllocations[podKey] {
+			fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", pod.Name)
 		} else {
 			podMoveCost := Config.PodMoveCost //default value
-			if annotationValue, ok := status.Pod.Annotations[Config.PodMoveCostAnnotation]; ok {
+			if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
 				if customCost, err := strconv.Atoi(annotationValue); err == nil {
 					podMoveCost = customCost
 				}
 			}
-			fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", status.Pod.Name, podMoveCost)
+			fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", pod.Name, podMoveCost)
 			permutationCost += podMoveCost
 		}
 	}
@@ -200,4 +241,26 @@ func isConsideredEmpty(node kubeframework.NodeInfo) bool {
 		}
 	}
 	return true
+}
+
+func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework.NodePluginScores) (kubeframework.NodeInfo, error) {
+	var maxScore int64 = 0
+	var maxScoreNodeName string
+
+	// pick the highest score
+	for _, score := range scores {
+		if score.TotalScore > maxScore {
+			maxScore = score.TotalScore
+			maxScoreNodeName = score.Name
+		}
+	}
+
+	// retrieve the related nodeInfo
+	for _, nodeInfo := range nodes {
+		if nodeInfo.Node().Name == maxScoreNodeName {
+			return nodeInfo, nil
+		}
+	}
+
+	return nil, errors.New("The highest node found")
 }

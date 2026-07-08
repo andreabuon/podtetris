@@ -12,6 +12,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 	kubeframework "k8s.io/kube-scheduler/framework"
+	"k8s.io/kubernetes/pkg/scheduler/framework/plugins"
+	fwkruntime "k8s.io/kubernetes/pkg/scheduler/framework/runtime"
 )
 
 var Config AppConfig
@@ -46,6 +48,16 @@ func main() {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
 	}
 
+	registry := plugins.NewInTreeRegistry()
+
+	realFramework, err := fwkruntime.NewFramework(
+		ctx,
+		registry,
+		&schedulerConfig.Profiles[0],
+		fwkruntime.WithInformerFactory(informerFactory),
+		fwkruntime.WithSnapshotSharedLister(snapshotStore),
+	)
+
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
 		log.Fatalf("Error listing node infos: %v", err)
@@ -79,7 +91,7 @@ func main() {
 	var schedulingResults []*SchedulingResult
 	for permutationIndex, permutation := range permutations {
 		fmt.Printf("\nTesting permutation #%d...\n", permutationIndex)
-		schedulingResult, err := runSchedulingSimulation(snapshot, permutation, candidateNodes, previousPodAllocations, prevEmptyNodesNum)
+		schedulingResult, err := runSchedulingSimulation(realFramework, snapshot, permutation, candidateNodes, previousPodAllocations, prevEmptyNodesNum, ctx)
 		if err != nil {
 			fmt.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue
