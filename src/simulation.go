@@ -143,15 +143,22 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 	*/
 	for _, pod := range permutation {
 		state := NewCycleState()
+		//var newState kubeframework.CycleState = kubeframework
 
 		// Step 1: Filter — which candidate nodes can take this pod?
 		var feasible []kubeframework.NodeInfo
 		for _, nodeInfo := range candidateNodesToDrain {
-			status := realFramework.RunFilterPlugins(ctx, state, pod, nodeInfo)
-			if status.IsSuccess() {
+			_, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
+			if !preFilterStatus.IsSuccess() {
+				continue
+			}
+
+			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, nodeInfo)
+			if filterStatus.IsSuccess() {
 				feasible = append(feasible, nodeInfo)
 			}
 		}
+
 		if len(feasible) == 0 {
 			// no node works for this pod
 			//FIXME this should return an error
