@@ -142,7 +142,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		}
 	*/
 	for _, pod := range permutation {
-		state := NewCycleState()
+		state := schedframework.NewCycleState()
 		//var newState kubeframework.CycleState = kubeframework
 
 		// Step 1: Filter — which candidate nodes can take this pod?
