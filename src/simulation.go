@@ -148,14 +148,19 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		// Step 1: Filter — which candidate nodes can take this pod?
 		var feasible []kubeframework.NodeInfo
 		for _, nodeInfo := range candidateNodesToDrain {
+			freshNodeInfo, err := snapshot.NodeInfos().Get(nodeInfo.Node().Name)
+			if err != nil {
+				continue
+			}
+
 			_, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
 			if !preFilterStatus.IsSuccess() {
 				continue
 			}
 
-			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, nodeInfo)
+			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
 			if filterStatus.IsSuccess() {
-				feasible = append(feasible, nodeInfo)
+				feasible = append(feasible, freshNodeInfo)
 			}
 		}
 
