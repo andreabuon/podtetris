@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
+	"log"
 	"math/rand"
 	"strconv"
 
@@ -96,7 +96,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) ([
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
 	var evictedPods []*apiv1.Pod
 
-	fmt.Printf("\nSimulating the pods eviction from the candidate nodes in the snapshot...\n")
+	log.Print("Simulating the pods eviction from the candidate nodes in the snapshot...")
 	for nodeIndex, nodeInfo := range candidateNodes {
 		nodeName := nodeInfo.Node().Name
 		var podsOnNode []*apiv1.Pod
@@ -104,27 +104,27 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 			podsOnNode = append(podsOnNode, podInfo.GetPod())
 		}
 
-		fmt.Printf("\n[#%d] Node: %s\n", nodeIndex, nodeName)
+		log.Printf("[#%d] Node: %s", nodeIndex, nodeName)
 		evictedPodsNum := 0
 		for _, pod := range podsOnNode {
 			if ok, reason := isEvictable(pod); !ok {
-				fmt.Printf("  > Skipping pod %s/%s: %s\n", pod.Namespace, pod.Name, reason)
+				log.Printf("  > Skipping pod %s/%s: %s", pod.Namespace, pod.Name, reason)
 				continue
 			}
 
 			if err := snapshot.UnschedulePod(pod.Namespace, pod.Name, nodeName); err != nil {
-				fmt.Printf("Warning: Failed to virtually evict pod %s/%s: %v\n", pod.Namespace, pod.Name, err)
+				log.Printf("Warning: Failed to virtually evict pod %s/%s: %v", pod.Namespace, pod.Name, err)
 				continue
 			}
 
-			fmt.Println("  - Evicted Pod:", pod.Name)
+			log.Println("  - Evicted Pod:", pod.Name)
 			evictedPodsNum++
 
 			unscheduledPod := pod.DeepCopy()
 			unscheduledPod.Spec.NodeName = ""
 			evictedPods = append(evictedPods, unscheduledPod)
 		}
-		fmt.Printf("Evicted %d pods.\n", evictedPodsNum)
+		log.Printf("Evicted %d pods.", evictedPodsNum)
 	}
 	return evictedPods
 }
@@ -139,7 +139,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 	/*
 		statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
 		if err != nil {
-			fmt.Printf("Error during scheduling simulation: %v", err)
+			log.Printf("Error during scheduling simulation: %v", err)
 			snapshot.Revert()
 			return nil, err
 		}
@@ -177,14 +177,14 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasible)
 
 		if !preScoreStatus.IsSuccess() {
-			fmt.Printf("Error: PreScorePlugins failed")
+			log.Printf("Error: PreScorePlugins failed")
 			snapshot.Revert()
 			return nil, errors.New("Error: PreScorePlugins failed")
 		}
 
 		scores, status := realFramework.RunScorePlugins(ctx, state, pod, feasible)
 		if !status.IsSuccess() {
-			fmt.Printf("Error: ScorePlugins failed")
+			log.Printf("Error: ScorePlugins failed")
 			snapshot.Revert()
 			return nil, errors.New("Error: ScorePlugins failed")
 		}
@@ -192,7 +192,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		// Step 3: pick the winner — highest combined score
 		bestNode, err := pickHighestScoreNode(feasible, scores)
 		if err != nil {
-			fmt.Printf("Error: pickHighestScoreNode failed")
+			log.Printf("Error: pickHighestScoreNode failed")
 			snapshot.Revert()
 			return nil, errors.New("Error: pickHighestScoreNode failed")
 		}
@@ -200,11 +200,11 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		// Step 4: apply it to the snapshot, same as before
 		snapshot.ForceAddPod(pod, bestNode.Node().Name)
 
-		fmt.Printf("Pod %s has been scheduled on node %s\n", pod.Name, bestNode.Node().Name)
+		//log.Printf("Pod %s has been scheduled on node %s", pod.Name, bestNode.Node().Name)
 
 		podKey := pod.Namespace + "/" + pod.Name
 		if bestNode.Node().Name == previousPodAllocations[podKey] {
-			fmt.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.\n", pod.Name)
+			log.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.", pod.Name)
 		} else {
 			podMoveCost := Config.PodMoveCost //default value
 			if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
@@ -212,7 +212,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 					podMoveCost = customCost
 				}
 			}
-			fmt.Printf("- Pod '%s' has been moved to a different node. Added move cost of %d to the permutation total cost.\n", pod.Name, podMoveCost)
+			log.Printf("- Pod '%s' has been moved to node %s. Added move cost of %d to the permutation total cost.", pod.Name, bestNode.Node().Name, podMoveCost)
 			permutationCost += podMoveCost
 		}
 	}
@@ -224,7 +224,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 
 		updatedNodeInfo, err := snapshot.NodeInfos().Get(nodeName)
 		if err != nil {
-			fmt.Printf("Warning: failed to get updated node %s from snapshot: %v", nodeName, err)
+			log.Printf("Warning: failed to get updated node %s from snapshot: %v", nodeName, err)
 			continue
 		}
 
@@ -233,7 +233,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		}
 	}
 	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
-	fmt.Printf("This permutation freed %d nodes.\n", freedNodesNum)
+	log.Printf("This permutation freed %d nodes.", freedNodesNum)
 
 	result := &SchedulingResult{
 		permutation:   permutation,

@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"sort"
 
@@ -37,9 +36,9 @@ func main() {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
 
-	fmt.Print("Reading live state from active Kubernetes cluster... ")
+	log.Print("Reading live state from active Kubernetes cluster... ")
 	nodesPointers, podsPointers := fetchClusterState(ctx, clientset)
-	fmt.Printf("Found %d Nodes and %d Pods.\n", len(nodesPointers), len(podsPointers))
+	log.Printf("Found %d Nodes and %d Pods.", len(nodesPointers), len(podsPointers))
 
 	snapshotStore := store.NewDeltaSnapshotStore(Config.Parallelism)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, false)
@@ -71,9 +70,9 @@ func main() {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	fmt.Printf("\nSelected %d Least-Allocated Nodes for Pods consolidation:\n", Config.CandidateNodesNumber)
+	log.Printf("Selected %d Least-Allocated Nodes for Pods consolidation:", Config.CandidateNodesNumber)
 	for _, ni := range candidateNodes {
-		fmt.Printf(" -> Node: %s (Current Pods: %d)\n", ni.Node().Name, len(ni.GetPods()))
+		log.Printf(" -> Node: %s (Current Pods: %d)", ni.Node().Name, len(ni.GetPods()))
 	}
 
 	prevEmptyNodesNum := 0
@@ -82,7 +81,7 @@ func main() {
 			prevEmptyNodesNum++
 		}
 	}
-	fmt.Printf("Before the rescheduling simulation there are %d empty candidate nodes.\n", prevEmptyNodesNum)
+	log.Printf("Before the rescheduling simulation there are %d empty candidate nodes.", prevEmptyNodesNum)
 
 	previousPodAllocations := createPodAllocationsMap(candidateNodes)
 
@@ -90,13 +89,13 @@ func main() {
 
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERTATION_STRATEGIES)
 
-	fmt.Println("\n\n ### Scheduling simulation for the pods permutations ###")
+	log.Println("Simulating scheduling of the pods permutations")
 	var schedulingResults []*SchedulingResult
 	for permutationIndex, permutation := range permutations {
-		fmt.Printf("\nTesting permutation #%d...\n", permutationIndex)
+		log.Printf("Testing permutation #%d...", permutationIndex)
 		schedulingResult, err := runSchedulingSimulation(realFramework, snapshot, permutation, candidateNodes, previousPodAllocations, prevEmptyNodesNum, ctx)
 		if err != nil {
-			fmt.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
+			log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue
 		}
 
@@ -109,20 +108,20 @@ func main() {
 		return schedulingResults[i].score > schedulingResults[j].score
 	})
 
-	fmt.Println("\nScheduling results:")
+	log.Println("Scheduling results:")
 	for index, result := range schedulingResults {
-		fmt.Printf("Result #%d: cost %d  \n", index, result.cost)
+		log.Printf("Permutation #%d: cost %d", index, result.cost)
 	}
 
 	if len(schedulingResults) < 1 {
-		fmt.Println("\n The simulation finished with no viable scheduling results.")
+		log.Println("The simulation finished with no viable scheduling results.")
 		return
 	}
 	bestPermutationResult := schedulingResults[0]
-	fmt.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
+	log.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
 
 	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
-		fmt.Printf("Auto applying consolidation...")
+		log.Printf("Auto applying consolidation...")
 		//executeConsolidation()
 	}
 }
