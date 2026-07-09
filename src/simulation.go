@@ -204,7 +204,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 
 		podKey := pod.Namespace + "/" + pod.Name
 		if bestNode.Node().Name == previousPodAllocations[podKey] {
-			log.Printf("- Pod: '%s' has been re-assigned to the same node. No move cost added.", pod.Name)
+			log.Printf("- Pod: '%s' has been re-assigned to the same node.", pod.Name)
 		} else {
 			podMoveCost := Config.PodMoveCost //default value
 			if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
@@ -212,7 +212,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 					podMoveCost = customCost
 				}
 			}
-			log.Printf("- Pod '%s' has been moved to node %s. Added move cost of %d to the permutation total cost.", pod.Name, bestNode.Node().Name, podMoveCost)
+			log.Printf("- Pod '%s' has been moved to node %s. Move cost %d.", pod.Name, bestNode.Node().Name, podMoveCost)
 			permutationCost += podMoveCost
 		}
 	}
