@@ -148,7 +148,6 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		state := schedframework.NewCycleState()
 		//var newState kubeframework.CycleState = kubeframework
 
-		// Step 1: Filter — which candidate nodes can take this pod?
 		var feasible []kubeframework.NodeInfo
 		for _, nodeInfo := range candidateNodesToDrain {
 			freshNodeInfo, err := snapshot.NodeInfos().Get(nodeInfo.Node().Name)
@@ -173,7 +172,6 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			continue
 		}
 
-		// Step 2: Score — rank the feasible nodes
 		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasible)
 
 		if !preScoreStatus.IsSuccess() {
@@ -189,7 +187,6 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			return nil, errors.New("Error: ScorePlugins failed")
 		}
 
-		// Step 3: pick the winner — highest combined score
 		bestNode, err := pickHighestScoreNode(feasible, scores)
 		if err != nil {
 			log.Printf("Error: pickHighestScoreNode failed")
@@ -197,7 +194,6 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			return nil, errors.New("Error: pickHighestScoreNode failed")
 		}
 
-		// Step 4: apply it to the snapshot, same as before
 		snapshot.ForceAddPod(pod, bestNode.Node().Name)
 
 		//log.Printf("Pod %s has been scheduled on node %s", pod.Name, bestNode.Node().Name)
