@@ -119,7 +119,10 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 
 			fmt.Println("  - Evicted Pod:", pod.Name)
 			evictedPodsNum++
-			evictedPods = append(evictedPods, pod)
+
+			unscheduledPod := pod.DeepCopy()
+			unscheduledPod.Spec.NodeName = ""
+			evictedPods = append(evictedPods, unscheduledPod)
 		}
 		fmt.Printf("Evicted %d pods.\n", evictedPodsNum)
 	}
