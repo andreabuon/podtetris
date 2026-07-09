@@ -38,10 +38,30 @@ type AppConfig struct {
 	EnabledPermutationStrategies      []string `yaml:"enabledPermutationStrategies"`
 }
 
+// DefaultAppConfig returns an AppConfig populated with sane defaults.
+func DefaultAppConfig() AppConfig {
+	return AppConfig{
+		CandidateNodesNumber:              5,
+		Parallelism:                       8,
+		EmptyNodesScoreWeight:             100,
+		CostScoreWeight:                   100,
+		AutoConsolidationScoreThreshold:   12345,
+		PodMoveCost:                       10,
+		CandidateNodesSelectionMaxRetries: 15,
+		FixedPodAnnotation:                "podtetris/fixed",
+		PodMoveCostAnnotation:             "podtetris/moveCost",
+		EnabledPermutationStrategies:      ENABLED_PERMUTATION_GENERTATION_STRATEGIES,
+	}
+}
+
+// loadAppConfig loads the configuration from a ConfigMap and overrides individual fields.
 func loadAppConfig(ctx context.Context, clientset *kubernetes.Clientset) AppConfig {
+	cfg := DefaultAppConfig()
+
 	cm, err := clientset.CoreV1().ConfigMaps("podtetris").Get(ctx, "podtetris-config", metav1.GetOptions{})
 	if err != nil {
-		log.Fatalf("Error reading ConfigMap: %v", err)
+		log.Printf("Error reading ConfigMap: %v", err)
+		return cfg
 	}
 
 	data, ok := cm.Data["config.yaml"]
@@ -49,7 +69,6 @@ func loadAppConfig(ctx context.Context, clientset *kubernetes.Clientset) AppConf
 		log.Fatalf("Key 'config.yaml' not found in ConfigMap")
 	}
 
-	var cfg AppConfig
 	if err := yaml.Unmarshal([]byte(data), &cfg); err != nil {
 		log.Fatalf("Error parsing config from ConfigMap: %v", err)
 	}
