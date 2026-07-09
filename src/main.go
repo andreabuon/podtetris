@@ -104,19 +104,20 @@ func main() {
 		}
 	}
 
-	sort.Slice(schedulingResults, func(i, j int) bool {
-		return schedulingResults[i].score > schedulingResults[j].score
-	})
-
 	log.Println("Scheduling results:")
 	for index, result := range schedulingResults {
-		log.Printf("Permutation #%d: cost %d", index, result.cost)
+		log.Printf("Permutation #%d freed %d nodes with a total cost of %d", index, result.emptyNodesNum, result.cost)
 	}
 
 	if len(schedulingResults) < 1 {
 		log.Println("The simulation finished with no viable scheduling results.")
 		return
 	}
+
+	sort.Slice(schedulingResults, func(i, j int) bool {
+		return schedulingResults[i].score > schedulingResults[j].score
+	})
+
 	bestPermutationResult := schedulingResults[0]
 	log.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
 
