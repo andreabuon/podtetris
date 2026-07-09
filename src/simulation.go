@@ -104,7 +104,7 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 			podsOnNode = append(podsOnNode, podInfo.GetPod())
 		}
 
-		log.Printf("[#%d] Node: %s", nodeIndex, nodeName)
+		log.Printf("[Candidate #%d] Node: %s", nodeIndex, nodeName)
 		evictedPodsNum := 0
 		for _, pod := range podsOnNode {
 			if ok, reason := isEvictable(pod); !ok {
