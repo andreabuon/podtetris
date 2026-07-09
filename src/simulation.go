@@ -212,7 +212,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 					podMoveCost = customCost
 				}
 			}
-			log.Printf("- Pod '%s' has been moved to node %s. Move cost %d.", pod.Name, bestNode.Node().Name, podMoveCost)
+			log.Printf("- Pod '%s' has been moved to node '%s'. Move cost %d.", pod.Name, bestNode.Node().Name, podMoveCost)
 			permutationCost += podMoveCost
 		}
 	}
