@@ -10,7 +10,6 @@ metadata:
   namespace: podtetris
 data:
   config.yaml: |
-    candidateNodesTotalNumber: 5
     randomCandidateNodesNumber: 3
     byCPUCandidateNodesNumber: 2
     podMoveDefaultCost: 10

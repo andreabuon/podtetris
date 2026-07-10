@@ -43,7 +43,6 @@ type AppConfig struct {
 // DefaultAppConfig returns an AppConfig populated with sane defaults.
 func DefaultAppConfig() AppConfig {
 	return AppConfig{
-		CandidateNodesTotalNumber:         5,
 		RandomCandidateNodesNumber:        3,
 		ByCPUCandidateNodesNumber:         2,
 		PodMoveDefaultCost:                10,
