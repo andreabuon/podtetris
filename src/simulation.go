@@ -127,21 +127,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		}
 	}
 
-	// count the new free nodes number after scheduling the pods
-	newEmptyNodesNum := 0
-	for _, candidate := range candidateNodesToDrain {
-		nodeName := candidate.Node().Name
-
-		updatedNodeInfo, err := snapshot.NodeInfos().Get(nodeName)
-		if err != nil {
-			log.Printf("Warning: failed to get updated node %s from snapshot: %v", nodeName, err)
-			continue
-		}
-
-		if isConsideredEmpty(updatedNodeInfo) {
-			newEmptyNodesNum++
-		}
-	}
+	newEmptyNodesNum := countEmptyNodes(candidateNodesToDrain)
 	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
 	log.Printf("This permutation freed %d nodes.", freedNodesNum)
 

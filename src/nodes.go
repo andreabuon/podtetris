@@ -127,3 +127,14 @@ func isConsideredEmpty(node kubeframework.NodeInfo) bool {
 	}
 	return true
 }
+
+func countEmptyNodes(nodes []kubeframework.NodeInfo) int {
+	emptyNodes := 0
+
+	for _, node := range nodes {
+		if isConsideredEmpty(node) {
+			emptyNodes++
+		}
+	}
+	return emptyNodes
+}

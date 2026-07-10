@@ -75,12 +75,7 @@ func main() {
 		log.Printf(" -> Node: %s (Current Pods: %d)", ni.Node().Name, len(ni.GetPods()))
 	}
 
-	prevEmptyNodesNum := 0
-	for _, candidate := range candidateNodes {
-		if isConsideredEmpty(candidate) {
-			prevEmptyNodesNum++
-		}
-	}
+	prevEmptyNodesNum := countEmptyNodes(candidateNodes)
 	log.Printf("Before the rescheduling simulation there are %d empty candidate nodes.", prevEmptyNodesNum)
 
 	previousPodAllocations := createPodAllocationsMap(candidateNodes)
