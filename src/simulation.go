@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
 
@@ -59,49 +60,39 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 }
 
 func runSchedulingSimulation(realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, permutation []*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int, ctx context.Context) (*SchedulingResult, error) {
-	//simulator := scheduling.NewHintingSimulator()
-	//simulator.DropOldHints()
 	snapshot.Fork()
 
 	permutationCost := 0
 
-	/*
-		statuses, _, err := simulator.TrySchedulePods(snapshot, permutation, scheduling.ScheduleAnywhere, true)
-		if err != nil {
-			log.Printf("Error during scheduling simulation: %v", err)
-			snapshot.Revert()
-			return nil, err
-		}
-	*/
 	for _, pod := range permutation {
 		state := schedframework.NewCycleState()
-		//var newState kubeframework.CycleState = kubeframework
+		var feasibleNodes []kubeframework.NodeInfo
 
-		var feasible []kubeframework.NodeInfo
+		_, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
+		if !preFilterStatus.IsSuccess() {
+			log.Printf("Error: PreFilterPlugins failed")
+			snapshot.Revert()
+			return nil, errors.New("Error: PreFilterPlugins failed")
+		}
+
 		for _, nodeInfo := range candidateNodesToDrain {
 			freshNodeInfo, err := snapshot.NodeInfos().Get(nodeInfo.Node().Name)
 			if err != nil {
 				continue
 			}
 
-			_, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
-			if !preFilterStatus.IsSuccess() {
-				continue
-			}
-
 			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
 			if filterStatus.IsSuccess() {
-				feasible = append(feasible, freshNodeInfo)
+				feasibleNodes = append(feasibleNodes, freshNodeInfo)
 			}
 		}
 
-		if len(feasible) == 0 {
-			// no node works for this pod
-			//FIXME this should return an error
-			continue
+		if len(feasibleNodes) == 0 {
+			snapshot.Revert()
+			return nil, fmt.Errorf("No feasible nodes have been found for pod %s", pod.Name)
 		}
 
-		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasible)
+		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
 
 		if !preScoreStatus.IsSuccess() {
 			log.Printf("Error: PreScorePlugins failed")
@@ -109,34 +100,28 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			return nil, errors.New("Error: PreScorePlugins failed")
 		}
 
-		scores, status := realFramework.RunScorePlugins(ctx, state, pod, feasible)
+		scores, status := realFramework.RunScorePlugins(ctx, state, pod, feasibleNodes)
 		if !status.IsSuccess() {
 			log.Printf("Error: ScorePlugins failed")
 			snapshot.Revert()
 			return nil, errors.New("Error: ScorePlugins failed")
 		}
 
-		bestNode, err := pickHighestScoreNode(feasible, scores)
+		bestNode, err := pickHighestScoreNode(feasibleNodes, scores)
 		if err != nil {
 			log.Printf("Error: pickHighestScoreNode failed")
 			snapshot.Revert()
 			return nil, errors.New("Error: pickHighestScoreNode failed")
 		}
 
+		// ForceAddPod is used instead of SchedulPod because the scheduler predicates have already been checked with RunFilterPlgins
 		snapshot.ForceAddPod(pod, bestNode.Node().Name)
-
-		//log.Printf("Pod %s has been scheduled on node %s", pod.Name, bestNode.Node().Name)
 
 		podKey := pod.Namespace + "/" + pod.Name
 		if bestNode.Node().Name == previousPodAllocations[podKey] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node.", pod.Name)
 		} else {
-			podMoveCost := Config.PodMoveDefaultCost //default value
-			if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
-				if customCost, err := strconv.Atoi(annotationValue); err == nil {
-					podMoveCost = customCost
-				}
-			}
+			podMoveCost := getPodMoveCost(pod)
 			log.Printf("- Pod '%s' has been moved to node '%s'. Move cost %d.", pod.Name, bestNode.Node().Name, podMoveCost)
 			permutationCost += podMoveCost
 		}
@@ -169,6 +154,16 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 
 	snapshot.Revert()
 	return result, nil
+}
+
+func getPodMoveCost(pod *apiv1.Pod) int {
+	podMoveCost := Config.PodMoveDefaultCost
+	if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
+		if customCost, err := strconv.Atoi(annotationValue); err == nil {
+			podMoveCost = customCost
+		}
+	}
+	return podMoveCost
 }
 
 func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework.NodePluginScores) (kubeframework.NodeInfo, error) {
