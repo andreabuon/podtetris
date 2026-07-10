@@ -68,17 +68,17 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		state := schedframework.NewCycleState()
 		var feasibleNodes []kubeframework.NodeInfo
 
-		_, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
+		preFilterResult, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
 		if !preFilterStatus.IsSuccess() {
 			log.Printf("Error: PreFilterPlugins failed")
 			snapshot.Revert()
 			return nil, errors.New("Error: PreFilterPlugins failed")
 		}
 
-		for _, nodeInfo := range candidateNodesToDrain {
-			freshNodeInfo, err := snapshot.NodeInfos().Get(nodeInfo.Node().Name)
+		for _, preFilterNodeName := range preFilterResult.NodeNames.UnsortedList() {
+			freshNodeInfo, err := snapshot.NodeInfos().Get(preFilterNodeName)
 			if err != nil {
-				continue
+				return nil, errors.New("Error: can't retrieve a preFiltered node")
 			}
 
 			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
@@ -88,6 +88,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		}
 
 		if len(feasibleNodes) == 0 {
+			//The PostFilter stage is ignored
 			snapshot.Revert()
 			return nil, fmt.Errorf("No feasible nodes have been found for pod %s", pod.Name)
 		}
@@ -117,6 +118,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		// ForceAddPod is used instead of SchedulPod because the scheduler predicates have already been checked with RunFilterPlgins
 		snapshot.ForceAddPod(pod, bestNode.Node().Name)
 
+		// Compute and display pod move cost
 		podKey := pod.Namespace + "/" + pod.Name
 		if bestNode.Node().Name == previousPodAllocations[podKey] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node.", pod.Name)
