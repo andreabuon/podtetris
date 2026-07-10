@@ -158,7 +158,7 @@ func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework
 
 	// pick the highest score
 	for _, score := range scores {
-		if score.TotalScore > maxScore {
+		if score.TotalScore >= maxScore {
 			maxScore = score.TotalScore
 			maxScoreNodeName = score.Name
 		}
@@ -171,5 +171,5 @@ func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework
 		}
 	}
 
-	return nil, errors.New("The highest node found")
+	return nil, errors.New("The node with the highest score cannot be found anymore")
 }
