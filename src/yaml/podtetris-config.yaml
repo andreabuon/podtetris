@@ -10,12 +10,13 @@ metadata:
   namespace: podtetris
 data:
   config.yaml: |
-    candidateNodesNumber: 5
-    parallelism: 8
+    candidateNodesTotalNumber: 5
+    randomCandidateNodesNumber: 3
+    byCPUCandidateNodesNumber: 2
+    podMoveDefaultCost: 10
     emptyNodesScoreWeight: 100
     costScoreWeight: 100
     autoConsolidationScoreThreshold: 12345
-    podMoveCost: 10
     candidateNodesSelectionMaxRetries: 15
     fixedPodAnnotation: "podtetris/fixed"
     podMoveCostAnnotation: "podtetris/moveCost"
@@ -23,3 +24,4 @@ data:
       - cpu_desc
       - memory_desc
       - random
+    parallelism: 8

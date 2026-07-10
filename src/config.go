@@ -26,31 +26,35 @@ var ENABLED_PERMUTATION_GENERTATION_STRATEGIES = []string{
 }
 
 type AppConfig struct {
-	CandidateNodesNumber              int      `yaml:"candidateNodesNumber"`
-	Parallelism                       int      `yaml:"parallelism"`
+	CandidateNodesTotalNumber         int      `yaml:"candidateNodesTotalNumber"`
+	RandomCandidateNodesNumber        int      `yaml:"randomCandidateNodesNumber"`
+	ByCPUCandidateNodesNumber         int      `yaml:"byCPUCandidateNodesNumber"`
+	PodMoveDefaultCost                int      `yaml:"podMoveDefaultCost"`
 	EmptyNodesScoreWeight             int      `yaml:"emptyNodesScoreWeight"`
 	CostScoreWeight                   int      `yaml:"costScoreWeight"`
-	AutoConsolidationScoreThreshold   int      `yaml:"autoConsolidationThreshold"`
-	PodMoveCost                       int      `yaml:"podMoveCost"`
+	AutoConsolidationScoreThreshold   int      `yaml:"autoConsolidationScoreThreshold"`
 	CandidateNodesSelectionMaxRetries int      `yaml:"candidateNodesSelectionMaxRetries"`
 	FixedPodAnnotation                string   `yaml:"fixedPodAnnotation"`
 	PodMoveCostAnnotation             string   `yaml:"podMoveCostAnnotation"`
 	EnabledPermutationStrategies      []string `yaml:"enabledPermutationStrategies"`
+	Parallelism                       int      `yaml:"parallelism"`
 }
 
 // DefaultAppConfig returns an AppConfig populated with sane defaults.
 func DefaultAppConfig() AppConfig {
 	return AppConfig{
-		CandidateNodesNumber:              5,
-		Parallelism:                       8,
+		CandidateNodesTotalNumber:         5,
+		RandomCandidateNodesNumber:        3,
+		ByCPUCandidateNodesNumber:         2,
+		PodMoveDefaultCost:                10,
 		EmptyNodesScoreWeight:             100,
 		CostScoreWeight:                   100,
 		AutoConsolidationScoreThreshold:   12345,
-		PodMoveCost:                       10,
 		CandidateNodesSelectionMaxRetries: 15,
 		FixedPodAnnotation:                "podtetris/fixed",
 		PodMoveCostAnnotation:             "podtetris/moveCost",
 		EnabledPermutationStrategies:      ENABLED_PERMUTATION_GENERTATION_STRATEGIES,
+		Parallelism:                       8,
 	}
 }
 

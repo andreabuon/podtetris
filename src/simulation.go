@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"math/rand"
+	"sort"
 	"strconv"
 
 	apiv1 "k8s.io/api/core/v1"
@@ -61,16 +62,15 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, nodesToGet int) ([
 		return nodeInfos, nil
 	}
 
-	// TODO add multiple ways to select the nodes
-	/*
-		sort.Slice(
-			nodeInfos,
-			func(i, j int) bool {
-				return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
-			})
-	*/
-
 	var candidateNodes []kubeframework.NodeInfo
+
+	// TODO add multiple ways to select the nodes
+
+	sort.Slice(
+		nodeInfos,
+		func(i, j int) bool {
+			return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
+		})
 
 	attemptNum := 0
 	for {
@@ -202,7 +202,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		if bestNode.Node().Name == previousPodAllocations[podKey] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node.", pod.Name)
 		} else {
-			podMoveCost := Config.PodMoveCost //default value
+			podMoveCost := Config.PodMoveDefaultCost //default value
 			if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
 				if customCost, err := strconv.Atoi(annotationValue); err == nil {
 					podMoveCost = customCost
