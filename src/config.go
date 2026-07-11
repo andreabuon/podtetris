@@ -26,7 +26,6 @@ var ENABLED_PERMUTATION_GENERTATION_STRATEGIES = []string{
 }
 
 type AppConfig struct {
-	CandidateNodesTotalNumber         int      `yaml:"candidateNodesTotalNumber"`
 	RandomCandidateNodesNumber        int      `yaml:"randomCandidateNodesNumber"`
 	ByCPUCandidateNodesNumber         int      `yaml:"byCPUCandidateNodesNumber"`
 	PodMoveDefaultCost                int      `yaml:"podMoveDefaultCost"`

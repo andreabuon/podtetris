@@ -70,7 +70,7 @@ func main() {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	log.Printf("Selected %d Least-Allocated Nodes for Pods consolidation:", Config.CandidateNodesTotalNumber)
+	log.Printf("Selected %d Nodes for Pods consolidation:", Config.RandomCandidateNodesNumber+Config.ByCPUCandidateNodesNumber)
 	for _, ni := range candidateNodes {
 		log.Printf(" -> Node: %s (Current Pods: %d)", ni.Node().Name, len(ni.GetPods()))
 	}
