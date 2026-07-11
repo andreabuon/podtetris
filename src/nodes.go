@@ -86,7 +86,7 @@ func getRandomNodes(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubefra
 	randomIndices := rand.Perm(len(nodeInfos))
 	for i := range nodesNum {
 		randomIndex := randomIndices[i]
-		randomNodes = append(randomNodes, nodeInfos[randomIndex])
+		randomNodes[i] = nodeInfos[randomIndex]
 	}
 	return randomNodes, nil
 }
