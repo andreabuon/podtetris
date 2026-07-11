@@ -18,7 +18,16 @@ func sortByCPUDesc(pods []*apiv1.Pod) []*apiv1.Pod {
 	result := make([]*apiv1.Pod, len(pods))
 	copy(result, pods)
 	sort.Slice(result, func(i, j int) bool {
-		return getPodCPURequests(result[i]) > getPodCPURequests(result[j])
+		reqI, err := getPodCPURequests(result[i])
+		if err != nil {
+			log.Fatalf("Error while sorting pods by CPU usage: %v", err)
+		}
+		reqj, err := getPodCPURequests(result[j])
+		if err != nil {
+			log.Fatalf("Error while sorting pods by CPU usage: %v", err)
+		}
+
+		return reqI > reqj
 	})
 	return result
 }
@@ -27,7 +36,16 @@ func sortByMemoryDesc(pods []*apiv1.Pod) []*apiv1.Pod {
 	result := make([]*apiv1.Pod, len(pods))
 	copy(result, pods)
 	sort.Slice(result, func(i, j int) bool {
-		return getPodMemoryRequests(result[i]) > getPodMemoryRequests(result[j])
+		reqI, err := getPodMemoryRequests(result[i])
+		if err != nil {
+			log.Fatalf("Error while sorting pods by memory usage: %v", err)
+		}
+		reqj, err := getPodMemoryRequests(result[j])
+		if err != nil {
+			log.Fatalf("Error while sorting pods by memory usage: %v", err)
+		}
+
+		return reqI > reqj
 	})
 	return result
 }
