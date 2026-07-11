@@ -66,7 +66,6 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 
 	for _, pod := range permutation {
 		state := schedframework.NewCycleState()
-		var feasibleNodes []kubeframework.NodeInfo
 
 		preFilterResult, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
 		if !preFilterStatus.IsSuccess() {
@@ -75,7 +74,24 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			return nil, errors.New("Error: PreFilterPlugins failed")
 		}
 
-		for _, preFilterNodeName := range preFilterResult.NodeNames.UnsortedList() {
+		var preFilteredNodesNames []string
+		if preFilterResult != nil {
+			preFilteredNodesNames = preFilterResult.NodeNames.UnsortedList()
+		} else {
+			// No PreFilter plugin restricted the node set — consider all nodes.
+			allNodeInfos, err := snapshot.NodeInfos().List()
+			if err != nil {
+				log.Fatalf("Could not retrieve notes after the pre filtering phase")
+				snapshot.Revert()
+				return nil, err
+			}
+			for _, ni := range allNodeInfos {
+				preFilteredNodesNames = append(preFilteredNodesNames, ni.Node().Name)
+			}
+		}
+
+		var feasibleNodes []kubeframework.NodeInfo
+		for _, preFilterNodeName := range preFilteredNodesNames {
 			freshNodeInfo, err := snapshot.NodeInfos().Get(preFilterNodeName)
 			if err != nil {
 				return nil, errors.New("Error: can't retrieve a preFiltered node")
@@ -115,7 +131,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			return nil, errors.New("Error: pickHighestScoreNode failed")
 		}
 
-		// ForceAddPod is used instead of SchedulPod because the scheduler predicates have already been checked with RunFilterPlgins
+		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
 		snapshot.ForceAddPod(pod, bestNode.Node().Name)
 
 		// Compute and display pod move cost
