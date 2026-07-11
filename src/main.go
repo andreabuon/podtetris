@@ -81,6 +81,7 @@ func main() {
 	previousPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
+	log.Printf("In total %d pods have been evicted.", len(evictedPods))
 
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERTATION_STRATEGIES)
 
