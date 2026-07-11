@@ -13,6 +13,10 @@ import (
 const controlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 
 func initInformerFactory(ctx context.Context, clientset *kubernetes.Clientset) informers.SharedInformerFactory {
+	if clientset == nil {
+		log.Fatal("No clientset provided to initInformerFactory")
+	}
+
 	informerFactory := informers.NewSharedInformerFactoryWithOptions(
 		clientset,
 		0,
@@ -31,6 +35,10 @@ func initInformerFactory(ctx context.Context, clientset *kubernetes.Clientset) i
 }
 
 func fetchClusterState(ctx context.Context, clientset *kubernetes.Clientset) ([]*apiv1.Node, []*apiv1.Pod) {
+	if clientset == nil {
+		log.Fatal("No clientset provided to fetchClusterState")
+	}
+
 	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{
 		LabelSelector: controlPlaneLabelSelector,
 	})
