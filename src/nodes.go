@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"sort"
 
+	"k8s.io/apimachinery/pkg/util/sets"
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
@@ -22,15 +23,19 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 		return nil, errors.New("Every node in the cluster contains fixed pods")
 	}
 
-	leastUsedNodes, err := getNodesByCPUUsage(nodeInfos, nodesToGetByCPU)
+	allNodes := sets.New(nodeInfos...)
+
+	leastUsedNodes, err := getNodesByCPUUsage(allNodes.UnsortedList(), nodesToGetByCPU)
 	if err != nil {
 		return nil, err
 	}
 
+	remainingNodes := allNodes.Delete(leastUsedNodes...)
+
 	var randomNodes []kubeframework.NodeInfo
 	attemptNum := 0
 	for {
-		randomNodes, err = getRandomNodes(nodeInfos, randomNodesToGet)
+		randomNodes, err = getRandomNodes(remainingNodes.UnsortedList(), randomNodesToGet)
 		if err != nil {
 			return nil, err
 		}
