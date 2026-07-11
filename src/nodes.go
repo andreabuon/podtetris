@@ -66,9 +66,9 @@ func getNodesByCPUUsage(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kub
 			return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
 		})
 
-	var leastUsedNodes []kubeframework.NodeInfo
+	var leastUsedNodes []kubeframework.NodeInfo = make([]kubeframework.NodeInfo, nodesNum)
 	for i := range nodesNum {
-		leastUsedNodes = append(leastUsedNodes, nodeInfos[i])
+		leastUsedNodes[i] = nodeInfos[i]
 	}
 	return leastUsedNodes, nil
 }
