@@ -69,9 +69,15 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 
 		preFilterResult, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
 		if !preFilterStatus.IsSuccess() {
-			log.Printf("Error: PreFilterPlugins failed")
+			if preFilterStatus.Code() == kubeframework.Unschedulable {
+				log.Printf("Pod %s/%s is unschedulable in this permutation: %v", pod.Namespace, pod.Name, preFilterStatus.Message())
+				snapshot.Revert()
+				// Return a distinct error or handle it as a failed permutation path, not a system failure
+				return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
+			}
+
 			snapshot.Revert()
-			return nil, errors.New("Error: PreFilterPlugins failed")
+			return nil, fmt.Errorf("RunPreFilterPlugins failed: %v", preFilterStatus.AsError())
 		}
 
 		var preFilteredNodesNames []string
@@ -81,9 +87,8 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			// No PreFilter plugin restricted the node set — consider all nodes.
 			allNodeInfos, err := snapshot.NodeInfos().List()
 			if err != nil {
-				log.Fatalf("Could not retrieve notes after the pre filtering phase")
 				snapshot.Revert()
-				return nil, err
+				return nil, fmt.Errorf("Cannot retrieve nodes after the PreFilter phase: %v", err)
 			}
 			for _, ni := range allNodeInfos {
 				preFilteredNodesNames = append(preFilteredNodesNames, ni.Node().Name)
@@ -94,7 +99,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		for _, preFilterNodeName := range preFilteredNodesNames {
 			freshNodeInfo, err := snapshot.NodeInfos().Get(preFilterNodeName)
 			if err != nil {
-				return nil, errors.New("Error: can't retrieve a preFiltered node")
+				return nil, errors.New("Cannot retrieve a preFiltered node")
 			}
 
 			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
