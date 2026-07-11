@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"log"
 	"math/rand"
 	"sort"
 
@@ -15,11 +16,15 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 	}
 
 	totalNodesToGet := randomNodesToGet + nodesToGetByCPU
-	if len(nodeInfos) <= totalNodesToGet {
+	if len(nodeInfos) < totalNodesToGet {
 		return nil, errors.New("There are not enough candidate nodes")
 	}
 
-	if allContainFixedPods(nodeInfos) {
+	allContainFixed, err := allContainFixedPods(nodeInfos)
+	if err != nil {
+		log.Fatalf("Error while checking candidate nodes: %v", err)
+	}
+	if allContainFixed {
 		return nil, errors.New("Every node in the cluster contains fixed pods")
 	}
 
@@ -40,7 +45,12 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 			return nil, err
 		}
 
-		if !allContainFixedPods(randomNodes) {
+		allContainFixed, err := allContainFixedPods(randomNodes)
+		if err != nil {
+			log.Fatalf("Error while checking candidate nodes: %v", err)
+		}
+
+		if !allContainFixed {
 			break
 		}
 
@@ -96,9 +106,13 @@ func getRandomNodes(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubefra
 	return randomNodes, nil
 }
 
-func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
+func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) (bool, error) {
+	if nodeInfos == nil {
+		return false, errors.New("Error while checking if all given nodes contain fixed pods: nodes are nil")
+	}
+
 	if len(nodeInfos) == 0 {
-		return false
+		return false, nil
 	}
 
 	for _, nodeInfo := range nodeInfos {
@@ -115,10 +129,10 @@ func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) bool {
 			}
 		}
 		if !foundFixedInCurrentNode {
-			return false
+			return false, nil
 		}
 	}
-	return true
+	return true, nil
 }
 
 func isConsideredEmpty(node kubeframework.NodeInfo) bool {
