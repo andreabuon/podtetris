@@ -83,7 +83,7 @@ func main() {
 	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
 	log.Printf("In total %d pods have been evicted.", len(evictedPods))
 
-	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERTATION_STRATEGIES)
+	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERATION_STRATEGIES)
 
 	log.Println("Simulating scheduling of the pods permutations")
 	var schedulingResults []*SchedulingResult

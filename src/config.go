@@ -19,7 +19,7 @@ const (
 	SCHEDULER_CONFIG_PATH = "scheduler-config.yaml"
 )
 
-var ENABLED_PERMUTATION_GENERTATION_STRATEGIES = []string{
+var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{
 	"cpu_desc",
 	"memory_desc",
 	"random",
@@ -51,7 +51,7 @@ func DefaultAppConfig() AppConfig {
 		CandidateNodesSelectionMaxRetries: 15,
 		FixedPodAnnotation:                "podtetris/fixed",
 		PodMoveCostAnnotation:             "podtetris/moveCost",
-		EnabledPermutationStrategies:      ENABLED_PERMUTATION_GENERTATION_STRATEGIES,
+		EnabledPermutationStrategies:      ENABLED_PERMUTATION_GENERATION_STRATEGIES,
 		Parallelism:                       8,
 	}
 }
