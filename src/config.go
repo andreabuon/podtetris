@@ -60,6 +60,11 @@ func DefaultAppConfig() AppConfig {
 func loadAppConfig(ctx context.Context, clientset *kubernetes.Clientset) AppConfig {
 	cfg := DefaultAppConfig()
 
+	if clientset == nil {
+		log.Print("No clientset specified to loadAppConfig(). Using default app configuration.")
+		return cfg
+	}
+
 	cm, err := clientset.CoreV1().ConfigMaps("podtetris").Get(ctx, "podtetris-config", metav1.GetOptions{})
 	if err != nil {
 		log.Printf("Error reading ConfigMap: %v", err)
