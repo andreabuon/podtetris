@@ -149,7 +149,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			podMoveCost := getPodMoveCost(pod)
 			permutationCost += podMoveCost
 			pm := PodMove{
-				podName:      pod.Name,
+				pod:          pod,
 				fromNodeName: previousPodAllocations[podKey],
 				toNodeName:   bestNode.Node().Name,
 				cost:         podMoveCost,

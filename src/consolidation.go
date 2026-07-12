@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"log"
 
+	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 )
 
 type PodMove struct {
-	podName      string
+	pod          *apiv1.Pod
 	fromNodeName string
 	toNodeName   string
 	cost         int
 }
 
 func (pm PodMove) String() string {
-	return fmt.Sprintf("Pod '%s' moved from node '%s' to '%s' with a move cost of %d", pm.podName, pm.fromNodeName, pm.toNodeName, pm.cost)
+	return fmt.Sprintf("Pod '%s' moved from node '%s' to '%s' with a move cost of %d", pm.pod.Name, pm.fromNodeName, pm.toNodeName, pm.cost)
 }
 
 func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interface, podMoves []PodMove) {
@@ -39,4 +40,5 @@ func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interf
 
 func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove PodMove) error {
 	//TODO
+	return nil
 }
