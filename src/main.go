@@ -102,7 +102,7 @@ func main() {
 
 	log.Println("Scheduling results:")
 	for index, result := range schedulingResults {
-		log.Printf("Permutation #%d freed %d nodes with a total cost of %d", index, result.emptyNodesNum, result.cost)
+		log.Printf("Permutation #%d freed %d nodes with %d moves and a total cost of %d", index, result.emptyNodesNum, len(result.moves), result.cost)
 	}
 
 	if len(schedulingResults) < 1 {

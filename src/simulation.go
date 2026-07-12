@@ -21,6 +21,7 @@ type SchedulingResult struct {
 	emptyNodesNum int
 	cost          int
 	score         int
+	moves         []PodMove
 }
 
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
@@ -63,6 +64,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 	snapshot.Fork()
 
 	permutationCost := 0
+	var moves []PodMove
 
 	for _, pod := range permutation {
 		state := schedframework.NewCycleState()
@@ -145,8 +147,15 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			log.Printf("- Pod: '%s' has been re-assigned to the same node.", pod.Name)
 		} else {
 			podMoveCost := getPodMoveCost(pod)
-			log.Printf("- Pod '%s' has been moved to node '%s'. Move cost %d.", pod.Name, bestNode.Node().Name, podMoveCost)
 			permutationCost += podMoveCost
+			pm := PodMove{
+				podName:      pod.Name,
+				fromNodeName: previousPodAllocations[podKey],
+				toNodeName:   bestNode.Node().Name,
+				cost:         podMoveCost,
+			}
+			moves = append(moves, pm)
+			log.Printf("- Pod move: %s", pm)
 		}
 	}
 
@@ -159,6 +168,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		emptyNodesNum: freedNodesNum,
 		cost:          permutationCost,
 		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.CostScoreWeight * permutationCost),
+		moves:         moves,
 	}
 
 	snapshot.Revert()
