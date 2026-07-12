@@ -118,8 +118,8 @@ func main() {
 	log.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
 
 	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
-		log.Printf("Auto applying consolidation...")
-		//executeConsolidation()
+		log.Printf("Score threshold reached. Auto applying consolidation strategy...")
+		applyConsolidationStrategy(ctx, clientset, bestPermutationResult.moves)
 	}
 }
 
