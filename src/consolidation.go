@@ -50,7 +50,11 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 	newPod.Status = apiv1.PodStatus{}
 	newPod.Spec.NodeName = podMove.toNodeName
 
-	log.Printf("Trying to create pod %s...xw on namespace %s", newPod.Name, newPod.Namespace)
+	// Strip ownership so the ReplicaSet ignores this pod entirely. This is only for testing purposes!
+	newPod.OwnerReferences = nil
+	delete(newPod.Labels, "pod-template-hash")
+
+	log.Printf("Trying to create pod %s (namespace %s) on node %s", newPod.Name, newPod.Namespace, newPod.Spec.NodeName)
 
 	created, err := clientset.CoreV1().Pods(newPod.Namespace).Create(ctx, newPod, metav1.CreateOptions{})
 	if err != nil {
