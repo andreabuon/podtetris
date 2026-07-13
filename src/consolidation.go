@@ -58,15 +58,15 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 		return err
 	}
 
-	log.Printf("Created pod %s on namespace %s", created.Name, newPod.Namespace)
+	log.Printf("Created pod '%s' on namespace '%s'", created.Name, newPod.Namespace)
 
 	log.Printf("Deleting original pod %s...", original.Name)
 	err = clientset.CoreV1().Pods(original.Namespace).Delete(ctx, original.Name, metav1.DeleteOptions{})
 	if err != nil {
-		log.Printf("Warning: replacement pod %s created, but failed to delete original %s: %v", created.Name, original.Name, err)
+		log.Printf("Warning: replacement pod '%s' created, but failed to delete original pod '%s': %v", created.Name, original.Name, err)
 		return err
 	}
-	log.Printf("Original pod %s deleted", original.Name)
+	log.Printf("Original pod '%s' deleted", original.Name)
 
 	return nil
 }
