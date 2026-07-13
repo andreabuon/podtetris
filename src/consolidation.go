@@ -6,6 +6,7 @@ import (
 	"log"
 
 	apiv1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -35,10 +36,37 @@ func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interf
 		appliedMoves = append(appliedMoves, pm)
 	}
 
-	log.Print("Consolidation completed. %d pod moves applied", len(appliedMoves))
+	log.Printf("Consolidation completed. %d pod moves applied", len(appliedMoves))
 }
 
 func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove PodMove) error {
-	//TODO
+	original := podMove.pod
+
+	newPod := original.DeepCopy()
+	newPod.Name = original.Name + "-podtetris"
+	newPod.GenerateName = ""
+	newPod.ResourceVersion = ""
+	newPod.UID = ""
+	newPod.Status = apiv1.PodStatus{}
+	newPod.Spec.NodeName = podMove.toNodeName
+
+	log.Printf("Trying to create pod %s...xw on namespace %s", newPod.Name, newPod.Namespace)
+
+	created, err := clientset.CoreV1().Pods(newPod.Namespace).Create(ctx, newPod, metav1.CreateOptions{})
+	if err != nil {
+		log.Printf("Error during pod creation: %s", err)
+		return err
+	}
+
+	log.Printf("Created pod %s on namespace %s", created.Name, newPod.Namespace)
+
+	log.Printf("Deleting original pod %s...", original.Name)
+	err = clientset.CoreV1().Pods(original.Namespace).Delete(ctx, original.Name, metav1.DeleteOptions{})
+	if err != nil {
+		log.Printf("Warning: replacement pod %s created, but failed to delete original %s: %v", created.Name, original.Name, err)
+		return err
+	}
+	log.Printf("Original pod %s deleted", original.Name)
+
 	return nil
 }

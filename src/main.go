@@ -102,7 +102,7 @@ func main() {
 
 	log.Println("Scheduling results:")
 	for index, result := range schedulingResults {
-		log.Printf("Permutation #%d freed %d nodes with %d moves and a total cost of %d", index, result.emptyNodesNum, len(result.moves), result.cost)
+		log.Printf("Permutation #%d freed %d nodes with %d moves. Total cost of %d. Permutation score is %d", index, result.emptyNodesNum, len(result.moves), result.cost, result.score)
 	}
 
 	if len(schedulingResults) < 1 {
@@ -117,10 +117,14 @@ func main() {
 	bestPermutationResult := schedulingResults[0]
 	log.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
 
-	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
-		log.Printf("Score threshold reached. Auto applying consolidation strategy...")
-		applyConsolidationStrategy(ctx, clientset, bestPermutationResult.moves)
-	}
+	/*
+		if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
+			log.Printf("Score threshold reached. Auto applying consolidation strategy...")
+			applyConsolidationStrategy(ctx, clientset, bestPermutationResult.moves)
+		}
+	*/
+	//FIXME remove this line and uncomment the block
+	applyConsolidationStrategy(ctx, clientset, bestPermutationResult.moves)
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[string]string {
