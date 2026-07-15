@@ -1,0 +1,31 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: podtetris-webhook
+webhooks:
+  - name: podtetris-webhook.podtetris.svc
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    failurePolicy: Ignore # Ignore, not Fail: if the webhook is down, pod creation should not be blocked cluster-wide.
+    timeoutSeconds: 5
+    clientConfig:
+      service:
+        name: podtetris-webhook
+        namespace: podtetris
+        path: /mutate
+        port: 443
+      # Replace with the output of gen-certs.sh (base64 tls.crt)
+      caBundle: "<BASE64_CA_BUNDLE_HERE>"
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+        scope: "Namespaced"
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+            - podtetris

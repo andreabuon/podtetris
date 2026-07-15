@@ -40,37 +40,80 @@ func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interf
 }
 
 func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove PodMove) error {
-	original := podMove.pod
+	podToMove := podMove.pod
 
-	newPod := original.DeepCopy()
-	newPod.Name = original.Name + "-podtetris"
-	newPod.GenerateName = ""
-	newPod.ResourceVersion = ""
-	newPod.UID = ""
-	newPod.Status = apiv1.PodStatus{}
-	newPod.Spec.NodeName = podMove.toNodeName
-
-	// Strip ownership so the ReplicaSet ignores this pod entirely. This is only for testing purposes!
-	newPod.OwnerReferences = nil
-	delete(newPod.Labels, "pod-template-hash")
-
-	log.Printf("Trying to create pod %s (namespace %s) on node %s", newPod.Name, newPod.Namespace, newPod.Spec.NodeName)
-
-	created, err := clientset.CoreV1().Pods(newPod.Namespace).Create(ctx, newPod, metav1.CreateOptions{})
+	//scale the deployment replicas up
+	//the deployment will create a new pod, the mutating webhook will patch the new pod by applying the previosuly computed spec.NodeName and nodeSelector
+	log.Printf("Scaling up pod %s deployment...", podToMove.Name)
+	err := scalePodDeployment(ctx, clientset, podToMove, 1)
 	if err != nil {
-		log.Printf("Error during pod creation: %s", err)
+		return fmt.Errorf("error while scaling pod deployment up: %v", err)
+	}
+
+	log.Printf("Deleting original pod %s...", podToMove.Name)
+	err = clientset.CoreV1().Pods(podToMove.Namespace).Delete(ctx, podToMove.Name, metav1.DeleteOptions{})
+	if err != nil {
+		log.Printf("Failed to delete original pod '%s': %v", podToMove.Name, err)
+		return err
+	}
+	log.Printf("Original pod '%s' deleted", podToMove.Name)
+
+	//scale deployment replicas down
+	log.Printf("Scaling down pod %s deployment...", podToMove.Name)
+	err = scalePodDeployment(ctx, clientset, podToMove, -1)
+	if err != nil {
+		return fmt.Errorf("error while scaling pod deployment down: %v", err)
+	}
+
+	return nil
+}
+
+func scalePodDeployment(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod, delta int32) error {
+	var replicaSetName string
+	for _, owner := range pod.OwnerReferences {
+		if owner.Kind == "ReplicaSet" {
+			replicaSetName = owner.Name
+			break
+		}
+	}
+
+	if replicaSetName == "" {
+		return fmt.Errorf("pod %s/%s is not owned by a ReplicaSet", pod.Namespace, pod.Name)
+	}
+
+	rs, err := clientset.AppsV1().ReplicaSets(pod.Namespace).Get(ctx, replicaSetName, metav1.GetOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to get replica set %s: %w", replicaSetName, err)
+	}
+
+	var deploymentName string = ""
+	for _, owner := range rs.OwnerReferences {
+		if owner.Kind == "Deployment" {
+			deploymentName = owner.Name
+			break
+		}
+	}
+
+	if deploymentName == "" {
+		return fmt.Errorf("replica set %s/%s is not owned by a ReplicaSet", pod.Namespace, pod.Name)
+	}
+
+	apps := clientset.AppsV1()
+	deploymentInterface := apps.Deployments(pod.Namespace)
+
+	deployment, err := deploymentInterface.Get(ctx, deploymentName, metav1.GetOptions{})
+	if err != nil {
 		return err
 	}
 
-	log.Printf("Created pod '%s' on namespace '%s'", created.Name, newPod.Namespace)
-
-	log.Printf("Deleting original pod %s...", original.Name)
-	err = clientset.CoreV1().Pods(original.Namespace).Delete(ctx, original.Name, metav1.DeleteOptions{})
+	scale, err := deploymentInterface.GetScale(ctx, deployment.Name, metav1.GetOptions{})
 	if err != nil {
-		log.Printf("Warning: replacement pod '%s' created, but failed to delete original pod '%s': %v", created.Name, original.Name, err)
 		return err
 	}
-	log.Printf("Original pod '%s' deleted", original.Name)
+
+	scale.Spec.Replicas += delta
+
+	_, err = deploymentInterface.UpdateScale(ctx, deployment.Name, scale, metav1.UpdateOptions{})
 
 	return nil
 }
