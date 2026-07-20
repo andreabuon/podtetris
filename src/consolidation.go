@@ -95,7 +95,7 @@ func scalePodDeployment(ctx context.Context, clientset kubernetes.Interface, pod
 	}
 
 	if deploymentName == "" {
-		return fmt.Errorf("replica set %s/%s is not owned by a ReplicaSet", pod.Namespace, pod.Name)
+		return fmt.Errorf("replica set %s/%s is not owned by a Deployment", pod.Namespace, pod.Name)
 	}
 
 	apps := clientset.AppsV1()
