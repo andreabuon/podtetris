@@ -5,6 +5,7 @@ import (
 
 	apiv1 "k8s.io/api/core/v1"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EvictionSkipReason describes why a pod was not evicted
@@ -45,6 +46,19 @@ func isEvictable(pod *corev1.Pod) (bool, EvictionSkipReason) {
 	}
 
 	return true, ""
+}
+
+func getControllerReference(pod *apiv1.Pod) *metav1.OwnerReference {
+	return getControllerReferenceFromRefs(pod.OwnerReferences)
+}
+
+func getControllerReferenceFromRefs(refs []metav1.OwnerReference) *metav1.OwnerReference {
+	for i := range refs {
+		if refs[i].Controller != nil && *refs[i].Controller {
+			return &refs[i]
+		}
+	}
+	return nil
 }
 
 func getPodCPURequests(pod *apiv1.Pod) (int64, error) {
