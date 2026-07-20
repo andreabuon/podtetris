@@ -44,24 +44,37 @@ func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interf
 func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove PodMove) error {
 	pod := podMove.pod
 
-	ref := getControllerReference(pod)
-	if ref == nil {
+	ownerRef := getControllerReference(pod)
+	if ownerRef == nil {
 		return fmt.Errorf("No controller found for pod %s", pod.Name)
 	}
 
-	switch ref.Kind {
-	case "ReplicaSet":
-		//TODO distinguish just replicasets or deployment
-		log.Printf("Pod %s managed by a ReplicaSet. Applying scale strategy...", pod.Name)
-		return moveDeploymentPod(ctx, clientset, pod)
-
-	case "StatefulSet":
+	if ownerRef.Kind == "StatefulSet" {
 		log.Printf("Pod %s managed by a StatefulSet. Applying Eviction...", pod.Name)
 		return moveStatefulSetPod(ctx, clientset, pod)
-
-	default:
-		return fmt.Errorf("Controller not supported: %s", ref.Kind)
 	}
+
+	if ownerRef.Kind == "ReplicaSet" {
+		rs, err := clientset.AppsV1().ReplicaSets(pod.Namespace).Get(ctx, ownerRef.Name, metav1.GetOptions{})
+		if err != nil {
+			return fmt.Errorf("failed to get replica set %s: %w", ownerRef.Name, err)
+		}
+
+		rsOwnerRef := getControllerReferenceFromRefs(rs.OwnerReferences)
+		if rsOwnerRef != nil && rsOwnerRef.Kind != "Deployment" {
+			return fmt.Errorf("pod %s/%s owned by ReplicaSet %s, which is owned by unsupported controller kind %s", pod.Namespace, pod.Name, rs.Name, rsOwnerRef.Kind)
+		}
+
+		if rsOwnerRef != nil && rsOwnerRef.Kind == "Deployment" {
+			log.Printf("Pod %s managed by a Deployment (via ReplicaSet %s). Applying scale strategy...", pod.Name, rs.Name)
+			return moveDeploymentPod(ctx, clientset, pod)
+		}
+
+		log.Printf("Pod %s managed by a bare ReplicaSet %s. Applying scale strategy...", pod.Name, rs.Name)
+		return moveReplicaSetPod(ctx, clientset, pod)
+	}
+
+	return fmt.Errorf("Controller not supported: %s", ownerRef.Kind)
 }
 
 func moveStatefulSetPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
@@ -83,6 +96,64 @@ func moveStatefulSetPod(ctx context.Context, clientset kubernetes.Interface, pod
 	}
 
 	log.Printf("Pod '%s' evicted", pod.Name)
+	return nil
+}
+
+func moveReplicaSetPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
+	//scale the replica set replicas up
+	//the replica set will create a new pod, the mutating webhook will patch the new pod by applying the previosuly computed spec.NodeName and nodeSelector
+	log.Printf("Scaling up pod %s replica set...", pod.Name)
+	err := scaleReplicaSet(ctx, clientset, pod, 1)
+	if err != nil {
+		return fmt.Errorf("error while scaling replica set up: %v", err)
+	}
+
+	log.Printf("Deleting original pod %s...", pod.Name)
+	err = clientset.CoreV1().Pods(pod.Namespace).Delete(ctx, pod.Name, metav1.DeleteOptions{})
+	//TODO replace this with eviction ?
+	if err != nil {
+		log.Printf("Failed to delete original pod '%s': %v", pod.Name, err)
+		return err
+	}
+	log.Printf("Original pod '%s' deleted", pod.Name)
+
+	//scale replica set replicas down
+	log.Printf("Scaling down pod %s replica set...", pod.Name)
+	err = scaleReplicaSet(ctx, clientset, pod, -1)
+	if err != nil {
+		return fmt.Errorf("error while scaling replica set down: %v", err)
+	}
+
+	return nil
+}
+
+func scaleReplicaSet(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod, delta int32) error {
+	ownerRef := getControllerReference(pod)
+	if ownerRef == nil {
+		return fmt.Errorf("pod %s/%s has no controller owner reference", pod.Namespace, pod.Name)
+	}
+	if ownerRef.Kind != "ReplicaSet" {
+		return fmt.Errorf("pod %s/%s is not owned by a ReplicaSet (owner kind: %s)", pod.Namespace, pod.Name, ownerRef.Kind)
+	}
+
+	rsInterface := clientset.AppsV1().ReplicaSets(pod.Namespace)
+
+	rs, err := rsInterface.Get(ctx, ownerRef.Name, metav1.GetOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to get replica set %s: %w", ownerRef.Name, err)
+	}
+
+	scale, err := rsInterface.GetScale(ctx, rs.Name, metav1.GetOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to get scale for replica set %s: %w", rs.Name, err)
+	}
+
+	scale.Spec.Replicas += delta
+
+	if _, err := rsInterface.UpdateScale(ctx, rs.Name, scale, metav1.UpdateOptions{}); err != nil {
+		return fmt.Errorf("failed to update scale for replica set %s: %w", rs.Name, err)
+	}
+
 	return nil
 }
 
