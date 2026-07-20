@@ -77,9 +77,8 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 	return fmt.Errorf("Controller not supported: %s", ownerRef.Kind)
 }
 
-func moveStatefulSetPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
-	log.Printf("Evicting StatefulSet pod %s...", pod.Name)
-
+// evictPod requests the API server to voluntarily evict the given pod.
+func evictPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
 	eviction := &policyv1.Eviction{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      pod.Name,
@@ -92,10 +91,22 @@ func moveStatefulSetPod(ctx context.Context, clientset kubernetes.Interface, pod
 		if apierrors.IsTooManyRequests(err) {
 			return fmt.Errorf("eviction of pod %s/%s blocked by PodDisruptionBudget: %w", pod.Namespace, pod.Name, err)
 		}
+		if apierrors.IsNotFound(err) {
+			return nil
+		}
 		return fmt.Errorf("failed to evict pod %s/%s: %w", pod.Namespace, pod.Name, err)
 	}
+	return nil
+}
 
-	log.Printf("Pod '%s' evicted", pod.Name)
+func moveStatefulSetPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
+	log.Printf("Evicting StatefulSet pod %s...", pod.Name)
+
+	if err := evictPod(ctx, clientset, pod); err != nil {
+		return err
+	}
+
+	log.Printf("StatefulSet Pod '%s' evicted", pod.Name)
 	return nil
 }
 
@@ -108,14 +119,17 @@ func moveReplicaSetPod(ctx context.Context, clientset kubernetes.Interface, pod 
 		return fmt.Errorf("error while scaling replica set up: %v", err)
 	}
 
-	log.Printf("Deleting original pod %s...", pod.Name)
-	err = clientset.CoreV1().Pods(pod.Namespace).Delete(ctx, pod.Name, metav1.DeleteOptions{})
-	//TODO replace this with eviction ?
-	if err != nil {
-		log.Printf("Failed to delete original pod '%s': %v", pod.Name, err)
+	log.Printf("Evicting original pod %s...", pod.Name)
+	if err := evictPod(ctx, clientset, pod); err != nil {
+		log.Printf("Failed to evict original pod '%s': %v", pod.Name, err)
+		// Roll back the scale-up, otherwise we'd be left with one extra replica permanently.
+		if scaleErr := scaleReplicaSet(ctx, clientset, pod, -1); scaleErr != nil {
+			log.Printf("Failed to roll back scale-up for pod '%s': %v", pod.Name, scaleErr)
+			return fmt.Errorf("eviction failed (%w) and rollback of scale-up also failed: %v", err, scaleErr)
+		}
 		return err
 	}
-	log.Printf("Original pod '%s' deleted", pod.Name)
+	log.Printf("Original pod '%s' evicted", pod.Name)
 
 	//scale replica set replicas down
 	log.Printf("Scaling down pod %s replica set...", pod.Name)
@@ -166,14 +180,17 @@ func moveDeploymentPod(ctx context.Context, clientset kubernetes.Interface, pod 
 		return fmt.Errorf("error while scaling pod deployment up: %v", err)
 	}
 
-	log.Printf("Deleting original pod %s...", pod.Name)
-	err = clientset.CoreV1().Pods(pod.Namespace).Delete(ctx, pod.Name, metav1.DeleteOptions{})
-	//TODO replace this with eviction ?
-	if err != nil {
-		log.Printf("Failed to delete original pod '%s': %v", pod.Name, err)
+	log.Printf("Evicting original pod %s...", pod.Name)
+	if err := evictPod(ctx, clientset, pod); err != nil {
+		log.Printf("Failed to evict original pod '%s': %v", pod.Name, err)
+		// Roll back the scale-up, otherwise we'd be left with one extra replica permanently.
+		if scaleErr := scalePodDeployment(ctx, clientset, pod, -1); scaleErr != nil {
+			log.Printf("Failed to roll back scale-up for pod '%s': %v", pod.Name, scaleErr)
+			return fmt.Errorf("eviction failed (%w) and rollback of scale-up also failed: %v", err, scaleErr)
+		}
 		return err
 	}
-	log.Printf("Original pod '%s' deleted", pod.Name)
+	log.Printf("Original pod '%s' evicted", pod.Name)
 
 	//scale deployment replicas down
 	log.Printf("Scaling down pod %s deployment...", pod.Name)
