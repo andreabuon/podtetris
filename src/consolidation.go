@@ -20,25 +20,27 @@ type PodMove struct {
 }
 
 func (pm PodMove) String() string {
-	return fmt.Sprintf("Pod '%s' moved from node '%s' to '%s' with a move cost of %d", pm.pod.Name, pm.fromNodeName, pm.toNodeName, pm.cost)
+	return fmt.Sprintf("Pod '%s' moved from '%s' to '%s' (move cost = %d)", pm.pod.Name, pm.fromNodeName, pm.toNodeName, pm.cost)
 }
 
 func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interface, podMoves []PodMove) {
 	log.Printf("Applying consolidation strategy...")
 
 	var appliedMoves []PodMove
+	errorsCount := 0
 
 	for _, pm := range podMoves {
 		err := applyPodMove(ctx, clientset, pm)
 		if err != nil {
-			log.Printf("Error while applying pod move %s", pm)
+			log.Printf("Error while applying move %s: %w", pm, err)
+			errorsCount++
 			//TODO undo(appliedMoves) ??
 			continue
 		}
 		appliedMoves = append(appliedMoves, pm)
 	}
 
-	log.Printf("Consolidation completed. %d pod moves applied", len(appliedMoves))
+	log.Printf("Consolidation completed. %d pod moves applied, %d errors.", len(appliedMoves), errorsCount)
 }
 
 func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove PodMove) error {
@@ -50,7 +52,6 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 	}
 
 	if ownerRef.Kind == "StatefulSet" {
-		log.Printf("Pod %s managed by a StatefulSet. Applying Eviction...", pod.Name)
 		return moveStatefulSetPod(ctx, clientset, pod)
 	}
 
@@ -66,11 +67,9 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 		}
 
 		if rsOwnerRef != nil && rsOwnerRef.Kind == "Deployment" {
-			log.Printf("Pod %s managed by a Deployment (via ReplicaSet %s). Applying scale strategy...", pod.Name, rs.Name)
 			return moveDeploymentPod(ctx, clientset, pod)
 		}
 
-		log.Printf("Pod %s managed by a bare ReplicaSet %s. Applying scale strategy...", pod.Name, rs.Name)
 		return moveReplicaSetPod(ctx, clientset, pod)
 	}
 
@@ -100,20 +99,15 @@ func evictPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Po
 }
 
 func moveStatefulSetPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
-	log.Printf("Evicting StatefulSet pod %s...", pod.Name)
-
 	if err := evictPod(ctx, clientset, pod); err != nil {
 		return err
 	}
-
-	log.Printf("StatefulSet Pod '%s' evicted", pod.Name)
 	return nil
 }
 
 func moveReplicaSetPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
 	//scale the replica set replicas up
 	//the replica set will create a new pod, the mutating webhook will patch the new pod by applying the previosuly computed spec.NodeName and nodeSelector
-	log.Printf("Scaling up pod %s replica set...", pod.Name)
 	err := scaleReplicaSet(ctx, clientset, pod, 1)
 	if err != nil {
 		return fmt.Errorf("error while scaling replica set up: %v", err)
@@ -129,10 +123,8 @@ func moveReplicaSetPod(ctx context.Context, clientset kubernetes.Interface, pod 
 		}
 		return err
 	}
-	log.Printf("Original pod '%s' evicted", pod.Name)
 
 	//scale replica set replicas down
-	log.Printf("Scaling down pod %s replica set...", pod.Name)
 	err = scaleReplicaSet(ctx, clientset, pod, -1)
 	if err != nil {
 		return fmt.Errorf("error while scaling replica set down: %v", err)
@@ -174,7 +166,6 @@ func scaleReplicaSet(ctx context.Context, clientset kubernetes.Interface, pod *a
 func moveDeploymentPod(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod) error {
 	//scale the deployment replicas up
 	//the deployment will create a new pod, the mutating webhook will patch the new pod by applying the previosuly computed spec.NodeName and nodeSelector
-	log.Printf("Scaling up pod %s deployment...", pod.Name)
 	err := scalePodDeployment(ctx, clientset, pod, 1)
 	if err != nil {
 		return fmt.Errorf("error while scaling pod deployment up: %v", err)
@@ -190,10 +181,8 @@ func moveDeploymentPod(ctx context.Context, clientset kubernetes.Interface, pod 
 		}
 		return err
 	}
-	log.Printf("Original pod '%s' evicted", pod.Name)
 
 	//scale deployment replicas down
-	log.Printf("Scaling down pod %s deployment...", pod.Name)
 	err = scalePodDeployment(ctx, clientset, pod, -1)
 	if err != nil {
 		return fmt.Errorf("error while scaling pod deployment down: %v", err)
