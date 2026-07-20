@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-app-alpha
+  name: deployment-a
   namespace: default
 spec:
   replicas: 7
   selector:
     matchLabels:
-      app: test-app-alpha
+      app: deployment-a
   template:
     metadata:
       labels:
-        app: test-app-alpha
+        app: deployment-a
       annotations:
         "podtetris/moveCost": "75"
     spec:
@@ -29,17 +29,17 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-app-beta
+  name: deployment-b
   namespace: default
 spec:
   replicas: 7
   selector:
     matchLabels:
-      app: test-app-beta
+      app: deployment-b
   template:
     metadata:
       labels:
-        app: test-app-beta
+        app: deployment-b
       annotations:
         "podtetris/moveCost": "50"
     spec:
@@ -57,7 +57,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fixed-workload
+  name: deployment-fixed
   namespace: default
 spec:
   replicas: 2
@@ -85,17 +85,17 @@ spec:
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: test-rs-gamma
+  name: rs-a
   namespace: default
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: test-rs-gamma
+      app: rs-a
   template:
     metadata:
       labels:
-        app: test-rs-gamma
+        app: rs-a
       annotations:
         "podtetris/moveCost": "25"
     spec:
@@ -110,17 +110,17 @@ spec:
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: test-rs-delta
+  name: rs-b
   namespace: default
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: test-rs-delta
+      app: rs-b
   template:
     metadata:
       labels:
-        app: test-rs-delta
+        app: rs-b
       annotations:
         "podtetris/moveCost": "15"
     spec:
@@ -135,7 +135,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: statefulset-service
   labels:
     app: nginx
 spec:
@@ -149,12 +149,12 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: web
+  name: statefulset
 spec:
   selector:
     matchLabels:
       app: nginx # has to match .spec.template.metadata.labels
-  serviceName: "nginx"
+  serviceName: "statefulset-service"
   replicas: 3
   template:
     metadata:
