@@ -71,7 +71,7 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 func scalePodDeployment(ctx context.Context, clientset kubernetes.Interface, pod *apiv1.Pod, delta int32) error {
 	var replicaSetName string
 	for _, owner := range pod.OwnerReferences {
-		if owner.Kind == "ReplicaSet" {
+		if owner.Kind == "ReplicaSet" && *owner.Controller {
 			replicaSetName = owner.Name
 			break
 		}
@@ -88,7 +88,7 @@ func scalePodDeployment(ctx context.Context, clientset kubernetes.Interface, pod
 
 	var deploymentName string = ""
 	for _, owner := range rs.OwnerReferences {
-		if owner.Kind == "Deployment" {
+		if owner.Kind == "Deployment" && *owner.Controller {
 			deploymentName = owner.Name
 			break
 		}
