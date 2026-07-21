@@ -29,19 +29,6 @@ kubectl cluster-info --context kind-$CLUSTER_NAME
 echo "Waiting for the nodes to be ready..."
 kubectl wait --for=condition=Ready nodes --all --timeout=60s
 
-### KWOK ###
- 
-#helm repo add kwok https://kwok.sigs.k8s.io/charts/
-#helm upgrade --namespace kube-system --install kwok kwok/kwok
-#helm upgrade --install kwok kwok/stage-fast
-#helm upgrade --install kwok kwok/metrics-usage
-
-## Create fake kwok nodes
-#helm install kwok-nodes-provisioner charts/kwok-nodes-provisioner/
-
-#kubectl apply -f manifests/databases.yaml
-#kubectl apply -f manifests/fake-backups.yaml
-#kubectl apply -f manifests/web-servers.yaml
 kubectl apply -f manifests/podtetris-test-workloads.yaml
 
 echo "Cluster setup completed."

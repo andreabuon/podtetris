@@ -1,4 +1,0 @@
-workerNodes:
-  countPerType: 2
-  zones: ["eu-1", "eu-2"]
-  disks: ["nvme", "ssd", "hdd"]
