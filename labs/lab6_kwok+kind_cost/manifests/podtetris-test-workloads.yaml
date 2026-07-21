@@ -160,6 +160,8 @@ spec:
     metadata:
       labels:
         app: nginx # has to match .spec.selector.matchLabels
+      annotations:
+        "podtetris/moveCost": "50"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -175,3 +177,14 @@ spec:
           limits:
             cpu: 1500m
             memory: 1024Mi
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 100Mi
