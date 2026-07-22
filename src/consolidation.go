@@ -32,7 +32,7 @@ func applyConsolidationStrategy(ctx context.Context, clientset kubernetes.Interf
 	for _, pm := range podMoves {
 		err := applyPodMove(ctx, clientset, pm)
 		if err != nil {
-			log.Printf("Error while applying move %s: %w", pm, err)
+			log.Printf("error while applying move %s: %v", pm, err)
 			errorsCount++
 			//TODO undo(appliedMoves) ??
 			continue
@@ -48,7 +48,7 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 
 	ownerRef := getControllerReference(pod)
 	if ownerRef == nil {
-		return fmt.Errorf("No controller found for pod %s", pod.Name)
+		return fmt.Errorf("no controller found for pod %s", pod.Name)
 	}
 
 	if ownerRef.Kind == "StatefulSet" {
@@ -73,7 +73,7 @@ func applyPodMove(ctx context.Context, clientset kubernetes.Interface, podMove P
 		return moveReplicaSetPod(ctx, clientset, pod)
 	}
 
-	return fmt.Errorf("Controller not supported: %s", ownerRef.Kind)
+	return fmt.Errorf("controller not supported: %s", ownerRef.Kind)
 }
 
 // evictPod requests the API server to voluntarily evict the given pod.

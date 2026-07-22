@@ -12,20 +12,20 @@ import (
 
 func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
-		return nil, errors.New("No available candidate nodes")
+		return nil, errors.New("no available candidate nodes")
 	}
 
 	totalNodesToGet := randomNodesToGet + nodesToGetByCPU
 	if len(nodeInfos) < totalNodesToGet {
-		return nil, errors.New("There are not enough candidate nodes")
+		return nil, errors.New("there are not enough candidate nodes")
 	}
 
 	allContainFixed, err := allContainFixedPods(nodeInfos)
 	if err != nil {
-		log.Fatalf("Error while checking candidate nodes: %v", err)
+		log.Fatalf("error while checking candidate nodes: %v", err)
 	}
 	if allContainFixed {
-		return nil, errors.New("Every node in the cluster contains fixed pods")
+		return nil, errors.New("every node in the cluster contains fixed pods")
 	}
 
 	allNodes := sets.New(nodeInfos...)
@@ -47,7 +47,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 		allContainFixed, err := allContainFixedPods(randomNodes)
 		if err != nil {
-			log.Fatalf("Error while checking candidate nodes: %v", err)
+			log.Fatalf("error while checking candidate nodes: %v", err)
 		}
 
 		if !allContainFixed {
@@ -56,7 +56,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 		attemptNum++
 		if attemptNum >= Config.CandidateNodesSelectionMaxRetries {
-			return nil, errors.New("Max random candidate nodes selection retries reached")
+			return nil, errors.New("max random candidate nodes selection retries reached")
 		}
 	}
 
@@ -68,11 +68,11 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 func getNodesByCPUUsage(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
-		return nil, errors.New("No available candidate nodes")
+		return nil, errors.New("no available candidate nodes")
 	}
 
 	if len(nodeInfos) <= nodesNum {
-		return nil, errors.New("There are not enough candidate nodes")
+		return nil, errors.New("there are not enough candidate nodes")
 	}
 
 	sort.Slice(
@@ -90,11 +90,11 @@ func getNodesByCPUUsage(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kub
 
 func getRandomNodes(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
-		return nil, errors.New("No available candidate nodes")
+		return nil, errors.New("no available candidate nodes")
 	}
 
 	if len(nodeInfos) <= nodesNum {
-		return nil, errors.New("There are not enough candidate nodes")
+		return nil, errors.New("there are not enough candidate nodes")
 	}
 
 	var randomNodes []kubeframework.NodeInfo = make([]kubeframework.NodeInfo, nodesNum)
@@ -108,7 +108,7 @@ func getRandomNodes(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubefra
 
 func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) (bool, error) {
 	if nodeInfos == nil {
-		return false, errors.New("Error while checking if all given nodes contain fixed pods: nodes are nil")
+		return false, errors.New("error while checking if all given nodes contain fixed pods: nodes are nil")
 	}
 
 	if len(nodeInfos) == 0 {

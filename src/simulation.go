@@ -90,7 +90,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 			allNodeInfos, err := snapshot.NodeInfos().List()
 			if err != nil {
 				snapshot.Revert()
-				return nil, fmt.Errorf("Cannot retrieve nodes after the PreFilter phase: %v", err)
+				return nil, fmt.Errorf("cannot retrieve nodes after the PreFilter phase: %v", err)
 			}
 			for _, ni := range allNodeInfos {
 				preFilteredNodesNames = append(preFilteredNodesNames, ni.Node().Name)
@@ -101,7 +101,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		for _, preFilterNodeName := range preFilteredNodesNames {
 			freshNodeInfo, err := snapshot.NodeInfos().Get(preFilterNodeName)
 			if err != nil {
-				return nil, errors.New("Cannot retrieve a preFiltered node")
+				return nil, errors.New("cannot retrieve a preFiltered node")
 			}
 
 			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
@@ -113,29 +113,29 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		if len(feasibleNodes) == 0 {
 			//The PostFilter stage is ignored
 			snapshot.Revert()
-			return nil, fmt.Errorf("No feasible nodes have been found for pod %s", pod.Name)
+			return nil, fmt.Errorf("no feasible nodes have been found for pod %s", pod.Name)
 		}
 
 		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
 
 		if !preScoreStatus.IsSuccess() {
-			log.Printf("Error: PreScorePlugins failed")
+			log.Printf("error: PreScorePlugins failed")
 			snapshot.Revert()
-			return nil, errors.New("Error: PreScorePlugins failed")
+			return nil, errors.New("error: PreScorePlugins failed")
 		}
 
 		scores, status := realFramework.RunScorePlugins(ctx, state, pod, feasibleNodes)
 		if !status.IsSuccess() {
-			log.Printf("Error: ScorePlugins failed")
+			log.Printf("error: ScorePlugins failed")
 			snapshot.Revert()
-			return nil, errors.New("Error: ScorePlugins failed")
+			return nil, errors.New("error: ScorePlugins failed")
 		}
 
 		bestNode, err := pickHighestScoreNode(feasibleNodes, scores)
 		if err != nil {
 			log.Printf("Error: pickHighestScoreNode failed")
 			snapshot.Revert()
-			return nil, errors.New("Error: pickHighestScoreNode failed")
+			return nil, errors.New("error: pickHighestScoreNode failed")
 		}
 
 		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
@@ -204,5 +204,5 @@ func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework
 		}
 	}
 
-	return nil, errors.New("The node with the highest score cannot be found anymore")
+	return nil, errors.New("the node with the highest score cannot be found anymore")
 }

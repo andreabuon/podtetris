@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	apiv1 "k8s.io/api/core/v1"
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -21,7 +20,7 @@ const (
 )
 
 // isEvictable returns (true, "") if the pod can be evicted or (false, reason) explaining why it was skipped.
-func isEvictable(pod *corev1.Pod) (bool, EvictionSkipReason) {
+func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
 	if pod == nil {
 		return false, SkipNilPod
 	}
@@ -63,7 +62,7 @@ func getControllerReferenceFromRefs(refs []metav1.OwnerReference) *metav1.OwnerR
 
 func getPodCPURequests(pod *apiv1.Pod) (int64, error) {
 	if pod == nil {
-		return 0, errors.New("Pod is nil")
+		return 0, errors.New("pod is nil")
 	}
 
 	var total int64 = 0
@@ -75,7 +74,7 @@ func getPodCPURequests(pod *apiv1.Pod) (int64, error) {
 
 func getPodMemoryRequests(pod *apiv1.Pod) (int64, error) {
 	if pod == nil {
-		return 0, errors.New("Pod is nil")
+		return 0, errors.New("pod is nil")
 	}
 
 	var total int64 = 0
