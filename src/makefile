@@ -2,7 +2,7 @@ KUBECTL = kubectl
 GO = go
 MANIFESTS_DIR = ./yaml
 
-.PHONY: all cluster apply-configmap apply-rbac run clean 
+.PHONY: all cluster apply-configmap apply-rbac run clean check
 
 all: run
 
@@ -25,3 +25,7 @@ run: apply-configmap apply-rbac podtetris
 clean:
 	rm -f ./podtetris
 	$(KUBECTL) delete --ignore-not-found=true -f $(MANIFESTS_DIR)/podtetris-config.yaml -f $(MANIFESTS_DIR)/podtetris-rbac.yaml
+
+check:
+	go vet .
+	staticcheck ./
