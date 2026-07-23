@@ -28,7 +28,15 @@ metadata:
   name: podtetris-storage-reader
 rules:
   - apiGroups: ["", "storage.k8s.io"]
-    resources: ["persistentvolumeclaims", "persistentvolumes", "storageclasses", "csinodes", "csistoragecapacities"]
+    resources: 
+          - "persistentvolumeclaims"
+          - "persistentvolumes"
+          - "storageclasses"
+          - "csinodes"
+          - "csistoragecapacities"
+          - "csidrivers"
+          - "namespaces"
+          - "volumeattachments"
     verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

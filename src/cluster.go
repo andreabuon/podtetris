@@ -21,17 +21,32 @@ func initInformerFactory(clientset *kubernetes.Clientset) informers.SharedInform
 
 	informerFactory := informers.NewSharedInformerFactory(clientset, 30*time.Second)
 
+	// Core informers
 	nodeInformer := informerFactory.Core().V1().Nodes()
 	podInformer := informerFactory.Core().V1().Pods()
+	namespaceInformer := informerFactory.Core().V1().Namespaces()
+
+	// Storage informers
 	pvInformer := informerFactory.Core().V1().PersistentVolumes()
 	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
 	scsInformer := informerFactory.Storage().V1().StorageClasses()
 
+	// CSI informers
+	csiNodeInformer := informerFactory.Storage().V1().CSINodes()
+	csiStorageCapacityInformer := informerFactory.Storage().V1().CSIStorageCapacities()
+	csiDriverInformer := informerFactory.Storage().V1().CSIDrivers()
+	volumeAttachmentInformer := informerFactory.Storage().V1().VolumeAttachments() // ADDED
+
 	_ = nodeInformer.Informer()
 	_ = podInformer.Informer()
+	_ = namespaceInformer.Informer()
 	_ = pvInformer.Informer()
 	_ = pvcInformer.Informer()
 	_ = scsInformer.Informer()
+	_ = csiNodeInformer.Informer()
+	_ = csiStorageCapacityInformer.Informer()
+	_ = csiDriverInformer.Informer()
+	_ = volumeAttachmentInformer.Informer()
 
 	stopCh := make(chan struct{})
 	informerFactory.Start(stopCh)
