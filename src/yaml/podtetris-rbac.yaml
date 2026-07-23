@@ -21,3 +21,25 @@ roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: podtetris-configmap-reader
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: podtetris-storage-reader
+rules:
+  - apiGroups: ["", "storage.k8s.io"]
+    resources: ["persistentvolumeclaims", "persistentvolumes", "storageclasses"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: podtetris-storage-reader-binding
+subjects:
+  - kind: ServiceAccount
+    name: podtetris-sa
+    namespace: podtetris
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: podtetris-storage-reader
