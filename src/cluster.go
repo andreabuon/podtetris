@@ -21,14 +21,21 @@ func initInformerFactory(clientset *kubernetes.Clientset) informers.SharedInform
 
 	informerFactory := informers.NewSharedInformerFactory(clientset, 30*time.Second)
 
+	nodeInformer := informerFactory.Core().V1().Nodes()
+	podInformer := informerFactory.Core().V1().Pods()
 	pvInformer := informerFactory.Core().V1().PersistentVolumes()
 	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
 	scsInformer := informerFactory.Storage().V1().StorageClasses()
 
+	_ = nodeInformer.Informer()
+	_ = podInformer.Informer()
+	_ = pvInformer.Informer()
+	_ = pvcInformer.Informer()
+	_ = scsInformer.Informer()
+
 	stopCh := make(chan struct{})
 	informerFactory.Start(stopCh)
 	informerFactory.WaitForCacheSync(stopCh)
-	close(stopCh)
 
 	// # Test
 	pvcs, err := pvcInformer.Lister().List(labels.Everything())
