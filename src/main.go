@@ -5,7 +5,6 @@ import (
 	"log"
 	"sort"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
@@ -60,13 +59,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error creating the Framework: %v", err)
 	}
-	// TEST: Retrieve resources from API server
-	pvcList, err := clientset.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
-	log.Printf("Retrieved PVC list from the cluster: %d items, err=%v", len(pvcList.Items), err)
-	pvList, err := clientset.CoreV1().PersistentVolumes().List(ctx, metav1.ListOptions{})
-	log.Printf("Retrieved PV list from the cluster: %d items, err=%v", len(pvList.Items), err)
-	scList, err := clientset.StorageV1().StorageClasses().List(ctx, metav1.ListOptions{})
-	log.Printf("Retrieved StorageClass list from the cluster: %d items, err=%v", len(scList.Items), err)
+
+	stopCh := make(chan struct{})
+	informerFactory.Start(stopCh)
+	informerFactory.WaitForCacheSync(stopCh)
 
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
