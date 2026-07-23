@@ -3,34 +3,41 @@ package main
 import (
 	"context"
 	"log"
+	"time"
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 )
 
 const controlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 
-func initInformerFactory(ctx context.Context, clientset *kubernetes.Clientset) informers.SharedInformerFactory {
+func initInformerFactory(clientset *kubernetes.Clientset) informers.SharedInformerFactory {
 	if clientset == nil {
 		log.Fatal("No clientset provided to initInformerFactory")
 	}
 
-	informerFactory := informers.NewSharedInformerFactoryWithOptions(
-		clientset,
-		0,
-		informers.WithTweakListOptions(func(options *metav1.ListOptions) {
-			options.LabelSelector = controlPlaneLabelSelector
-		}),
-	)
-	informerFactory.Start(ctx.Done())
+	informerFactory := informers.NewSharedInformerFactory(clientset, 30*time.Second)
 
-	for _, synced := range informerFactory.WaitForCacheSync(ctx.Done()) {
-		if !synced {
-			log.Fatalf("Informer caches failed to sync")
-		}
-	}
+	pvInformer := informerFactory.Core().V1().PersistentVolumes()
+	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
+	scsInformer := informerFactory.Storage().V1().StorageClasses()
+
+	stopCh := make(chan struct{})
+	informerFactory.Start(stopCh)
+	informerFactory.WaitForCacheSync(stopCh)
+	close(stopCh)
+
+	// # Test
+	pvcs, err := pvcInformer.Lister().List(labels.Everything())
+	log.Printf("PVC lister: %d items, err=%v", len(pvcs), err)
+	pvs, err := pvInformer.Lister().List(labels.Everything())
+	log.Printf("PV lister: %d items, err=%v", len(pvs), err)
+	scs, err := scsInformer.Lister().List(labels.Everything())
+	log.Printf("StorageClass lister: %d items, err=%v", len(scs), err)
+
 	return informerFactory
 }
 

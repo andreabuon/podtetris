@@ -30,7 +30,7 @@ func main() {
 
 	Config = loadAppConfig(ctx, clientset)
 
-	informerFactory := initInformerFactory(ctx, clientset)
+	informerFactory := initInformerFactory(clientset)
 	schedulerConfig := loadSchedulerConfig()
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
 	if err != nil {
