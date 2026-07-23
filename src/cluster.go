@@ -53,9 +53,7 @@ func fetchClusterState(ctx context.Context, clientset *kubernetes.Clientset) ([]
 		log.Fatal("No clientset provided to fetchClusterState")
 	}
 
-	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{
-		LabelSelector: controlPlaneLabelSelector,
-	})
+	nodes, err := clientset.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
 	if err != nil {
 		log.Fatalf("API Error fetching active cluster nodes: %v", err)
 	}
