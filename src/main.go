@@ -6,6 +6,7 @@ import (
 	"sort"
 	"time"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
@@ -33,7 +34,13 @@ func main() {
 
 	Config = loadAppConfig(ctx, clientset)
 
-	informerFactory := informers.NewSharedInformerFactory(clientset, 30*time.Second)
+	informerFactory := informers.NewSharedInformerFactoryWithOptions(
+		clientset,
+		30*time.Second,
+		informers.WithTweakListOptions(func(opts *metav1.ListOptions) {
+			opts.LabelSelector = "!node-role.kubernetes.io/control-plane"
+		}),
+	)
 	namespaceInformer := informerFactory.Core().V1().Namespaces()
 	nodeInformer := informerFactory.Core().V1().Nodes()
 	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
