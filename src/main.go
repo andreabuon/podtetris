@@ -4,10 +4,13 @@ import (
 	"context"
 	"log"
 	"sort"
+	"time"
 
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
+	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 	kubeframework "k8s.io/kube-scheduler/framework"
@@ -29,7 +32,46 @@ func main() {
 
 	Config = loadAppConfig(ctx, clientset)
 
-	informerFactory := initInformerFactory(clientset)
+	informerFactory := informers.NewSharedInformerFactory(clientset, 30*time.Second)
+	namespaceInformer := informerFactory.Core().V1().Namespaces()
+	nodeInformer := informerFactory.Core().V1().Nodes()
+	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
+	pvInformer := informerFactory.Core().V1().PersistentVolumes()
+	podInformer := informerFactory.Core().V1().Pods()
+	resourceQuotasInformer := informerFactory.Core().V1().ResourceQuotas()
+	//storage
+	csiDriverInformer := informerFactory.Storage().V1().CSIDrivers()
+	csiNodeInformer := informerFactory.Storage().V1().CSINodes()
+	csiStorageCapacityInformer := informerFactory.Storage().V1().CSIStorageCapacities()
+	scsInformer := informerFactory.Storage().V1().StorageClasses()
+	volumeAttachmentInformer := informerFactory.Storage().V1().VolumeAttachments()
+	volumeAttachmentClassesInformer := informerFactory.Storage().V1().VolumeAttributesClasses()
+	//attach the informers
+	_ = namespaceInformer.Informer()
+	_ = nodeInformer.Informer()
+	_ = pvcInformer.Informer()
+	_ = pvInformer.Informer()
+	_ = podInformer.Informer()
+	_ = resourceQuotasInformer.Informer()
+	_ = csiDriverInformer.Informer()
+	_ = csiNodeInformer.Informer()
+	_ = csiStorageCapacityInformer.Informer()
+	_ = scsInformer.Informer()
+	_ = volumeAttachmentInformer.Informer()
+	_ = volumeAttachmentClassesInformer.Informer()
+
+	stopCh := make(chan struct{})
+	informerFactory.Start(stopCh)
+	informerFactory.WaitForCacheSync(stopCh)
+
+	// # Test
+	pvcs, err := pvcInformer.Lister().List(labels.Everything())
+	log.Printf("PVC lister: %d items, err=%v", len(pvcs), err)
+	pvs, err := pvInformer.Lister().List(labels.Everything())
+	log.Printf("PV lister: %d items, err=%v", len(pvs), err)
+	scs, err := scsInformer.Lister().List(labels.Everything())
+	log.Printf("StorageClass lister: %d items, err=%v", len(scs), err)
+
 	schedulerConfig := loadSchedulerConfig()
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
 	if err != nil {
@@ -49,6 +91,8 @@ func main() {
 
 	registry := plugins.NewInTreeRegistry()
 
+	informerFactory.WaitForCacheSync(stopCh)
+
 	realFramework, err := fwkruntime.NewFramework(
 		ctx,
 		registry,
@@ -60,8 +104,6 @@ func main() {
 		log.Fatalf("Error creating the Framework: %v", err)
 	}
 
-	stopCh := make(chan struct{})
-	informerFactory.Start(stopCh)
 	informerFactory.WaitForCacheSync(stopCh)
 
 	nodeInfos, err := snapshot.NodeInfos().List()

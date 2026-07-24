@@ -3,65 +3,13 @@ package main
 import (
 	"context"
 	"log"
-	"time"
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 )
 
 const controlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
-
-func initInformerFactory(clientset *kubernetes.Clientset) informers.SharedInformerFactory {
-	if clientset == nil {
-		log.Fatal("No clientset provided to initInformerFactory")
-	}
-
-	informerFactory := informers.NewSharedInformerFactory(clientset, 30*time.Second)
-
-	// Core informers
-	nodeInformer := informerFactory.Core().V1().Nodes()
-	podInformer := informerFactory.Core().V1().Pods()
-	namespaceInformer := informerFactory.Core().V1().Namespaces()
-
-	// Storage informers
-	pvInformer := informerFactory.Core().V1().PersistentVolumes()
-	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
-	scsInformer := informerFactory.Storage().V1().StorageClasses()
-
-	// CSI informers
-	csiNodeInformer := informerFactory.Storage().V1().CSINodes()
-	csiStorageCapacityInformer := informerFactory.Storage().V1().CSIStorageCapacities()
-	csiDriverInformer := informerFactory.Storage().V1().CSIDrivers()
-	volumeAttachmentInformer := informerFactory.Storage().V1().VolumeAttachments() // ADDED
-
-	_ = nodeInformer.Informer()
-	_ = podInformer.Informer()
-	_ = namespaceInformer.Informer()
-	_ = pvInformer.Informer()
-	_ = pvcInformer.Informer()
-	_ = scsInformer.Informer()
-	_ = csiNodeInformer.Informer()
-	_ = csiStorageCapacityInformer.Informer()
-	_ = csiDriverInformer.Informer()
-	_ = volumeAttachmentInformer.Informer()
-
-	stopCh := make(chan struct{})
-	informerFactory.Start(stopCh)
-	informerFactory.WaitForCacheSync(stopCh)
-
-	// # Test
-	pvcs, err := pvcInformer.Lister().List(labels.Everything())
-	log.Printf("PVC lister: %d items, err=%v", len(pvcs), err)
-	pvs, err := pvInformer.Lister().List(labels.Everything())
-	log.Printf("PV lister: %d items, err=%v", len(pvs), err)
-	scs, err := scsInformer.Lister().List(labels.Everything())
-	log.Printf("StorageClass lister: %d items, err=%v", len(scs), err)
-
-	return informerFactory
-}
 
 func fetchClusterState(ctx context.Context, clientset *kubernetes.Clientset) ([]*apiv1.Node, []*apiv1.Pod) {
 	if clientset == nil {
