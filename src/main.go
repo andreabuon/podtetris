@@ -15,6 +15,7 @@ import (
 	"k8s.io/klog/v2"
 	kubeframework "k8s.io/kube-scheduler/framework"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins"
+	"k8s.io/kubernetes/pkg/scheduler/framework/plugins/nodevolumelimits"
 	fwkruntime "k8s.io/kubernetes/pkg/scheduler/framework/runtime"
 )
 
@@ -39,14 +40,12 @@ func main() {
 	pvInformer := informerFactory.Core().V1().PersistentVolumes()
 	podInformer := informerFactory.Core().V1().Pods()
 	resourceQuotasInformer := informerFactory.Core().V1().ResourceQuotas()
-	//storage
 	csiDriverInformer := informerFactory.Storage().V1().CSIDrivers()
 	csiNodeInformer := informerFactory.Storage().V1().CSINodes()
 	csiStorageCapacityInformer := informerFactory.Storage().V1().CSIStorageCapacities()
 	scsInformer := informerFactory.Storage().V1().StorageClasses()
 	volumeAttachmentInformer := informerFactory.Storage().V1().VolumeAttachments()
 	volumeAttachmentClassesInformer := informerFactory.Storage().V1().VolumeAttributesClasses()
-	//attach the informers
 	_ = namespaceInformer.Informer()
 	_ = nodeInformer.Informer()
 	_ = pvcInformer.Informer()
@@ -59,6 +58,8 @@ func main() {
 	_ = scsInformer.Informer()
 	_ = volumeAttachmentInformer.Informer()
 	_ = volumeAttachmentClassesInformer.Informer()
+
+	sharedCSIManager := nodevolumelimits.NewCSIManager(csiNodeInformer.Lister())
 
 	stopCh := make(chan struct{})
 	informerFactory.Start(stopCh)
@@ -73,7 +74,7 @@ func main() {
 	log.Printf("StorageClass lister: %d items, err=%v", len(scs), err)
 
 	schedulerConfig := loadSchedulerConfig()
-	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, false)
+	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, true)
 	if err != nil {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
@@ -83,7 +84,7 @@ func main() {
 	log.Printf("Found %d Nodes and %d Pods.", len(nodesPointers), len(podsPointers))
 
 	snapshotStore := store.NewDeltaSnapshotStore(Config.Parallelism)
-	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, false)
+	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, true)
 	err = snapshot.SetClusterState(nodesPointers, podsPointers, nil, nil)
 	if err != nil {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
@@ -99,6 +100,7 @@ func main() {
 		&schedulerConfig.Profiles[0],
 		fwkruntime.WithInformerFactory(informerFactory),
 		fwkruntime.WithSnapshotSharedLister(snapshotStore),
+		fwkruntime.WithSharedCSIManager(sharedCSIManager),
 	)
 	if err != nil {
 		log.Fatalf("Error creating the Framework: %v", err)
