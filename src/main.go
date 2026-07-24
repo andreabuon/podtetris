@@ -80,12 +80,20 @@ func main() {
 	}
 
 	log.Print("Reading live state from active Kubernetes cluster... ")
-	nodesPointers, podsPointers := fetchClusterState(ctx, clientset)
-	log.Printf("Found %d Nodes and %d Pods.", len(nodesPointers), len(podsPointers))
+	const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
+	nodes, err := nodeInformer.Lister().List(labels.Everything())
+	if err != nil {
+		log.Fatalf("Error retrieving nodes from the Informer: %v", err)
+	}
+	pods, err := podInformer.Lister().List(labels.Everything())
+	if err != nil {
+		log.Fatalf("Error retrieving pods from the Informer: %v", err)
+	}
+	log.Printf("Found %d Nodes and %d Pods.", len(nodes), len(pods))
 
 	snapshotStore := store.NewDeltaSnapshotStore(Config.Parallelism)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, true)
-	err = snapshot.SetClusterState(nodesPointers, podsPointers, nil, nil)
+	err = snapshot.SetClusterState(nodes, pods, nil, nil)
 	if err != nil {
 		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
 	}
