@@ -41,32 +41,17 @@ func main() {
 			opts.LabelSelector = "!node-role.kubernetes.io/control-plane"
 		}),
 	)
-	namespaceInformer := informerFactory.Core().V1().Namespaces()
 	nodeInformer := informerFactory.Core().V1().Nodes()
 	pvcInformer := informerFactory.Core().V1().PersistentVolumeClaims()
 	pvInformer := informerFactory.Core().V1().PersistentVolumes()
 	podInformer := informerFactory.Core().V1().Pods()
-	resourceQuotasInformer := informerFactory.Core().V1().ResourceQuotas()
-	csiDriverInformer := informerFactory.Storage().V1().CSIDrivers()
 	csiNodeInformer := informerFactory.Storage().V1().CSINodes()
-	csiStorageCapacityInformer := informerFactory.Storage().V1().CSIStorageCapacities()
-	scsInformer := informerFactory.Storage().V1().StorageClasses()
-	volumeAttachmentInformer := informerFactory.Storage().V1().VolumeAttachments()
-	volumeAttachmentClassesInformer := informerFactory.Storage().V1().VolumeAttributesClasses()
-	_ = namespaceInformer.Informer()
+	sharedCSIManager := nodevolumelimits.NewCSIManager(csiNodeInformer.Lister())
 	_ = nodeInformer.Informer()
 	_ = pvcInformer.Informer()
 	_ = pvInformer.Informer()
 	_ = podInformer.Informer()
-	_ = resourceQuotasInformer.Informer()
-	_ = csiDriverInformer.Informer()
 	_ = csiNodeInformer.Informer()
-	_ = csiStorageCapacityInformer.Informer()
-	_ = scsInformer.Informer()
-	_ = volumeAttachmentInformer.Informer()
-	_ = volumeAttachmentClassesInformer.Informer()
-
-	sharedCSIManager := nodevolumelimits.NewCSIManager(csiNodeInformer.Lister())
 
 	stopCh := make(chan struct{})
 	informerFactory.Start(stopCh)
@@ -77,8 +62,6 @@ func main() {
 	log.Printf("PVC lister: %d items, err=%v", len(pvcs), err)
 	pvs, err := pvInformer.Lister().List(labels.Everything())
 	log.Printf("PV lister: %d items, err=%v", len(pvs), err)
-	scs, err := scsInformer.Lister().List(labels.Everything())
-	log.Printf("StorageClass lister: %d items, err=%v", len(scs), err)
 
 	schedulerConfig := loadSchedulerConfig()
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, true)
@@ -107,8 +90,6 @@ func main() {
 
 	registry := plugins.NewInTreeRegistry()
 
-	informerFactory.WaitForCacheSync(stopCh)
-
 	realFramework, err := fwkruntime.NewFramework(
 		ctx,
 		registry,
@@ -120,8 +101,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error creating the Framework: %v", err)
 	}
-
-	informerFactory.WaitForCacheSync(stopCh)
 
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
