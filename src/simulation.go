@@ -159,7 +159,17 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		}
 	}
 
-	newEmptyNodesNum := countEmptyNodes(candidateNodesToDrain)
+	// Re-fetch live NodeInfo data for each candidate node from the snapshot
+	freshCandidateNodes := make([]kubeframework.NodeInfo, 0, len(candidateNodesToDrain))
+	for _, staleNode := range candidateNodesToDrain {
+		freshNode, err := snapshot.NodeInfos().Get(staleNode.Node().Name)
+		if err != nil {
+			log.Printf("cannot retrieve fresh node info for %s: %w", staleNode.Node().Name, err)
+		}
+		freshCandidateNodes = append(freshCandidateNodes, freshNode)
+	}
+
+	newEmptyNodesNum := countEmptyNodes(freshCandidateNodes)
 	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
 	log.Printf("This permutation freed %d nodes.", freedNodesNum)
 
