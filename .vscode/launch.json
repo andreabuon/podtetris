@@ -11,7 +11,7 @@
                 "-logtostderr=true",
                 "-v=5"
             ],
-            "preLaunchTask": "Apply PODTetris ConfigMap and RBAC"
+            //"preLaunchTask": "Apply PODTetris ConfigMap and RBAC"
         }
     ]
 }

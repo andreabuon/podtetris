@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	SCHEDULER_CONFIG_PATH = "scheduler-config.yaml"
+	SCHEDULER_CONFIG_PATH = "./manifests/scheduler-config.yaml"
 )
 
 var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{

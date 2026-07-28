@@ -1,6 +1,6 @@
 KUBECTL = kubectl
 GO = go
-MANIFESTS_DIR = ./yaml
+MANIFESTS_DIR = ./manifests
 
 .PHONY: all cluster apply-configmap apply-rbac run clean check
 
