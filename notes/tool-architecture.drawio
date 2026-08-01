@@ -1,0 +1,91 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="gFD8jpXTVz5juH3wSmK4">
+    <mxGraphModel dx="1193" dy="741" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-3" edge="1" parent="1" source="XN4-E7ZZH5ZJhUD3ug_w-8" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;" target="XN4-E7ZZH5ZJhUD3ug_w-4" value="Publishes">
+          <mxGeometry height="50" relative="1" width="50" x="-0.0769" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="180" y="59.5" as="sourcePoint" />
+            <mxPoint x="300" y="59.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;Pod Movement CRD&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="270" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;Evictor&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="75" x="292.5" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-6" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="&lt;div&gt;watches&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" x="0.2308" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="310" y="220" as="sourcePoint" />
+            <mxPoint x="310" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Mutating&lt;div&gt;Webhook&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="145" x="870" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div&gt;Planner /&amp;nbsp;Simulator&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="10" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="New Pod creation" vertex="1">
+          <mxGeometry height="60" width="140" x="870" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-12" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;" value="&lt;div&gt;calls the&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="900.005" y="230" as="sourcePoint" />
+            <mxPoint x="901.755" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-13" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;" value="retrieves">
+          <mxGeometry height="50" relative="1" width="50" x="0.2917" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="870" y="40" as="sourcePoint" />
+            <mxPoint x="390" y="40" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-15" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;" value="&lt;div&gt;injects the node&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" x="0.2858" y="-1" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="971.755" y="90" as="sourcePoint" />
+            <mxPoint x="970.005" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-17" edge="1" parent="1" source="XN4-E7ZZH5ZJhUD3ug_w-5" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="XN4-E7ZZH5ZJhUD3ug_w-18" value="triggers (by evicting a pod)">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="357.5" y="260" as="sourcePoint" />
+            <mxPoint x="567.5" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Deployment / Stateful Set controller" vertex="1">
+          <mxGeometry height="60" width="120" x="557.5" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-19" edge="1" parent="1" source="XN4-E7ZZH5ZJhUD3ug_w-18" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="XN4-E7ZZH5ZJhUD3ug_w-9" value="triggers (by evicting a pod)">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="620" y="230" as="sourcePoint" />
+            <mxPoint x="820" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-20" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;" value="&lt;div&gt;marks as &quot;completed&quot;&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" x="0.0083" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="870" y="70" as="sourcePoint" />
+            <mxPoint x="390" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XN4-E7ZZH5ZJhUD3ug_w-21" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="marks as &quot;evicted&quot;">
+          <mxGeometry height="50" relative="1" width="50" x="-0.3846" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="360" y="220" as="sourcePoint" />
+            <mxPoint x="360" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
