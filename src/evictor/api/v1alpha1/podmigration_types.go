@@ -24,6 +24,53 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// OwnerReference identifies the controller that owns the pod being migrated.
+type OwnerReference struct {
+	// apiVersion of the owning controller, e.g. "apps/v1".
+	// +required
+	APIVersion string `json:"apiVersion"`
+
+	// kind of the owning controller, e.g. "Deployment", "StatefulSet", "ReplicaSet", ...
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	Kind string `json:"kind"`
+
+	// name of the owning controller.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	Name string `json:"name"`
+
+	// namespace of the owning controller.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	Namespace string `json:"namespace"`
+
+	// uid of the owning controller at plan time.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	UID string `json:"uid,omitempty"`
+}
+
+// PodReference identifies the specific pod instance targeted for migration,
+// pinned to a UID so the eviction controller acts on exactly the pod the
+// simulator planned against, not merely "a pod with this name."
+type PodReference struct {
+	// name is the name of the pod at plan time.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	Name string `json:"name"`
+
+	// namespace is the namespace of the pod.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	Namespace string `json:"namespace"`
+
+	// uid is the UID of the pod at plan time.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	UID string `json:"uid"`
+}
+
 // PodMigrationSpec defines the desired state of PodMigration
 type PodMigrationSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
@@ -31,9 +78,24 @@ type PodMigrationSpec struct {
 	// The following markers will use OpenAPI v3 schema to validate the value
 	// More info: https://book.kubebuilder.io/reference/markers/crd-validation.html
 
-	// foo is an example field of PodMigration. Edit podmigration_types.go to remove/update
-	// +optional
-	Foo *string `json:"foo,omitempty"`
+	// owner identifies the Resource that owns the pod being migrated
+	// +required
+	Owner OwnerReference `json:"ownerRef"`
+
+	// podRef identifies the specific pod instance to move across nodes.
+	// +required
+	PodRef PodReference `json:"podRef"`
+
+	// sourceNode is the node the pod currently resides on.
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	SourceNode string `json:"sourceNode"`
+
+	// targetNode is the node the simulator has selected for the replacement pod.
+	// The webhook injects this into the recreated pod's spec.nodeName (or nodeAffinity).
+	// +required
+	// +kubebuilder:validation:MinLength=1
+	TargetNode string `json:"targetNode"`
 }
 
 // PodMigrationStatus defines the observed state of PodMigration.
@@ -57,6 +119,10 @@ type PodMigrationStatus struct {
 	// +listMapKey=type
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	// +optional
+	// +kubebuilder:validation:Enum=Pending;Evicted;Bound;Failed;Expired
+	MigrationPhase string `json:"migrationPhase,omitempty"`
 }
 
 // +kubebuilder:object:root=true
