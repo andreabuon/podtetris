@@ -48,7 +48,7 @@ type OwnerReference struct {
 	// uid of the owning controller at plan time.
 	// +required
 	// +kubebuilder:validation:MinLength=1
-	UID string `json:"uid,omitempty"`
+	UID string `json:"uid"`
 }
 
 // PodReference identifies the specific pod instance targeted for migration,
@@ -72,6 +72,7 @@ type PodReference struct {
 }
 
 // PodMigrationSpec defines the desired state of PodMigration
+// +kubebuilder:validation:XValidation:rule="self.sourceNode != self.targetNode",message="targetNode must differ from sourceNode"
 type PodMigrationSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
