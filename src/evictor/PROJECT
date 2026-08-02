@@ -6,6 +6,8 @@ cliVersion: 4.15.0
 domain: reply.com
 layout:
 - go.kubebuilder.io/v4
+plugins:
+  autoupdate.kubebuilder.io/v1-alpha: {}
 projectName: evictor
 repo: evictor
 resources:
