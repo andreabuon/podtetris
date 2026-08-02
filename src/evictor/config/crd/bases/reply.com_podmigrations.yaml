@@ -179,14 +179,6 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
-              migrationPhase:
-                enum:
-                - Pending
-                - Evicted
-                - Bound
-                - Failed
-                - Expired
-                type: string
             type: object
         required:
         - spec

@@ -119,10 +119,6 @@ type PodMigrationStatus struct {
 	// +listMapKey=type
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
-
-	// +optional
-	// +kubebuilder:validation:Enum=Pending;Evicted;Bound;Failed;Expired
-	MigrationPhase string `json:"migrationPhase,omitempty"`
 }
 
 // +kubebuilder:object:root=true
