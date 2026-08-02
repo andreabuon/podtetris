@@ -1,0 +1,9 @@
+apiVersion: reply.com/v1alpha1
+kind: PodMigration
+metadata:
+  labels:
+    app.kubernetes.io/name: evictor
+    app.kubernetes.io/managed-by: kustomize
+  name: podmigration-sample
+spec:
+  # TODO(user): Add fields here
