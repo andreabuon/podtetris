@@ -18,13 +18,18 @@ package controller
 
 import (
 	"context"
+	replycomv1alpha1 "evictor/api/v1alpha1"
+	"fmt"
 
+	corev1 "k8s.io/api/core/v1"
+	policyv1 "k8s.io/api/policy/v1"
+	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
-
-	replycomv1alpha1 "evictor/api/v1alpha1"
 )
 
 // PodMigrationReconciler reconciles a PodMigration object
@@ -33,9 +38,16 @@ type PodMigrationReconciler struct {
 	Scheme *runtime.Scheme
 }
 
+const (
+	// ConditionEvicted tracks whether the target pod was successfully evicted.
+	ConditionEvicted = "Evicted"
+)
+
 // +kubebuilder:rbac:groups=reply.com,resources=podmigrations,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=reply.com,resources=podmigrations/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=reply.com,resources=podmigrations/finalizers,verbs=update
+// +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
+// +kubebuilder:rbac:groups="",resources=pods/eviction,verbs=create
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -47,11 +59,88 @@ type PodMigrationReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.24.1/pkg/reconcile
 func (r *PodMigrationReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = logf.FromContext(ctx)
+	log := logf.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var pm replycomv1alpha1.PodMigration
+	if err := r.Get(ctx, req.NamespacedName, &pm); err != nil {
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	log.Info("Reconciling PodMigration",
+		"pod", pm.Spec.PodRef.Name,
+		"sourceNode", pm.Spec.SourceNode,
+		"targetNode", pm.Spec.TargetNode,
+	)
+
+	// Already done — keep reconcile idempotent.
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, ConditionEvicted) {
+		log.Info("Skipping reconciliation because pod eviction has already been performed.")
+		return ctrl.Result{}, nil
+	}
+	if err := r.setCondition(ctx, &pm, ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	pod, err := r.getPod(ctx, pm.Spec.PodRef)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	if err := r.evictPod(ctx, pod); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	if err := r.setCondition(ctx, &pm, ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested."); err != nil {
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
+}
+
+func (r *PodMigrationReconciler) getPod(ctx context.Context, ref replycomv1alpha1.PodReference) (*corev1.Pod, error) {
+	var pod corev1.Pod
+	if err := r.Get(ctx, types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}, &pod); err != nil {
+		return nil, err
+	}
+
+	if string(pod.UID) != ref.UID {
+		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, ref.UID)
+	}
+
+	return &pod, nil
+}
+
+func (r *PodMigrationReconciler) evictPod(ctx context.Context, pod *corev1.Pod) error {
+	eviction := &policyv1.Eviction{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      pod.Name,
+			Namespace: pod.Namespace,
+		},
+	}
+	return r.SubResource("eviction").Create(ctx, pod, eviction)
+}
+
+func (r *PodMigrationReconciler) setCondition(
+	ctx context.Context,
+	pm *replycomv1alpha1.PodMigration,
+	condType string,
+	status metav1.ConditionStatus,
+	reason, message string,
+) error {
+	changed := meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
+		Type:               condType,
+		Status:             status,
+		Reason:             reason,
+		Message:            message,
+		ObservedGeneration: pm.Generation,
+	})
+	if !changed {
+		return nil
+	}
+	return r.Status().Update(ctx, pm)
 }
 
 // SetupWithManager sets up the controller with the Manager.
