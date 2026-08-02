@@ -107,6 +107,9 @@ spec:
             - sourceNode
             - targetNode
             type: object
+            x-kubernetes-validations:
+            - message: targetNode must differ from sourceNode
+              rule: self.sourceNode != self.targetNode
           status:
             description: status defines the observed state of PodMigration
             properties:
