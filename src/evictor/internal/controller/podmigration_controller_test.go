@@ -27,7 +27,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	replycomv1alpha1 "evictor/api/v1alpha1"
+	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
 )
 
 var _ = Describe("PodMigration Controller", func() {

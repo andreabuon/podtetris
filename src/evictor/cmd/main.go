@@ -35,8 +35,8 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	replycomv1alpha1 "evictor/api/v1alpha1"
-	"evictor/internal/controller"
+	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
+	"github.com/andreabuon/podtetris/src/evictor/internal/controller"
 	// +kubebuilder:scaffold:imports
 )
 

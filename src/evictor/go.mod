@@ -1,4 +1,4 @@
-module evictor
+module github.com/andreabuon/podtetris/src/evictor
 
 go 1.26.0
 

@@ -33,7 +33,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	replycomv1alpha1 "evictor/api/v1alpha1"
+	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
 	// +kubebuilder:scaffold:imports
 )
 

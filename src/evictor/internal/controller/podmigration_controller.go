@@ -18,8 +18,9 @@ package controller
 
 import (
 	"context"
-	replycomv1alpha1 "evictor/api/v1alpha1"
 	"fmt"
+
+	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
 
 	corev1 "k8s.io/api/core/v1"
 	policyv1 "k8s.io/api/policy/v1"
