@@ -7,7 +7,7 @@ MANIFESTS_DIR = ./manifests
 all: run
 
 cluster:
-	cd ../labs/lab6_kwok+kind_cost && ./setup-cluster.sh
+	cd ../../labs/lab6_kwok+kind_cost && ./setup-cluster.sh
 
 apply-configmap:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-config.yaml
