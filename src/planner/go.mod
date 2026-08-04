@@ -1,4 +1,4 @@
-module reply.com/podtetris
+module planner
 
 go 1.25.0
 
