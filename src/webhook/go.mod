@@ -1,4 +1,4 @@
-module webhook
+module github.com/andreabuon/PODTetris/src/webhook
 
 go 1.26.0
 

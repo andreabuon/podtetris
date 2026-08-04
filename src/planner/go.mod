@@ -1,4 +1,4 @@
-module planner
+module github.com/andreabuon/PODTetris/src/planner
 
 go 1.25.0
 
