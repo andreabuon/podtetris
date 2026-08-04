@@ -21,7 +21,7 @@ Every pod created while this is active gets pinned to the same fixed node, set v
 
 ```bash
 # 1. Build the image
-docker build -t podtetris-webhook:latest ./src
+docker build -t podtetris-webhook:latest ./
 
 # 1b.a Either push the image
 docker push podtetris-webhook:latest
