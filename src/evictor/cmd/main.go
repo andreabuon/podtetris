@@ -35,7 +35,7 @@ import (
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
+	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	"github.com/andreabuon/podtetris/src/evictor/internal/controller"
 	// +kubebuilder:scaffold:imports
 )
@@ -48,7 +48,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(replycomv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(podtetrisiov1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -160,7 +160,7 @@ func main() {
 		WebhookServer:          webhookServer,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "d655bedb.reply.com",
+		LeaderElectionID:       "893b14e2.podtetris.io",
 		// LeaderElectionReleaseOnCancel defines if the leader should step down voluntarily
 		// when the Manager ends. This requires the binary to immediately end when the
 		// Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
@@ -178,11 +178,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := (&controller.PodMigrationReconciler{
+	if err := (&controller.PodMoveReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "Failed to create controller", "controller", "podmigration")
+		setupLog.Error(err, "Failed to create controller", "controller", "podmove")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder

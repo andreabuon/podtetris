@@ -1,4 +1,4 @@
 ## Append samples of your project ##
 resources:
-- v1alpha1_podmigration.yaml
+- podtetris.io_v1_podmove.yaml
 # +kubebuilder:scaffold:manifestskustomizesamples

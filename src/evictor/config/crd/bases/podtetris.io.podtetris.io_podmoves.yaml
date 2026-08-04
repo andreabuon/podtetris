@@ -4,20 +4,20 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.21.0
-  name: podmigrations.reply.com
+  name: podmoves.podtetris.io.podtetris.io
 spec:
-  group: reply.com
+  group: podtetris.io.podtetris.io
   names:
-    kind: PodMigration
-    listKind: PodMigrationList
-    plural: podmigrations
-    singular: podmigration
+    kind: PodMove
+    listKind: PodMoveList
+    plural: podmoves
+    singular: podmove
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1
     schema:
       openAPIV3Schema:
-        description: PodMigration is the Schema for the podmigrations API
+        description: PodMove is the Schema for the podmoves API
         properties:
           apiVersion:
             description: |-
@@ -37,7 +37,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: spec defines the desired state of PodMigration
+            description: spec defines the desired state of PodMove
             properties:
               ownerRef:
                 description: owner identifies the Resource that owns the pod being
@@ -107,15 +107,12 @@ spec:
             - sourceNode
             - targetNode
             type: object
-            x-kubernetes-validations:
-            - message: targetNode must differ from sourceNode
-              rule: self.sourceNode != self.targetNode
           status:
-            description: status defines the observed state of PodMigration
+            description: status defines the observed state of PodMove
             properties:
               conditions:
                 description: |-
-                  conditions represent the current state of the PodMigration resource.
+                  conditions represent the current state of the PodMove resource.
                   Each condition has a unique type and reflects the status of a specific aspect of the resource.
 
                   Standard condition types include:

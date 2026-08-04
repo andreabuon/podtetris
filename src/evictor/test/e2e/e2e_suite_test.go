@@ -28,7 +28,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"evictor/test/utils"
+	"github.com/andreabuon/podtetris/src/evictor/test/utils"
 )
 
 var (

@@ -5,23 +5,9 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - ""
+  - podtetris.io.podtetris.io
   resources:
-  - pods
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ""
-  resources:
-  - pods/eviction
-  verbs:
-  - create
-- apiGroups:
-  - reply.com
-  resources:
-  - podmigrations
+  - podmoves
   verbs:
   - create
   - delete
@@ -31,15 +17,15 @@ rules:
   - update
   - watch
 - apiGroups:
-  - reply.com
+  - podtetris.io.podtetris.io
   resources:
-  - podmigrations/finalizers
+  - podmoves/finalizers
   verbs:
   - update
 - apiGroups:
-  - reply.com
+  - podtetris.io.podtetris.io
   resources:
-  - podmigrations/status
+  - podmoves/status
   verbs:
   - get
   - patch

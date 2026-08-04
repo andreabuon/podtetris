@@ -20,8 +20,6 @@ import (
 	"context"
 	"fmt"
 
-	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
-
 	corev1 "k8s.io/api/core/v1"
 	policyv1 "k8s.io/api/policy/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -31,10 +29,12 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
+
+	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 )
 
-// PodMigrationReconciler reconciles a PodMigration object
-type PodMigrationReconciler struct {
+// PodMoveReconciler reconciles a PodMove object
+type PodMoveReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
@@ -44,30 +44,28 @@ const (
 	ConditionEvicted = "Evicted"
 )
 
-// +kubebuilder:rbac:groups=reply.com,resources=podmigrations,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=reply.com,resources=podmigrations/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=reply.com,resources=podmigrations/finalizers,verbs=update
-// +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
-// +kubebuilder:rbac:groups="",resources=pods/eviction,verbs=create
+// +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
-// the PodMigration object against the actual cluster state, and then
+// the PodMove object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.24.1/pkg/reconcile
-func (r *PodMigrationReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
-	var pm replycomv1alpha1.PodMigration
+	var pm podtetrisiov1.PodMove
 	if err := r.Get(ctx, req.NamespacedName, &pm); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	log.Info("Reconciling PodMigration",
+	log.Info("Reconciling PodMove",
 		"pod", pm.Spec.PodRef.Name,
 		"sourceNode", pm.Spec.SourceNode,
 		"targetNode", pm.Spec.TargetNode,
@@ -98,7 +96,7 @@ func (r *PodMigrationReconciler) Reconcile(ctx context.Context, req ctrl.Request
 	return ctrl.Result{}, nil
 }
 
-func (r *PodMigrationReconciler) getPod(ctx context.Context, ref replycomv1alpha1.PodReference) (*corev1.Pod, error) {
+func (r *PodMoveReconciler) getPod(ctx context.Context, ref podtetrisiov1.PodReference) (*corev1.Pod, error) {
 	var pod corev1.Pod
 	if err := r.Get(ctx, types.NamespacedName{
 		Namespace: ref.Namespace,
@@ -114,7 +112,7 @@ func (r *PodMigrationReconciler) getPod(ctx context.Context, ref replycomv1alpha
 	return &pod, nil
 }
 
-func (r *PodMigrationReconciler) evictPod(ctx context.Context, pod *corev1.Pod) error {
+func (r *PodMoveReconciler) evictPod(ctx context.Context, pod *corev1.Pod) error {
 	eviction := &policyv1.Eviction{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      pod.Name,
@@ -124,9 +122,9 @@ func (r *PodMigrationReconciler) evictPod(ctx context.Context, pod *corev1.Pod) 
 	return r.SubResource("eviction").Create(ctx, pod, eviction)
 }
 
-func (r *PodMigrationReconciler) setCondition(
+func (r *PodMoveReconciler) setCondition(
 	ctx context.Context,
-	pm *replycomv1alpha1.PodMigration,
+	pm *podtetrisiov1.PodMove,
 	condType string,
 	status metav1.ConditionStatus,
 	reason, message string,
@@ -145,9 +143,9 @@ func (r *PodMigrationReconciler) setCondition(
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *PodMigrationReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *PodMoveReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&replycomv1alpha1.PodMigration{}).
-		Named("podmigration").
+		For(&podtetrisiov1.PodMove{}).
+		Named("podmove").
 		Complete(r)
 }

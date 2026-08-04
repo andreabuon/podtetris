@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1alpha1
+package v1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -71,9 +71,8 @@ type PodReference struct {
 	UID string `json:"uid"`
 }
 
-// PodMigrationSpec defines the desired state of PodMigration
-// +kubebuilder:validation:XValidation:rule="self.sourceNode != self.targetNode",message="targetNode must differ from sourceNode"
-type PodMigrationSpec struct {
+// PodMoveSpec defines the desired state of PodMove
+type PodMoveSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 	// The following markers will use OpenAPI v3 schema to validate the value
@@ -99,15 +98,15 @@ type PodMigrationSpec struct {
 	TargetNode string `json:"targetNode"`
 }
 
-// PodMigrationStatus defines the observed state of PodMigration.
-type PodMigrationStatus struct {
+// PodMoveStatus defines the observed state of PodMove.
+type PodMoveStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// For Kubernetes API conventions, see:
 	// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
 
-	// conditions represent the current state of the PodMigration resource.
+	// conditions represent the current state of the PodMove resource.
 	// Each condition has a unique type and reflects the status of a specific aspect of the resource.
 	//
 	// Standard condition types include:
@@ -125,35 +124,35 @@ type PodMigrationStatus struct {
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 
-// PodMigration is the Schema for the podmigrations API
-type PodMigration struct {
+// PodMove is the Schema for the podmoves API
+type PodMove struct {
 	metav1.TypeMeta `json:",inline"`
 
 	// metadata is a standard object metadata
 	// +optional
 	metav1.ObjectMeta `json:"metadata,omitzero"`
 
-	// spec defines the desired state of PodMigration
+	// spec defines the desired state of PodMove
 	// +required
-	Spec PodMigrationSpec `json:"spec"`
+	Spec PodMoveSpec `json:"spec"`
 
-	// status defines the observed state of PodMigration
+	// status defines the observed state of PodMove
 	// +optional
-	Status PodMigrationStatus `json:"status,omitzero"`
+	Status PodMoveStatus `json:"status,omitzero"`
 }
 
 // +kubebuilder:object:root=true
 
-// PodMigrationList contains a list of PodMigration
-type PodMigrationList struct {
+// PodMoveList contains a list of PodMove
+type PodMoveList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitzero"`
-	Items           []PodMigration `json:"items"`
+	Items           []PodMove `json:"items"`
 }
 
 func init() {
 	SchemeBuilder.Register(func(s *runtime.Scheme) error {
-		s.AddKnownTypes(SchemeGroupVersion, &PodMigration{}, &PodMigrationList{})
+		s.AddKnownTypes(SchemeGroupVersion, &PodMove{}, &PodMoveList{})
 		return nil
 	})
 }

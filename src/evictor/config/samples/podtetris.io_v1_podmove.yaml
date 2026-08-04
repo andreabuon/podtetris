@@ -1,9 +1,9 @@
-apiVersion: reply.com/v1alpha1
-kind: PodMigration
+apiVersion: podtetris.io.podtetris.io/v1
+kind: PodMove
 metadata:
   labels:
     app.kubernetes.io/name: evictor
     app.kubernetes.io/managed-by: kustomize
-  name: podmigration-sample
+  name: podmove-sample
 spec:
   # TODO(user): Add fields here

@@ -1,7 +1,7 @@
 # This rule is not used by the project evictor itself.
 # It is provided to allow the cluster admin to help manage permissions for users.
 #
-# Grants permissions to create, update, and delete resources within the reply.com.
+# Grants permissions to create, update, and delete resources within the podtetris.io.podtetris.io.
 # This role is intended for users who need to manage these resources
 # but should not control RBAC or manage permissions for others.
 
@@ -11,12 +11,12 @@ metadata:
   labels:
     app.kubernetes.io/name: evictor
     app.kubernetes.io/managed-by: kustomize
-  name: podmigration-editor-role
+  name: podmove-editor-role
 rules:
 - apiGroups:
-  - reply.com
+  - podtetris.io.podtetris.io
   resources:
-  - podmigrations
+  - podmoves
   verbs:
   - create
   - delete
@@ -26,8 +26,8 @@ rules:
   - update
   - watch
 - apiGroups:
-  - reply.com
+  - podtetris.io.podtetris.io
   resources:
-  - podmigrations/status
+  - podmoves/status
   verbs:
   - get

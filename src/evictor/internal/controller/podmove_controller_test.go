@@ -27,10 +27,10 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	replycomv1alpha1 "github.com/andreabuon/podtetris/src/evictor/api/v1alpha1"
+	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 )
 
-var _ = Describe("PodMigration Controller", func() {
+var _ = Describe("PodMove Controller", func() {
 	Context("When reconciling a resource", func() {
 		const (
 			resourceName      = "test-resource"
@@ -43,13 +43,13 @@ var _ = Describe("PodMigration Controller", func() {
 			Name:      resourceName,
 			Namespace: resourceNamespace,
 		}
-		podmigration := &replycomv1alpha1.PodMigration{}
+		podmove := &podtetrisiov1.PodMove{}
 
 		BeforeEach(func() {
-			By("creating the custom resource for the Kind PodMigration")
-			err := k8sClient.Get(ctx, typeNamespacedName, podmigration)
+			By("creating the custom resource for the Kind PodMove")
+			err := k8sClient.Get(ctx, typeNamespacedName, podmove)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &replycomv1alpha1.PodMigration{
+				resource := &podtetrisiov1.PodMove{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: resourceNamespace,
@@ -62,16 +62,16 @@ var _ = Describe("PodMigration Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &replycomv1alpha1.PodMigration{}
+			resource := &podtetrisiov1.PodMove{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 
-			By("Cleanup the specific resource instance PodMigration")
+			By("Cleanup the specific resource instance PodMove")
 			Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
 		})
 		It("should successfully reconcile the resource", func() {
 			By("Reconciling the created resource")
-			controllerReconciler := &PodMigrationReconciler{
+			controllerReconciler := &PodMoveReconciler{
 				Client: k8sClient,
 				Scheme: k8sClient.Scheme(),
 			}

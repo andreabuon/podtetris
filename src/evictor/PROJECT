@@ -6,8 +6,6 @@ cliVersion: 4.15.0
 domain: podtetris.io
 layout:
 - go.kubebuilder.io/v4
-plugins:
-  autoupdate.kubebuilder.io/v1-alpha: {}
 projectName: evictor
 repo: github.com/andreabuon/podtetris/src/evictor
 resources:
@@ -16,7 +14,8 @@ resources:
     namespaced: true
   controller: true
   domain: podtetris.io
-  kind: PodMigration
-  path: evictor/api/v1alpha1
-  version: v1alpha1
+  group: podtetris.io
+  kind: PodMove
+  path: github.com/andreabuon/podtetris/src/evictor/api/v1
+  version: v1
 version: "3"
