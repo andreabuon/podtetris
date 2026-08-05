@@ -80,7 +80,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		return ctrl.Result{}, err
 	}
 
-	pod, err := r.getPod(ctx, pm.Spec.Pod)
+	pod, err := r.getPod(ctx, pm)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
@@ -96,7 +96,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	return ctrl.Result{}, nil
 }
 
-func (r *PodMoveReconciler) getPod(ctx context.Context, podRef podtetrisiov1.PodReference) (*corev1.Pod, error) {
+func (r *PodMoveReconciler) getPod(ctx context.Context, podRef podtetrisiov1.PodMove) (*corev1.Pod, error) {
 	var pod corev1.Pod
 	if err := r.Get(ctx, types.NamespacedName{
 		Namespace: podRef.Namespace,

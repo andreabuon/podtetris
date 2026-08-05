@@ -17,32 +17,13 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
-// PodReference identifies the specific pod instance targeted for migration,
-// pinned to a UID so the eviction controller acts on exactly the pod the
-// simulator planned against, not merely "a pod with this name."
-type PodReference struct {
-	// name is the name of the pod at plan time.
-	// +required
-	// +kubebuilder:validation:MinLength=1
-	Name string `json:"name"`
-
-	// namespace is the namespace of the pod.
-	// +required
-	// +kubebuilder:validation:MinLength=1
-	Namespace string `json:"namespace"`
-
-	// uid is the UID of the pod at plan time.
-	// +required
-	UID types.UID `json:"uid"`
-}
 
 // PodMoveSpec defines the desired state of PodMove
 type PodMoveSpec struct {
@@ -57,7 +38,7 @@ type PodMoveSpec struct {
 
 	// podRef identifies the specific pod instance to move across nodes.
 	// +required
-	Pod PodReference `json:"podRef"`
+	Pod corev1.ObjectReference `json:"podRef"`
 
 	// sourceNode is the node the pod currently resides on.
 	// +required
