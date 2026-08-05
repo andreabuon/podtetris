@@ -19,37 +19,11 @@ package v1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
-// OwnerReference identifies the controller that owns the pod being migrated.
-type OwnerReference struct {
-	// apiVersion of the owning controller, e.g. "apps/v1".
-	// +required
-	APIVersion string `json:"apiVersion"`
-
-	// kind of the owning controller, e.g. "Deployment", "StatefulSet", "ReplicaSet", ...
-	// +required
-	// +kubebuilder:validation:MinLength=1
-	Kind string `json:"kind"`
-
-	// name of the owning controller.
-	// +required
-	// +kubebuilder:validation:MinLength=1
-	Name string `json:"name"`
-
-	// namespace of the owning controller.
-	// +required
-	// +kubebuilder:validation:MinLength=1
-	Namespace string `json:"namespace"`
-
-	// uid of the owning controller at plan time.
-	// +required
-	// +kubebuilder:validation:MinLength=1
-	UID string `json:"uid"`
-}
 
 // PodReference identifies the specific pod instance targeted for migration,
 // pinned to a UID so the eviction controller acts on exactly the pod the
@@ -67,8 +41,7 @@ type PodReference struct {
 
 	// uid is the UID of the pod at plan time.
 	// +required
-	// +kubebuilder:validation:MinLength=1
-	UID string `json:"uid"`
+	UID types.UID `json:"uid"`
 }
 
 // PodMoveSpec defines the desired state of PodMove
@@ -80,11 +53,11 @@ type PodMoveSpec struct {
 
 	// owner identifies the Resource that owns the pod being migrated
 	// +required
-	Owner OwnerReference `json:"ownerRef"`
+	Owner metav1.OwnerReference `json:"ownerRef"`
 
 	// podRef identifies the specific pod instance to move across nodes.
 	// +required
-	PodRef PodReference `json:"podRef"`
+	Pod PodReference `json:"podRef"`
 
 	// sourceNode is the node the pod currently resides on.
 	// +required

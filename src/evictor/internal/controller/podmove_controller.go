@@ -66,7 +66,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	}
 
 	log.Info("Reconciling PodMove",
-		"pod", pm.Spec.PodRef.Name,
+		"pod", pm.Spec.Pod.Name,
 		"sourceNode", pm.Spec.SourceNode,
 		"targetNode", pm.Spec.TargetNode,
 	)
@@ -80,7 +80,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		return ctrl.Result{}, err
 	}
 
-	pod, err := r.getPod(ctx, pm.Spec.PodRef)
+	pod, err := r.getPod(ctx, pm.Spec.Pod)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
@@ -96,17 +96,17 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	return ctrl.Result{}, nil
 }
 
-func (r *PodMoveReconciler) getPod(ctx context.Context, ref podtetrisiov1.PodReference) (*corev1.Pod, error) {
+func (r *PodMoveReconciler) getPod(ctx context.Context, podRef podtetrisiov1.PodReference) (*corev1.Pod, error) {
 	var pod corev1.Pod
 	if err := r.Get(ctx, types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
+		Namespace: podRef.Namespace,
+		Name:      podRef.Name,
 	}, &pod); err != nil {
 		return nil, err
 	}
 
-	if string(pod.UID) != ref.UID {
-		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, ref.UID)
+	if pod.UID != podRef.UID {
+		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, podRef.UID)
 	}
 
 	return &pod, nil
