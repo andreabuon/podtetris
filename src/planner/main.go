@@ -6,8 +6,10 @@ import (
 	"sort"
 	"time"
 
+	podtetrisv1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
@@ -18,6 +20,7 @@ import (
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins/nodevolumelimits"
 	fwkruntime "k8s.io/kubernetes/pkg/scheduler/framework/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var Config AppConfig
@@ -166,7 +169,15 @@ func main() {
 		}
 	*/
 	//FIXME remove this line and uncomment the block
-	applyConsolidationStrategy(ctx, clientset, bestPermutationResult.moves)
+	scheme := runtime.NewScheme()
+	if err := podtetrisv1.AddToScheme(scheme); err != nil {
+		log.Fatalf("Error registering the PodMove scheme: %v", err)
+	}
+	crdClient, err := client.New(kubeconfig, client.Options{Scheme: scheme})
+	if err != nil {
+		log.Fatalf("Error creating the PodMove client: %v", err)
+	}
+	applyConsolidationStrategy(ctx, crdClient, bestPermutationResult.moves)
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[string]string {

@@ -81,10 +81,12 @@ require (
 	sigs.k8s.io/yaml v1.6.0
 )
 
+require github.com/evanphx/json-patch/v5 v5.9.11 // indirect
+
 require (
 	cel.dev/expr v0.25.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260804151956-e13744af9421 // indirect
+	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260806165651-e16bf2f9738b
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
@@ -162,6 +164,7 @@ require (
 	k8s.io/dynamic-resource-allocation v0.35.0 // indirect
 	k8s.io/kube-openapi v0.0.0-20260317180543-43fb72c5454a // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
+	sigs.k8s.io/controller-runtime v0.24.1
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.2 // indirect

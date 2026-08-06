@@ -164,7 +164,7 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 	for _, staleNode := range candidateNodesToDrain {
 		freshNode, err := snapshot.NodeInfos().Get(staleNode.Node().Name)
 		if err != nil {
-			log.Printf("cannot retrieve fresh node info for %s: %w", staleNode.Node().Name, err)
+			log.Printf("cannot retrieve fresh node info for %s: %v", staleNode.Node().Name, err)
 		}
 		freshCandidateNodes = append(freshCandidateNodes, freshNode)
 	}
