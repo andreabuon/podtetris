@@ -15,10 +15,10 @@ apply-configmap:
 apply-rbac:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-rbac.yaml
 
-podtetris: config.go consolidation.go main.go nodes.go permutations.go simulation.go utils.go
+build: config.go consolidation.go main.go nodes.go permutations.go simulation.go utils.go
 	$(GO) build -o podtetris
 
-run: apply-configmap apply-rbac podtetris
+run: apply-configmap apply-rbac build
 	./podtetris
 #	./podtetris -logtostderr=true -v=3
 
