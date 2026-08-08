@@ -47,6 +47,8 @@ const (
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves/finalizers,verbs=update
+// +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
+// +kubebuilder:rbac:groups="",resources=pods/eviction,verbs=create
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -96,17 +98,23 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	return ctrl.Result{}, nil
 }
 
-func (r *PodMoveReconciler) getPod(ctx context.Context, podRef podtetrisiov1.PodMove) (*corev1.Pod, error) {
+func (r *PodMoveReconciler) getPod(ctx context.Context, pm podtetrisiov1.PodMove) (*corev1.Pod, error) {
+	ref := pm.Spec.Pod
+	ns := ref.Namespace
+	if ns == "" {
+		ns = pm.Namespace
+	}
+
 	var pod corev1.Pod
 	if err := r.Get(ctx, types.NamespacedName{
-		Namespace: podRef.Namespace,
-		Name:      podRef.Name,
+		Namespace: ns,
+		Name:      ref.Name,
 	}, &pod); err != nil {
 		return nil, err
 	}
 
-	if pod.UID != podRef.UID {
-		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, podRef.UID)
+	if ref.UID != "" && pod.UID != ref.UID {
+		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, ref.UID)
 	}
 
 	return &pod, nil
