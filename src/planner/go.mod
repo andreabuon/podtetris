@@ -86,7 +86,7 @@ require github.com/evanphx/json-patch/v5 v5.9.11 // indirect
 require (
 	cel.dev/expr v0.25.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260806165651-e16bf2f9738b
+	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260808151606-88ad44ebfcc8
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
