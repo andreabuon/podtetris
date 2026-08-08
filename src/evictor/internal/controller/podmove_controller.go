@@ -39,11 +39,6 @@ type PodMoveReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-const (
-	// ConditionEvicted tracks whether the target pod was successfully evicted.
-	ConditionEvicted = "Evicted"
-)
-
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves/finalizers,verbs=update
@@ -74,11 +69,11 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	)
 
 	// Already done — keep reconcile idempotent.
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, ConditionEvicted) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
 		log.Info("Skipping reconciliation because pod eviction has already been performed.")
 		return ctrl.Result{}, nil
 	}
-	if err := r.setCondition(ctx, &pm, ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
+	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
 		return ctrl.Result{}, err
 	}
 
@@ -91,7 +86,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		return ctrl.Result{}, err
 	}
 
-	if err := r.setCondition(ctx, &pm, ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested."); err != nil {
+	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested."); err != nil {
 		return ctrl.Result{}, err
 	}
 
