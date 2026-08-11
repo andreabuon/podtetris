@@ -2,12 +2,9 @@ KUBECTL = kubectl
 GO = go
 MANIFESTS_DIR = ./manifests
 
-.PHONY: all cluster apply-configmap apply-rbac run clean check
+.PHONY: all apply-configmap apply-rbac install build run clean check
 
 all: run
-
-cluster:
-	cd ../../labs/lab6_kwok+kind_cost && ./setup-cluster.sh
 
 apply-configmap:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-config.yaml
@@ -15,12 +12,13 @@ apply-configmap:
 apply-rbac:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-rbac.yaml
 
+install: apply-configmap apply-rbac
+
 build: config.go consolidation.go main.go nodes.go permutations.go simulation.go utils.go
 	GOWORK=off $(GO) build -o podtetris
 
-run: apply-configmap apply-rbac build
+run: install build
 	./podtetris
-#	./podtetris -logtostderr=true -v=3
 
 clean:
 	rm -f ./podtetris
