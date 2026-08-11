@@ -1,9 +1,10 @@
 // PODTetris mutating admission webhook
-// Intercepts every Pod CREATE request and injects a nodeSelector pinning the pod to a single, fixed node name.
-// The target node is a hardcoded constant (see targetNodeName below) or an override read once at startup from the TARGET_NODE_NAME env var.
+// Intercepts Pod CREATE requests, finds a matching PodMove in AwaitingReplacement,
+// and pins the pod to PodMove.spec.targetNode via nodeSelector.
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"encoding/json"
 	"errors"
@@ -14,38 +15,51 @@ import (
 	"os"
 	"time"
 
+	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	admissionv1 "k8s.io/api/admission/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/rest"
 )
 
-// targetNodeName is the fixed node every intercepted pod will be pinned to.
-// Can be overridden at startup via the TARGET_NODE_NAME env var.
-const defaultTargetNodeName = "kind-worker"
-
-// nodeSelectorKey is the label used to force placement.
-const nodeSelectorKey = "kubernetes.io/hostname"
+const (
+	// nodeSelectorKey is the label used to force placement.
+	nodeSelectorKey = "kubernetes.io/hostname"
+)
 
 var (
-	targetNodeName string
+	podMoveGVR = schema.GroupVersionResource{
+		Group:    "podtetris.io.podtetris.io",
+		Version:  "v1",
+		Resource: "podmoves",
+	}
 
+	dynClient    dynamic.Interface
 	codecs       = serializer.NewCodecFactory(runtime.NewScheme())
 	deserializer = codecs.UniversalDeserializer()
 )
 
 func main() {
-	targetNodeName = os.Getenv("TARGET_NODE_NAME")
-	if targetNodeName == "" {
-		targetNodeName = defaultTargetNodeName
+	cfg, err := rest.InClusterConfig()
+	if err != nil {
+		log.Fatalf("Could not load in-cluster config: %v", err)
+	}
+	dynClient, err = dynamic.NewForConfig(cfg)
+	if err != nil {
+		log.Fatalf("Could not create dynamic client: %v", err)
 	}
 
 	certFile := getEnvOrDefault("TLS_CERT_FILE", "/etc/webhook/certs/tls.crt")
 	keyFile := getEnvOrDefault("TLS_KEY_FILE", "/etc/webhook/certs/tls.key")
 	addr := getEnvOrDefault("LISTEN_ADDR", ":8443")
 
-	log.Printf("PODTetris webhook starting. Fixed target node: %q", targetNodeName)
+	log.Printf("PODTetris webhook starting...")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/mutate", handleMutate)
@@ -95,7 +109,7 @@ func handleMutate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := buildAdmissionResponse(review.Request)
+	response := buildAdmissionResponse(r.Context(), review.Request)
 
 	responseReview := admissionv1.AdmissionReview{
 		TypeMeta: metav1.TypeMeta{
@@ -126,8 +140,8 @@ func readBody(r *http.Request) ([]byte, error) {
 }
 
 // buildAdmissionResponse decides what patch (if any) to return for the incoming pod.
-// All pods admitted while this webhook is enabled are pinned to targetNodeName via nodeSelector.
-func buildAdmissionResponse(req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
+// Pods with a matching AwaitingReplacement PodMove are pinned to its targetNode.
+func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
 	pod := corev1.Pod{}
 	if err := json.Unmarshal(req.Object.Raw, &pod); err != nil {
 		log.Printf("Error unmarshalling pod: %v", err)
@@ -140,10 +154,34 @@ func buildAdmissionResponse(req *admissionv1.AdmissionRequest) *admissionv1.Admi
 		}
 	}
 
-	log.Printf("Intercepted CREATE for pod %s/%s (generateName=%q) -> pinning to node %q",
-		pod.Namespace, podDisplayName(&pod), pod.GenerateName, targetNodeName)
+	if pod.Namespace == "" {
+		pod.Namespace = req.Namespace
+	}
 
-	patch := buildNodeSelectorPatch(pod.Spec.NodeSelector)
+	pm, targetNode, err := findMatchingPodMove(ctx, &pod)
+	if err != nil {
+		log.Printf("Error looking up PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(&pod), err)
+		return &admissionv1.AdmissionResponse{
+			UID:     req.UID,
+			Allowed: false,
+			Result: &metav1.Status{
+				Message: fmt.Sprintf("could not look up PodMove: %v", err),
+			},
+		}
+	}
+	if pm == nil {
+		log.Printf("No matching PodMove for pod %s/%s; allowing without mutation",
+			pod.Namespace, podDisplayName(&pod))
+		return &admissionv1.AdmissionResponse{
+			UID:     req.UID,
+			Allowed: true,
+		}
+	}
+
+	log.Printf("Intercepted CREATE for pod %s/%s (generateName=%q) -> pinning to node %q from PodMove %s/%s",
+		pod.Namespace, podDisplayName(&pod), pod.GenerateName, targetNode, pm.GetNamespace(), pm.GetName())
+
+	patch := buildMutationPatch(&pod, targetNode, pm.GetName())
 	patchBytes, err := json.Marshal(patch)
 	if err != nil {
 		log.Printf("Error marshalling patch: %v", err)
@@ -172,9 +210,69 @@ func podDisplayName(pod *corev1.Pod) string {
 	return pod.GenerateName + "<pending-name>"
 }
 
+// findMatchingPodMove returns the open PodMove for this pod's controller owner, if any.
+func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*unstructured.Unstructured, string, error) {
+	owner := metav1.GetControllerOf(pod)
+	if owner == nil {
+		return nil, "", nil
+	}
+
+	list, err := dynClient.Resource(podMoveGVR).Namespace(pod.Namespace).List(ctx, metav1.ListOptions{
+		LabelSelector: labels.Set{podtetrisiov1.PhaseLabelKey: podtetrisiov1.PhaseAwaitingReplacement}.String(),
+	})
+	if err != nil {
+		return nil, "", err
+	}
+
+	var matched *unstructured.Unstructured
+	for i := range list.Items {
+		item := &list.Items[i]
+		if !ownerMatches(item, owner) {
+			continue
+		}
+		if matched != nil {
+			log.Printf("Multiple AwaitingReplacement PodMoves for owner %s/%s in %s; using %s",
+				owner.Kind, owner.Name, pod.Namespace, matched.GetName())
+			break
+		}
+		matched = item
+	}
+	if matched == nil {
+		return nil, "", nil
+	}
+
+	targetNode, found, err := unstructured.NestedString(matched.Object, "spec", "targetNode")
+	if err != nil {
+		return nil, "", err
+	}
+	if !found || targetNode == "" {
+		return nil, "", fmt.Errorf("PodMove %s/%s has empty spec.targetNode", matched.GetNamespace(), matched.GetName())
+	}
+	return matched, targetNode, nil
+}
+
+func ownerMatches(pm *unstructured.Unstructured, owner *metav1.OwnerReference) bool {
+	apiVersion, _, _ := unstructured.NestedString(pm.Object, "spec", "ownerRef", "apiVersion")
+	kind, _, _ := unstructured.NestedString(pm.Object, "spec", "ownerRef", "kind")
+	name, _, _ := unstructured.NestedString(pm.Object, "spec", "ownerRef", "name")
+	uid, _, _ := unstructured.NestedString(pm.Object, "spec", "ownerRef", "uid")
+
+	if uid != "" && string(owner.UID) != "" && uid == string(owner.UID) {
+		return true
+	}
+	return apiVersion == owner.APIVersion && kind == owner.Kind && name == owner.Name
+}
+
+// buildMutationPatch pins the pod to targetNode and labels it with the PodMove name.
+func buildMutationPatch(pod *corev1.Pod, targetNode, podMoveName string) []map[string]interface{} {
+	patch := buildNodeSelectorPatch(pod.Spec.NodeSelector, targetNode)
+	patch = append(patch, buildPodMoveLabelPatch(pod.Labels, podMoveName)...)
+	return patch
+}
+
 // buildNodeSelectorPatch returns a JSONPatch that sets the target node label.
 // It adds the /spec/nodeSelector object if the pod has none yet, otherwise it merges the single key into the existing map.
-func buildNodeSelectorPatch(existing map[string]string) []map[string]interface{} {
+func buildNodeSelectorPatch(existing map[string]string, targetNodeName string) []map[string]interface{} {
 	if len(existing) == 0 {
 		return []map[string]interface{}{
 			{
@@ -193,6 +291,27 @@ func buildNodeSelectorPatch(existing map[string]string) []map[string]interface{}
 			"op":    "add",
 			"path":  "/spec/nodeSelector/" + jsonPatchEscape(nodeSelectorKey),
 			"value": targetNodeName,
+		},
+	}
+}
+
+func buildPodMoveLabelPatch(existing map[string]string, podMoveName string) []map[string]interface{} {
+	if len(existing) == 0 {
+		return []map[string]interface{}{
+			{
+				"op":   "add",
+				"path": "/metadata/labels",
+				"value": map[string]string{
+					podtetrisiov1.PodMoveLabelKey: podMoveName,
+				},
+			},
+		}
+	}
+	return []map[string]interface{}{
+		{
+			"op":    "add",
+			"path":  "/metadata/labels/" + jsonPatchEscape(podtetrisiov1.PodMoveLabelKey),
+			"value": podMoveName,
 		},
 	}
 }

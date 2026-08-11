@@ -3,6 +3,34 @@ kind: Namespace
 metadata:
   name: podtetris
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: podtetris-webhook
+  namespace: podtetris
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: podtetris-webhook
+rules:
+  - apiGroups: ["podtetris.io.podtetris.io"]
+    resources: ["podmoves"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: podtetris-webhook
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: podtetris-webhook
+subjects:
+  - kind: ServiceAccount
+    name: podtetris-webhook
+    namespace: podtetris
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +48,7 @@ spec:
       labels:
         app: podtetris-webhook
     spec:
+      serviceAccountName: podtetris-webhook
       containers:
         - name: webhook
           image: podtetris-webhook:latest
@@ -27,9 +56,6 @@ spec:
           ports:
             - containerPort: 8443
               name: https
-          env:
-            - name: TARGET_NODE_NAME
-              value: "kind-worker6"
           volumeMounts:
             - name: certs
               mountPath: /etc/webhook/certs

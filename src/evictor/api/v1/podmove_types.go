@@ -36,6 +36,9 @@ const (
 	// PhaseAwaitingReplacement is set after the source pod has been evicted and the
 	// controller is waiting for the webhook-pinned replacement pod.
 	PhaseAwaitingReplacement = "AwaitingReplacement"
+
+	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
+	PodMoveLabelKey = "podtetris.io/podmove"
 )
 
 // PodMoveSpec defines the desired state of PodMove
