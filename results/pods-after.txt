@@ -1,0 +1,26 @@
+(base) andrea@MacBook-Pro-di-Andrea PODTetris % k get pods -o wide
+NAME                                READY   STATUS    RESTARTS   AGE     IP            NODE           NOMINATED NODE   READINESS GATES
+deployment-a-bcddbb87f-4rlsj        1/1     Running   0          50s     10.244.6.6    kind-worker6   <none>           <none>
+deployment-a-bcddbb87f-58j8m        1/1     Running   0          50s     10.244.8.7    kind-worker7   <none>           <none>
+deployment-a-bcddbb87f-gxpqn        1/1     Running   0          50s     10.244.3.8    kind-worker4   <none>           <none>
+deployment-a-bcddbb87f-jmwr2        1/1     Running   0          3m44s   10.244.5.3    kind-worker3   <none>           <none>
+deployment-a-bcddbb87f-jxnqj        1/1     Running   0          50s     10.244.3.7    kind-worker4   <none>           <none>
+deployment-a-bcddbb87f-l97vt        1/1     Running   0          3m44s   10.244.3.2    kind-worker4   <none>           <none>
+deployment-a-bcddbb87f-wm74f        1/1     Running   0          3m44s   10.244.4.2    kind-worker    <none>           <none>
+deployment-b-f4f9ccd4f-cw6k5        1/1     Running   0          3m44s   10.244.5.2    kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-cz6j6        1/1     Running   0          3m44s   10.244.4.4    kind-worker    <none>           <none>
+deployment-b-f4f9ccd4f-g8jx6        1/1     Running   0          50s     10.244.8.8    kind-worker7   <none>           <none>
+deployment-b-f4f9ccd4f-qtztn        1/1     Running   0          50s     10.244.6.7    kind-worker6   <none>           <none>
+deployment-b-f4f9ccd4f-qw22c        1/1     Running   0          50s     10.244.3.10   kind-worker4   <none>           <none>
+deployment-b-f4f9ccd4f-s7mss        1/1     Running   0          50s     10.244.3.9    kind-worker4   <none>           <none>
+deployment-b-f4f9ccd4f-scntk        1/1     Running   0          3m44s   10.244.3.4    kind-worker4   <none>           <none>
+deployment-fixed-7ff859757d-b9m7q   1/1     Running   0          3m44s   10.244.8.3    kind-worker7   <none>           <none>
+deployment-fixed-7ff859757d-ngjbs   1/1     Running   0          3m44s   10.244.4.3    kind-worker    <none>           <none>
+rs-a-4ctgp                          1/1     Running   0          3m44s   10.244.3.3    kind-worker4   <none>           <none>
+rs-a-brbz6                          1/1     Running   0          49s     10.244.6.8    kind-worker6   <none>           <none>
+rs-a-nssjs                          1/1     Running   0          49s     10.244.3.11   kind-worker4   <none>           <none>
+rs-b-crp62                          1/1     Running   0          3m44s   10.244.5.4    kind-worker3   <none>           <none>
+rs-b-t2z7p                          1/1     Running   0          51s     10.244.6.5    kind-worker6   <none>           <none>
+statefulset-0                       1/1     Running   0          3m44s   10.244.3.6    kind-worker4   <none>           <none>
+statefulset-1                       1/1     Running   0          3m24s   10.244.1.6    kind-worker5   <none>           <none>
+statefulset-2                       1/1     Running   0          3m7s    10.244.2.6    kind-worker2   <none>           <none>
