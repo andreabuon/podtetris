@@ -16,7 +16,7 @@ apply-rbac:
 	$(KUBECTL) apply -f $(MANIFESTS_DIR)/podtetris-rbac.yaml
 
 build: config.go consolidation.go main.go nodes.go permutations.go simulation.go utils.go
-	$(GO) build -o podtetris
+	GOWORK=off $(GO) build -o podtetris
 
 run: apply-configmap apply-rbac build
 	./podtetris
