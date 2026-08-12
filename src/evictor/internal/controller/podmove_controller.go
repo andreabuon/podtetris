@@ -68,12 +68,9 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		"targetNode", pm.Spec.TargetNode,
 	)
 
-	// Already done — keep reconcile idempotent, but repair the phase label if missing.
+	// Already done — keep reconcile idempotent.
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
 		log.Info("Skipping eviction because it has already been performed")
-		if err := r.setPhaseLabel(ctx, &pm, podtetrisiov1.PhaseAwaitingReplacement); err != nil {
-			return ctrl.Result{}, err
-		}
 		return ctrl.Result{}, nil
 	}
 	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
@@ -90,10 +87,6 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	}
 
 	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested."); err != nil {
-		return ctrl.Result{}, err
-	}
-
-	if err := r.setPhaseLabel(ctx, &pm, podtetrisiov1.PhaseAwaitingReplacement); err != nil {
 		return ctrl.Result{}, err
 	}
 
@@ -150,32 +143,6 @@ func (r *PodMoveReconciler) setCondition(
 		return nil
 	}
 	return r.Status().Update(ctx, pm)
-}
-
-// setPhaseLabel sets the PodMove lifecycle phase onto metadata.labels so webhooks and controllers can list PodMoves with a label selector (instead of scanning conditions).
-func (r *PodMoveReconciler) setPhaseLabel(ctx context.Context, pm *podtetrisiov1.PodMove, phase string) error {
-	if pm.Labels[podtetrisiov1.PhaseLabelKey] == phase {
-		return nil
-	}
-
-	var latest podtetrisiov1.PodMove
-	if err := r.Get(ctx, client.ObjectKeyFromObject(pm), &latest); err != nil {
-		return err
-	}
-	if latest.Labels == nil {
-		latest.Labels = map[string]string{}
-	}
-	if latest.Labels[podtetrisiov1.PhaseLabelKey] == phase {
-		*pm = latest
-		return nil
-	}
-
-	latest.Labels[podtetrisiov1.PhaseLabelKey] = phase
-	if err := r.Update(ctx, &latest); err != nil {
-		return err
-	}
-	*pm = latest
-	return nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

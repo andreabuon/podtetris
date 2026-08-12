@@ -31,12 +31,6 @@ const (
 	// ConditionTargetNodeInjected is True after the mutating webhook pinned the replacement pod to Spec.TargetNode.
 	ConditionTargetNodeInjected = "TargetNodeInjected"
 
-	// PhaseLabelKey is a selectable mirror of the PodMove lifecycle phase.
-	PhaseLabelKey = "podtetris.io/phase"
-	// PhaseAwaitingReplacement is set after the source pod has been evicted and the
-	// controller is waiting for the webhook-pinned replacement pod.
-	PhaseAwaitingReplacement = "AwaitingReplacement"
-
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
 )
