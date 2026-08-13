@@ -1,6 +1,7 @@
 // PODTetris mutating admission webhook
-// Intercepts Pod CREATE requests, finds a matching PodMove in AwaitingReplacement,
-// and pins the pod to PodMove.spec.targetNode via nodeSelector.
+// Intercepts Pod CREATE requests, finds a matching open PodMove (Evicted condition
+// present, TargetNodeInjected not True), and pins the pod to PodMove.spec.targetNode
+// via nodeSelector.
 package main
 
 import (
@@ -20,7 +21,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -140,7 +140,7 @@ func readBody(r *http.Request) ([]byte, error) {
 }
 
 // buildAdmissionResponse decides what patch (if any) to return for the incoming pod.
-// Pods with a matching AwaitingReplacement PodMove are pinned to its targetNode.
+// Pods with a matching open PodMove are pinned to its targetNode.
 func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
 	pod := corev1.Pod{}
 	if err := json.Unmarshal(req.Object.Raw, &pod); err != nil {
@@ -217,9 +217,7 @@ func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*unstructured.Un
 		return nil, "", nil
 	}
 
-	list, err := dynClient.Resource(podMoveGVR).Namespace(pod.Namespace).List(ctx, metav1.ListOptions{
-		LabelSelector: labels.Set{podtetrisiov1.PhaseLabelKey: podtetrisiov1.PhaseAwaitingReplacement}.String(),
-	})
+	list, err := dynClient.Resource(podMoveGVR).Namespace(pod.Namespace).List(ctx, metav1.ListOptions{})
 	if err != nil {
 		return nil, "", err
 	}
@@ -227,11 +225,14 @@ func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*unstructured.Un
 	var matched *unstructured.Unstructured
 	for i := range list.Items {
 		item := &list.Items[i]
+		if !isOpenForReplacement(item) {
+			continue
+		}
 		if !ownerMatches(item, owner) {
 			continue
 		}
 		if matched != nil {
-			log.Printf("Multiple AwaitingReplacement PodMoves for owner %s/%s in %s; using %s",
+			log.Printf("Multiple open PodMoves for owner %s/%s in %s; using %s",
 				owner.Kind, owner.Name, pod.Namespace, matched.GetName())
 			break
 		}
@@ -249,6 +250,35 @@ func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*unstructured.Un
 		return nil, "", fmt.Errorf("PodMove %s/%s has empty spec.targetNode", matched.GetNamespace(), matched.GetName())
 	}
 	return matched, targetNode, nil
+}
+
+// isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE:
+// Evicted condition is present (False=Evicting or True=Evicted) and TargetNodeInjected is not True.
+func isOpenForReplacement(pm *unstructured.Unstructured) bool {
+	conditions, found, err := unstructured.NestedSlice(pm.Object, "status", "conditions")
+	if err != nil || !found {
+		return false
+	}
+
+	evictedPresent := false
+	targetInjected := false
+	for _, raw := range conditions {
+		cond, ok := raw.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		condType, _, _ := unstructured.NestedString(cond, "type")
+		condStatus, _, _ := unstructured.NestedString(cond, "status")
+		switch condType {
+		case podtetrisiov1.ConditionEvicted:
+			evictedPresent = true
+		case podtetrisiov1.ConditionTargetNodeInjected:
+			if condStatus == string(metav1.ConditionTrue) {
+				targetInjected = true
+			}
+		}
+	}
+	return evictedPresent && !targetInjected
 }
 
 func ownerMatches(pm *unstructured.Unstructured, owner *metav1.OwnerReference) bool {
