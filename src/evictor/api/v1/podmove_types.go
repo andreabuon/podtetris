@@ -28,7 +28,7 @@ import (
 const (
 	// ConditionEvicted is True after the pod eviction on the source node has been requested.
 	ConditionEvicted = "Evicted"
-	// ConditionTargetNodeInjected is True after the mutating webhook pinned the replacement pod to Spec.TargetNode.
+	// ConditionTargetNodeInjected is True after the mutating webhook intercepted the replacement pod CREATE and pinned it to Spec.TargetNode.
 	ConditionTargetNodeInjected = "TargetNodeInjected"
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.

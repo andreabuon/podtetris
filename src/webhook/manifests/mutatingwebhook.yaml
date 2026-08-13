@@ -5,7 +5,7 @@ metadata:
 webhooks:
   - name: podtetris-webhook.podtetris.svc
     admissionReviewVersions: ["v1"]
-    sideEffects: None
+    sideEffects: NoneOnDryRun
     failurePolicy: Ignore # Ignore, not Fail: if the webhook is down, pod creation should not be blocked cluster-wide.
     timeoutSeconds: 5
     clientConfig:

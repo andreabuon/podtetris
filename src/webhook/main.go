@@ -1,7 +1,8 @@
 // PODTetris mutating admission webhook
 // Intercepts Pod CREATE requests, finds a matching open PodMove (Evicted condition
-// present, TargetNodeInjected not True), and pins the pod to PodMove.spec.targetNode
-// via nodeSelector.
+// present, TargetNodeInjected not True), pins the pod to PodMove.spec.targetNode
+// via nodeSelector, and marks TargetNodeInjected=True so the recreation is recorded
+// on the PodMove (LastTransitionTime is the recreation timestamp).
 package main
 
 import (
@@ -19,6 +20,7 @@ import (
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	admissionv1 "k8s.io/api/admission/v1"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -26,12 +28,18 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/retry"
 )
 
 const (
 	// nodeSelectorKey is the label used to force placement.
 	nodeSelectorKey = "kubernetes.io/hostname"
+
+	conditionReasonReplacementCreated = "ReplacementCreated"
+	maxClaimAttempts                  = 8
 )
+
+var errPodMoveAlreadyClaimed = errors.New("podmove already claimed for a replacement pod")
 
 var (
 	podMoveGVR = schema.GroupVersionResource{
@@ -140,7 +148,8 @@ func readBody(r *http.Request) ([]byte, error) {
 }
 
 // buildAdmissionResponse decides what patch (if any) to return for the incoming pod.
-// Pods with a matching open PodMove are pinned to its targetNode.
+// Pods with a matching open PodMove are pinned to its targetNode, and the PodMove
+// is marked TargetNodeInjected=True so a later CREATE cannot claim the same move.
 func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
 	pod := corev1.Pod{}
 	if err := json.Unmarshal(req.Object.Raw, &pod); err != nil {
@@ -158,18 +167,56 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		pod.Namespace = req.Namespace
 	}
 
-	pm, targetNode, err := findMatchingPodMove(ctx, &pod)
-	if err != nil {
-		log.Printf("Error looking up PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(&pod), err)
-		return &admissionv1.AdmissionResponse{
-			UID:     req.UID,
-			Allowed: false,
-			Result: &metav1.Status{
-				Message: fmt.Sprintf("could not look up PodMove: %v", err),
-			},
+	dryRun := req.DryRun != nil && *req.DryRun
+
+	var pm *unstructured.Unstructured
+	var targetNode string
+	claimed := false
+	for attempt := 0; attempt < maxClaimAttempts; attempt++ {
+		var err error
+		pm, targetNode, err = findMatchingPodMove(ctx, &pod)
+		if err != nil {
+			log.Printf("Error looking up PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(&pod), err)
+			return &admissionv1.AdmissionResponse{
+				UID:     req.UID,
+				Allowed: false,
+				Result: &metav1.Status{
+					Message: fmt.Sprintf("could not look up PodMove: %v", err),
+				},
+			}
 		}
+		if pm == nil {
+			break
+		}
+
+		if dryRun {
+			log.Printf("Dry-run CREATE for pod %s/%s; skipping TargetNodeInjected update on PodMove %s/%s",
+				pod.Namespace, podDisplayName(&pod), pm.GetNamespace(), pm.GetName())
+			claimed = true
+			break
+		}
+
+		if err := claimReplacement(ctx, pm, &pod, targetNode); err != nil {
+			if errors.Is(err, errPodMoveAlreadyClaimed) {
+				log.Printf("PodMove %s/%s already claimed; looking for another open move",
+					pm.GetNamespace(), pm.GetName())
+				pm = nil
+				continue
+			}
+			log.Printf("Error marking TargetNodeInjected on PodMove %s/%s: %v",
+				pm.GetNamespace(), pm.GetName(), err)
+			return &admissionv1.AdmissionResponse{
+				UID:     req.UID,
+				Allowed: false,
+				Result: &metav1.Status{
+					Message: fmt.Sprintf("could not mark PodMove replacement: %v", err),
+				},
+			}
+		}
+		claimed = true
+		break
 	}
-	if pm == nil {
+	if !claimed {
 		log.Printf("No matching PodMove for pod %s/%s; allowing without mutation",
 			pod.Namespace, podDisplayName(&pod))
 		return &admissionv1.AdmissionResponse{
@@ -279,6 +326,80 @@ func isOpenForReplacement(pm *unstructured.Unstructured) bool {
 		}
 	}
 	return evictedPresent && !targetInjected
+}
+
+// claimReplacement records that this PodMove's replacement CREATE has been intercepted
+// by setting TargetNodeInjected=True. LastTransitionTime is the recreation timestamp.
+// Returns errPodMoveAlreadyClaimed if another CREATE won the race.
+func claimReplacement(ctx context.Context, pm *unstructured.Unstructured, pod *corev1.Pod, targetNode string) error {
+	if !isOpenForReplacement(pm) {
+		return errPodMoveAlreadyClaimed
+	}
+	applyTargetNodeInjected(pm, pod, targetNode)
+	_, err := dynClient.Resource(podMoveGVR).Namespace(pm.GetNamespace()).UpdateStatus(ctx, pm, metav1.UpdateOptions{})
+	if err == nil {
+		return nil
+	}
+	if !apierrors.IsConflict(err) {
+		return err
+	}
+
+	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
+		current, getErr := dynClient.Resource(podMoveGVR).Namespace(pm.GetNamespace()).Get(ctx, pm.GetName(), metav1.GetOptions{})
+		if getErr != nil {
+			return getErr
+		}
+		if !isOpenForReplacement(current) {
+			return errPodMoveAlreadyClaimed
+		}
+		applyTargetNodeInjected(current, pod, targetNode)
+		_, updateErr := dynClient.Resource(podMoveGVR).Namespace(pm.GetNamespace()).UpdateStatus(ctx, current, metav1.UpdateOptions{})
+		return updateErr
+	})
+}
+
+func applyTargetNodeInjected(pm *unstructured.Unstructured, pod *corev1.Pod, targetNode string) {
+	if _, found, _ := unstructured.NestedMap(pm.Object, "status"); !found {
+		_ = unstructured.SetNestedMap(pm.Object, map[string]interface{}{}, "status")
+	}
+
+	conditions, _, _ := unstructured.NestedSlice(pm.Object, "status", "conditions")
+	now := metav1.Now().UTC().Format(time.RFC3339)
+	msg := fmt.Sprintf("Replacement pod %s/%s recreated and pinned to node %q", pod.Namespace, podDisplayName(pod), targetNode)
+
+	replaced := false
+	for i, raw := range conditions {
+		cond, ok := raw.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		condType, _, _ := unstructured.NestedString(cond, "type")
+		if condType != podtetrisiov1.ConditionTargetNodeInjected {
+			continue
+		}
+		prevStatus, _, _ := unstructured.NestedString(cond, "status")
+		cond["status"] = string(metav1.ConditionTrue)
+		cond["reason"] = conditionReasonReplacementCreated
+		cond["message"] = msg
+		if prevStatus != string(metav1.ConditionTrue) || cond["lastTransitionTime"] == nil {
+			cond["lastTransitionTime"] = now
+		}
+		cond["observedGeneration"] = pm.GetGeneration()
+		conditions[i] = cond
+		replaced = true
+		break
+	}
+	if !replaced {
+		conditions = append(conditions, map[string]interface{}{
+			"type":               podtetrisiov1.ConditionTargetNodeInjected,
+			"status":             string(metav1.ConditionTrue),
+			"reason":             conditionReasonReplacementCreated,
+			"message":            msg,
+			"lastTransitionTime": now,
+			"observedGeneration": pm.GetGeneration(),
+		})
+	}
+	_ = unstructured.SetNestedSlice(pm.Object, conditions, "status", "conditions")
 }
 
 func ownerMatches(pm *unstructured.Unstructured, owner *metav1.OwnerReference) bool {
