@@ -1,0 +1,12 @@
+(base) andrea@MacBook-Pro-di-Andrea PODTetris % k logs deployment/podtetris-webhook -n podtetris
+Found 3 pods, using pod/podtetris-webhook-84b9c89c95-ngkwm
+2026/08/14 14:22:08 PODTetris webhook starting...
+2026/08/14 14:22:08 Listening on :8443
+2026/08/14 14:22:32 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker7" from PodMove default/rs-b-pkx62-491c7e41
+2026/08/14 14:22:32 Intercepted CREATE for pod default/deployment-a-bcddbb87f-<pending-name> (generateName="deployment-a-bcddbb87f-") -> pinning to node "kind-worker7" from PodMove default/deployment-a-bcddbb87f-76x48-bdc22eb3
+2026/08/14 14:22:32 Intercepted CREATE for pod default/deployment-b-f4f9ccd4f-<pending-name> (generateName="deployment-b-f4f9ccd4f-") -> pinning to node "kind-worker7" from PodMove default/deployment-b-f4f9ccd4f-2wmvm-ff5b9e20
+2026/08/14 14:22:33 Intercepted CREATE for pod default/rs-a-<pending-name> (generateName="rs-a-") -> pinning to node "kind-worker7" from PodMove default/rs-a-9njmq-ace5f095
+2026/08/14 14:22:33 Intercepted CREATE for pod default/deployment-a-bcddbb87f-<pending-name> (generateName="deployment-a-bcddbb87f-") -> pinning to node "kind-worker7" from PodMove default/deployment-a-bcddbb87f-nvdj4-131a244c
+2026/08/14 14:22:33 Intercepted CREATE for pod default/deployment-b-f4f9ccd4f-<pending-name> (generateName="deployment-b-f4f9ccd4f-") -> pinning to node "kind-worker7" from PodMove default/deployment-b-f4f9ccd4f-q7dmg-2552be16
+
+NOTE: SOME WEBHOOKS PODS HAVE BEEN EVICTED BY THE PODTETRIS TOOL ITSELF
