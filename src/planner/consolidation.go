@@ -54,7 +54,7 @@ func createPodMoveCRD(ctx context.Context, c client.Client, podMove PodMove) err
 	}
 	pm := &podtetrisv1.PodMove{
 		ObjectMeta: metav1.ObjectMeta{
-			Namespace: pod.Namespace,
+			Namespace: defaultPodtetrisNamespace,
 			Name:      fmt.Sprintf("%s-%s", pod.Name, string(pod.UID)[:8]),
 		},
 		Spec: podtetrisv1.PodMoveSpec{

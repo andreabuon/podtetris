@@ -264,7 +264,7 @@ func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*podtetrisiov1.P
 	}
 
 	var list podtetrisiov1.PodMoveList
-	if err := k8sClient.List(ctx, &list, client.InNamespace(pod.Namespace)); err != nil {
+	if err := k8sClient.List(ctx, &list, client.InNamespace("podtetris")); err != nil {
 		return nil, err
 	}
 

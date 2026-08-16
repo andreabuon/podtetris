@@ -162,13 +162,21 @@ func main() {
 	bestPermutationResult := schedulingResults[0]
 	log.Printf("The best scheduling simulation has a cost of %d.", bestPermutationResult.cost)
 
-	/*
-		if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
-			log.Printf("Score threshold reached. Auto applying consolidation strategy...")
-			applyConsolidationStrategy(ctx, clientset, bestPermutationResult.moves)
+	/* //TODO Restore the score check
+	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
+		log.Printf("Score threshold reached. Auto applying consolidation strategy...")
+		scheme := runtime.NewScheme()
+		if err := podtetrisv1.AddToScheme(scheme); err != nil {
+			log.Fatalf("Error registering the PodMove scheme: %v", err)
 		}
+		crdClient, err := client.New(kubeconfig, client.Options{Scheme: scheme})
+		if err != nil {
+			log.Fatalf("Error creating the PodMove client: %v", err)
+		}
+		applyConsolidationStrategy(ctx, crdClient, bestPermutationResult.moves)
+	}
 	*/
-	//FIXME remove this line and uncomment the block
+	//TODO After restoring the score check, delete the following lines
 	scheme := runtime.NewScheme()
 	if err := podtetrisv1.AddToScheme(scheme); err != nil {
 		log.Fatalf("Error registering the PodMove scheme: %v", err)
@@ -178,6 +186,7 @@ func main() {
 		log.Fatalf("Error creating the PodMove client: %v", err)
 	}
 	applyConsolidationStrategy(ctx, crdClient, bestPermutationResult.moves)
+	// delete until here
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[string]string {
