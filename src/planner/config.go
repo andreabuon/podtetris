@@ -16,7 +16,8 @@ import (
 )
 
 const (
-	SCHEDULER_CONFIG_PATH = "./manifests/scheduler-config.yaml"
+	SCHEDULER_CONFIG_PATH     = "./manifests/scheduler-config.yaml"
+	defaultPodtetrisNamespace = "podtetris"
 )
 
 var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{
@@ -65,7 +66,7 @@ func loadAppConfig(ctx context.Context, clientset *kubernetes.Clientset) AppConf
 		return cfg
 	}
 
-	cm, err := clientset.CoreV1().ConfigMaps("podtetris").Get(ctx, "podtetris-config", metav1.GetOptions{})
+	cm, err := clientset.CoreV1().ConfigMaps(defaultPodtetrisNamespace).Get(ctx, "podtetris-config", metav1.GetOptions{})
 	if err != nil {
 		log.Printf("Error reading ConfigMap: %v", err)
 		return cfg

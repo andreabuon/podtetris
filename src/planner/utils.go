@@ -11,12 +11,13 @@ import (
 type EvictionSkipReason string
 
 const (
-	SkipDaemonSet  EvictionSkipReason = "daemonSet pod"
-	SkipJob        EvictionSkipReason = "job pod"
-	SkipStaticPod  EvictionSkipReason = "static pod"
-	SkipFixedPod   EvictionSkipReason = "pod is fixed to the node"
-	SkipNilPod     EvictionSkipReason = "pod reference is nil"
-	SkipSystemPods EvictionSkipReason = "pod belongs to namespace 'kube-system'"
+	SkipDaemonSet          EvictionSkipReason = "daemonSet pod"
+	SkipJob                EvictionSkipReason = "job pod"
+	SkipStaticPod          EvictionSkipReason = "static pod"
+	SkipFixedPod           EvictionSkipReason = "pod is fixed to the node"
+	SkipNilPod             EvictionSkipReason = "pod reference is nil"
+	SkipSystemPods         EvictionSkipReason = "pod belongs to namespace 'kube-system'"
+	SkipPodtetrisNamespace EvictionSkipReason = "pod belongs to podtetris own namespace"
 )
 
 // isEvictable returns (true, "") if the pod can be evicted or (false, reason) explaining why it was skipped.
@@ -27,6 +28,10 @@ func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
 
 	if pod.Namespace == "kube-system" {
 		return false, SkipSystemPods
+	}
+
+	if pod.Namespace == defaultPodtetrisNamespace {
+		return false, SkipPodtetrisNamespace
 	}
 
 	for _, owner := range pod.GetOwnerReferences() {
