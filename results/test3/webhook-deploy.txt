@@ -1,0 +1,72 @@
+(base) andrea@MacBook-Pro-di-Andrea src % cd webhook 
+(base) andrea@MacBook-Pro-di-Andrea webhook % make deploy 
+docker build -t podtetris-webhook:latest .
+[+] Building 19.3s (13/13) FINISHED                                      docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                     0.0s
+ => => transferring dockerfile: 382B                                                     0.0s
+ => [internal] load metadata for docker.io/library/golang:1.26                           3.5s
+ => [auth] library/golang:pull token for registry-1.docker.io                            0.0s
+ => [internal] load .dockerignore                                                        0.0s
+ => => transferring context: 2B                                                          0.0s
+ => [build 1/6] FROM docker.io/library/golang:1.26@sha256:0d1d3a794be25f809dd2cb3160d8c  0.0s
+ => => resolve docker.io/library/golang:1.26@sha256:0d1d3a794be25f809dd2cb3160d8c73276c  0.0s
+ => [internal] load build context                                                        0.0s
+ => => transferring context: 32.28kB                                                     0.0s
+ => CACHED [build 2/6] WORKDIR /src                                                      0.0s
+ => CACHED [build 3/6] COPY go.mod ./                                                    0.0s
+ => CACHED [build 4/6] COPY go.sum ./                                                    0.0s
+ => [build 5/6] COPY main.go ./                                                          0.0s
+ => [build 6/6] RUN CGO_ENABLED=0 GOOS=linux go build -o /out/podtetris-webhook         14.8s
+ => [stage-1 1/1] COPY --from=build /out/podtetris-webhook /podtetris-webhook            0.0s 
+ => exporting to image                                                                   0.7s 
+ => => exporting layers                                                                  0.6s 
+ => => exporting manifest sha256:070903d98383114a9e9aa38a9a1a065670d8fa4f3957cfe47b3046  0.0s 
+ => => exporting config sha256:643de7069bad8fbdfc93b445c2634c635a6cd3c90b3c241e43017004  0.0s 
+ => => exporting attestation manifest sha256:31df937160d59b78387fbc6274d4b696559aaae158  0.0s 
+ => => exporting manifest list sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff  0.0s
+ => => naming to docker.io/library/podtetris-webhook:latest                              0.0s
+ => => unpacking to docker.io/library/podtetris-webhook:latest                           0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/kzwz0c9713w3bobgk6z0reg0e
+kind load docker-image podtetris-webhook:latest --name kind
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker2", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker7", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker3", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker6", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-control-plane", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker5", loading...
+Image: "podtetris-webhook:latest" with ID "sha256:71762935611fbc3d309bb73f341db1f0f439e6788300142ff467d85ac93c9821" not yet present on node "kind-worker4", loading...
+NAMESPACE=podtetris SERVICE=podtetris-webhook ./gen-certs.sh
+Generating a 2048 bit RSA private key
+....................................+++++
+.............+++++
+writing new private key to './certs/tls.key'
+-----
+
+Cert generated. caBundle for manifests/mutatingwebhook.yaml:
+LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURORENDQWh5Z0F3SUJBZ0lKQUxXR2JNWXRJOFo1TUEwR0NTcUdTSWIzRFFFQkN3VUFNQ294S0RBbUJnTlYKQkFNTUgzQnZaSFJsZEhKcGN5MTNaV0pvYjI5ckxuQnZaSFJsZEhKcGN5NXpkbU13SGhjTk1qWXdPREUzTVRNMApOVE15V2hjTk16WXdPREUwTVRNME5UTXlXakFxTVNnd0pnWURWUVFEREI5d2IyUjBaWFJ5YVhNdGQyVmlhRzl2CmF5NXdiMlIwWlhSeWFYTXVjM1pqTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUEKelg2Zyt0UCtvelROa0F2V051OTBoZ2pJNnNxdUFwUXFTU216ZTEreDV6ZWRQU1N0ZVM4b2NhWEJJZzNhTmtNWAppOFlxSUJRMFhJV3NiMzZrOVRsM3A3SzBYM0p4UGRTZ3lNeDh4SVF6ZEJJNFdNYUZpVkN1Ynppcmpndmpmcmt0CmxKeUUwTjlCVFFBamcwY0VRTmRsL2lFRUx1SWZ3TEhHUXI3TldlRTdRdWt6ME16OS90WSs2UFBmQ2tadkwweUYKWS9FbXhZQktIRUs5dXIvbEp6MVlmcU1FcUVPdGcvTFBXc0RhTVFwamQwbVFWZDVKN204YmRIakNkWTB6TldCTwpjNGMxeUs2K01rd2VTUFhlQUFONVFaWHdMa04zZy9obk1TZzFQRXNEcjFKcUlvOHoyYjhUS3lWaXZRbXR0MC85Cjh0VlJtYnNnZkEwb0E3b1RCQmVPaHdJREFRQUJvMTB3V3pCWkJnTlZIUkVFVWpCUWdoOXdiMlIwWlhSeWFYTXQKZDJWaWFHOXZheTV3YjJSMFpYUnlhWE11YzNaamdpMXdiMlIwWlhSeWFYTXRkMlZpYUc5dmF5NXdiMlIwWlhSeQphWE11YzNaakxtTnNkWE4wWlhJdWJHOWpZV3d3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUxIL1AzaDhjdHNqCmpWMDZoeVQrV1FxemNYSHV4TGZNTUlKdkhramNoNXNRU1lNQnM2M3JOMjF4d0NPWVBveHplcnM5TXpXSG5sVmkKendQN2pHS0o2VUYxTVQ3cjJHQnp1b0hHTVlMaHU2cnRMNCszWlA5VWxtNWpjOXNMZUVZK1pvVlpxSnVlWjBoWAprTzd5ZFVKZlh4Wm9QSUFoN21yWU9mdnc1R1RHQnBDN0ZoaG5qVG9zdUJUaU1TTXFkQUVNOXZiakJ4eU1YRW1GCmJSUW12REJXZXRYZVpaZ2lKYzBpOXdYa2xzWXRMV2hGaHgwWXE1dUtBQVFvOXFzcVM2SlNBRVZEK3pQRVlSR3EKb0hWQVhuOUZnMG1aRHcvV3d4aTdkVWdqK0hVaDhWTjcwUVhLb3ZSQlpaSnd1TjA2bkZpVmk2MzhFKzBoN0JYYwp2cFdpa0ozeVNkbz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+kubectl apply -f ./manifests/deployment.yaml
+namespace/podtetris created
+serviceaccount/podtetris-webhook created
+clusterrole.rbac.authorization.k8s.io/podtetris-webhook created
+clusterrolebinding.rbac.authorization.k8s.io/podtetris-webhook created
+deployment.apps/podtetris-webhook created
+service/podtetris-webhook created
+kubectl apply -f ./manifests/webhook-certs-secret.yaml
+secret/podtetris-webhook-certs created
+kubectl apply -f ./manifests/deployment.yaml
+namespace/podtetris unchanged
+serviceaccount/podtetris-webhook unchanged
+clusterrole.rbac.authorization.k8s.io/podtetris-webhook unchanged
+clusterrolebinding.rbac.authorization.k8s.io/podtetris-webhook unchanged
+deployment.apps/podtetris-webhook unchanged
+service/podtetris-webhook unchanged
+kubectl apply -f ./manifests/mutatingwebhook.yaml
+mutatingwebhookconfiguration.admissionregistration.k8s.io/podtetris-webhook created
+kubectl -n podtetris rollout status deployment/podtetris-webhook --timeout=120s
+Waiting for deployment "podtetris-webhook" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "podtetris-webhook" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "podtetris-webhook" rollout to finish: 2 of 3 updated replicas are available...
+deployment "podtetris-webhook" successfully rolled out
+(base) andrea@MacBook-Pro-di-Andrea webhook % 
