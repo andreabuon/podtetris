@@ -15,7 +15,6 @@ import (
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/klog/v2"
 	kubeframework "k8s.io/kube-scheduler/framework"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins/nodevolumelimits"
@@ -26,7 +25,6 @@ import (
 var Config AppConfig
 
 func main() {
-	klog.InitFlags(nil)
 	ctx := context.Background()
 
 	kubeconfig := loadKubeConfig()

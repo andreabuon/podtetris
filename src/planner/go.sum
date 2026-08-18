@@ -4,8 +4,6 @@ github.com/Masterminds/semver/v3 v3.4.0 h1:Zog+i5UMtVoCU8oKka5P7i9q9HgrJeGzI9SA1
 github.com/Masterminds/semver/v3 v3.4.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
 github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERoyfY=
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
-github.com/andreabuon/podtetris/src/evictor v0.0.0-20260806165651-e16bf2f9738b h1:QtwS3C/lP1TYLN2LvBim9mfRmk4UZwbUQMMBG9yx5R8=
-github.com/andreabuon/podtetris/src/evictor v0.0.0-20260806165651-e16bf2f9738b/go.mod h1:8wsGGDsWxa6myPj+J1lXhtg3I+3ICcEXW20rNcBe3c8=
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260808151606-88ad44ebfcc8 h1:I+PYPbswul9DApgUWeJBd5X6165NUXMV01xEwDjDuiA=
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260808151606-88ad44ebfcc8/go.mod h1:8wsGGDsWxa6myPj+J1lXhtg3I+3ICcEXW20rNcBe3c8=
 github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=

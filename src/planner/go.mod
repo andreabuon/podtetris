@@ -75,7 +75,7 @@ require (
 	k8s.io/apimachinery v0.36.0
 	k8s.io/autoscaler/cluster-autoscaler v0.0.0-20260205183032-25fc5c74f6b0
 	k8s.io/client-go v0.36.0
-	k8s.io/klog/v2 v2.140.0
+	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/kube-scheduler v0.0.0
 	k8s.io/kubernetes v1.35.0
 	sigs.k8s.io/yaml v1.6.0
