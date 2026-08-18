@@ -115,14 +115,18 @@ func main() {
 
 	previousPodAllocations := createPodAllocationsMap(candidateNodes)
 
-	var evictedPods = virtuallyEvictPods(snapshot, candidateNodes)
+	evictedPods := virtuallyEvictPods(snapshot, candidateNodes)
 
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERATION_STRATEGIES)
 
 	var schedulingResults []*SchedulingResult
 	for permutationIndex, permutation := range permutations {
 		log.Printf("Simulating permutation #%d", permutationIndex)
-		schedulingResult, err := runSchedulingSimulation(realFramework, snapshot, permutation, candidateNodes, previousPodAllocations, prevEmptyNodesNum, ctx, permutationIndex)
+		strategy := &SchedulingStrategy{
+			index:       permutationIndex,
+			permutation: permutation,
+		}
+		schedulingResult, err := runSchedulingSimulation(realFramework, snapshot, strategy, candidateNodes, previousPodAllocations, prevEmptyNodesNum, ctx)
 		if err != nil {
 			log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue
@@ -133,9 +137,9 @@ func main() {
 		}
 	}
 
-	log.Println("Scheduling results:")
+	log.Println("Simulations results:")
 	for _, result := range schedulingResults {
-		log.Printf("Permutation #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.index, result.emptyNodesNum, len(result.moves), result.cost, result.score)
+		log.Printf("Strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.strategy.index, result.emptyNodesNum, len(result.moves), result.totalCost, result.score)
 	}
 
 	if len(schedulingResults) < 1 {
@@ -147,7 +151,7 @@ func main() {
 		return schedulingResults[i].score > schedulingResults[j].score
 	})
 	bestPermutationResult := schedulingResults[0]
-	log.Printf("The best consolidation plan is #%d", bestPermutationResult.index)
+	log.Printf("The best consolidation plan is #%d", bestPermutationResult.strategy.index)
 
 	/* //TODO Restore the score check
 	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {

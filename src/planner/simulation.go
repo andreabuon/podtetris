@@ -16,15 +16,17 @@ import (
 	//caframework "k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 )
 
-type SchedulingResult struct {
+type SchedulingStrategy struct {
 	index       int
 	permutation []*apiv1.Pod
+}
 
+type SchedulingResult struct {
+	strategy      *SchedulingStrategy
 	emptyNodesNum int
-	cost          int
+	totalCost     int
 	score         int
-
-	moves []PodMove
+	moves         []PodMove
 }
 
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
@@ -59,13 +61,13 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, permutation []*apiv1.Pod, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int, ctx context.Context, index int) (*SchedulingResult, error) {
+func runSchedulingSimulation(realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, strategy *SchedulingStrategy, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int, ctx context.Context) (*SchedulingResult, error) {
 	snapshot.Fork()
 
 	permutationCost := 0
 	var moves []PodMove
 
-	for _, pod := range permutation {
+	for _, pod := range strategy.permutation {
 		state := schedframework.NewCycleState()
 
 		preFilterResult, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
@@ -169,12 +171,11 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
 
 	result := &SchedulingResult{
-		permutation:   permutation,
+		strategy:      strategy,
 		emptyNodesNum: freedNodesNum,
-		cost:          permutationCost,
+		totalCost:     permutationCost,
 		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.CostScoreWeight * permutationCost),
 		moves:         moves,
-		index:         index,
 	}
 
 	snapshot.Revert()
