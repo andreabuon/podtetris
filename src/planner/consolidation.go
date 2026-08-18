@@ -24,22 +24,20 @@ func (pm PodMove) String() string {
 }
 
 func applyConsolidationStrategy(ctx context.Context, client client.Client, podMoves []PodMove) {
-	log.Printf("Applying consolidation strategy...")
-
 	createdCount := 0
 	errorsCount := 0
 
 	for _, pm := range podMoves {
 		err := createPodMoveCRD(ctx, client, pm)
 		if err != nil {
-			log.Printf("error while creating PodMove CRD %s: %v", pm, err)
+			log.Printf("Error while creating PodMove CRD %s: %v", pm, err)
 			errorsCount++
 			continue
 		}
 		createdCount++
 	}
 
-	log.Printf("Consolidation completed. %d pod moves created, %d errors.", createdCount, errorsCount)
+	log.Printf("Consolidation completed, %d PodMoves created, %d errors", createdCount, errorsCount)
 }
 
 func createPodMoveCRD(ctx context.Context, c client.Client, podMove PodMove) error {
