@@ -106,11 +106,6 @@ func main() {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	log.Printf("Selected %d nodes for pods consolidation:", Config.RandomCandidateNodesNumber+Config.ByCPUCandidateNodesNumber)
-	for _, ni := range candidateNodes {
-		log.Printf(" -> Node: %s (%d pods)", ni.Node().Name, len(ni.GetPods()))
-	}
-
 	initialEmptyNodes := countEmptyNodes(candidateNodes)
 	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
