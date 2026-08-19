@@ -87,6 +87,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		chosenNode, err := schedulePod(ctx, s.framework, s.snapshot, pod)
 		if err != nil {
 			log.Fatalf("Error scheduling pod: %v", err)
+			s.snapshot.Revert()
 		}
 
 		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
@@ -146,12 +147,10 @@ func schedulePod(
 	if !preFilterStatus.IsSuccess() {
 		if preFilterStatus.Code() == kubeframework.Unschedulable {
 			log.Printf("Pod %s/%s is unschedulable in this permutation: %v", pod.Namespace, pod.Name, preFilterStatus.Message())
-			snapshot.Revert()
 			// Return a distinct error or handle it as a failed permutation path, not a system failure
 			return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
 		}
 
-		snapshot.Revert()
 		return nil, fmt.Errorf("RunPreFilterPlugins failed: %v", preFilterStatus.AsError())
 	}
 
@@ -162,7 +161,6 @@ func schedulePod(
 		// No PreFilter plugin restricted the node set — consider all nodes.
 		allNodeInfos, err := snapshot.NodeInfos().List()
 		if err != nil {
-			snapshot.Revert()
 			return nil, fmt.Errorf("cannot retrieve nodes after the PreFilter phase: %v", err)
 		}
 		for _, ni := range allNodeInfos {
@@ -185,26 +183,22 @@ func schedulePod(
 
 	if len(feasibleNodes) == 0 {
 		//The PostFilter stage is ignored
-		snapshot.Revert()
 		return nil, fmt.Errorf("no feasible nodes have been found for pod %s", pod.Name)
 	}
 
 	preScoreStatus := framework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
 
 	if !preScoreStatus.IsSuccess() {
-		snapshot.Revert()
 		return nil, errors.New("PreScorePlugins failed")
 	}
 
 	scores, status := framework.RunScorePlugins(ctx, state, pod, feasibleNodes)
 	if !status.IsSuccess() {
-		snapshot.Revert()
 		return nil, errors.New("ScorePlugins failed")
 	}
 
 	bestNode, err := pickHighestScoreNode(feasibleNodes, scores)
 	if err != nil {
-		snapshot.Revert()
 		return nil, errors.New("pickHighestScoreNode failed")
 	}
 
