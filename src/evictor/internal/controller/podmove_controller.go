@@ -72,14 +72,6 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return ctrl.Result{}, err
 	}
 
-	// Persist a derived phase even on early returns.
-	// setCondition already calls SyncPhase before it writes, so this is a no-op when a condition was updated.
-	defer func() {
-		if syncErr := r.syncPhase(ctx, &pm); syncErr != nil && err == nil {
-			err = syncErr
-		}
-	}()
-
 	log.Info("Reconciling PodMove",
 		"pod", pm.Spec.Pod.Name,
 		"sourceNode", pm.Spec.SourceNode,
