@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"time"
 
 	corev1 "k8s.io/api/core/v1"
 	policyv1 "k8s.io/api/policy/v1"
@@ -31,6 +32,15 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
+)
+
+const (
+	// verifyRetryInterval is how long to wait between checks that the webhook side
+	// effect (TargetNodeInjected) actually persisted a replacement on the target node.
+	verifyRetryInterval = 2 * time.Second
+	// verifyTimeout is how long to wait after TargetNodeInjected before treating the
+	// admission side effect as lost and re-opening the PodMove for a later CREATE.
+	verifyTimeout = 30 * time.Second
 )
 
 // PodMoveReconciler reconciles a PodMove object
@@ -68,11 +78,35 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		"targetNode", pm.Spec.TargetNode,
 	)
 
-	// Already done — keep reconcile idempotent.
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
-		log.Info("Skipping eviction because it has already been performed")
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified) {
+		log.Info("Skipping: the PodMove has already been verified")
 		return ctrl.Result{}, nil
 	}
+
+	// Admission can mark the PodMove injected but then fail to persist the pod.
+	// Verify if the new pod persisted
+	replacement, err := r.findReplacementPod(ctx, &pm)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	if replacementOnTarget(replacement, &pm) {
+		msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
+		log.Info("Verified replacement pod", "pod", replacement.Name, "node", pm.Spec.TargetNode)
+		if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionPodVerified, metav1.ConditionTrue, "Verified", msg); err != nil {
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
+	}
+
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected) {
+		return r.requeueOrClearInjection(ctx, &pm, replacement)
+	}
+
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
+		log.Info("Skipping: eviction has already been performed; waiting for the webhook to inject the target node name in a new pod")
+		return ctrl.Result{}, nil
+	}
+
 	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
 		return ctrl.Result{}, err
 	}
@@ -143,6 +177,78 @@ func (r *PodMoveReconciler) setCondition(
 		return nil
 	}
 	return r.Status().Update(ctx, pm)
+}
+
+func (r *PodMoveReconciler) findReplacementPod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
+	opts := []client.ListOption{
+		client.MatchingLabels{podtetrisiov1.PodMoveLabelKey: pm.Name},
+	}
+	if ns := pm.Spec.Pod.Namespace; ns != "" {
+		opts = append(opts, client.InNamespace(ns))
+	}
+
+	var list corev1.PodList
+	if err := r.List(ctx, &list, opts...); err != nil {
+		return nil, err
+	}
+
+	var pending *corev1.Pod
+	for i := range list.Items {
+		pod := &list.Items[i]
+		if isOriginalPod(pm, pod) || !pod.DeletionTimestamp.IsZero() {
+			continue
+		}
+		if replacementOnTarget(pod, pm) {
+			return pod, nil
+		}
+		if pending == nil {
+			pending = pod
+		}
+	}
+	return pending, nil
+}
+
+func (r *PodMoveReconciler) requeueOrClearInjection(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
+	waited := time.Duration(0)
+	if injected != nil && !injected.LastTransitionTime.IsZero() {
+		waited = time.Since(injected.LastTransitionTime.Time)
+	}
+	if waited < verifyTimeout {
+		log.V(1).Info("Waiting for replacement pod to persist on the target node",
+			"waited", waited,
+			"found", replacement != nil,
+		)
+		return ctrl.Result{RequeueAfter: verifyRetryInterval}, nil
+	}
+
+	log.Info("Replacement pod did not persist on the target node; clearing TargetNodeInjected",
+		"waited", waited,
+		"found", replacement != nil,
+	)
+	msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s; TargetNodeInjected cleared so a later CREATE can be claimed", pm.Spec.TargetNode, verifyTimeout)
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionTargetNodeInjected, metav1.ConditionFalse, "ReplacementNotPersisted", msg); err != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{RequeueAfter: verifyRetryInterval}, nil
+}
+
+func replacementOnTarget(pod *corev1.Pod, pm *podtetrisiov1.PodMove) bool {
+	if pod == nil || pm == nil {
+		return false
+	}
+	if !pod.DeletionTimestamp.IsZero() || isOriginalPod(pm, pod) {
+		return false
+	}
+	if pod.Spec.NodeSelector[podtetrisiov1.TargetNodeSelectorKey] != pm.Spec.TargetNode {
+		return false
+	}
+	return pod.Spec.NodeName == pm.Spec.TargetNode
+}
+
+func isOriginalPod(pm *podtetrisiov1.PodMove, pod *corev1.Pod) bool {
+	return pm.Spec.Pod.UID != "" && pod.UID == pm.Spec.Pod.UID
 }
 
 // SetupWithManager sets up the controller with the Manager.

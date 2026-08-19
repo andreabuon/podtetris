@@ -28,11 +28,17 @@ import (
 const (
 	// ConditionEvicted is True after the pod eviction on the source node has been requested.
 	ConditionEvicted = "Evicted"
-	// ConditionTargetNodeInjected is True after the mutating webhook intercepted the replacement pod CREATE and pinned it to Spec.TargetNode.
+	// ConditionTargetNodeInjected is True after the mutating webhook intercepted a replacement pod CREATE and pinned it to Spec.TargetNode.
+	// Admission does not guarantee that object is persisted as admitted, so this claim is only final once ConditionPodVerified is True.
 	ConditionTargetNodeInjected = "TargetNodeInjected"
+	// ConditionPodVerified is True after the controller observed the replacement pod persisted with the webhook mutation and bound to Spec.TargetNode.
+	// If that never happens, TargetNodeInjected is cleared so a later CREATE can be claimed.
+	ConditionPodVerified = "TargetPodVerified"
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
+	// TargetNodeSelectorKey is the nodeSelector key the webhook writes to pin the replacement pod.
+	TargetNodeSelectorKey = "kubernetes.io/hostname"
 )
 
 // PodMoveSpec defines the desired state of PodMove
