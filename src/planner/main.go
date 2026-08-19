@@ -125,14 +125,20 @@ func main() {
 		Allocations:    previousPodAllocations,
 	}
 
+	schedulingSimulator := &SchedulingSimulator{
+		framework: realFramework,
+		snapshot:  snapshot,
+		baseline:  initialState,
+	}
+
 	var schedulingResults []*SimulationResult
 	for permutationIndex, permutation := range permutations {
 		log.Printf("Simulating permutation #%d", permutationIndex)
-		strategy := &PodOrdering{
+		podPermutation := &PodOrdering{
 			Index: permutationIndex,
 			Pods:  permutation,
 		}
-		schedulingResult, err := runSchedulingSimulation(ctx, realFramework, snapshot, strategy, *initialState)
+		schedulingResult, err := schedulingSimulator.Run(ctx, podPermutation)
 		if err != nil {
 			log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue

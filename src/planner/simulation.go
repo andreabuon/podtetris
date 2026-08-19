@@ -17,6 +17,12 @@ import (
 	//caframework "k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 )
 
+type SchedulingSimulator struct {
+	framework schedframework.Framework
+	snapshot  clustersnapshot.ClusterSnapshot
+	baseline  *Baseline
+}
+
 type PodOrdering struct {
 	Index int
 	Pods  []*apiv1.Pod
@@ -71,25 +77,25 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(ctx context.Context, realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, permutation *PodOrdering, initialState Baseline) (*SimulationResult, error) {
-	snapshot.Fork()
+func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrdering) (*SimulationResult, error) {
+	s.snapshot.Fork()
 
 	permutationCost := 0
 	var moves []PodMove
 
-	for _, pod := range permutation.Pods {
+	for _, pod := range podsPermutation.Pods {
 		state := schedframework.NewCycleState()
 
-		preFilterResult, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
+		preFilterResult, preFilterStatus, _ := s.framework.RunPreFilterPlugins(ctx, state, pod)
 		if !preFilterStatus.IsSuccess() {
 			if preFilterStatus.Code() == kubeframework.Unschedulable {
 				log.Printf("Pod %s/%s is unschedulable in this permutation: %v", pod.Namespace, pod.Name, preFilterStatus.Message())
-				snapshot.Revert()
+				s.snapshot.Revert()
 				// Return a distinct error or handle it as a failed permutation path, not a system failure
 				return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
 			}
 
-			snapshot.Revert()
+			s.snapshot.Revert()
 			return nil, fmt.Errorf("RunPreFilterPlugins failed: %v", preFilterStatus.AsError())
 		}
 
@@ -98,9 +104,9 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 			preFilteredNodesNames = preFilterResult.NodeNames.UnsortedList()
 		} else {
 			// No PreFilter plugin restricted the node set — consider all nodes.
-			allNodeInfos, err := snapshot.NodeInfos().List()
+			allNodeInfos, err := s.snapshot.NodeInfos().List()
 			if err != nil {
-				snapshot.Revert()
+				s.snapshot.Revert()
 				return nil, fmt.Errorf("cannot retrieve nodes after the PreFilter phase: %v", err)
 			}
 			for _, ni := range allNodeInfos {
@@ -110,12 +116,12 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 
 		var feasibleNodes []kubeframework.NodeInfo
 		for _, preFilterNodeName := range preFilteredNodesNames {
-			freshNodeInfo, err := snapshot.NodeInfos().Get(preFilterNodeName)
+			freshNodeInfo, err := s.snapshot.NodeInfos().Get(preFilterNodeName)
 			if err != nil {
 				return nil, errors.New("cannot retrieve a preFiltered node")
 			}
 
-			filterStatus := realFramework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
+			filterStatus := s.framework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
 			if filterStatus.IsSuccess() {
 				feasibleNodes = append(feasibleNodes, freshNodeInfo)
 			}
@@ -123,42 +129,42 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 
 		if len(feasibleNodes) == 0 {
 			//The PostFilter stage is ignored
-			snapshot.Revert()
+			s.snapshot.Revert()
 			return nil, fmt.Errorf("no feasible nodes have been found for pod %s", pod.Name)
 		}
 
-		preScoreStatus := realFramework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
+		preScoreStatus := s.framework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
 
 		if !preScoreStatus.IsSuccess() {
-			snapshot.Revert()
+			s.snapshot.Revert()
 			return nil, errors.New("PreScorePlugins failed")
 		}
 
-		scores, status := realFramework.RunScorePlugins(ctx, state, pod, feasibleNodes)
+		scores, status := s.framework.RunScorePlugins(ctx, state, pod, feasibleNodes)
 		if !status.IsSuccess() {
-			snapshot.Revert()
+			s.snapshot.Revert()
 			return nil, errors.New("ScorePlugins failed")
 		}
 
 		bestNode, err := pickHighestScoreNode(feasibleNodes, scores)
 		if err != nil {
-			snapshot.Revert()
+			s.snapshot.Revert()
 			return nil, errors.New("pickHighestScoreNode failed")
 		}
 
 		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
-		snapshot.ForceAddPod(pod, bestNode.Node().Name)
+		s.snapshot.ForceAddPod(pod, bestNode.Node().Name)
 
 		// Compute and display pod move cost
 		podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
-		if bestNode.Node().Name == initialState.Allocations[podName] {
+		if bestNode.Node().Name == s.baseline.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
 			podMoveCost := getPodMoveCost(pod)
 			permutationCost += podMoveCost
 			pm := PodMove{
 				pod:          pod,
-				fromNodeName: initialState.Allocations[podName],
+				fromNodeName: s.baseline.Allocations[podName],
 				toNodeName:   bestNode.Node().Name,
 				cost:         podMoveCost,
 			}
@@ -168,9 +174,9 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 	}
 
 	// Re-fetch live NodeInfo data for each candidate node from the snapshot
-	freshCandidateNodes := make([]kubeframework.NodeInfo, 0, len(initialState.CandidateNodes))
-	for _, staleNode := range initialState.CandidateNodes {
-		freshNode, err := snapshot.NodeInfos().Get(staleNode.Node().Name)
+	freshCandidateNodes := make([]kubeframework.NodeInfo, 0, len(s.baseline.CandidateNodes))
+	for _, staleNode := range s.baseline.CandidateNodes {
+		freshNode, err := s.snapshot.NodeInfos().Get(staleNode.Node().Name)
 		if err != nil {
 			log.Printf("Cannot retrieve fresh node info for %s: %v", staleNode.Node().Name, err)
 		}
@@ -178,17 +184,17 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 	}
 
 	newEmptyNodes := countEmptyNodes(freshCandidateNodes)
-	freedNodes := newEmptyNodes - initialState.EmptyNodeCount
+	freedNodes := newEmptyNodes - s.baseline.EmptyNodeCount
 
 	result := &SimulationResult{
-		Permutation: permutation,
+		Permutation: podsPermutation,
 		FreedNodes:  freedNodes,
 		Cost:        permutationCost,
 		Score:       (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost),
 		Moves:       moves,
 	}
 
-	snapshot.Revert()
+	s.snapshot.Revert()
 	return result, nil
 }
 
