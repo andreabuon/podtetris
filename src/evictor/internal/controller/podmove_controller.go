@@ -64,13 +64,21 @@ type PodMoveReconciler struct {
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.24.1/pkg/reconcile
-func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, err error) {
 	log := logf.FromContext(ctx)
 
 	var pm podtetrisiov1.PodMove
-	if err := r.Get(ctx, req.NamespacedName, &pm); err != nil {
-		return ctrl.Result{}, client.IgnoreNotFound(err)
+	if err = r.Get(ctx, req.NamespacedName, &pm); err != nil {
+		return ctrl.Result{}, err
 	}
+
+	// Persist a derived phase even on early returns.
+	// setCondition already calls SyncPhase before it writes, so this is a no-op when a condition was updated.
+	defer func() {
+		if syncErr := r.syncPhase(ctx, &pm); syncErr != nil && err == nil {
+			err = syncErr
+		}
+	}()
 
 	log.Info("Reconciling PodMove",
 		"pod", pm.Spec.Pod.Name,
@@ -173,7 +181,15 @@ func (r *PodMoveReconciler) setCondition(
 		Message:            message,
 		ObservedGeneration: pm.Generation,
 	})
-	if !changed {
+	if changed {
+		pm.Status.SyncPhase()
+		return r.Status().Update(ctx, pm)
+	}
+	return nil
+}
+
+func (r *PodMoveReconciler) syncPhase(ctx context.Context, pm *podtetrisiov1.PodMove) error {
+	if !pm.Status.SyncPhase() {
 		return nil
 	}
 	return r.Status().Update(ctx, pm)

@@ -14,7 +14,20 @@ spec:
     singular: podmove
   scope: Namespaced
   versions:
-  - name: v1
+  - additionalPrinterColumns:
+    - jsonPath: .spec.podRef.name
+      name: Pod
+      type: string
+    - jsonPath: .spec.sourceNode
+      name: Source
+      type: string
+    - jsonPath: .spec.targetNode
+      name: Target
+      type: string
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1
     schema:
       openAPIV3Schema:
         description: PodMove is the Schema for the podmoves API
@@ -214,6 +227,18 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              phase:
+                default: Pending
+                description: |-
+                  phase is a high-level summary derived from conditions.
+                  Controllers overwrite it on every status update; do not set it manually.
+                enum:
+                - Pending
+                - Evicting
+                - Evicted
+                - Verifying
+                - Succeeded
+                type: string
             type: object
         required:
         - spec

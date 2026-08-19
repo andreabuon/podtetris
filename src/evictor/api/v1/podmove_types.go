@@ -41,6 +41,23 @@ const (
 	TargetNodeSelectorKey = "kubernetes.io/hostname"
 )
 
+// PodMovePhase is a controller-computed summary of a PodMove, derived from status.conditions.
+// It is never set by users.
+type PodMovePhase string
+
+const (
+	// PodMovePhasePending is the default before eviction has started.
+	PodMovePhasePending PodMovePhase = "Pending"
+	// PodMovePhaseEvicting is set while ConditionEvicted is False.
+	PodMovePhaseEvicting PodMovePhase = "Evicting"
+	// PodMovePhaseEvicted is set after eviction has been requested and the replacement has not been claimed.
+	PodMovePhaseEvicted PodMovePhase = "Evicted"
+	// PodMovePhaseVerifying is set after the webhook claimed a replacement CREATE and before the controller verifies it persisted.
+	PodMovePhaseVerifying PodMovePhase = "Verifying"
+	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode.
+	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
+)
+
 // PodMoveSpec defines the desired state of PodMove
 type PodMoveSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
@@ -89,10 +106,21 @@ type PodMoveStatus struct {
 	// +listMapKey=type
 	// +optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
+
+	// phase is a high-level summary derived from conditions.
+	// Controllers overwrite it on every status update; do not set it manually.
+	// +kubebuilder:default=Pending
+	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Succeeded
+	// +optional
+	Phase PodMovePhase `json:"phase,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Pod",type=string,JSONPath=".spec.podRef.name"
+// +kubebuilder:printcolumn:name="Source",type=string,JSONPath=".spec.sourceNode"
+// +kubebuilder:printcolumn:name="Target",type=string,JSONPath=".spec.targetNode"
+// +kubebuilder:printcolumn:name="Phase",type=string,JSONPath=".status.phase"
 
 // PodMove is the Schema for the podmoves API
 type PodMove struct {
