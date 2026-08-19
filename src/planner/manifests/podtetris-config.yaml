@@ -13,9 +13,11 @@ data:
     randomCandidateNodesNumber: 3
     byCPUCandidateNodesNumber: 2
     podMoveDefaultCost: 10
-    emptyNodesScoreWeight: 100
-    costScoreWeight: 100
-    autoConsolidationScoreThreshold: 12345
+    # One emptied node is worth 400 cost points (about 8 typical annotated moves).
+    # Cost is subtracted 1:1 so a much cheaper plan can beat one extra empty node.
+    emptyNodesScoreWeight: 400
+    costScoreWeight: 1
+    autoConsolidationScoreThreshold: 0
     candidateNodesSelectionMaxRetries: 15
     fixedPodAnnotation: "podtetris/fixed"
     podMoveCostAnnotation: "podtetris/moveCost"

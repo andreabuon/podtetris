@@ -128,7 +128,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		Permutation: podsPermutation,
 		FreedNodes:  freedNodes,
 		Cost:        permutationCost,
-		Score:       (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost),
+		Score:       computePermutationScore(freedNodes, permutationCost),
 		Moves:       moves,
 	}
 
@@ -202,6 +202,10 @@ func schedulePod(
 	}
 
 	return bestNode, nil
+}
+
+func computePermutationScore(freedNodes, permutationCost int) int {
+	return (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost)
 }
 
 func getPodMoveCost(pod *apiv1.Pod) int {
