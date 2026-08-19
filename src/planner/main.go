@@ -111,18 +111,16 @@ func main() {
 		log.Printf(" -> Node: %s (%d pods)", ni.Node().Name, len(ni.GetPods()))
 	}
 
-	prevEmptyNodesNum := countEmptyNodes(candidateNodes)
-	log.Printf("Before the rescheduling simulation there are %d empty candidate nodes", prevEmptyNodesNum)
-
+	initialEmptyNodes := countEmptyNodes(candidateNodes)
 	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	evictedPods := virtuallyEvictPods(snapshot, candidateNodes)
-
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERATION_STRATEGIES)
 
 	initialState := &Baseline{
 		CandidateNodes: candidateNodes,
 		Allocations:    initialPodAllocations,
+		EmptyNodeCount: initialEmptyNodes,
 	}
 
 	schedulingSimulator := &SchedulingSimulator{
