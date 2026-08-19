@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"log"
+	"fmt"
 	"math/rand"
 	"sort"
 
@@ -22,7 +22,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 	allContainFixed, err := allContainFixedPods(nodeInfos)
 	if err != nil {
-		log.Fatalf("Error while checking if all candidate nodes contain fixed pods: %v", err)
+		return nil, fmt.Errorf("checking if all candidate nodes contain fixed pods failed: %v", err)
 	}
 	if allContainFixed {
 		return nil, errors.New("every node in the cluster contains fixed pods")
@@ -47,7 +47,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 		allContainFixed, err := allContainFixedPods(randomNodes)
 		if err != nil {
-			log.Fatalf("Error while checking candidate nodes: %v", err)
+			return nil, fmt.Errorf("Error while checking candidate nodes: %v", err)
 		}
 
 		if !allContainFixed {
