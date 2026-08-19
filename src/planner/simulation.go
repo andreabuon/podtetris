@@ -87,7 +87,6 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 	for _, pod := range podsPermutation.Pods {
 		chosenNode, err := schedulePod(ctx, s.framework, s.snapshot, pod)
 		if err != nil {
-			s.snapshot.Revert()
 			return nil, err
 		}
 
@@ -133,7 +132,6 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		Moves:       moves,
 	}
 
-	s.snapshot.Revert()
 	return result, nil
 }
 
