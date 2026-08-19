@@ -23,7 +23,7 @@ type SchedulingStrategy struct {
 
 type SchedulingResult struct {
 	strategy      *SchedulingStrategy
-	emptyNodesNum int
+	newEmptyNodes int
 	totalCost     int
 	score         int
 	moves         []PodMove
@@ -61,7 +61,7 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, strategy *SchedulingStrategy, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousEmptyNodesNum int, ctx context.Context) (*SchedulingResult, error) {
+func runSchedulingSimulation(ctx context.Context, realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, strategy *SchedulingStrategy, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousnewEmptyNodes int) (*SchedulingResult, error) {
 	snapshot.Fork()
 
 	permutationCost := 0
@@ -167,12 +167,12 @@ func runSchedulingSimulation(realFramework schedframework.Framework, snapshot cl
 		freshCandidateNodes = append(freshCandidateNodes, freshNode)
 	}
 
-	newEmptyNodesNum := countEmptyNodes(freshCandidateNodes)
-	freedNodesNum := newEmptyNodesNum - previousEmptyNodesNum
+	newnewEmptyNodes := countEmptyNodes(freshCandidateNodes)
+	freedNodesNum := newnewEmptyNodes - previousnewEmptyNodes
 
 	result := &SchedulingResult{
 		strategy:      strategy,
-		emptyNodesNum: freedNodesNum,
+		newEmptyNodes: freedNodesNum,
 		totalCost:     permutationCost,
 		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.CostScoreWeight * permutationCost),
 		moves:         moves,

@@ -126,20 +126,20 @@ func main() {
 			index:       permutationIndex,
 			permutation: permutation,
 		}
-		schedulingResult, err := runSchedulingSimulation(realFramework, snapshot, strategy, candidateNodes, previousPodAllocations, prevEmptyNodesNum, ctx)
+		schedulingResult, err := runSchedulingSimulation(ctx, realFramework, snapshot, strategy, candidateNodes, previousPodAllocations, prevEmptyNodesNum)
 		if err != nil {
 			log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue
 		}
 
-		if schedulingResult.emptyNodesNum > 0 {
+		if schedulingResult.newEmptyNodes > 0 {
 			schedulingResults = append(schedulingResults, schedulingResult)
 		}
 	}
 
 	log.Println("Simulations results:")
 	for _, result := range schedulingResults {
-		log.Printf("Strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.strategy.index, result.emptyNodesNum, len(result.moves), result.totalCost, result.score)
+		log.Printf("Strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.strategy.index, result.newEmptyNodes, len(result.moves), result.totalCost, result.score)
 	}
 
 	if len(schedulingResults) < 1 {
