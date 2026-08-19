@@ -114,7 +114,7 @@ func main() {
 	prevEmptyNodesNum := countEmptyNodes(candidateNodes)
 	log.Printf("Before the rescheduling simulation there are %d empty candidate nodes", prevEmptyNodesNum)
 
-	previousPodAllocations := createPodAllocationsMap(candidateNodes)
+	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	evictedPods := virtuallyEvictPods(snapshot, candidateNodes)
 
@@ -122,7 +122,7 @@ func main() {
 
 	initialState := &Baseline{
 		CandidateNodes: candidateNodes,
-		Allocations:    previousPodAllocations,
+		Allocations:    initialPodAllocations,
 	}
 
 	schedulingSimulator := &SchedulingSimulator{
@@ -193,15 +193,15 @@ func main() {
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[types.NamespacedName]string {
-	previousPodAllocations := make(map[types.NamespacedName]string, len(candidateNodes))
+	podAllocations := make(map[types.NamespacedName]string, len(candidateNodes))
 
 	for _, nodeInfo := range candidateNodes {
 		pods := nodeInfo.GetPods()
 		for _, podInfo := range pods {
 			pod := podInfo.GetPod()
 			podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
-			previousPodAllocations[podName] = nodeInfo.Node().Name
+			podAllocations[podName] = nodeInfo.Node().Name
 		}
 	}
-	return previousPodAllocations
+	return podAllocations
 }
