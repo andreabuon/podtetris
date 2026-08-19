@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	apiv1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot"
 
 	//"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
@@ -16,17 +17,26 @@ import (
 	//caframework "k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 )
 
-type SchedulingStrategy struct {
-	index       int
-	permutation []*apiv1.Pod
+type PodOrdering struct {
+	Index int
+	Pods  []*apiv1.Pod
 }
 
-type SchedulingResult struct {
-	strategy      *SchedulingStrategy
-	newEmptyNodes int
-	totalCost     int
-	score         int
-	moves         []PodMove
+type SimulationResult struct {
+	Permutation *PodOrdering
+	FreedNodes  int
+	Cost        int
+	Score       int
+	Moves       []PodMove
+}
+
+type Baseline struct {
+	// nodes considered for pods rescheduling
+	CandidateNodes []kubeframework.NodeInfo
+	// pods allocations before the rescheduling simulation
+	Allocations map[types.NamespacedName]string
+	// number of empty nodes before the rescheduling simulation
+	EmptyNodeCount int
 }
 
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
@@ -61,13 +71,13 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 	return evictedPods
 }
 
-func runSchedulingSimulation(ctx context.Context, realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, strategy *SchedulingStrategy, candidateNodesToDrain []kubeframework.NodeInfo, previousPodAllocations map[string]string, previousnewEmptyNodes int) (*SchedulingResult, error) {
+func runSchedulingSimulation(ctx context.Context, realFramework schedframework.Framework, snapshot clustersnapshot.ClusterSnapshot, permutation *PodOrdering, initialState Baseline) (*SimulationResult, error) {
 	snapshot.Fork()
 
 	permutationCost := 0
 	var moves []PodMove
 
-	for _, pod := range strategy.permutation {
+	for _, pod := range permutation.Pods {
 		state := schedframework.NewCycleState()
 
 		preFilterResult, preFilterStatus, _ := realFramework.RunPreFilterPlugins(ctx, state, pod)
@@ -140,15 +150,15 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 		snapshot.ForceAddPod(pod, bestNode.Node().Name)
 
 		// Compute and display pod move cost
-		podKey := pod.Namespace + "/" + pod.Name
-		if bestNode.Node().Name == previousPodAllocations[podKey] {
+		podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
+		if bestNode.Node().Name == initialState.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
 			podMoveCost := getPodMoveCost(pod)
 			permutationCost += podMoveCost
 			pm := PodMove{
 				pod:          pod,
-				fromNodeName: previousPodAllocations[podKey],
+				fromNodeName: initialState.Allocations[podName],
 				toNodeName:   bestNode.Node().Name,
 				cost:         podMoveCost,
 			}
@@ -158,8 +168,8 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 	}
 
 	// Re-fetch live NodeInfo data for each candidate node from the snapshot
-	freshCandidateNodes := make([]kubeframework.NodeInfo, 0, len(candidateNodesToDrain))
-	for _, staleNode := range candidateNodesToDrain {
+	freshCandidateNodes := make([]kubeframework.NodeInfo, 0, len(initialState.CandidateNodes))
+	for _, staleNode := range initialState.CandidateNodes {
 		freshNode, err := snapshot.NodeInfos().Get(staleNode.Node().Name)
 		if err != nil {
 			log.Printf("Cannot retrieve fresh node info for %s: %v", staleNode.Node().Name, err)
@@ -167,15 +177,15 @@ func runSchedulingSimulation(ctx context.Context, realFramework schedframework.F
 		freshCandidateNodes = append(freshCandidateNodes, freshNode)
 	}
 
-	newnewEmptyNodes := countEmptyNodes(freshCandidateNodes)
-	freedNodesNum := newnewEmptyNodes - previousnewEmptyNodes
+	newEmptyNodes := countEmptyNodes(freshCandidateNodes)
+	freedNodes := newEmptyNodes - initialState.EmptyNodeCount
 
-	result := &SchedulingResult{
-		strategy:      strategy,
-		newEmptyNodes: freedNodesNum,
-		totalCost:     permutationCost,
-		score:         (Config.EmptyNodesScoreWeight * freedNodesNum) - (Config.CostScoreWeight * permutationCost),
-		moves:         moves,
+	result := &SimulationResult{
+		Permutation: permutation,
+		FreedNodes:  freedNodes,
+		Cost:        permutationCost,
+		Score:       (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost),
+		Moves:       moves,
 	}
 
 	snapshot.Revert()

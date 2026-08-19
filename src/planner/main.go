@@ -10,6 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/predicate"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot/store"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
@@ -119,27 +120,32 @@ func main() {
 
 	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERATION_STRATEGIES)
 
-	var schedulingResults []*SchedulingResult
+	initialState := &Baseline{
+		CandidateNodes: candidateNodes,
+		Allocations:    previousPodAllocations,
+	}
+
+	var schedulingResults []*SimulationResult
 	for permutationIndex, permutation := range permutations {
 		log.Printf("Simulating permutation #%d", permutationIndex)
-		strategy := &SchedulingStrategy{
-			index:       permutationIndex,
-			permutation: permutation,
+		strategy := &PodOrdering{
+			Index: permutationIndex,
+			Pods:  permutation,
 		}
-		schedulingResult, err := runSchedulingSimulation(ctx, realFramework, snapshot, strategy, candidateNodes, previousPodAllocations, prevEmptyNodesNum)
+		schedulingResult, err := runSchedulingSimulation(ctx, realFramework, snapshot, strategy, *initialState)
 		if err != nil {
 			log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
 			continue
 		}
 
-		if schedulingResult.newEmptyNodes > 0 {
+		if schedulingResult.FreedNodes > 0 {
 			schedulingResults = append(schedulingResults, schedulingResult)
 		}
 	}
 
 	log.Println("Simulations results:")
 	for _, result := range schedulingResults {
-		log.Printf("Strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.strategy.index, result.newEmptyNodes, len(result.moves), result.totalCost, result.score)
+		log.Printf("Strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.Permutation.Index, result.FreedNodes, len(result.Moves), result.Cost, result.Score)
 	}
 
 	if len(schedulingResults) < 1 {
@@ -148,10 +154,10 @@ func main() {
 	}
 
 	sort.Slice(schedulingResults, func(i, j int) bool {
-		return schedulingResults[i].score > schedulingResults[j].score
+		return schedulingResults[i].Score > schedulingResults[j].Score
 	})
 	bestPermutationResult := schedulingResults[0]
-	log.Printf("The best consolidation plan is #%d", bestPermutationResult.strategy.index)
+	log.Printf("The best consolidation plan is #%d", bestPermutationResult.Permutation.Index)
 
 	/* //TODO Restore the score check
 	if bestPermutationResult.score > Config.AutoConsolidationScoreThreshold {
@@ -176,19 +182,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error creating the PodMove client: %v", err)
 	}
-	applyConsolidationStrategy(ctx, crdClient, bestPermutationResult.moves)
+	applyConsolidationStrategy(ctx, crdClient, bestPermutationResult.Moves)
 	// delete until here
 }
 
-func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[string]string {
-	previousPodAllocations := make(map[string]string, len(candidateNodes))
+func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[types.NamespacedName]string {
+	previousPodAllocations := make(map[types.NamespacedName]string, len(candidateNodes))
 
 	for _, nodeInfo := range candidateNodes {
 		pods := nodeInfo.GetPods()
 		for _, podInfo := range pods {
 			pod := podInfo.GetPod()
-			mapKey := pod.Namespace + "/" + pod.Name
-			previousPodAllocations[mapKey] = nodeInfo.Node().Name
+			podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
+			previousPodAllocations[podName] = nodeInfo.Node().Name
 		}
 	}
 	return previousPodAllocations
