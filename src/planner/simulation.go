@@ -86,8 +86,8 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 	for _, pod := range podsPermutation.Pods {
 		chosenNode, err := schedulePod(ctx, s.framework, s.snapshot, pod)
 		if err != nil {
-			log.Fatalf("Error scheduling pod: %v", err)
 			s.snapshot.Revert()
+			return nil, err
 		}
 
 		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
