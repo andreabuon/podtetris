@@ -79,6 +79,7 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 
 func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrdering) (*SimulationResult, error) {
 	s.snapshot.Fork()
+	defer s.snapshot.Revert()
 
 	permutationCost := 0
 	var moves []PodMove
