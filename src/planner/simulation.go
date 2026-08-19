@@ -84,80 +84,17 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 	var moves []PodMove
 
 	for _, pod := range podsPermutation.Pods {
-		state := schedframework.NewCycleState()
-
-		preFilterResult, preFilterStatus, _ := s.framework.RunPreFilterPlugins(ctx, state, pod)
-		if !preFilterStatus.IsSuccess() {
-			if preFilterStatus.Code() == kubeframework.Unschedulable {
-				log.Printf("Pod %s/%s is unschedulable in this permutation: %v", pod.Namespace, pod.Name, preFilterStatus.Message())
-				s.snapshot.Revert()
-				// Return a distinct error or handle it as a failed permutation path, not a system failure
-				return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
-			}
-
-			s.snapshot.Revert()
-			return nil, fmt.Errorf("RunPreFilterPlugins failed: %v", preFilterStatus.AsError())
-		}
-
-		var preFilteredNodesNames []string
-		if preFilterResult != nil {
-			preFilteredNodesNames = preFilterResult.NodeNames.UnsortedList()
-		} else {
-			// No PreFilter plugin restricted the node set — consider all nodes.
-			allNodeInfos, err := s.snapshot.NodeInfos().List()
-			if err != nil {
-				s.snapshot.Revert()
-				return nil, fmt.Errorf("cannot retrieve nodes after the PreFilter phase: %v", err)
-			}
-			for _, ni := range allNodeInfos {
-				preFilteredNodesNames = append(preFilteredNodesNames, ni.Node().Name)
-			}
-		}
-
-		var feasibleNodes []kubeframework.NodeInfo
-		for _, preFilterNodeName := range preFilteredNodesNames {
-			freshNodeInfo, err := s.snapshot.NodeInfos().Get(preFilterNodeName)
-			if err != nil {
-				return nil, errors.New("cannot retrieve a preFiltered node")
-			}
-
-			filterStatus := s.framework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
-			if filterStatus.IsSuccess() {
-				feasibleNodes = append(feasibleNodes, freshNodeInfo)
-			}
-		}
-
-		if len(feasibleNodes) == 0 {
-			//The PostFilter stage is ignored
-			s.snapshot.Revert()
-			return nil, fmt.Errorf("no feasible nodes have been found for pod %s", pod.Name)
-		}
-
-		preScoreStatus := s.framework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
-
-		if !preScoreStatus.IsSuccess() {
-			s.snapshot.Revert()
-			return nil, errors.New("PreScorePlugins failed")
-		}
-
-		scores, status := s.framework.RunScorePlugins(ctx, state, pod, feasibleNodes)
-		if !status.IsSuccess() {
-			s.snapshot.Revert()
-			return nil, errors.New("ScorePlugins failed")
-		}
-
-		bestNode, err := pickHighestScoreNode(feasibleNodes, scores)
+		chosenNode, err := schedulePod(ctx, s.framework, s.snapshot, pod)
 		if err != nil {
-			s.snapshot.Revert()
-			return nil, errors.New("pickHighestScoreNode failed")
+			log.Fatalf("Error scheduling pod: %v", err)
 		}
 
 		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
-		s.snapshot.ForceAddPod(pod, bestNode.Node().Name)
+		s.snapshot.ForceAddPod(pod, chosenNode.Node().Name)
 
 		// Compute and display pod move cost
 		podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
-		if bestNode.Node().Name == s.baseline.Allocations[podName] {
+		if chosenNode.Node().Name == s.baseline.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
 			podMoveCost := getPodMoveCost(pod)
@@ -165,7 +102,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 			pm := PodMove{
 				pod:          pod,
 				fromNodeName: s.baseline.Allocations[podName],
-				toNodeName:   bestNode.Node().Name,
+				toNodeName:   chosenNode.Node().Name,
 				cost:         podMoveCost,
 			}
 			moves = append(moves, pm)
@@ -196,6 +133,82 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 
 	s.snapshot.Revert()
 	return result, nil
+}
+
+func schedulePod(
+	ctx context.Context,
+	framework schedframework.Framework,
+	snapshot clustersnapshot.ClusterSnapshot,
+	pod *apiv1.Pod,
+) (kubeframework.NodeInfo, error) {
+	state := schedframework.NewCycleState()
+	preFilterResult, preFilterStatus, _ := framework.RunPreFilterPlugins(ctx, state, pod)
+	if !preFilterStatus.IsSuccess() {
+		if preFilterStatus.Code() == kubeframework.Unschedulable {
+			log.Printf("Pod %s/%s is unschedulable in this permutation: %v", pod.Namespace, pod.Name, preFilterStatus.Message())
+			snapshot.Revert()
+			// Return a distinct error or handle it as a failed permutation path, not a system failure
+			return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
+		}
+
+		snapshot.Revert()
+		return nil, fmt.Errorf("RunPreFilterPlugins failed: %v", preFilterStatus.AsError())
+	}
+
+	var preFilteredNodesNames []string
+	if preFilterResult != nil {
+		preFilteredNodesNames = preFilterResult.NodeNames.UnsortedList()
+	} else {
+		// No PreFilter plugin restricted the node set — consider all nodes.
+		allNodeInfos, err := snapshot.NodeInfos().List()
+		if err != nil {
+			snapshot.Revert()
+			return nil, fmt.Errorf("cannot retrieve nodes after the PreFilter phase: %v", err)
+		}
+		for _, ni := range allNodeInfos {
+			preFilteredNodesNames = append(preFilteredNodesNames, ni.Node().Name)
+		}
+	}
+
+	var feasibleNodes []kubeframework.NodeInfo
+	for _, preFilterNodeName := range preFilteredNodesNames {
+		freshNodeInfo, err := snapshot.NodeInfos().Get(preFilterNodeName)
+		if err != nil {
+			return nil, errors.New("cannot retrieve a preFiltered node")
+		}
+
+		filterStatus := framework.RunFilterPlugins(ctx, state, pod, freshNodeInfo)
+		if filterStatus.IsSuccess() {
+			feasibleNodes = append(feasibleNodes, freshNodeInfo)
+		}
+	}
+
+	if len(feasibleNodes) == 0 {
+		//The PostFilter stage is ignored
+		snapshot.Revert()
+		return nil, fmt.Errorf("no feasible nodes have been found for pod %s", pod.Name)
+	}
+
+	preScoreStatus := framework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
+
+	if !preScoreStatus.IsSuccess() {
+		snapshot.Revert()
+		return nil, errors.New("PreScorePlugins failed")
+	}
+
+	scores, status := framework.RunScorePlugins(ctx, state, pod, feasibleNodes)
+	if !status.IsSuccess() {
+		snapshot.Revert()
+		return nil, errors.New("ScorePlugins failed")
+	}
+
+	bestNode, err := pickHighestScoreNode(feasibleNodes, scores)
+	if err != nil {
+		snapshot.Revert()
+		return nil, errors.New("pickHighestScoreNode failed")
+	}
+
+	return bestNode, nil
 }
 
 func getPodMoveCost(pod *apiv1.Pod) int {
