@@ -71,6 +71,11 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	if err = r.Get(ctx, req.NamespacedName, &pm); err != nil {
 		return ctrl.Result{}, err
 	}
+	defer func() {
+		if syncErr := r.syncPhase(ctx, &pm); syncErr != nil && err == nil {
+			err = syncErr
+		}
+	}()
 
 	log.Info("Reconciling PodMove",
 		"pod", pm.Spec.Pod.Name,
@@ -99,10 +104,6 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	}
 
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected) {
-		// update the phase after the webhook marked the "Injected" condition as true
-		if err := r.syncPhase(ctx, &pm); err != nil {
-			return ctrl.Result{}, err
-		}
 		return r.requeueOrClearInjection(ctx, &pm, replacement)
 	}
 
