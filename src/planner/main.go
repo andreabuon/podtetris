@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"path/filepath"
 	"sort"
 	"time"
 
@@ -16,11 +17,15 @@ import (
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/framework"
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
 	kubeframework "k8s.io/kube-scheduler/framework"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins/nodevolumelimits"
 	fwkruntime "k8s.io/kubernetes/pkg/scheduler/framework/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/yaml"
 )
 
 var Config AppConfig
@@ -28,14 +33,36 @@ var Config AppConfig
 func main() {
 	ctx := context.Background()
 
-	kubeconfig := loadKubeConfig()
-	clientset, err := kubernetes.NewForConfig(kubeconfig)
+	config, err := rest.InClusterConfig()
+	if err != nil {
+		// fallback for local dev runs
+		kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
+		config, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+	}
+	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
-	Config = loadAppConfig(ctx, clientset)
+	// read configuration from ConfigMap
+	currentNamespace, err := currentNamespace()
+	if err != nil {
+		log.Fatalf("Cannot determine current pod namespace")
+	}
+	cm, err := clientset.CoreV1().ConfigMaps(currentNamespace).Get(ctx, "podtetris-config", metav1.GetOptions{})
+	if err != nil {
+		log.Printf("Error reading ConfigMap: %v, using default app configuration", err)
+	}
+	Config := DefaultAppConfig()
+	data, ok := cm.Data["config.yaml"]
+	if !ok {
+		log.Fatalf("Key 'config.yaml' not found in ConfigMap")
+	}
+	if err := yaml.Unmarshal([]byte(data), &Config); err != nil {
+		log.Fatalf("Error parsing configuration data from ConfigMap: %v", err)
+	}
 
+	// initialize and start informers
 	informerFactory := informers.NewSharedInformerFactoryWithOptions(
 		clientset,
 		30*time.Second,
@@ -65,6 +92,7 @@ func main() {
 		log.Fatalf("Error creating framework handle: %v", err)
 	}
 
+	// retrieve nodes to build the cluster snapshot
 	const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 	nodes, err := nodeInformer.Lister().List(labels.Everything())
 	if err != nil {
@@ -164,7 +192,7 @@ func main() {
 		if err := podtetrisv1.AddToScheme(scheme); err != nil {
 			log.Fatalf("Error registering the PodMove scheme: %v", err)
 		}
-		crdClient, err := client.New(kubeconfig, client.Options{Scheme: scheme})
+		crdClient, err := client.New(config, client.Options{Scheme: scheme})
 		if err != nil {
 			log.Fatalf("Error creating the PodMove client: %v", err)
 		}
