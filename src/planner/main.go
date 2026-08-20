@@ -33,18 +33,19 @@ var Config AppConfig
 func main() {
 	ctx := context.Background()
 
-	config, err := rest.InClusterConfig()
+	clusterConfig, err := rest.InClusterConfig()
 	if err != nil {
 		// fallback for local dev runs
 		kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
-		config, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+		clusterConfig, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 	}
-	clientset, err := kubernetes.NewForConfig(config)
+	clientset, err := kubernetes.NewForConfig(clusterConfig)
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
 	// read configuration from ConfigMap
+	Config = DefaultAppConfig()
 	currentNamespace, err := currentNamespace()
 	if err != nil {
 		log.Fatalf("Cannot determine current pod namespace")
@@ -52,14 +53,14 @@ func main() {
 	cm, err := clientset.CoreV1().ConfigMaps(currentNamespace).Get(ctx, "podtetris-config", metav1.GetOptions{})
 	if err != nil {
 		log.Printf("Error reading ConfigMap: %v, using default app configuration", err)
-	}
-	Config := DefaultAppConfig()
-	data, ok := cm.Data["config.yaml"]
-	if !ok {
-		log.Fatalf("Key 'config.yaml' not found in ConfigMap")
-	}
-	if err := yaml.Unmarshal([]byte(data), &Config); err != nil {
-		log.Fatalf("Error parsing configuration data from ConfigMap: %v", err)
+	} else {
+		data, ok := cm.Data["config.yaml"]
+		if !ok {
+			log.Fatalf("Key 'config.yaml' not found in ConfigMap")
+		}
+		if err := yaml.Unmarshal([]byte(data), &Config); err != nil {
+			log.Fatalf("Error parsing configuration data from ConfigMap: %v", err)
+		}
 	}
 
 	// initialize and start informers
@@ -192,7 +193,7 @@ func main() {
 		if err := podtetrisv1.AddToScheme(scheme); err != nil {
 			log.Fatalf("Error registering the PodMove scheme: %v", err)
 		}
-		crdClient, err := client.New(config, client.Options{Scheme: scheme})
+		crdClient, err := client.New(clusterConfig, client.Options{Scheme: scheme})
 		if err != nil {
 			log.Fatalf("Error creating the PodMove client: %v", err)
 		}
