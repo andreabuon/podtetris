@@ -99,6 +99,10 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	}
 
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected) {
+		// update the phase after the webhook marked the "Injected" condition as true
+		if err := r.syncPhase(ctx, &pm); err != nil {
+			return ctrl.Result{}, err
+		}
 		return r.requeueOrClearInjection(ctx, &pm, replacement)
 	}
 

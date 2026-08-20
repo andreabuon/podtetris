@@ -89,6 +89,9 @@ func TestApplyTargetNodeInjected(t *testing.T) {
 	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) == nil {
 		t.Fatal("existing Evicted condition must be preserved")
 	}
+	if pm.Status.Phase != podtetrisiov1.PodMovePhaseVerifying {
+		t.Fatalf("phase = %q, want %q", pm.Status.Phase, podtetrisiov1.PodMovePhaseVerifying)
+	}
 }
 
 func TestClaimReplacement(t *testing.T) {
@@ -106,6 +109,9 @@ func TestClaimReplacement(t *testing.T) {
 	}
 	if isOpenForReplacement(got) {
 		t.Fatal("claimed PodMove should not stay open")
+	}
+	if got.Status.Phase != podtetrisiov1.PodMovePhaseVerifying {
+		t.Fatalf("phase = %q, want %q", got.Status.Phase, podtetrisiov1.PodMovePhaseVerifying)
 	}
 
 	err := claimReplacement(context.Background(), got.DeepCopy(), pod)

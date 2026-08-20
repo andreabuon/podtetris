@@ -342,6 +342,7 @@ func applyTargetNodeInjected(pm *podtetrisiov1.PodMove, pod *corev1.Pod) {
 		Message:            fmt.Sprintf("Replacement pod %s/%s recreated and pinned to node %q", pod.Namespace, podDisplayName(pod), pm.Spec.TargetNode),
 		ObservedGeneration: pm.Generation,
 	})
+	pm.Status.SyncPhase()
 }
 
 // buildMutationPatch pins the pod to targetNode and labels it with the PodMove name.
