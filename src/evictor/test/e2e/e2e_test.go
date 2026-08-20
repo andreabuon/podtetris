@@ -34,7 +34,7 @@ import (
 )
 
 // namespace where the project is deployed in
-const namespace = "evictor-system"
+const namespace = "podtetris"
 
 // serviceAccountName created for the project
 const serviceAccountName = "evictor-controller-manager"

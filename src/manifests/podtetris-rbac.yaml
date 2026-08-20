@@ -24,7 +24,7 @@ subjects:
   # kustomize namePrefix + namespace from evictor/config/default
   - kind: ServiceAccount
     name: evictor-controller-manager
-    namespace: evictor-system
+    namespace: podtetris
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
