@@ -32,7 +32,7 @@ func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
 		return false, SkipSystemPods
 	}
 
-	if pod.Namespace == defaultPodtetrisNamespace {
+	if pod.Namespace == Config.PodtetrisNamespace {
 		return false, SkipPodtetrisNamespace
 	}
 

@@ -153,9 +153,10 @@ func TestReplacementMatches(t *testing.T) {
 }
 
 func TestFindMatchingPodMoveReplicaSetByOwner(t *testing.T) {
+	podtetrisNamespace = "podtetris"
 	rsOwner := owner("ReplicaSet", "nginx", "rs-uid")
-	moveA := openPodMove("default", "move-a", rsOwner, "nginx-old", "node-a")
-	moveB := openPodMove("default", "move-b", owner("ReplicaSet", "other", "other-uid"), "other-old", "node-c")
+	moveA := openPodMove("podtetris", "move-a", rsOwner, "nginx-old", "node-a")
+	moveB := openPodMove("podtetris", "move-b", owner("ReplicaSet", "other", "other-uid"), "other-old", "node-c")
 	k8sClient = newFakeClient(moveA, moveB)
 
 	pod := ownedPod("", rsOwner)
@@ -173,9 +174,10 @@ func TestFindMatchingPodMoveReplicaSetByOwner(t *testing.T) {
 }
 
 func TestFindMatchingPodMoveStatefulSetByOwnerAndName(t *testing.T) {
+	podtetrisNamespace = "podtetris"
 	stsOwner := owner("StatefulSet", "web", "sts-uid")
-	move0 := openPodMove("default", "move-0", stsOwner, "web-0", "node-a")
-	move1 := openPodMove("default", "move-1", stsOwner, "web-1", "node-b")
+	move0 := openPodMove("podtetris", "move-0", stsOwner, "web-0", "node-a")
+	move1 := openPodMove("podtetris", "move-1", stsOwner, "web-1", "node-b")
 	k8sClient = newFakeClient(move0, move1)
 
 	got, err := findMatchingPodMove(context.Background(), ownedPod("web-1", stsOwner))

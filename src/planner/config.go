@@ -8,8 +8,7 @@ import (
 )
 
 const (
-	SCHEDULER_CONFIG_PATH     = "./scheduler-config.yaml"
-	defaultPodtetrisNamespace = "podtetris"
+	SCHEDULER_CONFIG_PATH = "./scheduler-config.yaml"
 )
 
 var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{
@@ -19,6 +18,9 @@ var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{
 }
 
 type AppConfig struct {
+	// Namespace where PODTetris components, PodMoves and ConfigMap are expected to be found.
+	// Set at runtime (from the pod's service-account namespace), not from the ConfigMap!
+	PodtetrisNamespace                string   `yaml:"-"`
 	RandomCandidateNodesNumber        int      `yaml:"randomCandidateNodesNumber"`
 	ByCPUCandidateNodesNumber         int      `yaml:"byCPUCandidateNodesNumber"`
 	PodMoveDefaultCost                int      `yaml:"podMoveDefaultCost"`
@@ -35,6 +37,7 @@ type AppConfig struct {
 // DefaultAppConfig returns an AppConfig populated with sane defaults.
 func DefaultAppConfig() AppConfig {
 	return AppConfig{
+		PodtetrisNamespace:                "podtetris",
 		RandomCandidateNodesNumber:        3,
 		ByCPUCandidateNodesNumber:         2,
 		PodMoveDefaultCost:                10,

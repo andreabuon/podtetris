@@ -38,19 +38,24 @@ func main() {
 		// fallback for local dev runs
 		kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
 		clusterConfig, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+		if err != nil {
+			log.Fatalf("Error loading local cluster config: %v", err)
+		}
 	}
 	clientset, err := kubernetes.NewForConfig(clusterConfig)
 	if err != nil {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
-	// read configuration from ConfigMap
 	Config = DefaultAppConfig()
-	currentNamespace, err := currentNamespace()
-	if err != nil {
-		log.Fatalf("Cannot determine current pod namespace")
+	if currentNamespace, err := currentNamespace(); err != nil {
+		log.Printf("Cannot determine current pod namespace: %v; using default value %q", err, Config.PodtetrisNamespace)
+	} else {
+		Config.PodtetrisNamespace = currentNamespace
+		log.Printf("Using namespace %q", currentNamespace)
 	}
-	cm, err := clientset.CoreV1().ConfigMaps(currentNamespace).Get(ctx, "podtetris-config", metav1.GetOptions{})
+
+	cm, err := clientset.CoreV1().ConfigMaps(Config.PodtetrisNamespace).Get(ctx, "podtetris-config", metav1.GetOptions{})
 	if err != nil {
 		log.Printf("Error reading ConfigMap: %v, using default app configuration", err)
 	} else {
@@ -58,9 +63,12 @@ func main() {
 		if !ok {
 			log.Fatalf("Key 'config.yaml' not found in ConfigMap")
 		}
+		oldNamespace := Config.PodtetrisNamespace
 		if err := yaml.Unmarshal([]byte(data), &Config); err != nil {
 			log.Fatalf("Error parsing configuration data from ConfigMap: %v", err)
 		}
+		// yaml:"-" should preserve this, but re-apply the namespace so ConfigMap can never override it.
+		Config.PodtetrisNamespace = oldNamespace
 	}
 
 	// initialize and start informers

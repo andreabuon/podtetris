@@ -15,6 +15,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
@@ -41,9 +42,10 @@ const (
 var errPodMoveAlreadyClaimed = errors.New("podmove already claimed for a replacement pod")
 
 var (
-	k8sClient    client.Client
-	codecs       = serializer.NewCodecFactory(runtime.NewScheme())
-	deserializer = codecs.UniversalDeserializer()
+	k8sClient          client.Client
+	podtetrisNamespace = "podtetris"
+	codecs             = serializer.NewCodecFactory(runtime.NewScheme())
+	deserializer       = codecs.UniversalDeserializer()
 )
 
 func main() {
@@ -61,11 +63,17 @@ func main() {
 		log.Fatalf("Could not create Kubernetes client: %v", err)
 	}
 
+	if ns, err := currentNamespace(); err != nil {
+		log.Printf("Cannot determine current pod namespace: %v; using %q", err, podtetrisNamespace)
+	} else {
+		podtetrisNamespace = ns
+	}
+
 	certFile := getEnvOrDefault("TLS_CERT_FILE", "/etc/webhook/certs/tls.crt")
 	keyFile := getEnvOrDefault("TLS_KEY_FILE", "/etc/webhook/certs/tls.key")
 	addr := getEnvOrDefault("LISTEN_ADDR", ":8443")
 
-	log.Printf("PODTetris webhook starting...")
+	log.Printf("PODTetris webhook starting (namespace=%s)...", podtetrisNamespace)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/mutate", handleMutate)
@@ -93,6 +101,14 @@ func getEnvOrDefault(key, fallback string) string {
 		return v
 	}
 	return fallback
+}
+
+func currentNamespace() (string, error) {
+	data, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace")
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(data)), nil
 }
 
 // handleMutate is the HTTP entrypoint the apiserver calls for every
@@ -264,7 +280,7 @@ func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*podtetrisiov1.P
 	}
 
 	var list podtetrisiov1.PodMoveList
-	if err := k8sClient.List(ctx, &list, client.InNamespace("podtetris")); err != nil {
+	if err := k8sClient.List(ctx, &list, client.InNamespace(podtetrisNamespace)); err != nil {
 		return nil, err
 	}
 
