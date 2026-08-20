@@ -28,4 +28,4 @@ webhooks:
           operator: NotIn
           values:
             - kube-system
-            - podtetris
+            - podtetris # //FIXME if ns changes, update this
