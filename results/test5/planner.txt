@@ -1,0 +1,98 @@
+(base) andrea@MacBook-Pro-di-Andrea src % cd s
+cd: no such file or directory: s
+(base) andrea@MacBook-Pro-di-Andrea src % cd planner/ 
+(base) andrea@MacBook-Pro-di-Andrea planner % make    
+GOWORK=off go build -o podtetris-planner
+^Cmake: *** [build] Interrupt: 2
+
+(base) andrea@MacBook-Pro-di-Andrea planner % make run
+GOWORK=off go build -o podtetris-planner
+./podtetris-planner
+2026/08/21 12:52:59 Cannot determine current pod namespace: open /var/run/secrets/kubernetes.io/serviceaccount/namespace: no such file or directory; using default value "podtetris"
+2026/08/21 12:52:59 [Candidate #0] Node: kind-worker2
+2026/08/21 12:52:59   - Evicted pod: rs-b-lcjsw
+2026/08/21 12:52:59   - Evicted pod: deployment-a-bcddbb87f-dn9cj
+2026/08/21 12:52:59   - Evicted pod: deployment-b-f4f9ccd4f-qqddd
+2026/08/21 12:52:59   > Skipping pod kube-system/kindnet-p25tq: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   > Skipping pod kube-system/kube-proxy-xpjsw: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59 [Candidate #1] Node: kind-worker4
+2026/08/21 12:52:59   > Skipping pod kube-system/kube-proxy-w7pcl: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   > Skipping pod default/deployment-fixed-7ff859757d-wtvgd: pod is fixed to the node
+2026/08/21 12:52:59   > Skipping pod kube-system/kindnet-87pl2: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   > Skipping pod podtetris/podtetris-webhook-84b9c89c95-c5zbr: pod belongs to podtetris own namespace
+2026/08/21 12:52:59   - Evicted pod: deployment-a-bcddbb87f-b2vvq
+2026/08/21 12:52:59   - Evicted pod: deployment-b-f4f9ccd4f-mcx8j
+2026/08/21 12:52:59 [Candidate #2] Node: kind-worker3
+2026/08/21 12:52:59   - Evicted pod: deployment-b-f4f9ccd4f-j7m4l
+2026/08/21 12:52:59   > Skipping pod kube-system/kindnet-d6xkr: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   > Skipping pod kube-system/kube-proxy-s6kjd: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   > Skipping pod podtetris/podtetris-webhook-84b9c89c95-8c4r4: pod belongs to podtetris own namespace
+2026/08/21 12:52:59   - Evicted pod: deployment-a-bcddbb87f-2qrz9
+2026/08/21 12:52:59   - Evicted pod: rs-b-4wsjv
+2026/08/21 12:52:59 [Candidate #3] Node: kind-worker
+2026/08/21 12:52:59   - Evicted pod: deployment-b-f4f9ccd4f-xcrqr
+2026/08/21 12:52:59   > Skipping pod kube-system/kube-proxy-vkd5c: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   - Evicted pod: statefulset-0
+2026/08/21 12:52:59   - Evicted pod: rs-a-27f2l
+2026/08/21 12:52:59   > Skipping pod kube-system/kindnet-995lb: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   - Evicted pod: deployment-a-bcddbb87f-pxj9g
+2026/08/21 12:52:59 [Candidate #4] Node: kind-worker5
+2026/08/21 12:52:59   > Skipping pod kube-system/kindnet-dtfwm: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   > Skipping pod kube-system/kube-proxy-bd8fl: pod belongs to namespace 'kube-system'
+2026/08/21 12:52:59   - Evicted pod: deployment-b-f4f9ccd4f-pjjxp
+2026/08/21 12:52:59   > Skipping pod podtetris/podtetris-webhook-84b9c89c95-qfk2s: pod belongs to podtetris own namespace
+2026/08/21 12:52:59   > Skipping pod default/deployment-fixed-7ff859757d-lhtpx: pod is fixed to the node
+2026/08/21 12:52:59   - Evicted pod: deployment-a-bcddbb87f-6wbjl
+2026/08/21 12:52:59 Simulating permutation #0
+2026/08/21 12:52:59 - Pod move: Pod 'rs-b-lcjsw' moved from 'kind-worker2' to 'kind-worker7' (move cost = 15)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-dn9cj' moved from 'kind-worker2' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-qqddd' moved from 'kind-worker2' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-b2vvq' moved from 'kind-worker4' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-mcx8j' moved from 'kind-worker4' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-j7m4l' moved from 'kind-worker3' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-2qrz9' moved from 'kind-worker3' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'rs-b-4wsjv' moved from 'kind-worker3' to 'kind-worker7' (move cost = 15)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-xcrqr' moved from 'kind-worker' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod: 'statefulset-0' has been re-assigned to the same node
+2026/08/21 12:52:59 - Pod move: Pod 'rs-a-27f2l' moved from 'kind-worker' to 'kind-worker7' (move cost = 25)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-pxj9g' moved from 'kind-worker' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-pjjxp' moved from 'kind-worker5' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-6wbjl' moved from 'kind-worker5' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 Simulating permutation #1
+2026/08/21 12:52:59 - Pod: 'statefulset-0' has been re-assigned to the same node
+2026/08/21 12:52:59 - Pod move: Pod 'rs-b-lcjsw' moved from 'kind-worker2' to 'kind-worker7' (move cost = 15)
+2026/08/21 12:52:59 - Pod move: Pod 'rs-b-4wsjv' moved from 'kind-worker3' to 'kind-worker7' (move cost = 15)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-dn9cj' moved from 'kind-worker2' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-b2vvq' moved from 'kind-worker4' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-2qrz9' moved from 'kind-worker3' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-pxj9g' moved from 'kind-worker' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-6wbjl' moved from 'kind-worker5' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-qqddd' moved from 'kind-worker2' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-mcx8j' moved from 'kind-worker4' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-j7m4l' moved from 'kind-worker3' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-xcrqr' moved from 'kind-worker' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-pjjxp' moved from 'kind-worker5' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'rs-a-27f2l' moved from 'kind-worker' to 'kind-worker7' (move cost = 25)
+2026/08/21 12:52:59 Simulating permutation #2
+2026/08/21 12:52:59 - Pod: 'statefulset-0' has been re-assigned to the same node
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-pjjxp' moved from 'kind-worker5' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-pxj9g' moved from 'kind-worker' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-2qrz9' moved from 'kind-worker3' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-j7m4l' moved from 'kind-worker3' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-mcx8j' moved from 'kind-worker4' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-b2vvq' moved from 'kind-worker4' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-xcrqr' moved from 'kind-worker' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-b-f4f9ccd4f-qqddd' moved from 'kind-worker2' to 'kind-worker7' (move cost = 50)
+2026/08/21 12:52:59 - Pod move: Pod 'rs-a-27f2l' moved from 'kind-worker' to 'kind-worker7' (move cost = 25)
+2026/08/21 12:52:59 - Pod move: Pod 'rs-b-lcjsw' moved from 'kind-worker2' to 'kind-worker7' (move cost = 15)
+2026/08/21 12:52:59 - Pod move: Pod 'rs-b-4wsjv' moved from 'kind-worker3' to 'kind-worker7' (move cost = 15)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-6wbjl' moved from 'kind-worker5' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 - Pod move: Pod 'deployment-a-bcddbb87f-dn9cj' moved from 'kind-worker2' to 'kind-worker7' (move cost = 75)
+2026/08/21 12:52:59 Simulations results:
+2026/08/21 12:52:59 Strategy #0 freed 4 nodes with 13 moves, total cost of 680, permutation score is 920
+2026/08/21 12:52:59 Strategy #1 freed 4 nodes with 13 moves, total cost of 680, permutation score is 920
+2026/08/21 12:52:59 Strategy #2 freed 4 nodes with 13 moves, total cost of 680, permutation score is 920
+2026/08/21 12:52:59 The best consolidation plan is #0
+2026/08/21 12:52:59 Score threshold reached, auto applying consolidation strategy
+2026/08/21 12:53:00 Consolidation completed, 13 PodMoves created, 0 errors
+(base) andrea@MacBook-Pro-di-Andrea planner % 
