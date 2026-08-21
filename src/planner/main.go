@@ -52,13 +52,6 @@ func main() {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
-	if currentNamespace, err := currentNamespace(); err != nil {
-		log.Printf("Cannot determine current pod namespace: %v; using default value %q", err, Config.PodtetrisNamespace)
-	} else {
-		Config.PodtetrisNamespace = currentNamespace
-		log.Printf("Using namespace %q", currentNamespace)
-	}
-
 	// initialize and start informers
 	informerFactory := informers.NewSharedInformerFactoryWithOptions(
 		clientset,
