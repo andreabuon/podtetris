@@ -1,7 +1,11 @@
 KUBECTL = kubectl
 GO = go
+IMG ?= podtetris-planner:latest
+KIND_CLUSTER ?= kind
+CONTAINER_TOOL ?= docker
+KIND ?= kind
 
-.PHONY: all build run clean check
+.PHONY: all build run clean check docker-build kind-load
 
 all: run
 
@@ -19,3 +23,9 @@ clean:
 check:
 	go vet .
 	staticcheck ./
+
+docker-build:
+	$(CONTAINER_TOOL) build -t $(IMG) .
+
+kind-load: docker-build
+	$(KIND) load docker-image $(IMG) --name $(KIND_CLUSTER)
