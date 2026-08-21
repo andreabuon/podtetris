@@ -2,13 +2,17 @@ package main
 
 import (
 	"log"
+	"os"
 
 	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
 	scheduler_config "k8s.io/kubernetes/pkg/scheduler/apis/config"
+	"sigs.k8s.io/yaml"
 )
 
 const (
 	SCHEDULER_CONFIG_PATH = "./podtetris-scheduler-config.yaml"
+	// DefaultConfigPath is where the in-cluster ConfigMap is mounted.
+	DefaultConfigPath = "/etc/podtetris/config.yaml"
 )
 
 var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{
@@ -18,8 +22,6 @@ var ENABLED_PERMUTATION_GENERATION_STRATEGIES = []string{
 }
 
 type AppConfig struct {
-	// Namespace where PODTetris components, PodMoves and ConfigMap are expected to be found.
-	// Set at runtime (from the pod's service-account namespace), not from the ConfigMap!
 	PodtetrisNamespace                string   `yaml:"-"`
 	RandomCandidateNodesNumber        int      `yaml:"randomCandidateNodesNumber"`
 	ByCPUCandidateNodesNumber         int      `yaml:"byCPUCandidateNodesNumber"`
@@ -50,6 +52,23 @@ func DefaultAppConfig() AppConfig {
 		EnabledPermutationStrategies:      ENABLED_PERMUTATION_GENERATION_STRATEGIES,
 		Parallelism:                       8,
 	}
+}
+
+// loadAppConfig reads planner settings from a YAML file (ConfigMap-mounted in-cluster).
+func loadAppConfig(path string) AppConfig {
+	cfg := DefaultAppConfig()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Printf("Config file %q not found; using default app configuration", path)
+			return cfg
+		}
+		log.Fatalf("Error reading config file %q: %v", path, err)
+	}
+	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		log.Fatalf("Error parsing config file %q: %v", path, err)
+	}
+	return cfg
 }
 
 func loadSchedulerConfig() *scheduler_config.KubeSchedulerConfiguration {

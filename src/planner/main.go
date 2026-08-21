@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"path/filepath"
 	"sort"
@@ -25,13 +26,17 @@ import (
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins/nodevolumelimits"
 	fwkruntime "k8s.io/kubernetes/pkg/scheduler/framework/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/yaml"
 )
 
 var Config AppConfig
 
 func main() {
+	configPath := flag.String("config", DefaultConfigPath, "Path to planner YAML config")
+	flag.Parse()
+
 	ctx := context.Background()
+
+	Config = loadAppConfig(*configPath)
 
 	clusterConfig, err := rest.InClusterConfig()
 	if err != nil {
@@ -47,28 +52,11 @@ func main() {
 		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
 	}
 
-	Config = DefaultAppConfig()
 	if currentNamespace, err := currentNamespace(); err != nil {
 		log.Printf("Cannot determine current pod namespace: %v; using default value %q", err, Config.PodtetrisNamespace)
 	} else {
 		Config.PodtetrisNamespace = currentNamespace
 		log.Printf("Using namespace %q", currentNamespace)
-	}
-
-	cm, err := clientset.CoreV1().ConfigMaps(Config.PodtetrisNamespace).Get(ctx, "podtetris-config", metav1.GetOptions{})
-	if err != nil {
-		log.Printf("Error reading ConfigMap: %v, using default app configuration", err)
-	} else {
-		data, ok := cm.Data["config.yaml"]
-		if !ok {
-			log.Fatalf("Key 'config.yaml' not found in ConfigMap")
-		}
-		oldNamespace := Config.PodtetrisNamespace
-		if err := yaml.Unmarshal([]byte(data), &Config); err != nil {
-			log.Fatalf("Error parsing configuration data from ConfigMap: %v", err)
-		}
-		// yaml:"-" should preserve this, but re-apply the namespace so ConfigMap can never override it.
-		Config.PodtetrisNamespace = oldNamespace
 	}
 
 	// initialize and start informers
