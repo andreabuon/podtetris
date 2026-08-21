@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
-	"flag"
+	"fmt"
 	"log"
 	"path/filepath"
 	"sort"
 	"time"
 
 	podtetrisv1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
+	"github.com/spf13/viper"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -31,12 +32,20 @@ import (
 var Config AppConfig
 
 func main() {
-	configPath := flag.String("config", DefaultConfigPath, "Path to planner YAML config")
-	flag.Parse()
-
 	ctx := context.Background()
 
-	Config = loadAppConfig(*configPath)
+	viper.SetConfigName("config")
+	viper.AddConfigPath("/etc/podtetris/")
+	viper.AddConfigPath(".")
+	setDefaultConfigValues()
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(fmt.Errorf("fatal error config file: %w", err))
+	}
+
+	if err := viper.Unmarshal(&Config); err != nil {
+		panic(fmt.Errorf("fatal error unmarshalling config: %w", err))
+	}
 
 	clusterConfig, err := rest.InClusterConfig()
 	if err != nil {
@@ -128,7 +137,7 @@ func main() {
 	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	evictedPods := virtuallyEvictPods(snapshot, candidateNodes)
-	permutations := generatePermutations(evictedPods, ENABLED_PERMUTATION_GENERATION_STRATEGIES)
+	permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies)
 
 	initialState := &Baseline{
 		CandidateNodes: candidateNodes,
