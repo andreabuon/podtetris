@@ -34,6 +34,8 @@ const (
 	// ConditionPodVerified is True after the controller observed the replacement pod persisted with the webhook mutation and bound to Spec.TargetNode.
 	// If that never happens, TargetNodeInjected is cleared so a later CREATE can be claimed.
 	ConditionPodVerified = "TargetPodVerified"
+	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
+	ConditionPodRunning = "TargetPodRunning"
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
@@ -54,7 +56,9 @@ const (
 	PodMovePhaseEvicted PodMovePhase = "Evicted"
 	// PodMovePhaseVerifying is set after the webhook claimed a replacement CREATE and before the controller verifies it persisted.
 	PodMovePhaseVerifying PodMovePhase = "Verifying"
-	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode.
+	// PodMovePhaseVerified is set after the replacement pod is observed on Spec.TargetNode.
+	PodMovePhaseVerified PodMovePhase = "Verified"
+	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
 )
 
@@ -110,7 +114,7 @@ type PodMoveStatus struct {
 	// phase is a high-level summary derived from conditions.
 	// Controllers overwrite it on every status update; do not set it manually.
 	// +kubebuilder:default=Pending
-	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Succeeded
+	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
 }

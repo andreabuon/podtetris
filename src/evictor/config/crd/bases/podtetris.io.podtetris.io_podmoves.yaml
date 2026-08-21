@@ -237,6 +237,7 @@ spec:
                 - Evicting
                 - Evicted
                 - Verifying
+                - Verified
                 - Succeeded
                 type: string
             type: object

@@ -41,6 +41,8 @@ const (
 	// verifyTimeout is how long to wait after TargetNodeInjected before treating the
 	// admission side effect as lost and re-opening the PodMove for a later CREATE.
 	verifyTimeout = 30 * time.Second
+	// verifyRunningInterval is how long to wait to check whether the verified (persisted) pod is in Running phase
+	verifyRunningInterval = 1 * time.Minute
 )
 
 // PodMoveReconciler reconciles a PodMove object
@@ -83,9 +85,30 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		"targetNode", pm.Spec.TargetNode,
 	)
 
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified) {
-		log.Info("Skipping: the PodMove has already been verified")
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodRunning) {
+		log.Info("Skipping: the PodMove has already been completed: the replacement pod is running on the target node")
 		return ctrl.Result{}, nil
+	}
+
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified) {
+		replacement, err := r.findReplacementPod(ctx, &pm)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+		if replacement == nil {
+			log.Info("No replacement pod found")
+			return ctrl.Result{RequeueAfter: verifyRunningInterval}, nil
+		}
+
+		if replacement.Status.Phase == corev1.PodRunning {
+			msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
+			if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionPodRunning, metav1.ConditionTrue, "Running", msg); err != nil {
+				return ctrl.Result{}, err
+			}
+			return ctrl.Result{}, nil
+		} else {
+			return ctrl.Result{RequeueAfter: verifyRunningInterval}, nil
+		}
 	}
 
 	// Admission can mark the PodMove injected but then fail to persist the pod.
@@ -95,8 +118,8 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return ctrl.Result{}, err
 	}
 	if replacementOnTarget(replacement, &pm) {
-		msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
 		log.Info("Verified replacement pod", "pod", replacement.Name, "node", pm.Spec.TargetNode)
+		msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
 		if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionPodVerified, metav1.ConditionTrue, "Verified", msg); err != nil {
 			return ctrl.Result{}, err
 		}
