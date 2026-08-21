@@ -5,10 +5,12 @@ GO = go
 
 all: run
 
-build: config.go consolidation.go main.go nodes.go permutations.go simulation.go utils.go
+podtetris-planner: *.go
 	GOWORK=off $(GO) build -o podtetris-planner
 
-run: build
+build: podtetris-planner
+
+run: podtetris-planner
 	./podtetris-planner --config ./config.yaml
 
 clean:
