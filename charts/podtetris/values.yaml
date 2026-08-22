@@ -26,6 +26,24 @@ planner:
   ttlSecondsAfterFinished: 86400
   activeDeadlineSeconds: 600
 
+# Evictor controller (PodMove reconciler).
+evictor:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: podtetris-evictor
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  leaderElection: true
+  healthProbeBindAddress: ":8081"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
+
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.

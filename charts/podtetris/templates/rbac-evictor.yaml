@@ -1,0 +1,77 @@
+{{- if and .Values.rbac.create .Values.evictor.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "podtetris.fullname" . }}-evictor
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+    app.kubernetes.io/component: evictor
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods/eviction"]
+    verbs: ["create"]
+  - apiGroups: ["podtetris.io.podtetris.io"]
+    resources: ["podmoves"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+  - apiGroups: ["podtetris.io.podtetris.io"]
+    resources: ["podmoves/finalizers"]
+    verbs: ["update"]
+  - apiGroups: ["podtetris.io.podtetris.io"]
+    resources: ["podmoves/status"]
+    verbs: ["get", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "podtetris.fullname" . }}-evictor
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+    app.kubernetes.io/component: evictor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "podtetris.fullname" . }}-evictor
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "podtetris.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- if .Values.evictor.leaderElection }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "podtetris.fullname" . }}-evictor-leader-election
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+    app.kubernetes.io/component: evictor
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "podtetris.fullname" . }}-evictor-leader-election
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+    app.kubernetes.io/component: evictor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "podtetris.fullname" . }}-evictor-leader-election
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "podtetris.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- end }}
