@@ -13,6 +13,19 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+# Planner CronJob. 
+# Trigger a run with: `kubectl create job --from=cronjob/<release>-planner <name>`
+planner:
+  enabled: true
+  schedule: "0 0 * * *"
+  suspend: true
+  image:
+    repository: podtetris-planner
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  ttlSecondsAfterFinished: 86400
+  activeDeadlineSeconds: 600
+
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
