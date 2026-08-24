@@ -1,0 +1,25 @@
+NAME                                READY   STATUS    RESTARTS   AGE   IP            NODE           NOMINATED NODE   READINESS GATES
+deployment-a-bcddbb87f-5zx6c        1/1     Running   0          17s   10.244.2.8    kind-worker3   <none>           <none>
+deployment-a-bcddbb87f-dhr56        1/1     Running   0          11m   10.244.5.3    kind-worker2   <none>           <none>
+deployment-a-bcddbb87f-kvl2s        1/1     Running   0          17s   10.244.2.10   kind-worker3   <none>           <none>
+deployment-a-bcddbb87f-l827w        1/1     Running   0          16s   10.244.2.15   kind-worker3   <none>           <none>
+deployment-a-bcddbb87f-qsm2h        1/1     Running   0          16s   10.244.2.19   kind-worker3   <none>           <none>
+deployment-a-bcddbb87f-tll5x        1/1     Running   0          11m   10.244.2.2    kind-worker3   <none>           <none>
+deployment-a-bcddbb87f-w25tq        1/1     Running   0          16s   10.244.2.12   kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-92bsl        1/1     Running   0          17s   10.244.2.11   kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-c7ds7        1/1     Running   0          11m   10.244.5.2    kind-worker2   <none>           <none>
+deployment-b-f4f9ccd4f-cq5hb        1/1     Running   0          16s   10.244.2.18   kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-gf74z        1/1     Running   0          11m   10.244.2.3    kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-jlj7s        1/1     Running   0          17s   10.244.2.9    kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-mmbdw        1/1     Running   0          16s   10.244.2.16   kind-worker3   <none>           <none>
+deployment-b-f4f9ccd4f-zw9n8        1/1     Running   0          16s   10.244.2.14   kind-worker3   <none>           <none>
+deployment-fixed-7ff859757d-7vbd4   1/1     Running   0          11m   10.244.3.4    kind-worker5   <none>           <none>
+deployment-fixed-7ff859757d-m4br2   1/1     Running   0          11m   10.244.4.4    kind-worker6   <none>           <none>
+rs-a-fw999                          1/1     Running   0          11m   10.244.5.4    kind-worker2   <none>           <none>
+rs-a-kq7p4                          1/1     Running   0          16s   10.244.2.13   kind-worker3   <none>           <none>
+rs-a-pbf55                          1/1     Running   0          11m   10.244.2.4    kind-worker3   <none>           <none>
+rs-b-fdmsl                          1/1     Running   0          16s   10.244.2.17   kind-worker3   <none>           <none>
+rs-b-p82tv                          1/1     Running   0          17s   10.244.2.7    kind-worker3   <none>           <none>
+statefulset-0                       1/1     Running   0          11m   10.244.2.6    kind-worker3   <none>           <none>
+statefulset-1                       1/1     Running   0          10m   10.244.1.6    kind-worker    <none>           <none>
+statefulset-2                       1/1     Running   0          10m   10.244.5.6    kind-worker2   <none>           <none>
