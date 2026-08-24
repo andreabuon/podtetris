@@ -25,6 +25,29 @@ planner:
     tag: "latest"
   ttlSecondsAfterFinished: 86400
   activeDeadlineSeconds: 600
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
+  config:
+    podtetrisNamespace: "podtetris"
+    randomCandidateNodesNumber: 3
+    byCPUCandidateNodesNumber: 2
+    podMoveDefaultCost: 10
+    emptyNodesScoreWeight: 400
+    costScoreWeight: 1
+    autoConsolidationScoreThreshold: 0
+    candidateNodesSelectionMaxRetries: 15
+    fixedPodAnnotation: "podtetris/fixed"
+    podMoveCostAnnotation: "podtetris/moveCost"
+    enabledPermutationStrategies:
+      - cpu_desc
+      - memory_desc
+      - random
+    parallelism: 8
 
 # Evictor controller (PodMove reconciler).
 evictor:
@@ -193,20 +216,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-config:
-  podtetrisNamespace: "podtetris"
-  randomCandidateNodesNumber: 3
-  byCPUCandidateNodesNumber: 2
-  podMoveDefaultCost: 10
-  emptyNodesScoreWeight: 400
-  costScoreWeight: 1
-  autoConsolidationScoreThreshold: 0
-  candidateNodesSelectionMaxRetries: 15
-  fixedPodAnnotation: "podtetris/fixed"
-  podMoveCostAnnotation: "podtetris/moveCost"
-  enabledPermutationStrategies:
-    - cpu_desc
-    - memory_desc
-    - random
-  parallelism: 8

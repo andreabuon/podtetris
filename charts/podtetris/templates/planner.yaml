@@ -47,7 +47,7 @@ spec:
               {{- end }}
               image: "{{ .Values.planner.image.repository }}:{{ .Values.planner.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.planner.image.pullPolicy }}
-              {{- with .Values.resources }}
+              {{- with .Values.planner.resources }}
               resources:
                 {{- toYaml . | nindent 16 }}
               {{- end }}

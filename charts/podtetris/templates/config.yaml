@@ -4,4 +4,4 @@ metadata:
   name: {{ include "podtetris.fullname" . }}-config
 data:
   config.yaml: |
-    {{- toYaml .Values.config  | nindent 4 }}
+    {{- toYaml .Values.planner.config  | nindent 4 }}
