@@ -7,11 +7,6 @@ all: deploy
 cluster:
 	cd labs/lab6_kwok+kind_cost && ./setup-cluster.sh
 
-crd:
-	$(MAKE) -C src/evictor install
-
-install: crd
-
 build-all:
 	-$(MAKE) -C src/planner docker-build
 	-$(MAKE) -C src/evictor docker-build

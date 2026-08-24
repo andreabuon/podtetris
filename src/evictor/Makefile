@@ -3,6 +3,8 @@ IMG ?= podtetris-evictor:latest
 # YEAR defines the year value used for substituting the YEAR placeholder in the boilerplate header.
 YEAR ?= $(shell date +%Y)
 
+HELM_CRDS_DIR ?= ../../charts/podtetris/crds
+
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -46,6 +48,10 @@ help: ## Display this help.
 .PHONY: manifests
 manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefinition objects.
 	"$(CONTROLLER_GEN)" rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+#	Sync the generated manifests into the Helm Chart
+	mkdir -p "$(HELM_CRDS_DIR)"
+	rm -f "$(HELM_CRDS_DIR)"/*.yaml
+	cp config/crd/bases/*.yaml "$(HELM_CRDS_DIR)/"
 
 .PHONY: generate
 generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
