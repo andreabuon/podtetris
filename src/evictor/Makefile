@@ -257,3 +257,9 @@ endef
 define gomodver
 $(shell go list -m -f '{{if .Replace}}{{.Replace.Version}}{{else}}{{.Version}}{{end}}' $(1) 2>/dev/null)
 endef
+
+###
+.PHONY: kind-load
+KIND_CLUSTER ?= kind
+kind-load: docker-build
+	$(KIND) load docker-image $(IMG) --name $(KIND_CLUSTER)
