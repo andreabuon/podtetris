@@ -86,7 +86,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	)
 
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodRunning) {
-		log.Info("Skipping: the PodMove has already been completed: the replacement pod is running on the target node")
+		log.Info("The PodMove has already been completed (the replacement pod is running on the target node)")
 		return ctrl.Result{}, nil
 	}
 
@@ -96,8 +96,8 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 			return ctrl.Result{}, err
 		}
 		if replacement == nil {
-			log.Info("No replacement pod found")
-			return ctrl.Result{RequeueAfter: verifyRunningInterval}, nil
+			log.Info("The PodMove is verified but the replacement pod cannot be found anymore.")
+			return ctrl.Result{}, nil
 		}
 
 		if replacement.Status.Phase == corev1.PodRunning {
@@ -107,6 +107,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 			}
 			return ctrl.Result{}, nil
 		} else {
+			log.Info("The replacement pod phase is not 'Running' yet. Checking again in %s", verifyRunningInterval)
 			return ctrl.Result{RequeueAfter: verifyRunningInterval}, nil
 		}
 	}
@@ -131,7 +132,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	}
 
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
-		log.Info("Skipping: eviction has already been performed; waiting for the webhook to inject the target node name in a new pod")
+		log.Info("Pod eviction has already been performed; currently waiting for the webhook to inject the target node name in a new replacement pod")
 		return ctrl.Result{}, nil
 	}
 
