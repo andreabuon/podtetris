@@ -49,4 +49,4 @@ spec:
       volumes:
         - name: certs
           secret:
-            secretName: {{ include "podtetris.fullname" . }}-webhook-certs
+            secretName: {{ include "podtetris.tlsSecretName" . }}
