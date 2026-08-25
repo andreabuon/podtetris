@@ -68,8 +68,18 @@ evictor:
       memory: 128Mi
 
 webhook:
+  image:
+    repository: podtetris-webhook
+    pullPolicy: IfNotPresent
   timeoutSeconds: 5
   failurePolicy: Ignore # 'Ignore', not 'Fail': if the webhook is down, pod creation should not be blocked cluster-wide.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -220,3 +230,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# cert-manager configuration
+certificate:
+  issuerGroup: "certmanager.step.sm"
+  issuerKind: "StepClusterIssuer"
+  issuerName: "step-issuer"
+  duration: 2160h   # 90 days
+  renewBefore: 360h # 15 days
