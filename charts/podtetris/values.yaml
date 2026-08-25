@@ -75,6 +75,13 @@ webhook:
   replicas: 3
   timeoutSeconds: 5
   failurePolicy: Ignore # 'Ignore', not 'Fail': if the webhook is down, pod creation should not be blocked cluster-wide.
+  namespaceSelector:
+    matchExpressions:
+      - key: kubernetes.io/metadata.name
+        operator: NotIn
+        values:
+          - "{{ .Release.Namespace }}"
+          - kube-system
   resources:
     limits:
       cpu: 500m

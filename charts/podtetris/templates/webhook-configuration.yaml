@@ -11,7 +11,7 @@ webhooks:
     admissionReviewVersions: ["v1"]
     sideEffects: NoneOnDryRun
     failurePolicy: {{ .Values.webhook.failurePolicy }}
-    timeoutSeconds: {{.Values.webhook.timeoutSeconds }}
+    timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
     clientConfig:
       service:
         name: {{ include "podtetris.fullname" . }}-webhook
@@ -24,10 +24,7 @@ webhooks:
         operations: ["CREATE"]
         resources: ["pods"]
         scope: "Namespaced"
+    {{- with .Values.webhook.namespaceSelector }}
     namespaceSelector:
-      matchExpressions:
-        - key: kubernetes.io/metadata.name
-          operator: NotIn
-          values:
-            - "kube-system"
-            - "{{ .Release.Namespace }}" # do not call webhook on PodTetris own pods
+      {{- tpl (toYaml .) $ | nindent 6 }}
+    {{- end }}
