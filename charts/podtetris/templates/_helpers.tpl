@@ -62,6 +62,13 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+TLS secret name
+*/}}
+{{- define "podtetris.tlsSecretName" -}}
+{{- printf "%s-tls" (include "podtetris.fullname" .) }}
+{{- end }}
+
+{{/*
 Certificate reference for cert-manager.io/inject-ca-from (namespace/certificate-name).
 */}}
 {{- define "podtetris.certificateRef" -}}
