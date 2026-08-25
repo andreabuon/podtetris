@@ -52,7 +52,7 @@ planner:
 # Evictor controller (PodMove reconciler).
 evictor:
   enabled: true
-  replicaCount: 1
+  replicas: 1
   image:
     repository: podtetris-evictor
     pullPolicy: IfNotPresent

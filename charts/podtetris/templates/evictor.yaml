@@ -3,11 +3,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "podtetris.fullname" . }}-evictor
+  namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "podtetris.labels" . | nindent 4 }}
     app.kubernetes.io/component: evictor
+    {{- include "podtetris.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.evictor.replicaCount }}
+  replicas: {{ .Values.evictor.replicas }}
   selector:
     matchLabels:
       {{- include "podtetris.selectorLabels" . | nindent 6 }}
