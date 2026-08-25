@@ -13,9 +13,10 @@ spec:
     group: {{ .Values.certificate.issuerGroup }}
     kind: {{ .Values.certificate.issuerKind }}
     name: {{ .Values.certificate.issuerName }}
+  commonName: {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
   dnsNames:
-    - {{ include "podtetris.fullname" . }}
-    - {{ include "podtetris.fullname" . }}.{{ .Release.Namespace }}
-    - {{ include "podtetris.fullname" . }}.{{ .Release.Namespace }}.svc
-    - {{ include "podtetris.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
- 
+    - {{ include "podtetris.fullname" . }}-webhook
+    - {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}
+    - {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+    - {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc.cluster.local
+
