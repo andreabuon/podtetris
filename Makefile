@@ -24,7 +24,7 @@ deploy: crd build-all
 	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace
 
 deploy-local: crd kind-load
-	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace
+	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kwok/values-kind.yaml
 
 clean:
 	kind delete cluster "kind"
