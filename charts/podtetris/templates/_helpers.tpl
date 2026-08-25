@@ -60,3 +60,10 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Certificate reference for cert-manager.io/inject-ca-from (namespace/certificate-name).
+*/}}
+{{- define "podtetris.certificateRef" -}}
+{{- printf "%s/%s-webhook" .Release.Namespace (include "podtetris.fullname" .) }}
+{{- end }}

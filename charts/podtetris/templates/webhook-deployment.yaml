@@ -23,6 +23,10 @@ spec:
           ports:
             - containerPort: 8443
               name: https
+          volumeMounts:
+            - name: certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
           readinessProbe:
             httpGet:
               path: /healthz
@@ -42,3 +46,7 @@ spec:
             limits:
               cpu: {{ .Values.webhook.resources.limits.cpu }}
               memory: {{ .Values.webhook.resources.limits.memory }}
+      volumes:
+        - name: certs
+          secret:
+            secretName: {{ include "podtetris.fullname" . }}-webhook-certs
