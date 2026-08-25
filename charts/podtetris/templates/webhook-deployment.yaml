@@ -1,39 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: podtetris
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: podtetris-webhook
-  namespace: podtetris
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: podtetris-webhook
-rules:
-  - apiGroups: ["podtetris.io.podtetris.io"]
-    resources: ["podmoves"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["podtetris.io.podtetris.io"]
-    resources: ["podmoves/status"]
-    verbs: ["get", "update", "patch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: podtetris-webhook
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: podtetris-webhook
-subjects:
-  - kind: ServiceAccount
-    name: podtetris-webhook
-    namespace: podtetris
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -86,15 +50,3 @@ spec:
         - name: certs
           secret:
             secretName: podtetris-webhook-certs
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: podtetris-webhook
-  namespace: podtetris
-spec:
-  selector:
-    app: podtetris-webhook
-  ports:
-    - port: 443
-      targetPort: 8443
