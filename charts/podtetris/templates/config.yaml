@@ -7,4 +7,4 @@ metadata:
     {{- include "podtetris.labels" . | nindent 4 }}
 data:
   config.yaml: |
-    {{- toYaml .Values.planner.config  | nindent 4 }}
+    {{- tpl (toYaml .Values.planner.config) . | nindent 4 }}

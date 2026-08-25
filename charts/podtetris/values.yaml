@@ -33,7 +33,7 @@ planner:
       cpu: 250m
       memory: 128Mi
   config:
-    podtetrisNamespace: "podtetris"
+    podtetrisNamespace: "{{ .Release.Namespace }}"
     randomCandidateNodesNumber: 3
     byCPUCandidateNodesNumber: 2
     podMoveDefaultCost: 10
