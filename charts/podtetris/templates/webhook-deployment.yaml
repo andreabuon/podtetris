@@ -4,9 +4,9 @@ metadata:
   name: {{ include "podtetris.fullname" . }}-webhook
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ include "podtetris.labels" . }}-webhook
+    app: {{ include "podtetris.fullname" . }}-webhook
 spec:
-  replicas: {{ .Values.webhook.replicas}}
+  replicas: {{ .Values.webhook.replicas }}
   selector:
     matchLabels:
       app: {{ include "podtetris.fullname" . }}-webhook
