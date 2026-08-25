@@ -71,6 +71,8 @@ webhook:
   image:
     repository: podtetris-webhook
     pullPolicy: IfNotPresent
+    tag: latest
+  replicas: 3
   timeoutSeconds: 5
   failurePolicy: Ignore # 'Ignore', not 'Fail': if the webhook is down, pod creation should not be blocked cluster-wide.
   resources:

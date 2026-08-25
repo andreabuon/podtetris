@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ include "podtetris.fullname" . }}-webhook
 spec:
-  replicas: 3
+  replicas: {{ .Values.webhook.replicas}}
   selector:
     matchLabels:
       app: {{ include "podtetris.fullname" . }}-webhook
