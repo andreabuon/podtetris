@@ -1,7 +1,7 @@
 github.com/Masterminds/semver/v3 v3.4.0 h1:Zog+i5UMtVoCU8oKka5P7i9q9HgrJeGzI9SA1Xbatp0=
 github.com/Masterminds/semver/v3 v3.4.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
-github.com/andreabuon/podtetris/src/evictor v0.0.0-20260811093314-82822af18f33 h1:H4gh5Gy+gs+RRCnPI6XWOB7Ki5A+w0Mjgn+hAdU+XBU=
-github.com/andreabuon/podtetris/src/evictor v0.0.0-20260811093314-82822af18f33/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
+github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a h1:rKC/oBbp6m6ufu1se9kAp1OuXh/lMl3wyhFfG+ZSg54=
+github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
