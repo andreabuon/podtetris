@@ -219,11 +219,13 @@ func getPodMoveCost(pod *apiv1.Pod) int {
 }
 
 func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework.NodePluginScores) (kubeframework.NodeInfo, error) {
-	var maxScore int64 = 0
-	var maxScoreNodeName string
+	if len(scores) == 0 {
+		return nil, errors.New("no node scores available")
+	}
 
-	// pick the highest score
-	for _, score := range scores {
+	maxScore := scores[0].TotalScore
+	maxScoreNodeName := scores[0].Name
+	for _, score := range scores[1:] {
 		if score.TotalScore >= maxScore {
 			maxScore = score.TotalScore
 			maxScoreNodeName = score.Name
