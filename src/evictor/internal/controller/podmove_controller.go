@@ -35,14 +35,12 @@ import (
 )
 
 const (
-	// verifyRetryInterval is how long to wait between checks that the webhook side
-	// effect (TargetNodeInjected) actually persisted a replacement on the target node.
-	verifyRetryInterval = 2 * time.Second
-	// verifyTimeout is how long to wait after TargetNodeInjected before treating the
-	// admission side effect as lost and re-opening the PodMove for a later CREATE.
-	verifyTimeout = 30 * time.Second
+	// verifyRetryInterval is how long to wait between checks that the webhook side effect (TargetNodeInjected) actually persisted a replacement on the target node.
+	verifyRetryInterval = 15 * time.Second
+	// verifyTimeout is how long to wait after TargetNodeInjected before treating the admission side effect as lost and re-opening the PodMove for a later CREATE.
+	verifyTimeout = 2 * time.Minute
 	// verifyRunningInterval is how long to wait to check whether the verified (persisted) pod is in Running phase
-	verifyRunningInterval = 1 * time.Minute
+	verifyRunningInterval = 3 * time.Minute
 )
 
 // PodMoveReconciler reconciles a PodMove object
