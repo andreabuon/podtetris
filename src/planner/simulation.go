@@ -91,7 +91,10 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		}
 
 		// ForceAddPod is used instead of SchedulePod because the scheduler predicates have already been checked with RunFilterPlgins
-		s.snapshot.ForceAddPod(pod, chosenNode.Node().Name)
+		err = s.snapshot.ForceAddPod(pod, chosenNode.Node().Name)
+		if err != nil {
+			return nil, err
+		}
 
 		// Compute and display pod move cost
 		podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
