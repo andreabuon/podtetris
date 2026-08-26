@@ -26,6 +26,9 @@ deploy: crd build-all
 deploy-local: crd kind-load
 	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml
 
+run-planner:
+	kubectl create job --from=cronjob/podtetris-planner podtetris-planner -n podtetris
+
 clean:
 	kind delete cluster "kind"
 
