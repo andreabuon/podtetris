@@ -8,8 +8,11 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['{{ include "podtetris.fullname" . }}:{{ .Values.service.port }}']
+    - name: curl
+      image: curlimages/curl:8.11.1
+      command: ['curl']
+      args:
+        - -fsS
+        - --insecure
+        - https://{{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc:443/healthz
   restartPolicy: Never
