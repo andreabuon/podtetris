@@ -30,5 +30,5 @@ run-planner:
 	kubectl create job --from=cronjob/podtetris-planner podtetris-planner -n podtetris
 
 clean:
-	kind delete cluster "kind"
+	kind delete cluster --name kind
 
