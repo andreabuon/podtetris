@@ -71,7 +71,7 @@ func getNodesByCPUUsage(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kub
 		return nil, errors.New("no available candidate nodes")
 	}
 
-	if len(nodeInfos) <= nodesNum {
+	if len(nodeInfos) < nodesNum {
 		return nil, errors.New("there are not enough candidate nodes")
 	}
 
@@ -93,7 +93,7 @@ func getRandomNodes(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubefra
 		return nil, errors.New("no available candidate nodes")
 	}
 
-	if len(nodeInfos) <= nodesNum {
+	if len(nodeInfos) < nodesNum {
 		return nil, errors.New("there are not enough candidate nodes")
 	}
 
