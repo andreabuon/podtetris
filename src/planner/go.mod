@@ -1,4 +1,4 @@
-module github.com/andreabuon/PODTetris/src/planner
+module github.com/andreabuon/podtetris/src/planner
 
 go 1.26.0
 
