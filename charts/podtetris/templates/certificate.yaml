@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "podtetris.fullname" . }}-webhook
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "podtetris.tlsSecretName" . }}
+  duration: {{ .Values.certificate.duration }}
+  renewBefore: {{ .Values.certificate.renewBefore }}
+  issuerRef:
+    group: {{ .Values.certificate.issuerGroup }}
+    kind: {{ .Values.certificate.issuerKind }}
+    name: {{ .Values.certificate.issuerName }}
+  commonName: {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+  dnsNames:
+    - {{ include "podtetris.fullname" . }}-webhook
+    - {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}
+    - {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+    - {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc.cluster.local
+

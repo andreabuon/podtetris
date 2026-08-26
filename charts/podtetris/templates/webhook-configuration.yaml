@@ -1,0 +1,30 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "podtetris.fullname" . }}-webhook
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+  annotations:
+    cert-manager.io/inject-ca-from: {{ include "podtetris.certificateRef" . }}
+webhooks:
+  - name: {{ include "podtetris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+    admissionReviewVersions: ["v1"]
+    sideEffects: NoneOnDryRun
+    failurePolicy: {{ .Values.webhook.failurePolicy }}
+    timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
+    clientConfig:
+      service:
+        name: {{ include "podtetris.fullname" . }}-webhook
+        namespace: {{ .Release.Namespace }}
+        path: "/mutate"
+        port: 443
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+        scope: "Namespaced"
+    {{- with .Values.webhook.namespaceSelector }}
+    namespaceSelector:
+      {{- tpl (toYaml .) $ | nindent 6 }}
+    {{- end }}

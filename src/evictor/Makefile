@@ -1,7 +1,9 @@
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= podtetris-evictor:latest
 # YEAR defines the year value used for substituting the YEAR placeholder in the boilerplate header.
 YEAR ?= $(shell date +%Y)
+
+HELM_CRDS_DIR ?= ../../charts/podtetris/crds
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -46,6 +48,10 @@ help: ## Display this help.
 .PHONY: manifests
 manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefinition objects.
 	"$(CONTROLLER_GEN)" rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+#	Sync the generated manifests into the Helm Chart
+	mkdir -p "$(HELM_CRDS_DIR)"
+	rm -f "$(HELM_CRDS_DIR)"/*.yaml
+	cp config/crd/bases/*.yaml "$(HELM_CRDS_DIR)/"
 
 .PHONY: generate
 generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
@@ -69,7 +75,7 @@ test: manifests generate fmt vet setup-envtest ## Run tests.
 # - KUBECTL_KUBERC=true
 # CertManager is installed by default; skip with:
 # - CERT_MANAGER_INSTALL_SKIP=true
-KIND_CLUSTER ?= evictor-test-e2e
+KIND_CLUSTER ?= kind
 
 .PHONY: setup-test-e2e
 setup-test-e2e: ## Set up a Kind cluster for e2e tests if it does not exist
@@ -257,3 +263,9 @@ endef
 define gomodver
 $(shell go list -m -f '{{if .Replace}}{{.Replace.Version}}{{else}}{{.Version}}{{end}}' $(1) 2>/dev/null)
 endef
+
+###
+.PHONY: kind-load
+KIND_CLUSTER ?= kind
+kind-load: docker-build
+	$(KIND) load docker-image $(IMG) --name $(KIND_CLUSTER)

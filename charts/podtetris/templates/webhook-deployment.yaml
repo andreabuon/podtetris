@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "podtetris.fullname" . }}-webhook
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "podtetris.fullname" . }}-webhook
+spec:
+  replicas: {{ .Values.webhook.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "podtetris.fullname" . }}-webhook
+  template:
+    metadata:
+      labels:
+        app: {{ include "podtetris.fullname" . }}-webhook
+    spec:
+      serviceAccountName: {{ include "podtetris.serviceAccountName" . }}
+      containers:
+        - name: podtetris-webhook
+          image: "{{ .Values.webhook.image.repository }}:{{ .Values.webhook.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.webhook.image.pullPolicy }}
+          ports:
+            - containerPort: 8443
+              name: https
+          volumeMounts:
+            - name: certs
+              mountPath: /etc/webhook/certs
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: {{ .Values.webhook.resources.requests.cpu }}
+              memory: {{ .Values.webhook.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.webhook.resources.limits.cpu }}
+              memory: {{ .Values.webhook.resources.limits.memory }}
+      volumes:
+        - name: certs
+          secret:
+            secretName: {{ include "podtetris.tlsSecretName" . }}

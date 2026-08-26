@@ -1,0 +1,81 @@
+{{- if .Values.planner.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "podtetris.fullname" . }}-planner
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.planner.schedule | quote }}
+  suspend: {{ .Values.planner.suspend }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      {{- if .Values.planner.ttlSecondsAfterFinished }}
+      ttlSecondsAfterFinished: {{ .Values.planner.ttlSecondsAfterFinished }}
+      {{- end }}
+      {{- with .Values.planner.activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ . }}
+      {{- end }}
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "podtetris.labels" . | nindent 12 }}
+            {{- with .Values.podLabels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        spec:
+          restartPolicy: Never
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "podtetris.serviceAccountName" . }}
+          {{- with .Values.podSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: podtetris-planner
+              {{- with .Values.securityContext }}
+              securityContext:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              image: "{{ .Values.planner.image.repository }}:{{ .Values.planner.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.planner.image.pullPolicy }}
+              {{- with .Values.planner.resources }}
+              resources:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              volumeMounts:
+                - name: config
+                  mountPath: /etc/podtetris
+                  readOnly: true
+                {{- with .Values.volumeMounts }}
+                {{- toYaml . | nindent 16 }}
+                {{- end }}
+          volumes:
+            - name: config
+              configMap:
+                name: {{ include "podtetris.fullname" . }}-config
+            {{- with .Values.volumes }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}
