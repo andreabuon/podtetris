@@ -5,7 +5,7 @@ KUBECTL = kubectl
 all: deploy
 
 cluster:
-	cd labs/lab6_kwok+kind_cost && ./setup-cluster.sh
+	cd labs/lab6_kind && ./setup-cluster.sh
 
 crd:
 	$(MAKE) -C src/evictor manifests
@@ -24,7 +24,7 @@ deploy: crd build-all
 	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace
 
 deploy-local: crd kind-load
-	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kwok/values-kind.yaml
+	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml
 
 clean:
 	kind delete cluster "kind"
