@@ -10,8 +10,6 @@ import (
 
 const (
 	SCHEDULER_CONFIG_PATH = "./podtetris-scheduler-config.yaml"
-	// DefaultConfigPath is where the in-cluster ConfigMap is mounted.
-	DefaultConfigPath = "/etc/podtetris/config.yaml"
 )
 
 type AppConfig struct {

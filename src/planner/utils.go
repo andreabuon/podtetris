@@ -58,19 +58,6 @@ func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
 	return true, ""
 }
 
-func getControllerReference(pod *apiv1.Pod) *metav1.OwnerReference {
-	return getControllerReferenceFromRefs(pod.OwnerReferences)
-}
-
-func getControllerReferenceFromRefs(refs []metav1.OwnerReference) *metav1.OwnerReference {
-	for i := range refs {
-		if refs[i].Controller != nil && *refs[i].Controller {
-			return &refs[i]
-		}
-	}
-	return nil
-}
-
 func getPodCPURequests(pod *apiv1.Pod) (int64, error) {
 	if pod == nil {
 		return 0, errors.New("pod is nil")
