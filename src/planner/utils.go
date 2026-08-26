@@ -16,6 +16,7 @@ const (
 	SkipStaticPod          EvictionSkipReason = "static pod"
 	SkipFixedPod           EvictionSkipReason = "pod is fixed to the node"
 	SkipNilPod             EvictionSkipReason = "pod reference is nil"
+	SkipNoController       EvictionSkipReason = "no controller owner (would not be recreated after eviction)"
 	SkipSystemPods         EvictionSkipReason = "pod belongs to namespace 'kube-system'"
 	SkipPodtetrisNamespace EvictionSkipReason = "pod belongs to podtetris own namespace"
 )
@@ -32,6 +33,11 @@ func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
 
 	if pod.Namespace == Config.PodtetrisNamespace {
 		return false, SkipPodtetrisNamespace
+	}
+
+	// Bare pods (and any pods without a controller) would not be recreated after eviction
+	if metav1.GetControllerOf(pod) == nil {
+		return false, SkipNoController
 	}
 
 	for _, owner := range pod.GetOwnerReferences() {
