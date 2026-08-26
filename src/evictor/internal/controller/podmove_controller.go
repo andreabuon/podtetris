@@ -71,7 +71,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 
 	var pm podtetrisiov1.PodMove
 	if err = r.Get(ctx, req.NamespacedName, &pm); err != nil {
-		return ctrl.Result{}, err
+		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 	defer func() {
 		if syncErr := r.syncPhase(ctx, &pm); syncErr != nil && err == nil {
