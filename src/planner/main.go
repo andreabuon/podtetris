@@ -31,6 +31,9 @@ import (
 
 var Config AppConfig
 
+// control-plane nodes should never be consolidation candidates.
+const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
+
 func main() {
 	ctx := context.Background()
 
@@ -66,7 +69,7 @@ func main() {
 		clientset,
 		30*time.Second,
 		informers.WithTweakListOptions(func(opts *metav1.ListOptions) {
-			opts.LabelSelector = "!node-role.kubernetes.io/control-plane"
+			opts.LabelSelector = nonControlPlaneLabelSelector
 		}),
 	)
 	nodeInformer := informerFactory.Core().V1().Nodes()
@@ -92,8 +95,11 @@ func main() {
 	}
 
 	// retrieve nodes to build the cluster snapshot
-	const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
-	nodes, err := nodeInformer.Lister().List(labels.Everything())
+	workerNodeSelector, err := labels.Parse(nonControlPlaneLabelSelector)
+	if err != nil {
+		log.Fatalf("Error parsing the worker node label selector: %v", err)
+	}
+	nodes, err := nodeInformer.Lister().List(workerNodeSelector)
 	if err != nil {
 		log.Fatalf("Error retrieving nodes from the informer: %v", err)
 	}

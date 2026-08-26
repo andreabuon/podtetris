@@ -77,7 +77,7 @@ func getPodMemoryRequests(pod *apiv1.Pod) (int64, error) {
 
 	var total int64 = 0
 	for _, c := range pod.Spec.Containers {
-		total += c.Resources.Requests.Memory().MilliValue()
+		total += c.Resources.Requests.Memory().Value()
 	}
 	return total, nil
 }
