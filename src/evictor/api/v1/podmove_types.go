@@ -35,11 +35,14 @@ const (
 	ConditionPodVerified = "TargetPodVerified"
 	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
 	ConditionPodRunning = "TargetPodRunning"
-	// ConditionFailed is True when the replacement pod claimed by the webhook did not persist on Spec.TargetNode.
+	// ConditionFailed is True when webhook-claimed replacement pod CREATE request failed to persist on Spec.TargetNode for MaxPersistAttempts times.
 	ConditionFailed = "Failed"
 
-	// ReasonReplacementNotPersisted is set on TargetNodeInjected=False and Failed=True when the admitted replacement never bound to the target.
+	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node for MaxPersistAttempts times.
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
+
+	// MaxPersistAttempts is how many webhook-claimed CREATEs may fail to persist before the PodMove is marked Failed.
+	MaxPersistAttempts = 3
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
@@ -64,7 +67,7 @@ const (
 	PodMovePhaseVerified PodMovePhase = "Verified"
 	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
-	// PodMovePhaseFailed is set after the webhook claimed a replacement CREATE that never persisted on Spec.TargetNode.
+	// PodMovePhaseFailed is set after webhook-claimed CREATEs failed to persist on Spec.TargetNode for MaxPersistAttempts attempts.
 	PodMovePhaseFailed PodMovePhase = "Failed"
 )
 
@@ -123,6 +126,11 @@ type PodMoveStatus struct {
 	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded;Failed
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
+
+	// persistAttempts is the number of times a webhook-claimed replacement CREATE failed to persist on Spec.TargetNode.
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	PersistAttempts int32 `json:"persistAttempts,omitempty"`
 }
 
 // +kubebuilder:object:root=true
