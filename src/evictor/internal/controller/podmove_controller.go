@@ -105,7 +105,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 			}
 			return ctrl.Result{}, nil
 		} else {
-			log.Info("The replacement pod phase is not 'Running' yet. Checking again in", verifyRunningInterval)
+			log.Info("The replacement pod phase is not 'Running' yet. Checking again in", "interval", verifyRunningInterval)
 			return ctrl.Result{RequeueAfter: verifyRunningInterval}, nil
 		}
 	}
