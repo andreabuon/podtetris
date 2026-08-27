@@ -95,7 +95,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		if replacementOnTarget(replacement, &pm) {
 			return r.markReplacementVerified(ctx, &pm, replacement)
 		}
-		return r.reconcileUnpersistedReplacement(ctx, &pm, replacement)
+		return r.reconcileReplacementNotFound(ctx, &pm, replacement)
 	}
 
 	// PodMove not Injected yet
@@ -108,7 +108,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	return r.evictSourcePod(ctx, &pm)
 }
 
-// reconcileVerifiedReplacement records TargetPodRunning if the verified replacement is Running, otherwise requeues.
+// reconcileVerifiedReplacement checks if the (verified) replacement is Running, otherwise requeues.
 func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
@@ -141,26 +141,28 @@ func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *pod
 	return ctrl.Result{}, nil
 }
 
-// reconcileUnpersistedReplacement handles TargetNodeInjected=True when the claimed pod is not yet on Spec.TargetNode.
-// It either waits for persistence, reopens the PodMove for another CREATE, or marks Failed.
-func (r *PodMoveReconciler) reconcileUnpersistedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
+// reconcileReplacementNotFound checks whether the replacement pod landed on Spec.TargetNode.
+// It either waits for persistence, reopens the PodMove for another CREATE, or marks the PodMove as Failed.
+func (r *PodMoveReconciler) reconcileReplacementNotFound(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
-	waited := timeSinceInjected(pm)
 
-	if stillWaitingForReplacement(waited, replacement) {
+	timeWaited, err := timeSinceInjected(pm)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	if stillWaitingForReplacement(timeWaited, replacement) {
 		log.V(1).Info("Waiting for replacement pod to persist on the target node",
-			"waited", waited,
+			"waited", timeWaited,
 			"found", replacement != nil,
 			"persistAttempts", pm.Status.PersistAttempts,
 		)
 		return ctrl.Result{RequeueAfter: persistPollInterval}, nil
 	}
 
-	return r.recordFailedPersistAttempt(ctx, pm, replacement, waited)
+	return r.recordFailedPersistAttempt(ctx, pm, replacement, timeWaited)
 }
 
-// stillWaitingForReplacement reports whether this reconcile should keep waiting rather than
-// counting a failed persist attempt.
+// stillWaitingForReplacement reports whether this reconcile should keep waiting rather than counting a failed persist attempt.
 // A CREATE that never produces a labeled pod is treated as lost after persistPollInterval so the ReplicaSet's next CREATE can re-claim the PodMove.
 // A labeled pod that has not bound yet is given persistBindTimeout to schedule onto Spec.TargetNode.
 func stillWaitingForReplacement(waited time.Duration, replacement *corev1.Pod) bool {
@@ -170,12 +172,12 @@ func stillWaitingForReplacement(waited time.Duration, replacement *corev1.Pod) b
 	return waited < persistBindTimeout
 }
 
-func timeSinceInjected(pm *podtetrisiov1.PodMove) time.Duration {
+func timeSinceInjected(pm *podtetrisiov1.PodMove) (time.Duration, error) {
 	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
 	if injected == nil || injected.LastTransitionTime.IsZero() {
-		return 0
+		return 0, fmt.Errorf("PodMove Target injection time not found")
 	}
-	return time.Since(injected.LastTransitionTime.Time)
+	return time.Since(injected.LastTransitionTime.Time), nil
 }
 
 // recordFailedPersistAttempt increments PersistAttempts. After MaxPersistAttempts the PodMove
@@ -186,15 +188,15 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 	attempt := pm.Status.PersistAttempts
 
 	if attempt >= podtetrisiov1.MaxPersistAttempts {
-		log.Info("Replacement pod did not persist; persist attempts exhausted",
+		log.Info("Replacement pod request did not persist; persist attempts exhausted",
 			"waited", waited,
 			"found", replacement != nil,
 			"persistAttempts", attempt,
 		)
-		return ctrl.Result{}, r.markReplacementNotPersisted(ctx, pm, attempt)
+		return ctrl.Result{}, r.markFailed(ctx, pm, attempt)
 	}
 
-	log.Info("Replacement pod did not persist; reopening PodMove for another CREATE",
+	log.Info("Replacement pod request did not persist; reopening PodMove for another CREATE",
 		"waited", waited,
 		"found", replacement != nil,
 		"persistAttempts", attempt,
@@ -202,8 +204,8 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 	return ctrl.Result{}, r.reopenForReplacementClaim(ctx, pm, attempt)
 }
 
-func (r *PodMoveReconciler) markReplacementNotPersisted(ctx context.Context, pm *podtetrisiov1.PodMove, attempt int32) error {
-	msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, persistBindTimeout, attempt)
+func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, attempt int32) error {
+	msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, persistBindTimeout, attempt)
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
 		Type:               podtetrisiov1.ConditionFailed,
 		Status:             metav1.ConditionTrue,
@@ -235,7 +237,15 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-	if err := r.requestEviction(ctx, pod); err != nil {
+
+	eviction := &policyv1.Eviction{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      pod.Name,
+			Namespace: pod.Namespace,
+		},
+	}
+	err = r.SubResource("eviction").Create(ctx, pod, eviction)
+	if err != nil {
 		return ctrl.Result{}, err
 	}
 
@@ -260,16 +270,6 @@ func (r *PodMoveReconciler) getSourcePod(ctx context.Context, pm *podtetrisiov1.
 		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, ref.UID)
 	}
 	return &pod, nil
-}
-
-func (r *PodMoveReconciler) requestEviction(ctx context.Context, pod *corev1.Pod) error {
-	eviction := &policyv1.Eviction{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      pod.Name,
-			Namespace: pod.Namespace,
-		},
-	}
-	return r.SubResource("eviction").Create(ctx, pod, eviction)
 }
 
 func (r *PodMoveReconciler) findReplacementPod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
