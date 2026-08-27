@@ -227,6 +227,12 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              persistAttempts:
+                description: persistAttempts is the number of times a webhook-claimed
+                  replacement CREATE failed to persist on Spec.TargetNode.
+                format: int32
+                minimum: 0
+                type: integer
               phase:
                 default: Pending
                 description: |-
@@ -239,6 +245,7 @@ spec:
                 - Verifying
                 - Verified
                 - Succeeded
+                - Failed
                 type: string
             type: object
         required:

@@ -31,11 +31,18 @@ const (
 	// ConditionTargetNodeInjected is True after the mutating webhook intercepted a replacement pod CREATE and pinned it to Spec.TargetNode.
 	// Admission does not guarantee that object is persisted as admitted, so this claim is only final once ConditionPodVerified is True.
 	ConditionTargetNodeInjected = "TargetNodeInjected"
-	// ConditionPodVerified is True after the controller observed the replacement pod persisted with the webhook mutation and bound to Spec.TargetNode.
-	// If that never happens, TargetNodeInjected is cleared so a later CREATE can be claimed.
+	// ConditionPodVerified is True after the controller observed the replacement pod (after the webhook mutation) persisted and bound to Spec.TargetNode.
 	ConditionPodVerified = "TargetPodVerified"
 	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
 	ConditionPodRunning = "TargetPodRunning"
+	// ConditionFailed is True when webhook-claimed replacement pod CREATE request failed to persist on Spec.TargetNode for MaxPersistAttempts times.
+	ConditionFailed = "Failed"
+
+	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node for MaxPersistAttempts times.
+	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
+
+	// MaxPersistAttempts is how many webhook-claimed CREATEs may fail to persist before the PodMove is marked Failed.
+	MaxPersistAttempts = 3
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
@@ -60,6 +67,8 @@ const (
 	PodMovePhaseVerified PodMovePhase = "Verified"
 	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
+	// PodMovePhaseFailed is set after webhook-claimed CREATEs failed to persist on Spec.TargetNode for MaxPersistAttempts attempts.
+	PodMovePhaseFailed PodMovePhase = "Failed"
 )
 
 // PodMoveSpec defines the desired state of PodMove
@@ -114,9 +123,14 @@ type PodMoveStatus struct {
 	// phase is a high-level summary derived from conditions.
 	// Controllers overwrite it on every status update; do not set it manually.
 	// +kubebuilder:default=Pending
-	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded
+	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded;Failed
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
+
+	// persistAttempts is the number of times a webhook-claimed replacement CREATE failed to persist on Spec.TargetNode.
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	PersistAttempts int32 `json:"persistAttempts,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -1,6 +1,6 @@
 // PODTetris mutating admission webhook
 // Intercepts Pod CREATE requests, finds a matching open PodMove (Evicted condition
-// present, TargetNodeInjected not True), pins the pod to PodMove.spec.targetNode
+// present, TargetNodeInjected not True, Failed not True), pins the pod to PodMove.spec.targetNode
 // via nodeSelector, and marks TargetNodeInjected=True so the recreation is recorded
 // on the PodMove (LastTransitionTime is the recreation timestamp).
 package main
@@ -315,9 +315,12 @@ func ownerMatches(ref, owner metav1.OwnerReference) bool {
 }
 
 // isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE:
-// Evicted condition is present (False=Evicting or True=Evicted) and TargetNodeInjected is not True.
+// Evicted condition is present (False=Evicting or True=Evicted), Failed is not True, and TargetNodeInjected is not True.
 func isOpenForReplacement(pm *podtetrisiov1.PodMove) bool {
 	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) == nil {
+		return false
+	}
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionFailed) {
 		return false
 	}
 	return !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
