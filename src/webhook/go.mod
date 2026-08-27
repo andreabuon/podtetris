@@ -3,7 +3,7 @@ module github.com/andreabuon/podtetris/src/webhook
 go 1.26.0
 
 require (
-	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a
+	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826171210-65c7bfd80539
 	k8s.io/api v0.36.2
 	k8s.io/apimachinery v0.36.2
 	k8s.io/client-go v0.36.2
