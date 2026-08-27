@@ -35,12 +35,12 @@ import (
 )
 
 const (
-	// verifyRetryInterval is how long to wait between checks that the webhook side effect (TargetNodeInjected) actually persisted a replacement on the target node.
-	verifyRetryInterval = 15 * time.Second
-	// verifyTimeout is how long to wait after TargetNodeInjected before treating the admission side effect as lost (in this attempt).
-	verifyTimeout = 2 * time.Minute
-	// verifyRunningInterval is how long to wait to check whether the verified (persisted) pod is in Running phase
-	verifyRunningInterval = 3 * time.Minute
+	// persistPollInterval is how often to re-check that a webhook-claimed replacement actually persisted on the target node.
+	persistPollInterval = 25 * time.Second
+	// persistBindTimeout is how long to wait for a labeled replacement pod to bind to Spec.TargetNode before counting a failed persist attempt.
+	persistBindTimeout = 1 * time.Minute
+	// runningPollInterval is how long to wait between checks that a verified replacement has reached Running.
+	runningPollInterval = 3 * time.Minute
 )
 
 // PodMoveReconciler reconciles a PodMove object
@@ -55,15 +55,6 @@ type PodMoveReconciler struct {
 // +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
 // +kubebuilder:rbac:groups="",resources=pods/eviction,verbs=create
 
-// Reconcile is part of the main kubernetes reconciliation loop which aims to
-// move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the PodMove object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
-// For more details, check Reconcile and its Result here:
-// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.24.1/pkg/reconcile
 func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, err error) {
 	log := logf.FromContext(ctx)
 
@@ -84,83 +75,177 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	)
 
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionFailed) {
-		log.Info("The PodMove has already failed")
+		log.Info("PodMove already failed")
 		return ctrl.Result{}, nil
 	}
-
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodRunning) {
-		log.Info("The PodMove has already been completed (the replacement pod is running on the target node)")
+		log.Info("PodMove already succeeded")
 		return ctrl.Result{}, nil
 	}
-
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified) {
+		return r.reconcileVerifiedReplacement(ctx, &pm)
+	}
+
+	// PodMove not Verified yet
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected) {
 		replacement, err := r.findReplacementPod(ctx, &pm)
 		if err != nil {
 			return ctrl.Result{}, err
 		}
-		if replacement == nil {
-			log.Info("The PodMove is verified but the replacement pod cannot be found anymore.")
-			return ctrl.Result{}, nil
+		if replacementOnTarget(replacement, &pm) {
+			return r.markReplacementVerified(ctx, &pm, replacement)
 		}
-
-		if replacement.Status.Phase == corev1.PodRunning {
-			msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
-			if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionPodRunning, metav1.ConditionTrue, "Running", msg); err != nil {
-				return ctrl.Result{}, err
-			}
-			return ctrl.Result{}, nil
-		} else {
-			log.Info("The replacement pod phase is not 'Running' yet. Checking again in", verifyRunningInterval)
-			return ctrl.Result{RequeueAfter: verifyRunningInterval}, nil
-		}
+		return r.reconcileUnpersistedReplacement(ctx, &pm, replacement)
 	}
 
-	// Admission can mark the PodMove injected but then fail to persist the pod.
-	// Verify if the new pod persisted
-	replacement, err := r.findReplacementPod(ctx, &pm)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-	if replacementOnTarget(replacement, &pm) {
-		log.Info("Verified replacement pod", "pod", replacement.Name, "node", pm.Spec.TargetNode)
-		msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
-		if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionPodVerified, metav1.ConditionTrue, "Verified", msg); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, nil
-	}
-
-	// if the PodMove has been processed by the webhook but the request did not persist, retry until MaxAttempts.
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected) {
-		return r.RetryInjectionOrFail(ctx, &pm, replacement)
-	}
-
+	// PodMove not Injected yet
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
-		log.Info("Pod eviction has already been performed; currently waiting for the webhook to inject the target node name in a new replacement pod")
+		log.Info("Waiting for webhook to claim a replacement pod CREATE")
 		return ctrl.Result{}, nil
 	}
 
-	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
-		return ctrl.Result{}, err
-	}
+	// PodMove not Evicted yet
+	return r.evictSourcePod(ctx, &pm)
+}
 
-	pod, err := r.getPod(ctx, pm)
+// reconcileVerifiedReplacement records TargetPodRunning if the verified replacement is Running, otherwise requeues.
+func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+
+	replacement, err := r.findReplacementPod(ctx, pm)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-
-	if err := r.evictPod(ctx, pod); err != nil {
-		return ctrl.Result{}, err
+	if replacement == nil {
+		log.Info("Verified replacement pod not found")
+		return ctrl.Result{}, fmt.Errorf("Verified replacement pod not found")
+	}
+	if replacement.Status.Phase != corev1.PodRunning {
+		log.Info("Replacement pod is not Running yet", "phase", replacement.Status.Phase, "requeueAfter", runningPollInterval)
+		return ctrl.Result{RequeueAfter: runningPollInterval}, nil
 	}
 
-	if err := r.setCondition(ctx, &pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested."); err != nil {
+	msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionPodRunning, metav1.ConditionTrue, "Running", msg); err != nil {
 		return ctrl.Result{}, err
 	}
-
 	return ctrl.Result{}, nil
 }
 
-func (r *PodMoveReconciler) getPod(ctx context.Context, pm podtetrisiov1.PodMove) (*corev1.Pod, error) {
+func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
+	logf.FromContext(ctx).Info("Verified replacement pod", "pod", replacement.Name, "node", pm.Spec.TargetNode)
+	msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionPodVerified, metav1.ConditionTrue, "Verified", msg); err != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{}, nil
+}
+
+// reconcileUnpersistedReplacement handles TargetNodeInjected=True when the claimed pod is not yet on Spec.TargetNode.
+// It either waits for persistence, reopens the PodMove for another CREATE, or marks Failed.
+func (r *PodMoveReconciler) reconcileUnpersistedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+	waited := timeSinceInjected(pm)
+
+	if stillWaitingForReplacement(waited, replacement) {
+		log.V(1).Info("Waiting for replacement pod to persist on the target node",
+			"waited", waited,
+			"found", replacement != nil,
+			"persistAttempts", pm.Status.PersistAttempts,
+		)
+		return ctrl.Result{RequeueAfter: persistPollInterval}, nil
+	}
+
+	return r.recordFailedPersistAttempt(ctx, pm, replacement, waited)
+}
+
+// stillWaitingForReplacement reports whether this reconcile should keep waiting rather than
+// counting a failed persist attempt.
+// A CREATE that never produces a labeled pod is treated as lost after persistPollInterval so the ReplicaSet's next CREATE can re-claim the PodMove.
+// A labeled pod that has not bound yet is given persistBindTimeout to schedule onto Spec.TargetNode.
+func stillWaitingForReplacement(waited time.Duration, replacement *corev1.Pod) bool {
+	if replacement == nil {
+		return waited < persistPollInterval
+	}
+	return waited < persistBindTimeout
+}
+
+func timeSinceInjected(pm *podtetrisiov1.PodMove) time.Duration {
+	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
+	if injected == nil || injected.LastTransitionTime.IsZero() {
+		return 0
+	}
+	return time.Since(injected.LastTransitionTime.Time)
+}
+
+// recordFailedPersistAttempt increments PersistAttempts. After MaxPersistAttempts the PodMove
+// is marked Failed; otherwise TargetNodeInjected is cleared so a later CREATE can claim it.
+func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod, waited time.Duration) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+	pm.Status.PersistAttempts++
+	attempt := pm.Status.PersistAttempts
+
+	if attempt >= podtetrisiov1.MaxPersistAttempts {
+		log.Info("Replacement pod did not persist; persist attempts exhausted",
+			"waited", waited,
+			"found", replacement != nil,
+			"persistAttempts", attempt,
+		)
+		return ctrl.Result{}, r.markReplacementNotPersisted(ctx, pm, attempt)
+	}
+
+	log.Info("Replacement pod did not persist; reopening PodMove for another CREATE",
+		"waited", waited,
+		"found", replacement != nil,
+		"persistAttempts", attempt,
+	)
+	return ctrl.Result{}, r.reopenForReplacementClaim(ctx, pm, attempt)
+}
+
+func (r *PodMoveReconciler) markReplacementNotPersisted(ctx context.Context, pm *podtetrisiov1.PodMove, attempt int32) error {
+	msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, persistBindTimeout, attempt)
+	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
+		Type:               podtetrisiov1.ConditionFailed,
+		Status:             metav1.ConditionTrue,
+		Reason:             podtetrisiov1.ReasonReplacementNotPersisted,
+		Message:            msg,
+		ObservedGeneration: pm.Generation,
+	})
+	return r.updateStatus(ctx, pm)
+}
+
+func (r *PodMoveReconciler) reopenForReplacementClaim(ctx context.Context, pm *podtetrisiov1.PodMove, attempt int32) error {
+	msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s (attempt %d/%d); TargetNodeInjected cleared so a later CREATE can be claimed", pm.Spec.TargetNode, persistBindTimeout, attempt, podtetrisiov1.MaxPersistAttempts)
+	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
+		Type:               podtetrisiov1.ConditionTargetNodeInjected,
+		Status:             metav1.ConditionFalse,
+		Reason:             podtetrisiov1.ReasonReplacementNotPersisted,
+		Message:            msg,
+		ObservedGeneration: pm.Generation,
+	})
+	return r.updateStatus(ctx, pm)
+}
+
+func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	pod, err := r.getSourcePod(ctx, pm)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	if err := r.requestEviction(ctx, pod); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested"); err != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{}, nil
+}
+
+func (r *PodMoveReconciler) getSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
 	ref := pm.Spec.Pod
 	ns := ref.Namespace
 	if ns == "" {
@@ -168,21 +253,16 @@ func (r *PodMoveReconciler) getPod(ctx context.Context, pm podtetrisiov1.PodMove
 	}
 
 	var pod corev1.Pod
-	if err := r.Get(ctx, types.NamespacedName{
-		Namespace: ns,
-		Name:      ref.Name,
-	}, &pod); err != nil {
+	if err := r.Get(ctx, types.NamespacedName{Namespace: ns, Name: ref.Name}, &pod); err != nil {
 		return nil, err
 	}
-
 	if ref.UID != "" && pod.UID != ref.UID {
 		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, ref.UID)
 	}
-
 	return &pod, nil
 }
 
-func (r *PodMoveReconciler) evictPod(ctx context.Context, pod *corev1.Pod) error {
+func (r *PodMoveReconciler) requestEviction(ctx context.Context, pod *corev1.Pod) error {
 	eviction := &policyv1.Eviction{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      pod.Name,
@@ -190,34 +270,6 @@ func (r *PodMoveReconciler) evictPod(ctx context.Context, pod *corev1.Pod) error
 		},
 	}
 	return r.SubResource("eviction").Create(ctx, pod, eviction)
-}
-
-func (r *PodMoveReconciler) setCondition(
-	ctx context.Context,
-	pm *podtetrisiov1.PodMove,
-	condType string,
-	status metav1.ConditionStatus,
-	reason, message string,
-) error {
-	changed := meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               condType,
-		Status:             status,
-		Reason:             reason,
-		Message:            message,
-		ObservedGeneration: pm.Generation,
-	})
-	if changed {
-		pm.Status.SyncPhase()
-		return r.Status().Update(ctx, pm)
-	}
-	return nil
-}
-
-func (r *PodMoveReconciler) syncPhase(ctx context.Context, pm *podtetrisiov1.PodMove) error {
-	if !pm.Status.SyncPhase() {
-		return nil
-	}
-	return r.Status().Update(ctx, pm)
 }
 
 func (r *PodMoveReconciler) findReplacementPod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
@@ -249,80 +301,6 @@ func (r *PodMoveReconciler) findReplacementPod(ctx context.Context, pm *podtetri
 	return pending, nil
 }
 
-// RetryInjectionOrFail waits for a webhook-claimed replacement to persist on Spec.TargetNode.
-// A CREATE that never produces a labeled pod is retried after verifyRetryInterval;
-// A labeled pod that has not bound yet is given verifyTimeout.
-// TargetNodeInjected is then cleared so a later CREATE can claim this PodMove again. After MaxPersistAttempts the PodMove is marked Failed.
-func (r *PodMoveReconciler) RetryInjectionOrFail(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
-
-	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
-	waited := time.Duration(0)
-	if injected != nil && !injected.LastTransitionTime.IsZero() {
-		waited = time.Since(injected.LastTransitionTime.Time)
-	}
-
-	// A missing labeled pod after one retry interval is treated as a lost CREATE so the
-	// ReplicaSet's next CREATE can re-claim this PodMove. A labeled pod that is not yet
-	// bound is given the full verifyTimeout to schedule onto Spec.TargetNode.
-	stillWaiting := waited < verifyTimeout
-	if replacement == nil && waited >= verifyRetryInterval {
-		stillWaiting = false
-	}
-	if stillWaiting {
-		log.V(1).Info("Waiting for replacement pod to persist on the target node",
-			"waited", waited,
-			"found", replacement != nil,
-			"persistAttempts", pm.Status.PersistAttempts,
-		)
-		return ctrl.Result{RequeueAfter: verifyRetryInterval}, nil
-	}
-
-	pm.Status.PersistAttempts++
-	attempt := pm.Status.PersistAttempts
-
-	if attempt >= podtetrisiov1.MaxPersistAttempts {
-		log.Info("Replacement pod did not persist on the target node; persist attempts exhausted, marking PodMove Failed",
-			"waited", waited,
-			"found", replacement != nil,
-			"persistAttempts", attempt,
-		)
-		msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, verifyTimeout, attempt)
-		meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-			Type:               podtetrisiov1.ConditionFailed,
-			Status:             metav1.ConditionTrue,
-			Reason:             podtetrisiov1.ReasonReplacementNotPersisted,
-			Message:            msg,
-			ObservedGeneration: pm.Generation,
-		})
-		pm.Status.SyncPhase()
-		if err := r.Status().Update(ctx, pm); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, nil
-	}
-
-	log.Info("Replacement pod did not persist on the target node; clearing TargetNodeInjected for retry",
-		"waited", waited,
-		"found", replacement != nil,
-		"persistAttempts", attempt,
-	)
-	msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s (attempt %d/%d); TargetNodeInjected cleared so a later CREATE can be claimed", pm.Spec.TargetNode, verifyTimeout, attempt, podtetrisiov1.MaxPersistAttempts)
-	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionTargetNodeInjected,
-		Status:             metav1.ConditionFalse,
-		Reason:             podtetrisiov1.ReasonReplacementNotPersisted,
-		Message:            msg,
-		ObservedGeneration: pm.Generation,
-	})
-
-	pm.Status.SyncPhase()
-	if err := r.Status().Update(ctx, pm); err != nil {
-		return ctrl.Result{}, err
-	}
-	return ctrl.Result{}, nil
-}
-
 func replacementOnTarget(pod *corev1.Pod, pm *podtetrisiov1.PodMove) bool {
 	if pod == nil || pm == nil {
 		return false
@@ -338,6 +316,38 @@ func replacementOnTarget(pod *corev1.Pod, pm *podtetrisiov1.PodMove) bool {
 
 func isOriginalPod(pm *podtetrisiov1.PodMove, pod *corev1.Pod) bool {
 	return pm.Spec.Pod.UID != "" && pod.UID == pm.Spec.Pod.UID
+}
+
+func (r *PodMoveReconciler) setCondition(
+	ctx context.Context,
+	pm *podtetrisiov1.PodMove,
+	condType string,
+	status metav1.ConditionStatus,
+	reason, message string,
+) error {
+	changed := meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
+		Type:               condType,
+		Status:             status,
+		Reason:             reason,
+		Message:            message,
+		ObservedGeneration: pm.Generation,
+	})
+	if !changed {
+		return nil
+	}
+	return r.updateStatus(ctx, pm)
+}
+
+func (r *PodMoveReconciler) updateStatus(ctx context.Context, pm *podtetrisiov1.PodMove) error {
+	pm.Status.SyncPhase()
+	return r.Status().Update(ctx, pm)
+}
+
+func (r *PodMoveReconciler) syncPhase(ctx context.Context, pm *podtetrisiov1.PodMove) error {
+	if !pm.Status.SyncPhase() {
+		return nil
+	}
+	return r.Status().Update(ctx, pm)
 }
 
 // SetupWithManager sets up the controller with the Manager.
