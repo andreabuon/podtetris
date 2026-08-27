@@ -31,11 +31,15 @@ const (
 	// ConditionTargetNodeInjected is True after the mutating webhook intercepted a replacement pod CREATE and pinned it to Spec.TargetNode.
 	// Admission does not guarantee that object is persisted as admitted, so this claim is only final once ConditionPodVerified is True.
 	ConditionTargetNodeInjected = "TargetNodeInjected"
-	// ConditionPodVerified is True after the controller observed the replacement pod persisted with the webhook mutation and bound to Spec.TargetNode.
-	// If that never happens, TargetNodeInjected is cleared so a later CREATE can be claimed.
+	// ConditionPodVerified is True after the controller observed the replacement pod (after the webhook mutation) persisted and bound to Spec.TargetNode.
 	ConditionPodVerified = "TargetPodVerified"
 	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
 	ConditionPodRunning = "TargetPodRunning"
+	// ConditionFailed is True when the replacement pod claimed by the webhook did not persist on Spec.TargetNode.
+	ConditionFailed = "Failed"
+
+	// ReasonReplacementNotPersisted is set on TargetNodeInjected=False and Failed=True when the admitted replacement never bound to the target.
+	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
@@ -60,6 +64,8 @@ const (
 	PodMovePhaseVerified PodMovePhase = "Verified"
 	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
+	// PodMovePhaseFailed is set after the webhook claimed a replacement CREATE that never persisted on Spec.TargetNode.
+	PodMovePhaseFailed PodMovePhase = "Failed"
 )
 
 // PodMoveSpec defines the desired state of PodMove
@@ -114,7 +120,7 @@ type PodMoveStatus struct {
 	// phase is a high-level summary derived from conditions.
 	// Controllers overwrite it on every status update; do not set it manually.
 	// +kubebuilder:default=Pending
-	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded
+	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded;Failed
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
 }

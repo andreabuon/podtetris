@@ -239,6 +239,7 @@ spec:
                 - Verifying
                 - Verified
                 - Succeeded
+                - Failed
                 type: string
             type: object
         required:
