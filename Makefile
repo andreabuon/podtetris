@@ -1,6 +1,6 @@
 KUBECTL = kubectl
 
-.PHONY: all build-all cluster crd install deploy deploy-local uninstall clean
+.PHONY: all build-all cluster crd install deploy deploy-local run-planner uninstall clean
 
 all: deploy
 
@@ -27,7 +27,7 @@ deploy-local: crd kind-load
 	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml
 
 run-planner:
-	kubectl create job --from=cronjob/podtetris-planner podtetris-planner -n podtetris
+	$(KUBECTL) create job --from=cronjob/podtetris-planner "podtetris-planner-$$(date +%Y%m%d-%H%M%S)" -n podtetris
 
 clean:
 	kind delete cluster --name kind
