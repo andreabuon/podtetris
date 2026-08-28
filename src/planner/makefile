@@ -24,8 +24,9 @@ check:
 	go vet .
 	staticcheck ./
 
+# Context is src/ so the image can replace-build against local evictor.
 docker-build:
-	$(CONTAINER_TOOL) build -t $(IMG) .
+	$(CONTAINER_TOOL) build -t $(IMG) -f Dockerfile ..
 
 kind-load: docker-build
 	$(KIND) load docker-image $(IMG) --name $(KIND_CLUSTER)

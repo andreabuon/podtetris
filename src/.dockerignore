@@ -1,0 +1,17 @@
+# docker-build for the planner uses src/ as the context (see planner/makefile).
+webhook
+go.work
+go.work.sum
+
+planner/podtetris-planner
+planner/config.yaml
+planner/makefile
+planner/.gitignore
+planner/.dockerignore
+
+evictor/bin
+evictor/config
+evictor/test
+evictor/hack
+evictor/cmd
+evictor/internal
