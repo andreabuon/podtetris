@@ -22,6 +22,9 @@ resources:
 # default, aiding admins in cluster management. Those roles are
 # not used by the evictor itself. You can comment the following lines
 # if you do not want those helpers be installed with your Project.
+- consolidationplan_admin_role.yaml
+- consolidationplan_editor_role.yaml
+- consolidationplan_viewer_role.yaml
 - podmove_admin_role.yaml
 - podmove_editor_role.yaml
 - podmove_viewer_role.yaml

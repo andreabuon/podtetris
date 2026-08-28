@@ -18,4 +18,13 @@ resources:
   kind: PodMove
   path: github.com/andreabuon/podtetris/src/evictor/api/v1
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: podtetris.io
+  group: podtetris.io
+  kind: ConsolidationPlan
+  path: github.com/andreabuon/podtetris/src/evictor/api/v1
+  version: v1
 version: "3"
