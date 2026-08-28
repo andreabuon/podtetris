@@ -195,13 +195,13 @@ func main() {
 		log.Printf("Score threshold reached, auto applying consolidation strategy")
 		scheme := runtime.NewScheme()
 		if err := podtetrisv1.AddToScheme(scheme); err != nil {
-			log.Fatalf("Error registering the PodMove scheme: %v", err)
+			log.Fatalf("Error registering the podtetris scheme: %v", err)
 		}
 		crdClient, err := client.New(clusterConfig, client.Options{Scheme: scheme})
 		if err != nil {
-			log.Fatalf("Error creating the PodMove client: %v", err)
+			log.Fatalf("Error creating the podtetris client: %v", err)
 		}
-		applyConsolidationStrategy(ctx, crdClient, bestPermutationResult.Moves)
+		applyConsolidationStrategy(ctx, crdClient, bestPermutationResult)
 	}
 }
 

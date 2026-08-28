@@ -9,6 +9,9 @@ rules:
   - apiGroups: ["podtetris.io.podtetris.io"]
     resources: ["podmoves"]
     verbs: ["create", "get", "list"]
+  - apiGroups: ["podtetris.io.podtetris.io"]
+    resources: ["consolidationplans"]
+    verbs: ["create", "get", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
