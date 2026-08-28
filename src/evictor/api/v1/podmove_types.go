@@ -46,6 +46,8 @@ const (
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
+	// ConsolidationPlanLabelKey is set on PodMoves to retrieve the PodMoves from the ConsolidationPlan that created them.
+	ConsolidationPlanLabelKey = "podtetris.io/plan"
 	// TargetNodeSelectorKey is the nodeSelector key the webhook writes to pin the replacement pod.
 	TargetNodeSelectorKey = "kubernetes.io/hostname"
 )
