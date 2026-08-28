@@ -21,6 +21,7 @@ rules:
 - apiGroups:
   - podtetris.io.podtetris.io
   resources:
+  - consolidationplans
   - podmoves
   verbs:
   - create
@@ -33,12 +34,14 @@ rules:
 - apiGroups:
   - podtetris.io.podtetris.io
   resources:
+  - consolidationplans/finalizers
   - podmoves/finalizers
   verbs:
   - update
 - apiGroups:
   - podtetris.io.podtetris.io
   resources:
+  - consolidationplans/status
   - podmoves/status
   verbs:
   - get

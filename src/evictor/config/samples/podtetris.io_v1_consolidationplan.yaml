@@ -1,0 +1,9 @@
+apiVersion: podtetris.io.podtetris.io/v1
+kind: ConsolidationPlan
+metadata:
+  labels:
+    app.kubernetes.io/name: evictor
+    app.kubernetes.io/managed-by: kustomize
+  name: consolidationplan-sample
+spec:
+  # TODO(user): Add fields here

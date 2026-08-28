@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/podtetris.io.podtetris.io_podmoves.yaml
+- bases/podtetris.io.podtetris.io_consolidationplans.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:
