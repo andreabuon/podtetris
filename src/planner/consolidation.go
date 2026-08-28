@@ -81,6 +81,9 @@ func createPodMoveCRD(ctx context.Context, c client.Client, plan *podtetrisv1.Co
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: Config.PodtetrisNamespace,
 			Name:      fmt.Sprintf("%s-%s", pod.Name, string(pod.UID)[:8]),
+			Labels: map[string]string{
+				podtetrisv1.ConsolidationPlanLabelKey: plan.Name,
+			},
 		},
 		Spec: podtetrisv1.PodMoveSpec{
 			Owner: *controllerRef,
