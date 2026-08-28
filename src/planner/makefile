@@ -10,7 +10,7 @@ KIND ?= kind
 all: run
 
 podtetris-planner: *.go
-	GOWORK=off $(GO) build -o podtetris-planner
+	$(GO) build -o podtetris-planner
 
 build: podtetris-planner
 
