@@ -14,13 +14,13 @@ rules:
     resources: ["pods/eviction"]
     verbs: ["create"]
   - apiGroups: ["podtetris.io.podtetris.io"]
-    resources: ["podmoves"]
+    resources: ["consolidationplans", "podmoves"]
     verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
   - apiGroups: ["podtetris.io.podtetris.io"]
-    resources: ["podmoves/finalizers"]
+    resources: ["consolidationplans/finalizers", "podmoves/finalizers"]
     verbs: ["update"]
   - apiGroups: ["podtetris.io.podtetris.io"]
-    resources: ["podmoves/status"]
+    resources: ["consolidationplans/status", "podmoves/status"]
     verbs: ["get", "patch", "update"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
