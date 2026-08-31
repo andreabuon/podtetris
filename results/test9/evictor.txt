@@ -1,0 +1,825 @@
+2026-08-31T10:05:08Z	INFO	setup	Starting manager
+2026-08-31T10:05:08Z	INFO	starting server	{"name": "health probe", "addr": "[::]:8081"}
+I0831 10:05:08.747492       1 leaderelection.go:258] "Attempting to acquire leader lease..." lock="podtetris/893b14e2.podtetris.io"
+I0831 10:05:08.751563       1 leaderelection.go:272] "Successfully acquired lease" lock="podtetris/893b14e2.podtetris.io"
+2026-08-31T10:05:08Z	DEBUG	events	podtetris-evictor-5664c5c697-867bb_8131e9c2-8d0b-4bcc-8079-8acb55fd9845 became leader	{"type": "Normal", "object": {"kind":"Lease","namespace":"podtetris","name":"893b14e2.podtetris.io","uid":"b6f9dcee-22c9-4073-99e2-ba4f205990bc","apiVersion":"coordination.k8s.io/v1","resourceVersion":"1862"}, "reason": "LeaderElection"}
+2026-08-31T10:05:08Z	INFO	Starting EventSource	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "source": "kind source: *v1.PodMove"}
+2026-08-31T10:05:08Z	INFO	Starting EventSource	{"controller": "consolidationplan", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "ConsolidationPlan", "source": "kind source: *v1.ConsolidationPlan"}
+2026-08-31T10:05:08Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:53
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:54
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:05:08Z	INFO	Starting Controller	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove"}
+2026-08-31T10:05:08Z	INFO	Starting workers	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "worker count": 1}
+2026-08-31T10:05:08Z	INFO	Starting Controller	{"controller": "consolidationplan", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "ConsolidationPlan"}
+2026-08-31T10:05:08Z	INFO	Starting workers	{"controller": "consolidationplan", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "ConsolidationPlan", "worker count": 1}
+2026-08-31T10:05:10Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:05:13Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:05:17Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:05:26Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:05:46Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:06:14Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:07:00Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:07:36Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-b-52kxk-152601ff","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-b-52kxk-152601ff", "reconcileID": "2087b342-b85e-47d6-9447-8187e9106830", "pod": "rs-b-52kxk", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:36Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-gzfcd-d6719617","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-gzfcd-d6719617", "reconcileID": "f931495f-4ed7-4162-8d8c-67b63ba8223e", "pod": "deployment-a-bcddbb87f-gzfcd", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:36Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-zf2cn-4ec42d51","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-zf2cn-4ec42d51", "reconcileID": "148dc7d7-1b3f-402b-8a2a-cd8c8b0fc471", "pod": "deployment-a-bcddbb87f-zf2cn", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:36Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-b-52kxk-152601ff","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-b-52kxk-152601ff", "reconcileID": "fcefe4e1-0668-468c-ae45-ec7ae87610b6", "pod": "rs-b-52kxk", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:36Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-b-52kxk-152601ff","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-b-52kxk-152601ff", "reconcileID": "fcefe4e1-0668-468c-ae45-ec7ae87610b6", "pod": "rs-b-w8lsp", "node": "kind-worker5"}
+2026-08-31T10:07:36Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-frttj-5a2e972d","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-frttj-5a2e972d", "reconcileID": "32424ec2-72ab-4c5b-af53-cd680bca9e69", "pod": "deployment-a-bcddbb87f-frttj", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-f8nfn-2bf71278","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-f8nfn-2bf71278", "reconcileID": "bab2b26d-c472-4b86-a080-99a9f542f42e", "pod": "deployment-a-bcddbb87f-f8nfn", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-6rhjs-62a1cc3e","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-6rhjs-62a1cc3e", "reconcileID": "feea06fa-db43-4c07-b118-fc310fe30e8a", "pod": "deployment-a-bcddbb87f-6rhjs", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hf2fm-91a11de2","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hf2fm-91a11de2", "reconcileID": "c1548f08-817a-4a0f-bf1f-f513de43fb0c", "pod": "deployment-b-f4f9ccd4f-hf2fm", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-gpt57-14116ad6","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-gpt57-14116ad6", "reconcileID": "a9b3346c-c468-44a3-aca4-92e8d69c0b90", "pod": "deployment-b-f4f9ccd4f-gpt57", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-csd5z-3b1b6abc","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-csd5z-3b1b6abc", "reconcileID": "1563774d-4fd7-4d08-b8ee-e23d994602a9", "pod": "deployment-b-f4f9ccd4f-csd5z", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "0932fe33-ad9b-4f94-bc9c-9ae909ff48a2", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-gzfcd-d6719617","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-gzfcd-d6719617", "reconcileID": "56a6d348-9e62-4998-964e-0dab65f53d9a", "pod": "deployment-a-bcddbb87f-gzfcd", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-gzfcd-d6719617","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-gzfcd-d6719617", "reconcileID": "56a6d348-9e62-4998-964e-0dab65f53d9a", "pod": "deployment-a-bcddbb87f-js9wp", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "5b9915ce-220c-4a24-9b33-b6e95ff6b443", "pod": "deployment-b-f4f9ccd4f-8gmfq", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-zf2cn-4ec42d51","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-zf2cn-4ec42d51", "reconcileID": "d8a25693-ae16-49f1-84ce-7ccbb23599f6", "pod": "deployment-a-bcddbb87f-zf2cn", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-zf2cn-4ec42d51","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-zf2cn-4ec42d51", "reconcileID": "d8a25693-ae16-49f1-84ce-7ccbb23599f6", "pod": "deployment-a-bcddbb87f-nzcj5", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-b-52kxk-152601ff","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-b-52kxk-152601ff", "reconcileID": "51c85cf2-ec12-4eba-8f21-b0921f0cb752", "pod": "rs-b-52kxk", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-frttj-5a2e972d","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-frttj-5a2e972d", "reconcileID": "04b902c7-c3e2-4f77-bddc-a04f1700cdda", "pod": "deployment-a-bcddbb87f-frttj", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-frttj-5a2e972d","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-frttj-5a2e972d", "reconcileID": "04b902c7-c3e2-4f77-bddc-a04f1700cdda", "pod": "deployment-a-bcddbb87f-gcvq2", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "a087e27b-2dc8-4b82-b6a7-643e320b6bf1", "pod": "rs-a-6phd7", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-f8nfn-2bf71278","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-f8nfn-2bf71278", "reconcileID": "012d3bb7-2b7b-4001-ac54-9a65b854e8d4", "pod": "deployment-a-bcddbb87f-f8nfn", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-f8nfn-2bf71278","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-f8nfn-2bf71278", "reconcileID": "012d3bb7-2b7b-4001-ac54-9a65b854e8d4", "pod": "deployment-a-bcddbb87f-tmq8d", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-6rhjs-62a1cc3e","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-6rhjs-62a1cc3e", "reconcileID": "4984ce1a-cc26-48fe-a518-f5724e8ec5e8", "pod": "deployment-a-bcddbb87f-6rhjs", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-6rhjs-62a1cc3e","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-6rhjs-62a1cc3e", "reconcileID": "4984ce1a-cc26-48fe-a518-f5724e8ec5e8", "pod": "deployment-a-bcddbb87f-6swk2", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "fac5efde-d4a0-4dc1-a9d8-e9dd1961665c", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hf2fm-91a11de2","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hf2fm-91a11de2", "reconcileID": "1e4ff480-48fc-4525-be13-7a4d71582df9", "pod": "deployment-b-f4f9ccd4f-hf2fm", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hf2fm-91a11de2","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hf2fm-91a11de2", "reconcileID": "1e4ff480-48fc-4525-be13-7a4d71582df9", "pod": "deployment-b-f4f9ccd4f-79wz4", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-gpt57-14116ad6","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-gpt57-14116ad6", "reconcileID": "3b7a287d-ed31-4e12-8aee-6d78151ca687", "pod": "deployment-b-f4f9ccd4f-gpt57", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-gpt57-14116ad6","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-gpt57-14116ad6", "reconcileID": "3b7a287d-ed31-4e12-8aee-6d78151ca687", "pod": "deployment-b-f4f9ccd4f-nmxgp", "node": "kind-worker5"}
+2026-08-31T10:07:37Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "65d716c3-3998-4a96-8637-0cc836882e83", "pod": "cert-manager-cainjector-69f8c8cdbf-fmt86", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-csd5z-3b1b6abc","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-csd5z-3b1b6abc", "reconcileID": "a66f0736-13ed-4376-bdd7-0cec79dc1260", "pod": "deployment-b-f4f9ccd4f-csd5z", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-csd5z-3b1b6abc","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-csd5z-3b1b6abc", "reconcileID": "a66f0736-13ed-4376-bdd7-0cec79dc1260", "pod": "deployment-b-f4f9ccd4f-qcljs", "node": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "b4ac6189-8c12-44f8-a88f-3db4825a8620", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Waiting for webhook to claim a replacement pod CREATE	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "b4ac6189-8c12-44f8-a88f-3db4825a8620"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "697986ae-6989-4c91-ade2-97226b87d35e", "pod": "cert-manager-webhook-84fd89df64-rxxtk", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-gzfcd-d6719617","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-gzfcd-d6719617", "reconcileID": "253b9285-2530-4a87-b3a9-15163e42d494", "pod": "deployment-a-bcddbb87f-gzfcd", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "79c64089-d924-4a83-8547-dcbbbb49007b", "pod": "deployment-b-f4f9ccd4f-8gmfq", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "79c64089-d924-4a83-8547-dcbbbb49007b", "pod": "deployment-b-f4f9ccd4f-rrrrr", "node": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-zf2cn-4ec42d51","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-zf2cn-4ec42d51", "reconcileID": "6aa11e00-942b-4f1c-bf9a-a44d8965aea9", "pod": "deployment-a-bcddbb87f-zf2cn", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-b-52kxk-152601ff","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-b-52kxk-152601ff", "reconcileID": "14195902-5f8b-40ec-ab11-9c47fac8ca80", "pod": "rs-b-52kxk", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-b-52kxk-152601ff","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-b-52kxk-152601ff", "reconcileID": "14195902-5f8b-40ec-ab11-9c47fac8ca80"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-frttj-5a2e972d","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-frttj-5a2e972d", "reconcileID": "0f81a7e1-0fa5-4348-865f-46d46ac6397d", "pod": "deployment-a-bcddbb87f-frttj", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "17251078-8f88-410a-a0ab-eca7cd85291f", "pod": "rs-a-6phd7", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "17251078-8f88-410a-a0ab-eca7cd85291f", "waited": "1.172621341s", "found": false, "persistAttempts": 0}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "f7d92a6d-ad71-4ee5-ba82-03104c0f0cb2", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-f8nfn-2bf71278","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-f8nfn-2bf71278", "reconcileID": "73f243d8-c9cf-410a-9d24-253294858085", "pod": "deployment-a-bcddbb87f-f8nfn", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-6rhjs-62a1cc3e","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-6rhjs-62a1cc3e", "reconcileID": "b8570321-236c-43f1-94f1-117da3854427", "pod": "deployment-a-bcddbb87f-6rhjs", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "75905234-5413-4c70-8a8b-2fbca8bb21db", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Waiting for webhook to claim a replacement pod CREATE	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "75905234-5413-4c70-8a8b-2fbca8bb21db"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hf2fm-91a11de2","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hf2fm-91a11de2", "reconcileID": "62e1ca5b-0a52-4bc2-b9ad-b03409863a2d", "pod": "deployment-b-f4f9ccd4f-hf2fm", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-gpt57-14116ad6","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-gpt57-14116ad6", "reconcileID": "70f2df28-8e8c-452d-b272-4337a7c1d0c6", "pod": "deployment-b-f4f9ccd4f-gpt57", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "4aa8167f-a5f4-4008-bb41-2f83e38b7001", "pod": "cert-manager-cainjector-69f8c8cdbf-fmt86", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "4aa8167f-a5f4-4008-bb41-2f83e38b7001", "pod": "cert-manager-cainjector-69f8c8cdbf-jgl6w", "node": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-csd5z-3b1b6abc","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-csd5z-3b1b6abc", "reconcileID": "b143c8f3-0d50-4dc8-97c2-73db3ce20884", "pod": "deployment-b-f4f9ccd4f-csd5z", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "566f3143-2829-4e49-bb80-0ef938e748a3", "pod": "cert-manager-webhook-84fd89df64-rxxtk", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "566f3143-2829-4e49-bb80-0ef938e748a3", "pod": "cert-manager-webhook-84fd89df64-7wrfb", "node": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-gzfcd-d6719617","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-gzfcd-d6719617", "reconcileID": "e9d912c4-e4c9-405f-8f7a-44c7e5190f3d", "pod": "deployment-a-bcddbb87f-gzfcd", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-gzfcd-d6719617","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-gzfcd-d6719617", "reconcileID": "e9d912c4-e4c9-405f-8f7a-44c7e5190f3d"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "3060ce5b-8294-49ba-b06a-ae2221af0eda", "pod": "deployment-b-f4f9ccd4f-8gmfq", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Replacement pod is not Running yet	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "3060ce5b-8294-49ba-b06a-ae2221af0eda", "phase": "Pending", "waited": "236.247091ms", "runningAttempts": 0, "maxRunningAttempts": 3, "requeueAfter": "2m59.763752909s"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-zf2cn-4ec42d51","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-zf2cn-4ec42d51", "reconcileID": "de5bc4ef-15fb-45e2-9963-7ffebc78552d", "pod": "deployment-a-bcddbb87f-zf2cn", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-zf2cn-4ec42d51","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-zf2cn-4ec42d51", "reconcileID": "de5bc4ef-15fb-45e2-9963-7ffebc78552d"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-frttj-5a2e972d","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-frttj-5a2e972d", "reconcileID": "22c21ff3-bfe6-45b4-98a1-e3eb7443619f", "pod": "deployment-a-bcddbb87f-frttj", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-frttj-5a2e972d","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-frttj-5a2e972d", "reconcileID": "22c21ff3-bfe6-45b4-98a1-e3eb7443619f"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "0a7e7642-9916-4c97-8fa3-6c15651b81ee", "pod": "rs-a-6phd7", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "0a7e7642-9916-4c97-8fa3-6c15651b81ee", "pod": "rs-a-gjm4w", "node": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "de353618-c4b5-4e7d-b234-24cc17042dd1", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Waiting for webhook to claim a replacement pod CREATE	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "de353618-c4b5-4e7d-b234-24cc17042dd1"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-f8nfn-2bf71278","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-f8nfn-2bf71278", "reconcileID": "4d0adb30-df5a-41a5-b8ee-0f2f6ecb5a90", "pod": "deployment-a-bcddbb87f-f8nfn", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-f8nfn-2bf71278","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-f8nfn-2bf71278", "reconcileID": "4d0adb30-df5a-41a5-b8ee-0f2f6ecb5a90"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-6rhjs-62a1cc3e","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-6rhjs-62a1cc3e", "reconcileID": "74071a61-260c-4bfe-9d49-7f70cb02bc74", "pod": "deployment-a-bcddbb87f-6rhjs", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-a-bcddbb87f-6rhjs-62a1cc3e","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-a-bcddbb87f-6rhjs-62a1cc3e", "reconcileID": "74071a61-260c-4bfe-9d49-7f70cb02bc74"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hf2fm-91a11de2","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hf2fm-91a11de2", "reconcileID": "e8cd5ff5-d46b-4a17-a85a-80f8bb0d1f89", "pod": "deployment-b-f4f9ccd4f-hf2fm", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hf2fm-91a11de2","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hf2fm-91a11de2", "reconcileID": "e8cd5ff5-d46b-4a17-a85a-80f8bb0d1f89"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-gpt57-14116ad6","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-gpt57-14116ad6", "reconcileID": "1131b53c-64bf-4a18-81da-c32beb98f04d", "pod": "deployment-b-f4f9ccd4f-gpt57", "sourceNode": "kind-worker2", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-gpt57-14116ad6","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-gpt57-14116ad6", "reconcileID": "1131b53c-64bf-4a18-81da-c32beb98f04d"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "788d7d49-655c-4820-89fe-100a34e2e051", "pod": "cert-manager-cainjector-69f8c8cdbf-fmt86", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Replacement pod is not Running yet	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "788d7d49-655c-4820-89fe-100a34e2e051", "phase": "Pending", "waited": "244.268549ms", "runningAttempts": 0, "maxRunningAttempts": 3, "requeueAfter": "2m59.755731451s"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-csd5z-3b1b6abc","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-csd5z-3b1b6abc", "reconcileID": "3c3aef73-3a0a-4345-9f97-c6da229ed894", "pod": "deployment-b-f4f9ccd4f-csd5z", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-csd5z-3b1b6abc","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-csd5z-3b1b6abc", "reconcileID": "3c3aef73-3a0a-4345-9f97-c6da229ed894"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "cdd6b1f5-a918-4f33-a96b-989319ff5812", "pod": "cert-manager-webhook-84fd89df64-rxxtk", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Replacement pod is not Running yet	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "cdd6b1f5-a918-4f33-a96b-989319ff5812", "phase": "Pending", "waited": "244.893049ms", "runningAttempts": 0, "maxRunningAttempts": 3, "requeueAfter": "2m59.755106951s"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "7ec54347-d4c9-4d7f-9fa2-5aacd907d8af", "pod": "rs-a-6phd7", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	INFO	Replacement pod is not Running yet	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "7ec54347-d4c9-4d7f-9fa2-5aacd907d8af", "phase": "Pending", "waited": "245.302383ms", "runningAttempts": 0, "maxRunningAttempts": 3, "requeueAfter": "2m59.754697617s"}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "9d0db320-d34b-44a6-a084-ee5a6ec5925e", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "9d0db320-d34b-44a6-a084-ee5a6ec5925e", "waited": "1.36555405s", "found": false, "persistAttempts": 0}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "3b641c6b-edcd-40aa-964b-00de7c184bab", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "3b641c6b-edcd-40aa-964b-00de7c184bab", "waited": "1.369354758s", "found": true, "persistAttempts": 0}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "26f3385d-5f5d-477f-9d8d-3175c7180320", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "26f3385d-5f5d-477f-9d8d-3175c7180320", "waited": "565.051633ms", "found": false, "persistAttempts": 0}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "b9acf61d-cddd-4d6a-a860-1f372c494997", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "b9acf61d-cddd-4d6a-a860-1f372c494997", "waited": "568.793925ms", "found": true, "persistAttempts": 0}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "b72145d1-537b-4bfc-8910-0ae637cd6316", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "b72145d1-537b-4bfc-8910-0ae637cd6316", "waited": "764.641091ms", "found": false, "persistAttempts": 0}
+2026-08-31T10:07:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "16f576a5-9a34-49a6-970f-901bfa055d64", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:07:38Z	DEBUG	Waiting for replacement pod to persist on the target node	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "16f576a5-9a34-49a6-970f-901bfa055d64", "waited": "768.735133ms", "found": true, "persistAttempts": 0}
+2026-08-31T10:07:46Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:07:47Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:07:50Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:07:54Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:08:02Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "d41cce73-4861-4968-9925-c754f4dc1517", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "d41cce73-4861-4968-9925-c754f4dc1517", "pod": "deployment-b-f4f9ccd4f-5m5mt", "node": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "f3ef9d8d-cbe5-498d-85f5-81696416de24", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "a255ebb2-91a9-438d-8386-eade33022d6c", "pod": "deployment-b-f4f9ccd4f-hshdl", "sourceNode": "kind-worker6", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-hshdl-5bf6823f","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-hshdl-5bf6823f", "reconcileID": "a255ebb2-91a9-438d-8386-eade33022d6c"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "3885bc46-ce81-4e14-b566-41c4f20aee4b", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "3885bc46-ce81-4e14-b566-41c4f20aee4b", "pod": "cert-manager-69c7fcbf78-dc2s5", "node": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "ad0bc1ca-b8e0-46e9-8d02-ee4231ede8e1", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "c922fe2d-b879-4023-b97d-99aa1f0ba13d", "pod": "cert-manager-69c7fcbf78-qtmhp", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-69c7fcbf78-qtmhp-45a519f6","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-69c7fcbf78-qtmhp-45a519f6", "reconcileID": "c922fe2d-b879-4023-b97d-99aa1f0ba13d"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "ae7ce404-a7c5-44fd-aff4-b7342a7f3c41", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Verified replacement pod	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "ae7ce404-a7c5-44fd-aff4-b7342a7f3c41", "pod": "rs-a-9bbzc", "node": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "f960765a-39de-4510-8302-fddd83cf9d37", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "2dfa21b6-d22f-448a-80fe-67970109a4b8", "pod": "rs-a-jp5b5", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:08:03Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-jp5b5-8769af93","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-jp5b5-8769af93", "reconcileID": "2dfa21b6-d22f-448a-80fe-67970109a4b8"}
+2026-08-31T10:08:15Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:08:49Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:09:36Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:10:32Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:10:34Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:10:37Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "ec72ba2d-66ce-4d33-af90-5225642dd142", "pod": "cert-manager-cainjector-69f8c8cdbf-fmt86", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "61a79444-9f1c-4e22-8c8b-b1e0b6679ed7", "pod": "rs-a-6phd7", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "3cd3f30d-dee6-4e68-a36b-2bb4609c8832", "pod": "cert-manager-webhook-84fd89df64-rxxtk", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "b0449579-a703-40f3-9e44-6142037df8bb", "pod": "deployment-b-f4f9ccd4f-8gmfq", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "6d8ad054-96f3-4a40-b76b-ddd87415be20", "pod": "cert-manager-cainjector-69f8c8cdbf-fmt86", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-cainjector-69f8c8cdbf-fmt86-9afb65f3", "reconcileID": "6d8ad054-96f3-4a40-b76b-ddd87415be20"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "43b19cd1-412c-49c5-bff5-e96bc0a120dc", "pod": "rs-a-6phd7", "sourceNode": "kind-worker", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"rs-a-6phd7-acbb8d05","namespace":"podtetris"}, "namespace": "podtetris", "name": "rs-a-6phd7-acbb8d05", "reconcileID": "43b19cd1-412c-49c5-bff5-e96bc0a120dc"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "b02dfc7f-7508-43a3-b1eb-0d56717b499b", "pod": "cert-manager-webhook-84fd89df64-rxxtk", "sourceNode": "kind-worker7", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"cert-manager-webhook-84fd89df64-rxxtk-9a1323a4","namespace":"podtetris"}, "namespace": "podtetris", "name": "cert-manager-webhook-84fd89df64-rxxtk-9a1323a4", "reconcileID": "b02dfc7f-7508-43a3-b1eb-0d56717b499b"}
+2026-08-31T10:10:38Z	INFO	Reconciling PodMove	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "5b3b6eb9-c69a-431e-a5f5-ae3989bca6e9", "pod": "deployment-b-f4f9ccd4f-8gmfq", "sourceNode": "kind-worker3", "targetNode": "kind-worker5"}
+2026-08-31T10:10:38Z	INFO	PodMove already succeeded	{"controller": "podmove", "controllerGroup": "podtetris.io.podtetris.io", "controllerKind": "PodMove", "PodMove": {"name":"deployment-b-f4f9ccd4f-8gmfq-22a71d31","namespace":"podtetris"}, "namespace": "podtetris", "name": "deployment-b-f4f9ccd4f-8gmfq-22a71d31", "reconcileID": "5b3b6eb9-c69a-431e-a5f5-ae3989bca6e9"}
+2026-08-31T10:10:41Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:10:53Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:11:13Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:11:57Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:12:51Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:12:52Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:12:55Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:13:01Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:13:10Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:13:34Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
+2026-08-31T10:14:21Z	ERROR	controller-runtime.cache.UnhandledError	Failed to watch	{"reflector": "pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:343", "type": "*v1.ConsolidationPlan", "error": "consolidationplans.podtetris.io.podtetris.io is forbidden: User \"system:serviceaccount:podtetris:podtetris\" cannot watch resource \"consolidationplans\" in API group \"podtetris.io.podtetris.io\" at the cluster scope"}
+k8s.io/apimachinery/pkg/util/runtime.logError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:252
+k8s.io/apimachinery/pkg/util/runtime.handleError
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:243
+k8s.io/apimachinery/pkg/util/runtime.HandleErrorWithContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/runtime/runtime.go:229
+k8s.io/client-go/tools/cache.DefaultWatchErrorHandler
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:227
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:430
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func2
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:87
+k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:88
+k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+k8s.io/client-go/tools/cache.(*Reflector).RunWithContext
+	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428
+k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63
+k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72
