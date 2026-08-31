@@ -35,14 +35,20 @@ const (
 	ConditionPodVerified = "TargetPodVerified"
 	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
 	ConditionPodRunning = "TargetPodRunning"
-	// ConditionFailed is True when webhook-claimed replacement pod CREATE request failed to persist on Spec.TargetNode for MaxPersistAttempts times.
+	// ConditionFailed is True when:
+	// - the replacement could not be persisted on Spec.TargetNode for MaxPersistAttempts times
+	// - or when a verified replacement did not reach Running within MaxRunningAttempts polls.
 	ConditionFailed = "Failed"
 
 	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node for MaxPersistAttempts times.
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
+	// ReasonReplacementNotRunning is set when a verified replacement pod did not reach Running within MaxRunningAttempts polls.
+	ReasonReplacementNotRunning = "ReplacementNotRunning"
 
 	// MaxPersistAttempts is how many webhook-claimed CREATEs may fail to persist before the PodMove is marked Failed.
 	MaxPersistAttempts = 3
+	// MaxRunningAttempts is how many Running-phase polls may fail before a Verified PodMove is marked Failed.
+	MaxRunningAttempts = 3
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
@@ -69,7 +75,7 @@ const (
 	PodMovePhaseVerified PodMovePhase = "Verified"
 	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
-	// PodMovePhaseFailed is set after webhook-claimed CREATEs failed to persist on Spec.TargetNode for MaxPersistAttempts attempts.
+	// PodMovePhaseFailed is set after persist attempts are exhausted, or after a verified replacement fails to reach Running.
 	PodMovePhaseFailed PodMovePhase = "Failed"
 )
 
@@ -133,6 +139,12 @@ type PodMoveStatus struct {
 	// +optional
 	// +kubebuilder:validation:Minimum=0
 	PersistAttempts int32 `json:"persistAttempts,omitempty"`
+
+	// runningAttempts is the number of times the controller observed a verified replacement that was not yet Running.
+	// After MaxRunningAttempts the PodMove is marked as "Failed".
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	RunningAttempts int32 `json:"runningAttempts,omitempty"`
 }
 
 // +kubebuilder:object:root=true

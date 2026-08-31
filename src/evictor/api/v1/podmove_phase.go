@@ -11,10 +11,10 @@ func DerivePhase(conditions []metav1.Condition) PodMovePhase {
 	switch {
 	case meta.IsStatusConditionTrue(conditions, ConditionPodRunning):
 		return PodMovePhaseSucceeded
-	case meta.IsStatusConditionTrue(conditions, ConditionPodVerified):
-		return PodMovePhaseVerified
 	case meta.IsStatusConditionTrue(conditions, ConditionFailed):
 		return PodMovePhaseFailed
+	case meta.IsStatusConditionTrue(conditions, ConditionPodVerified):
+		return PodMovePhaseVerified
 	case meta.IsStatusConditionTrue(conditions, ConditionTargetNodeInjected):
 		return PodMovePhaseVerifying
 	case meta.IsStatusConditionTrue(conditions, ConditionEvicted):

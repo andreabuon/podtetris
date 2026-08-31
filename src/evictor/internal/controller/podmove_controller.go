@@ -108,7 +108,9 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	return r.evictSourcePod(ctx, &pm)
 }
 
-// reconcileVerifiedReplacement checks if the (verified) replacement is Running, otherwise requeues.
+// reconcileVerifiedReplacement checks if the (verified) replacement is Running.
+// Each unsuccessful poll lasting runningPollInterval counts as a running attempt;
+// after MaxRunningAttempts the PodMove is Failed.
 func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
@@ -120,16 +122,73 @@ func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm
 		log.Info("Verified replacement pod not found")
 		return ctrl.Result{}, fmt.Errorf("Verified replacement pod not found")
 	}
-	if replacement.Status.Phase != corev1.PodRunning {
-		log.Info("Replacement pod is not Running yet", "phase", replacement.Status.Phase, "requeueAfter", runningPollInterval)
-		return ctrl.Result{RequeueAfter: runningPollInterval}, nil
+	if replacement.Status.Phase == corev1.PodRunning {
+		msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionPodRunning, metav1.ConditionTrue, "Running", msg); err != nil {
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
 	}
 
-	msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionPodRunning, metav1.ConditionTrue, "Running", msg); err != nil {
+	return r.recordFailedRunningAttempt(ctx, pm, replacement)
+}
+
+// recordFailedRunningAttempt waits runningPollInterval per attempt. After MaxRunningAttempts
+// unsuccessful waits the PodMove is marked Failed; otherwise it requeues for the next poll.
+func (r *PodMoveReconciler) recordFailedRunningAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+
+	waited, err := timeSinceVerified(pm)
+	if err != nil {
 		return ctrl.Result{}, err
 	}
-	return ctrl.Result{}, nil
+
+	nextDeadline := time.Duration(pm.Status.RunningAttempts+1) * runningPollInterval
+	if waited < nextDeadline {
+		remaining := nextDeadline - waited
+		log.Info("Replacement pod is not Running yet",
+			"phase", replacement.Status.Phase,
+			"waited", waited,
+			"runningAttempts", pm.Status.RunningAttempts,
+			"maxRunningAttempts", podtetrisiov1.MaxRunningAttempts,
+			"requeueAfter", remaining,
+		)
+		return ctrl.Result{RequeueAfter: remaining}, nil
+	}
+
+	pm.Status.RunningAttempts++
+	attempt := pm.Status.RunningAttempts
+
+	if attempt >= podtetrisiov1.MaxRunningAttempts {
+		log.Info("Replacement pod did not reach Running; running attempts exhausted",
+			"phase", replacement.Status.Phase,
+			"waited", waited,
+			"runningAttempts", attempt,
+		)
+		msg := fmt.Sprintf("Replacement pod %s/%s did not reach Running within %s after %d attempts (last phase %q)",
+			replacement.Namespace, replacement.Name, runningPollInterval*time.Duration(attempt), attempt, replacement.Status.Phase)
+		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotRunning, msg)
+	}
+
+	log.Info("Replacement pod is not Running yet; counting running attempt",
+		"phase", replacement.Status.Phase,
+		"waited", waited,
+		"runningAttempts", attempt,
+		"maxRunningAttempts", podtetrisiov1.MaxRunningAttempts,
+		"requeueAfter", runningPollInterval,
+	)
+	if err := r.updateStatus(ctx, pm); err != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{RequeueAfter: runningPollInterval}, nil
+}
+
+func timeSinceVerified(pm *podtetrisiov1.PodMove) (time.Duration, error) {
+	verified := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified)
+	if verified == nil || verified.LastTransitionTime.IsZero() {
+		return 0, fmt.Errorf("PodMove Verified time not found")
+	}
+	return time.Since(verified.LastTransitionTime.Time), nil
 }
 
 func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
@@ -193,7 +252,8 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 			"found", replacement != nil,
 			"persistAttempts", attempt,
 		)
-		return ctrl.Result{}, r.markFailed(ctx, pm, attempt)
+		msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, persistBindTimeout, attempt)
+		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotPersisted, msg)
 	}
 
 	log.Info("Replacement pod request did not persist; reopening PodMove for another CREATE",
@@ -204,12 +264,11 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 	return ctrl.Result{}, r.reopenForReplacementClaim(ctx, pm, attempt)
 }
 
-func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, attempt int32) error {
-	msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, persistBindTimeout, attempt)
+func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, reason, msg string) error {
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
 		Type:               podtetrisiov1.ConditionFailed,
 		Status:             metav1.ConditionTrue,
-		Reason:             podtetrisiov1.ReasonReplacementNotPersisted,
+		Reason:             reason,
 		Message:            msg,
 		ObservedGeneration: pm.Generation,
 	})

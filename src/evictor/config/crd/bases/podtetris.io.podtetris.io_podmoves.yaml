@@ -247,6 +247,13 @@ spec:
                 - Succeeded
                 - Failed
                 type: string
+              runningAttempts:
+                description: |-
+                  runningAttempts is the number of times the controller observed a verified replacement that was not yet Running.
+                  After MaxRunningAttempts the PodMove is marked as "Failed".
+                format: int32
+                minimum: 0
+                type: integer
             type: object
         required:
         - spec
