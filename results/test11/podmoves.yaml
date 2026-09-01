@@ -1,0 +1,976 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:50Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: cert-manager-cainjector-5b68759df5-plzcp-a3a0c40a
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2931"
+    uid: ff494b0f-1775-478d-87c1-8645606d9a5a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: cert-manager-cainjector-5b68759df5
+      uid: 320b3cc1-5ecd-4de5-a356-4975cc6b7a49
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: cert-manager-cainjector-5b68759df5-plzcp
+      namespace: cert-manager
+      uid: a3a0c40a-be27-4fb5-ac2e-0e71e05d2bc1
+    sourceNode: kind-worker4
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod cert-manager/cert-manager-cainjector-5b68759df5-<pending-name>
+        recreated and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod cert-manager/cert-manager-cainjector-5b68759df5-5tg5r
+        persisted on node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:47:03Z"
+      message: Replacement pod cert-manager/cert-manager-cainjector-5b68759df5-5tg5r
+        is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:50Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: cert-manager-d966bfbbf-s2h7d-d7b53a4d
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2932"
+    uid: 127cf1bf-75d4-43d3-80ad-c9e1db25dbfd
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: cert-manager-d966bfbbf
+      uid: 2e458496-1f76-4858-a8c1-1ce157732a09
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: cert-manager-d966bfbbf-s2h7d
+      namespace: cert-manager
+      uid: d7b53a4d-6fb4-4cc4-8eee-26a8f81c3f76
+    sourceNode: kind-worker7
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod cert-manager/cert-manager-d966bfbbf-<pending-name>
+        recreated and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod cert-manager/cert-manager-d966bfbbf-6c6v6 persisted
+        on node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:47:03Z"
+      message: Replacement pod cert-manager/cert-manager-d966bfbbf-6c6v6 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:50Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: cert-manager-webhook-9596c4d8-szs2w-ddf45067
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2934"
+    uid: 82e35dbe-22aa-43cd-a8cc-89a6b0b7a84a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: cert-manager-webhook-9596c4d8
+      uid: 4515c4d9-5531-42a2-a7a3-b2dc933f6467
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: cert-manager-webhook-9596c4d8-szs2w
+      namespace: cert-manager
+      uid: ddf45067-4128-4791-b41b-6ad6409b370e
+    sourceNode: kind-worker6
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod cert-manager/cert-manager-webhook-9596c4d8-<pending-name>
+        recreated and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod cert-manager/cert-manager-webhook-9596c4d8-v292w persisted
+        on node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:47:03Z"
+      message: Replacement pod cert-manager/cert-manager-webhook-9596c4d8-v292w is
+        running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-a-7f46c96865-4fkkr-24bced6a
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2276"
+    uid: 67302806-261f-482f-8c5c-9bb36718c09c
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-a-7f46c96865
+      uid: ad4b6507-08d1-4b6c-9cc1-e6ab3c34e250
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-a-7f46c96865-4fkkr
+      namespace: default
+      uid: 24bced6a-2cdc-43c0-86d9-8292250343e0
+    sourceNode: kind-worker7
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Replacement pod default/deployment-a-7f46c96865-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-a-7f46c96865-9pdf7 persisted on
+        node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-a-7f46c96865-9pdf7 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-a-7f46c96865-d2sff-04ee9b17
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2332"
+    uid: 5dd25c9a-124a-48e1-8be7-eb21435454d5
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-a-7f46c96865
+      uid: ad4b6507-08d1-4b6c-9cc1-e6ab3c34e250
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-a-7f46c96865-d2sff
+      namespace: default
+      uid: 04ee9b17-06b7-48d8-88e4-f60c06b3b583
+    sourceNode: kind-worker6
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: 'Eviction failed (attempt 1/10): Cannot evict pod as it would violate
+        the pod''s disruption budget.; will retry'
+      observedGeneration: 1
+      reason: BlockedByPDB
+      status: "False"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-a-7f46c96865-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-a-7f46c96865-p24m7 persisted on
+        node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-a-7f46c96865-p24m7 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-a-7f46c96865-dpplz-1b452371
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2933"
+    uid: e3337127-499d-40de-825c-b40b73fda0b5
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-a-7f46c96865
+      uid: ad4b6507-08d1-4b6c-9cc1-e6ab3c34e250
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-a-7f46c96865-dpplz
+      namespace: default
+      uid: 1b452371-5aac-4d48-8d36-764e6d43022f
+    sourceNode: kind-worker
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: 'Eviction failed (attempt 3/10): Cannot evict pod as it would violate
+        the pod''s disruption budget.; will retry'
+      observedGeneration: 1
+      reason: BlockedByPDB
+      status: "False"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-a-7f46c96865-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-a-7f46c96865-lq7lc persisted on
+        node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:47:03Z"
+      message: Replacement pod default/deployment-a-7f46c96865-lq7lc is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-a-7f46c96865-fwrhq-72869853
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2314"
+    uid: 602b9e14-9048-485d-8486-86c3cac606ad
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-a-7f46c96865
+      uid: ad4b6507-08d1-4b6c-9cc1-e6ab3c34e250
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-a-7f46c96865-fwrhq
+      namespace: default
+      uid: 72869853-4628-491d-bd00-ae650e6106b6
+    sourceNode: kind-worker5
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    evictionAttempts: 2
+    phase: Evicted
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-a-7f46c96865-ntg9k-26692633
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2140"
+    uid: ebb948b3-d9a1-4ccb-a9bc-85233ae7ded5
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-a-7f46c96865
+      uid: ad4b6507-08d1-4b6c-9cc1-e6ab3c34e250
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-a-7f46c96865-ntg9k
+      namespace: default
+      uid: 26692633-5a7f-411f-ad21-b6fe77406cea
+    sourceNode: kind-worker4
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    evictionAttempts: 1
+    phase: Evicted
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-b-f977756c-577kk-70105dab
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2339"
+    uid: f5d5b4bf-72af-40d4-aefd-b70fbff04e11
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-b-f977756c
+      uid: 43b7e7b7-1f0e-4c90-b556-99a47748961d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-b-f977756c-577kk
+      namespace: default
+      uid: 70105dab-e859-4efe-9dc4-bd43bad9848a
+    sourceNode: kind-worker6
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-b-f977756c-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-nghb2 persisted on node
+        "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-nghb2 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-b-f977756c-7nnx4-9d4ad5dd
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2333"
+    uid: 70c50a1e-1299-4ede-ab1c-8415c45a0010
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-b-f977756c
+      uid: 43b7e7b7-1f0e-4c90-b556-99a47748961d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-b-f977756c-7nnx4
+      namespace: default
+      uid: 9d4ad5dd-6195-4566-aec9-398dd74dfac6
+    sourceNode: kind-worker7
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-b-f977756c-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-hcbjb persisted on node
+        "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-hcbjb is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-b-f977756c-8c9pf-d5b0e8ae
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2337"
+    uid: 5a7c8314-8503-4e33-94cd-77307e0376ab
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-b-f977756c
+      uid: 43b7e7b7-1f0e-4c90-b556-99a47748961d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-b-f977756c-8c9pf
+      namespace: default
+      uid: d5b0e8ae-1ac0-4dd8-ae07-544583914883
+    sourceNode: kind-worker
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-b-f977756c-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-8lfxg persisted on node
+        "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-8lfxg is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-b-f977756c-ltgjw-b23a5d87
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2336"
+    uid: 2b9b9451-fca6-4435-8ece-8fe580146d68
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-b-f977756c
+      uid: 43b7e7b7-1f0e-4c90-b556-99a47748961d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-b-f977756c-ltgjw
+      namespace: default
+      uid: b23a5d87-efd5-4ad6-80d7-9f6b476ca66b
+    sourceNode: kind-worker5
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-b-f977756c-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-q95qd persisted on node
+        "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-q95qd is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: deployment-b-f977756c-p7jwv-0c84f5fc
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2335"
+    uid: 9e75103c-86cc-48df-87b8-fe204fefa201
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: deployment-b-f977756c
+      uid: 43b7e7b7-1f0e-4c90-b556-99a47748961d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: deployment-b-f977756c-p7jwv
+      namespace: default
+      uid: 0c84f5fc-20e3-4839-85bc-d00951110762
+    sourceNode: kind-worker4
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/deployment-b-f977756c-<pending-name> recreated
+        and pinned to node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-5rn2s persisted on node
+        "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/deployment-b-f977756c-5rn2s is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:50Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: rs-a-gz7dd-0eb111e1
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2350"
+    uid: f4561d9b-83d4-4068-b7f2-d30d7d15c23b
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: rs-a
+      uid: 7197f1aa-9302-4928-977f-4c424f9d837c
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: rs-a-gz7dd
+      namespace: default
+      uid: 0eb111e1-0572-4781-b2f4-ec7cefc0c219
+    sourceNode: kind-worker
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/rs-a-<pending-name> recreated and pinned to
+        node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/rs-a-ls7nm persisted on node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/rs-a-ls7nm is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: rs-b-dpjxv-5624d138
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2116"
+    uid: cf1a3330-90f7-43f5-9cfd-24977f4ec048
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: rs-b
+      uid: 188b098c-0e99-4152-9864-5c334ca1d5cf
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: rs-b-dpjxv
+      namespace: default
+      uid: 5624d138-b9eb-42a1-8e26-aa64fe0a00f2
+    sourceNode: kind-worker4
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Replacement pod default/rs-b-<pending-name> recreated and pinned to
+        node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Replacement pod default/rs-b-ch6x7 persisted on node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/rs-b-ch6x7 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-09-01T13:43:49Z"
+    generation: 1
+    labels:
+      podtetris.io/plan: consolidationplan-7fw86
+    name: rs-b-sj5bw-60938b3a
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-7fw86
+      uid: fe10c1de-8b4a-4a30-bc2a-08a727ca9625
+    resourceVersion: "2255"
+    uid: 4f1e94bf-559c-4da3-ade2-307a06d4056d
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: rs-b
+      uid: 188b098c-0e99-4152-9864-5c334ca1d5cf
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: rs-b-sj5bw
+      namespace: default
+      uid: 60938b3a-0bbd-4e5f-b787-3b2a309fdbba
+    sourceNode: kind-worker6
+    targetNode: kind-worker3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: Evicted
+    - lastTransitionTime: "2026-09-01T13:43:49Z"
+      message: Replacement pod default/rs-b-<pending-name> recreated and pinned to
+        node "kind-worker3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: TargetNodeInjected
+    - lastTransitionTime: "2026-09-01T13:43:50Z"
+      message: Replacement pod default/rs-b-qp78c persisted on node "kind-worker3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: TargetPodVerified
+    - lastTransitionTime: "2026-09-01T13:43:51Z"
+      message: Replacement pod default/rs-b-qp78c is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: TargetPodRunning
+    phase: Succeeded
+kind: List
+metadata:
+  resourceVersion: ""
