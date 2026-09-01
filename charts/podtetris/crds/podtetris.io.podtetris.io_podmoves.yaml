@@ -227,6 +227,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              evictionAttempts:
+                description: |-
+                  evictionAttempts is the number of times eviction was denied (typically by a PodDisruptionBudget).
+                  After MaxEvictionAttempts the PodMove is marked Failed.
+                format: int32
+                minimum: 0
+                type: integer
               persistAttempts:
                 description: persistAttempts is the number of times a webhook-claimed
                   replacement CREATE failed to persist on Spec.TargetNode.
