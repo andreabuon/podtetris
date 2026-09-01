@@ -37,6 +37,11 @@ planner:
       - memory_desc
       - random
     parallelism: 8
+    
+  # Selectors are standard metav1.LabelSelector
+  costs:
+    defaultCost: 10
+    rules: []
 
 # Evictor controller (PodMove reconciler).
 evictor:

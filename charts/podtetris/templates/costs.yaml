@@ -1,0 +1,12 @@
+{{- if .Values.planner.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "podtetris.fullname" . }}-pod-move-costs
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "podtetris.labels" . | nindent 4 }}
+data:
+  costs.yaml: |
+    {{- tpl (toYaml .Values.planner.costs) . | nindent 4 }}
+{{- end }}
