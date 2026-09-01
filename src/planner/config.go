@@ -22,7 +22,6 @@ type AppConfig struct {
 	AutoConsolidationScoreThreshold   int      `mapstructure:"autoConsolidationScoreThreshold"`
 	CandidateNodesSelectionMaxRetries int      `mapstructure:"candidateNodesSelectionMaxRetries"`
 	FixedPodAnnotation                string   `mapstructure:"fixedPodAnnotation"`
-	PodMoveCostAnnotation             string   `mapstructure:"podMoveCostAnnotation"`
 	EnabledPermutationStrategies      []string `mapstructure:"enabledPermutationStrategies"`
 	Parallelism                       int      `mapstructure:"parallelism"`
 }
@@ -37,7 +36,6 @@ func setDefaultConfigValues() {
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)
 	viper.SetDefault("candidateNodesSelectionMaxRetries", 15)
 	viper.SetDefault("fixedPodAnnotation", "podtetris/fixed")
-	viper.SetDefault("podMoveCostAnnotation", "podtetris/moveCost")
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
 	viper.SetDefault("parallelism", 8)
 }

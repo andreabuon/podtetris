@@ -6,7 +6,6 @@ costScoreWeight: 1
 autoConsolidationScoreThreshold: 0
 candidateNodesSelectionMaxRetries: 15
 fixedPodAnnotation: "podtetris/fixed"
-podMoveCostAnnotation: "podtetris/moveCost"
 enabledPermutationStrategies:
   - cpu_desc
   - memory_desc

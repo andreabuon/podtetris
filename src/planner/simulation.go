@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strconv"
 
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -213,11 +212,9 @@ func computePermutationScore(freedNodes, permutationCost int) int {
 
 func getPodMoveCost(pod *apiv1.Pod) int {
 	podMoveCost := Config.PodMoveDefaultCost
-	if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
-		if customCost, err := strconv.Atoi(annotationValue); err == nil {
-			podMoveCost = customCost
-		}
-	}
+
+	//TODO get Pod move cost by matching rules
+
 	return podMoveCost
 }
 
