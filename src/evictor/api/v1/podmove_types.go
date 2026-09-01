@@ -37,7 +37,8 @@ const (
 	ConditionPodRunning = "TargetPodRunning"
 	// ConditionFailed is True when:
 	// - the source pod could not be found during eviction
-	// - eviction was denied by a PodDisruptionBudget for MaxEvictionAttempts times
+	// - eviction was denied permanently (Forbidden/Invalid)
+	// - eviction failed for MaxEvictionAttempts times
 	// - the replacement could not be persisted on Spec.TargetNode for MaxPersistAttempts times
 	// - or when a verified replacement did not reach Running within MaxRunningAttempts polls.
 	ConditionFailed = "Failed"
@@ -46,12 +47,14 @@ const (
 	ReasonPodNotFound = "PodNotFound"
 	// ReasonBlockedByPDB is set when eviction is denied by a PodDisruptionBudget (HTTP 429).
 	ReasonBlockedByPDB = "BlockedByPDB"
+	// ReasonEvictionFailed is set when eviction fails for a non-PDB reason (permanent denial or attempts exhausted).
+	ReasonEvictionFailed = "EvictionFailed"
 	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node for MaxPersistAttempts times.
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
 	// ReasonReplacementNotRunning is set when a verified replacement pod did not reach Running within MaxRunningAttempts polls.
 	ReasonReplacementNotRunning = "ReplacementNotRunning"
 
-	// MaxEvictionAttempts is how many times eviction may be denied (e.g. by a PDB) before the PodMove is marked Failed.
+	// MaxEvictionAttempts is how many times eviction may fail (PDB or other retryable errors) before the PodMove is marked Failed.
 	MaxEvictionAttempts = 10
 	// MaxPersistAttempts is how many webhook-claimed CREATEs may fail to persist before the PodMove is marked Failed.
 	MaxPersistAttempts = 3
@@ -143,7 +146,7 @@ type PodMoveStatus struct {
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
 
-	// evictionAttempts is the number of times eviction was denied (typically by a PodDisruptionBudget).
+	// evictionAttempts is the number of times eviction failed (typically PDB denial or other retryable errors).
 	// After MaxEvictionAttempts the PodMove is marked Failed.
 	// +optional
 	// +kubebuilder:validation:Minimum=0

@@ -229,7 +229,7 @@ spec:
                 x-kubernetes-list-type: map
               evictionAttempts:
                 description: |-
-                  evictionAttempts is the number of times eviction was denied (typically by a PodDisruptionBudget).
+                  evictionAttempts is the number of times eviction failed (typically PDB denial or other retryable errors).
                   After MaxEvictionAttempts the PodMove is marked Failed.
                 format: int32
                 minimum: 0

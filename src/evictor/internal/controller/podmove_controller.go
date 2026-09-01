@@ -316,10 +316,12 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 		switch {
 		case apierrors.IsNotFound(err):
 			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
+		case apierrors.IsForbidden(err), apierrors.IsInvalid(err), apierrors.IsBadRequest(err):
+			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonEvictionFailed, fmt.Sprintf("Eviction of %s permanently denied: %v", client.ObjectKeyFromObject(pod), err))
 		case apierrors.IsTooManyRequests(err):
-			return r.requeueEvictionBlockedByPDB(ctx, pm, pod, err)
+			return r.requeueEviction(ctx, pm, pod, podtetrisiov1.ReasonBlockedByPDB, err)
 		default:
-			return ctrl.Result{}, err
+			return r.requeueEviction(ctx, pm, pod, podtetrisiov1.ReasonEvictionFailed, err)
 		}
 	}
 
@@ -329,17 +331,17 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 	return ctrl.Result{}, nil
 }
 
-// requeueEvictionBlockedByPDB records a denied eviction and requeues.
+// requeueEviction records a failed eviction attempt and requeues.
 // After MaxEvictionAttempts the PodMove is marked Failed.
-func (r *PodMoveReconciler) requeueEvictionBlockedByPDB(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod, evictionErr error) (ctrl.Result, error) {
+func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod, reason string, evictionErr error) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
 	pm.Status.EvictionAttempts++
 	attempt := pm.Status.EvictionAttempts
 	if attempt >= podtetrisiov1.MaxEvictionAttempts {
-		msg := fmt.Sprintf("Eviction of %s denied by PodDisruptionBudget after %d attempts",
-			client.ObjectKeyFromObject(pod), attempt)
-		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonBlockedByPDB, msg)
+		msg := fmt.Sprintf("Eviction of %s failed after %d attempts: %v",
+			client.ObjectKeyFromObject(pod), attempt, evictionErr)
+		return ctrl.Result{}, r.markFailed(ctx, pm, reason, msg)
 	}
 
 	delay := evictionRetryInterval
@@ -347,12 +349,12 @@ func (r *PodMoveReconciler) requeueEvictionBlockedByPDB(ctx context.Context, pm 
 		delay = time.Duration(seconds) * time.Second
 	}
 
-	msg := fmt.Sprintf("Eviction denied by PodDisruptionBudget (attempt %d/%d); will retry",
-		attempt, podtetrisiov1.MaxEvictionAttempts)
+	msg := fmt.Sprintf("Eviction failed (attempt %d/%d): %v; will retry",
+		attempt, podtetrisiov1.MaxEvictionAttempts, evictionErr)
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
 		Type:               podtetrisiov1.ConditionEvicted,
 		Status:             metav1.ConditionFalse,
-		Reason:             podtetrisiov1.ReasonBlockedByPDB,
+		Reason:             reason,
 		Message:            msg,
 		ObservedGeneration: pm.Generation,
 	})
@@ -360,8 +362,9 @@ func (r *PodMoveReconciler) requeueEvictionBlockedByPDB(ctx context.Context, pm 
 		return ctrl.Result{}, err
 	}
 
-	log.Info("Eviction blocked by PodDisruptionBudget",
+	log.Info("Eviction failed; will retry",
 		"pod", client.ObjectKeyFromObject(pod),
+		"reason", reason,
 		"evictionAttempts", attempt,
 		"maxEvictionAttempts", podtetrisiov1.MaxEvictionAttempts,
 		"requeueAfter", delay,
