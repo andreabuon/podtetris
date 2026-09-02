@@ -26,17 +26,19 @@ type CostRule struct {
 
 // MatchSpec filters pods. It evaluates all set fields, ANDed. Omitted fields are ignored.
 type MatchSpec struct {
-	Namespaces    []string              `mapstructure:"namespaces"`
-	Kinds         []string              `mapstructure:"kinds"` // controller OwnerReference.Kind
-	NameRegex     string                `mapstructure:"nameRegex"`
-	LabelSelector *metav1.LabelSelector `mapstructure:"labelSelector"`
+	NameRegex      string                `mapstructure:"nameRegex"`
+	Namespaces     []string              `mapstructure:"namespaces"`
+	NamespaceRegex string                `mapstructure:"namespaceRegex"`
+	Kinds          []string              `mapstructure:"kinds"` // controller OwnerReference.Kind
+	LabelSelector  *metav1.LabelSelector `mapstructure:"labelSelector"`
 }
 
 // preparedRule is a CostRule with regex/label selector ready for repeated matching.
 type preparedRule struct {
 	CostRule
-	nameRegex     *regexp.Regexp
-	labelSelector labels.Selector
+	nameRegex      *regexp.Regexp
+	namespaceRegex *regexp.Regexp
+	labelSelector  labels.Selector
 }
 
 // CostMatcher resolves pod move costs from ordered rules (first match wins).
@@ -90,6 +92,14 @@ func prepareRule(rule CostRule) (preparedRule, error) {
 		p.nameRegex = re
 	}
 
+	if rule.Match.NamespaceRegex != "" {
+		re, err := regexp.Compile(rule.Match.NamespaceRegex)
+		if err != nil {
+			return preparedRule{}, fmt.Errorf("namespaceRegex: %w", err)
+		}
+		p.namespaceRegex = re
+	}
+
 	if rule.Match.LabelSelector != nil {
 		sel, err := metav1.LabelSelectorAsSelector(rule.Match.LabelSelector)
 		if err != nil {
@@ -116,13 +126,16 @@ func (m *CostMatcher) getPodMovementCost(pod *apiv1.Pod) (int, error) {
 }
 
 func (r preparedRule) matches(pod *apiv1.Pod) bool {
+	if r.nameRegex != nil && !r.nameRegex.MatchString(pod.Name) {
+		return false
+	}
 	if len(r.Match.Namespaces) > 0 && !slices.Contains(r.Match.Namespaces, pod.Namespace) {
 		return false
 	}
-	if len(r.Match.Kinds) > 0 && !slices.Contains(r.Match.Kinds, controllerKind(pod)) {
+	if r.namespaceRegex != nil && !r.namespaceRegex.MatchString(pod.Namespace) {
 		return false
 	}
-	if r.nameRegex != nil && !r.nameRegex.MatchString(pod.Name) {
+	if len(r.Match.Kinds) > 0 && !slices.Contains(r.Match.Kinds, controllerKind(pod)) {
 		return false
 	}
 	if r.labelSelector != nil && !r.labelSelector.Matches(labels.Set(pod.Labels)) {

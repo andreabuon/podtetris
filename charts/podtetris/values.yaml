@@ -45,6 +45,7 @@ planner:
     #   match:
     #     kinds: [StatefulSet]
     #     namespaces: [db]
+    #     namespaceRegex: "^db-.*"
     #     nameRegex: "^postgres-.*"
     #     labelSelector:
     #       matchLabels:
