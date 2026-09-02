@@ -1,0 +1,57 @@
+# Kind-only planner.costs overrides
+#
+# Rules target labs/lab6_kind/manifests/podtetris-test-workloads.yaml.
+# First match wins. Expected move costs when pods are relocated:
+#   statefulset-*            → 100  (kinds + nameRegex + labelSelector)
+#   rs-a-*                   → 80   (nameRegex)
+#   rs-b-*                   → 60   (labelSelector)
+#   deployment-a-*           → 40   (labelSelector; controller kind is ReplicaSet)
+#   deployment-b-*           → 25   (namespaces exact + labelSelector)
+#   anything else in default → 15   (namespaceRegex)
+#   elsewhere                → 10   (defaultCost)
+# deployment-fixed pods are not moved (podtetris/fixed=true).
+
+planner:
+  costs:
+    defaultCost: 10
+    rules:
+      - name: statefulset-nginx
+        cost: 100
+        match:
+          kinds: [StatefulSet]
+          nameRegex: "^statefulset-[0-9]+$"
+          labelSelector:
+            matchLabels:
+              app: nginx
+
+      - name: rs-a-by-name
+        cost: 80
+        match:
+          nameRegex: "^rs-a-"
+
+      - name: rs-b-by-label
+        cost: 60
+        match:
+          labelSelector:
+            matchLabels:
+              app: rs-b
+
+      - name: deployment-a-by-label
+        cost: 40
+        match:
+          labelSelector:
+            matchLabels:
+              app: deployment-a
+
+      - name: deployment-b-by-namespace-and-label
+        cost: 25
+        match:
+          namespaces: [default]
+          labelSelector:
+            matchLabels:
+              app: deployment-b
+
+      - name: default-namespace-regex
+        cost: 15
+        match:
+          namespaceRegex: "^default$"
