@@ -1,0 +1,13 @@
+defaultCost: 10
+rules: []
+# Example:
+# rules:
+#   - name: databases
+#     cost: 100
+#     match:
+#       kinds: [StatefulSet]
+#       namespaces: [db]
+#       nameRegex: "^postgres-.*"
+#       labelSelector:
+#         matchLabels:
+#           tier: database

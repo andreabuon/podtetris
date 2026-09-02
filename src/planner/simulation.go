@@ -20,6 +20,7 @@ type SchedulingSimulator struct {
 	framework schedframework.Framework
 	snapshot  clustersnapshot.ClusterSnapshot
 	baseline  *Baseline
+	costs     *CostMatcher
 }
 
 type PodOrdering struct {
@@ -100,7 +101,10 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		if chosenNode.Node().Name == s.baseline.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
-			podMoveCost := getPodMoveCost(pod)
+			podMoveCost, err := s.costs.getPodMovementCost(pod)
+			if err != nil {
+				return nil, fmt.Errorf("cannot getPodMovementCost for %s/%s: %w", pod.Namespace, pod.Name, err)
+			}
 			permutationCost += podMoveCost
 			pm := PodMove{
 				pod:          pod,
@@ -208,14 +212,6 @@ func schedulePod(
 
 func computePermutationScore(freedNodes, permutationCost int) int {
 	return (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost)
-}
-
-func getPodMoveCost(pod *apiv1.Pod) int {
-	podMoveCost := Config.PodMoveDefaultCost
-
-	//TODO get Pod move cost by matching rules
-
-	return podMoveCost
 }
 
 func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework.NodePluginScores) (kubeframework.NodeInfo, error) {

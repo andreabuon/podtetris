@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"path/filepath"
 	"sort"
@@ -43,11 +42,16 @@ func main() {
 	setDefaultConfigValues()
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %w", err))
+		log.Fatalf("error during config file load: %v", err)
 	}
 
 	if err := viper.Unmarshal(&Config); err != nil {
-		panic(fmt.Errorf("fatal error unmarshalling config: %w", err))
+		log.Fatalf("error during config unmarshal: %v", err)
+	}
+
+	costRules, err := loadCostsConfig()
+	if err != nil {
+		log.Fatalf("error loading pod move costs config: %v", err)
 	}
 
 	clusterConfig, err := rest.InClusterConfig()
@@ -155,6 +159,7 @@ func main() {
 		framework: realFramework,
 		snapshot:  snapshot,
 		baseline:  initialState,
+		costs:     costRules,
 	}
 
 	var schedulingResults []*SimulationResult
