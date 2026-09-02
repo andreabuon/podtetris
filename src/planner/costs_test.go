@@ -28,16 +28,16 @@ func TestCostMatcher_namespaceRegex(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got != 40 {
-		t.Fatalf("got %d, want 40", got)
+	if got.Cost != 40 || got.Name != "tenant-ns" {
+		t.Fatalf("got %+v, want Name=tenant-ns Cost=40", got)
 	}
 
 	got, err = m.getPodMovementCost(podWithController("default", "web", "ReplicaSet", nil))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got != 10 {
-		t.Fatalf("got %d, want 10", got)
+	if got.Cost != 10 || got.Name != "default" {
+		t.Fatalf("got %+v, want Name=default Cost=10", got)
 	}
 }
 
@@ -62,8 +62,8 @@ func TestCostMatcher_namespacesAndNamespaceRegexAND(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got != 70 {
-		t.Fatalf("got %d, want 70", got)
+	if got.Cost != 70 || got.Name != "exact-and-regex" {
+		t.Fatalf("got %+v, want Name=exact-and-regex Cost=70", got)
 	}
 
 	// matches regex but not in exact list
@@ -71,8 +71,8 @@ func TestCostMatcher_namespacesAndNamespaceRegexAND(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got != 10 {
-		t.Fatalf("got %d, want 10", got)
+	if got.Cost != 10 || got.Name != "default" {
+		t.Fatalf("got %+v, want Name=default Cost=10", got)
 	}
 }
 

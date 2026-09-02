@@ -21,7 +21,7 @@ type PodMove struct {
 }
 
 func (pm PodMove) String() string {
-	return fmt.Sprintf("Pod '%s' moved from '%s' to '%s' (move cost = %d)", pm.pod.Name, pm.fromNodeName, pm.toNodeName, pm.cost)
+	return fmt.Sprintf("Pod '%s' moved from '%s' to '%s' (cost = %d)", pm.pod.Name, pm.fromNodeName, pm.toNodeName, pm.cost)
 }
 
 func applyConsolidationStrategy(ctx context.Context, c client.Client, result *SimulationResult) {

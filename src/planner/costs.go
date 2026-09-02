@@ -12,6 +12,9 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 )
 
+const defaultCostRuleName = "default-cost"
+
+// CostsFile is the on-disk costs.yaml schema.
 type CostsFile struct {
 	DefaultCost int        `mapstructure:"defaultCost"`
 	Rules       []CostRule `mapstructure:"rules"`
@@ -24,7 +27,7 @@ type CostRule struct {
 	Match MatchSpec `mapstructure:"match"`
 }
 
-// MatchSpec filters pods. It evaluates all set fields, ANDed. Omitted fields are ignored.
+// MatchSpec filters pods. All set fields are ANDed; omitted fields are ignored.
 type MatchSpec struct {
 	NameRegex      string                `mapstructure:"nameRegex"`
 	Namespaces     []string              `mapstructure:"namespaces"`
@@ -33,18 +36,29 @@ type MatchSpec struct {
 	LabelSelector  *metav1.LabelSelector `mapstructure:"labelSelector"`
 }
 
-// preparedRule is a CostRule with regex/label selector ready for repeated matching.
-type preparedRule struct {
-	CostRule
-	nameRegex      *regexp.Regexp
-	namespaceRegex *regexp.Regexp
-	labelSelector  labels.Selector
+// RuleMatch is the cost rule applied to a pod move.
+// Name is "default" when no configured rule matched.
+type RuleMatch struct {
+	Name string
+	Cost int
+}
+
+func (rm RuleMatch) String() string {
+	return fmt.Sprintf("rule = %s, cost = %d", rm.Name, rm.Cost)
 }
 
 // CostMatcher resolves pod move costs from ordered rules (first match wins).
 type CostMatcher struct {
 	defaultCost int
 	rules       []preparedRule
+}
+
+// preparedRule is a CostRule with compiled matchers ready for reuse.
+type preparedRule struct {
+	CostRule
+	nameRegex      *regexp.Regexp
+	namespaceRegex *regexp.Regexp
+	labelSelector  labels.Selector
 }
 
 func loadCostsConfig() (*CostMatcher, error) {
@@ -65,16 +79,15 @@ func loadCostsConfig() (*CostMatcher, error) {
 }
 
 func newCostMatcher(file CostsFile) (*CostMatcher, error) {
-	m := &CostMatcher{defaultCost: file.DefaultCost}
+	m := &CostMatcher{
+		defaultCost: file.DefaultCost,
+		rules:       make([]preparedRule, 0, len(file.Rules)),
+	}
 
-	for index, rule := range file.Rules {
+	for i, rule := range file.Rules {
 		prepared, err := prepareRule(rule)
 		if err != nil {
-			name := rule.Name
-			if name == "" {
-				name = fmt.Sprintf("rule #%d", index)
-			}
-			return nil, fmt.Errorf("cost rule %q: %w", name, err)
+			return nil, fmt.Errorf("cost rule %q: %w", costRuleName(rule.Name, i), err)
 		}
 		m.rules = append(m.rules, prepared)
 	}
@@ -107,22 +120,24 @@ func prepareRule(rule CostRule) (preparedRule, error) {
 		}
 		p.labelSelector = sel
 	}
+
 	return p, nil
 }
 
-func (m *CostMatcher) getPodMovementCost(pod *apiv1.Pod) (int, error) {
+func (m *CostMatcher) getPodMovementCost(pod *apiv1.Pod) (RuleMatch, error) {
 	if m == nil {
-		return 0, errors.New("cost matcher is nil")
+		return RuleMatch{}, errors.New("cost matcher is nil")
 	}
 	if pod == nil {
-		return 0, errors.New("pod is nil")
+		return RuleMatch{}, errors.New("pod is nil")
 	}
-	for _, rule := range m.rules {
+
+	for i, rule := range m.rules {
 		if rule.matches(pod) {
-			return rule.Cost, nil
+			return RuleMatch{Name: costRuleName(rule.Name, i), Cost: rule.Cost}, nil
 		}
 	}
-	return m.defaultCost, nil
+	return RuleMatch{Name: defaultCostRuleName, Cost: m.defaultCost}, nil
 }
 
 func (r preparedRule) matches(pod *apiv1.Pod) bool {
@@ -142,6 +157,13 @@ func (r preparedRule) matches(pod *apiv1.Pod) bool {
 		return false
 	}
 	return true
+}
+
+func costRuleName(name string, index int) string {
+	if name != "" {
+		return name
+	}
+	return fmt.Sprintf("rule #%d", index)
 }
 
 func controllerKind(pod *apiv1.Pod) string {

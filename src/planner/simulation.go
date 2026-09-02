@@ -101,19 +101,20 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		if chosenNode.Node().Name == s.baseline.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
-			podMoveCost, err := s.costs.getPodMovementCost(pod)
+			match, err := s.costs.getPodMovementCost(pod)
 			if err != nil {
 				return nil, fmt.Errorf("pod move cost for %s/%s: %w", pod.Namespace, pod.Name, err)
 			}
-			permutationCost += podMoveCost
+			permutationCost += match.Cost
 			pm := PodMove{
 				pod:          pod,
 				fromNodeName: s.baseline.Allocations[podName],
 				toNodeName:   chosenNode.Node().Name,
-				cost:         podMoveCost,
+				cost:         match.Cost,
 			}
 			moves = append(moves, pm)
-			log.Printf("- Pod move: %s", pm)
+			log.Printf("- Pod move: Pod '%s' moved from '%s' to '%s' (%s)",
+				pm.pod.Name, pm.fromNodeName, pm.toNodeName, match)
 		}
 	}
 
