@@ -4,7 +4,6 @@ emptyNodesScoreWeight: 400
 costScoreWeight: 1
 autoConsolidationScoreThreshold: 0
 candidateNodesSelectionMaxRetries: 15
-fixedPodAnnotation: "podtetris/fixed"
 enabledPermutationStrategies:
   - cpu_desc
   - memory_desc

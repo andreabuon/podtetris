@@ -64,8 +64,6 @@ spec:
     metadata:
       labels:
         app: fixed-app
-      annotations:
-        "podtetris/fixed": "true" 
     spec:
       containers:
       - name: pause

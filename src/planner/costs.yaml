@@ -1,5 +1,6 @@
 defaultCost: 10
 rules: []
+fixed: []
 # Example:
 # rules:
 #   - name: databases
@@ -12,3 +13,8 @@ rules: []
 #       labelSelector:
 #         matchLabels:
 #           tier: database
+# fixed:
+#   - name: pinned-statefulsets
+#     match:
+#       kinds: [StatefulSet]
+#       namespaces: [db]

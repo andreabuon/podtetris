@@ -29,13 +29,19 @@ planner:
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
     candidateNodesSelectionMaxRetries: 15
-    fixedPodAnnotation: "podtetris/fixed"
     enabledPermutationStrategies:
       - cpu_desc
       - memory_desc
       - random
     parallelism: 8
     
+  # Fixed rules list: matching pods are never moved by the planner.
+  fixed: []
+    # - name: pinned-statefulsets
+    #   match:
+    #     kinds: [StatefulSet]
+    #     namespaces: [db]
+
   # Pod-move cost rules (first match wins; all set match fields are ANDed).
   costs:
     defaultCost: 10
