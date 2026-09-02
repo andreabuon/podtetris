@@ -24,7 +24,7 @@ type CostRule struct {
 	Match MatchSpec `mapstructure:"match"`
 }
 
-// MatchSpec filters pods. It evalutes all set fields, ANDed. Omitted fields are ignored.
+// MatchSpec filters pods. It evaluates all set fields, ANDed. Omitted fields are ignored.
 type MatchSpec struct {
 	Namespaces    []string              `mapstructure:"namespaces"`
 	Kinds         []string              `mapstructure:"kinds"` // controller OwnerReference.Kind

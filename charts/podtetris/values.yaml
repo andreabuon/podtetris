@@ -25,7 +25,6 @@ planner:
     podtetrisNamespace: "{{ .Release.Namespace }}"
     randomCandidateNodesNumber: 3
     byCPUCandidateNodesNumber: 2
-    podMoveDefaultCost: 10
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0

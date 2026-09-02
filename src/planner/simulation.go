@@ -103,7 +103,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		} else {
 			podMoveCost, err := s.costs.getPodMovementCost(pod)
 			if err != nil {
-				return nil, fmt.Errorf("cannot getPodMovementCost for %s/%s: %w", pod.Namespace, pod.Name, err)
+				return nil, fmt.Errorf("pod move cost for %s/%s: %w", pod.Namespace, pod.Name, err)
 			}
 			permutationCost += podMoveCost
 			pm := PodMove{
