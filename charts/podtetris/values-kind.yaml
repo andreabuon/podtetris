@@ -1,4 +1,4 @@
-# Kind-only planner.costs overrides
+# Kind-only rules overrides
 #
 # Rules target labs/lab6_kind/manifests/podtetris-test-workloads.yaml.
 #
@@ -15,7 +15,7 @@
 #   elsewhere                → 10   (defaultMoveCost)
 
 planner:
-  costs:
+  rules:
     defaultMoveCost: 10
     fixedPodsRules:
       - name: deployment-fixed

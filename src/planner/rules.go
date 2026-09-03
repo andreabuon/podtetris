@@ -12,8 +12,6 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 )
 
-const defaultCostRuleName = "default-cost"
-
 // PodsSelector selects pods. All set fields are ANDed; omitted fields are ignored.
 type PodsSelector struct {
 	PodNameRegex   string                `mapstructure:"nameRegex"`
@@ -72,24 +70,24 @@ type RuleMatcher struct {
 
 // ###
 
-func loadCostsConfig() (*RuleMatcher, error) {
+func loadRulesConfig() (*RuleMatcher, error) {
 	v := viper.New()
-	v.SetConfigName("costs")
+	v.SetConfigName("rules")
 	v.AddConfigPath("/etc/podtetris/")
 	v.AddConfigPath(".")
 
 	if err := v.ReadInConfig(); err != nil {
-		return nil, fmt.Errorf("read costs config: %w", err)
+		return nil, fmt.Errorf("read rules config: %w", err)
 	}
 
 	var file RulesFile
 	if err := v.Unmarshal(&file); err != nil {
-		return nil, fmt.Errorf("unmarshal costs config: %w", err)
+		return nil, fmt.Errorf("unmarshal rules config: %w", err)
 	}
-	return newCostMatcher(file)
+	return newRuleMatcher(file)
 }
 
-func newCostMatcher(file RulesFile) (*RuleMatcher, error) {
+func newRuleMatcher(file RulesFile) (*RuleMatcher, error) {
 	m := &RuleMatcher{
 		defaultCost:    file.DefaultMoveCost,
 		fixedPodsRules: make([]compiledRule, 0, len(file.FixedPodsRules)),
@@ -168,7 +166,7 @@ func (selector *PodsSelector) Compile() (CompiledPodsSelector, error) {
 
 func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (int, error) {
 	if m == nil {
-		return 0, errors.New("cost matcher is nil")
+		return 0, errors.New("rule matcher is nil")
 	}
 	if pod == nil {
 		return 0, errors.New("pod is nil")
@@ -184,7 +182,7 @@ func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (int, error) {
 
 func (m *RuleMatcher) isFixed(pod *apiv1.Pod) (bool, error) {
 	if m == nil {
-		return false, errors.New("cost matcher is nil")
+		return false, errors.New("rule matcher is nil")
 	}
 	if pod == nil {
 		return false, errors.New("pod is nil")

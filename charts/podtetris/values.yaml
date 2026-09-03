@@ -35,9 +35,8 @@ planner:
       - random
     parallelism: 8
     
-  # Pod-move costs and fixed-pod rules (written to the planner costs.yaml ConfigMap).
-  # First matching moveCostRule wins; all set selector fields are ANDed.
-  costs:
+  # Pod-move costs and fixed-pod rules.
+  rules:
     defaultMoveCost: 10
     fixedPodsRules: []
     # - name: pinned-statefulsets

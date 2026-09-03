@@ -49,9 +49,9 @@ func main() {
 		log.Fatalf("error during config unmarshal: %v", err)
 	}
 
-	rules, err := loadCostsConfig()
+	rules, err := loadRulesConfig()
 	if err != nil {
-		log.Fatalf("error loading pod move costs config: %v", err)
+		log.Fatalf("error loading planner rules config: %v", err)
 	}
 
 	clusterConfig, err := rest.InClusterConfig()
@@ -159,7 +159,7 @@ func main() {
 		framework: realFramework,
 		snapshot:  snapshot,
 		baseline:  initialState,
-		costs:     rules,
+		rules:     rules,
 	}
 
 	var schedulingResults []*SimulationResult

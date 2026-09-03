@@ -20,7 +20,6 @@ type SchedulingSimulator struct {
 	framework schedframework.Framework
 	snapshot  clustersnapshot.ClusterSnapshot
 	baseline  *Baseline
-	costs     *RuleMatcher
 	rules     *RuleMatcher
 }
 
@@ -102,7 +101,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		if chosenNode.Node().Name == s.baseline.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
-			cost, err := s.costs.getPodMovementCost(pod)
+			cost, err := s.rules.getPodMovementCost(pod)
 			if err != nil {
 				return nil, fmt.Errorf("pod move cost for %s/%s: %w", pod.Namespace, pod.Name, err)
 			}
@@ -114,7 +113,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 				cost:         cost,
 			}
 			moves = append(moves, pm)
-			log.Printf("- Pod move: Pod '%s' moved from '%s' to '%s' (cost = %s)",
+			log.Printf("- Pod move: Pod '%s' moved from '%s' to '%s' (cost = %d)",
 				pm.pod.Name, pm.fromNodeName, pm.toNodeName, cost)
 		}
 	}
