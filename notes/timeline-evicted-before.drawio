@@ -1,6 +1,6 @@
 <mxfile host="Electron" scale="1" border="0">
   <diagram name="Page-1" id="7k7VfiGH6UyTxTJfj-CJ">
-    <mxGraphModel dx="2864" dy="1306" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2334" dy="962" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20,7 +20,7 @@
             <mxPoint x="140" y="390" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pF253yrdeg1WD5FKMExi-2" connectable="0" parent="5YGSYte2J0h3kkShMbgC-74" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="removes the &quot;Injected&quot; condition" vertex="1">
+        <mxCell id="pF253yrdeg1WD5FKMExi-2" connectable="0" parent="5YGSYte2J0h3kkShMbgC-74" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(214, 182, 86);&quot;&gt;removes the &quot;Injected&quot; condition&lt;/span&gt;" vertex="1">
           <mxGeometry relative="1" x="0.0952" y="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -79,10 +79,10 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-16" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-42" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#d5e8d4;strokeColor=#82b366;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" target="5YGSYte2J0h3kkShMbgC-7" value="">
+        <mxCell id="5YGSYte2J0h3kkShMbgC-16" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-42" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#d5e8d4;strokeColor=#82b366;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="-30" y="860" as="sourcePoint" />
-            <mxPoint x="139.5" y="890" as="targetPoint" />
+            <mxPoint x="150" y="1070" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-62" connectable="0" parent="5YGSYte2J0h3kkShMbgC-16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=1;points=[];fontSize=12;labelBackgroundColor=#d5e8d4;labelBorderColor=#82b366;movable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="OK" vertex="1">
@@ -103,12 +103,6 @@
             <mxPoint x="330" y="540" as="sourcePoint" />
             <mxPoint x="140" y="620" as="targetPoint" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-44" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;" value="Looks for a &quot;Evicted&quot; PodMove for the pod controller owner" vertex="1">
-          <mxGeometry height="60" width="200" x="600" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Injects the target node" vertex="1">
-          <mxGeometry height="40" width="200" x="600" y="480" as="geometry" />
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Verifies the replacement pod persisted on the target Node" vertex="1">
           <mxGeometry height="40" width="200" x="320" y="700" as="geometry" />
@@ -203,9 +197,9 @@
             <mxPoint x="420" y="950" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pF253yrdeg1WD5FKMExi-10" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="removes the &quot;Injected&quot; condition" vertex="1">
+        <mxCell id="pF253yrdeg1WD5FKMExi-10" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="sets the &quot;Running&quot; condition" vertex="1">
           <mxGeometry relative="1" x="0.0952" y="1" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint x="-61" y="-20" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="pF253yrdeg1WD5FKMExi-11" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; background-color: rgb(236, 236, 236);&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20edge%3D%221%22%20parent%3D%221%22%20style%3D%22endArrow%3Dopen%3Bhtml%3D1%3Brounded%3D0%3BstrokeWidth%3D2%3BendFill%3D0%3BfillColor%3D%23fff2cc%3BstrokeColor%3D%23d6b656%3Bdashed%3D1%3BdashPattern%3D8%208%3Bcurved%3D1%3BexitX%3D0.247%3BexitY%3D0.79%3BexitDx%3D0%3BexitDy%3D0%3BexitPerimeter%3D0%3B%22%20value%3D%22%22%3E%3CmxGeometry%20height%3D%2250%22%20relative%3D%221%22%20width%3D%2250%22%20as%3D%22geometry%22%3E%3CArray%20as%3D%22points%22%3E%3CmxPoint%20x%3D%22310%22%20y%3D%22980%22%2F%3E%3CmxPoint%20x%3D%22310%22%20y%3D%22370%22%2F%3E%3C%2FArray%3E%3CmxPoint%20x%3D%22495%22%20y%3D%22879%22%20as%3D%22sourcePoint%22%2F%3E%3CmxPoint%20x%3D%22140%22%20y%3D%22340%22%20as%3D%22targetPoint%22%2F%3E%3C%2FmxGeometry%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%223%22%20connectable%3D%220%22%20parent%3D%222%22%20style%3D%22edgeLabel%3Bhtml%3D1%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3Bresizable%3D0%3Bpoints%3D%5B%5D%3B%22%20value%3D%22removes%20the%20%26quot%3BInjected%26quot%3B%20condition%22%20vertex%3D%221%22%3E%3CmxGeometry%20relative%3D%221%22%20x%3D%220.0952%22%20y%3D%221%22%20as%3D%22geometry%22%3E%3CmxPoint%20as%3D%22offset%22%2F%3E%3C%2FmxGeometry%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3ret&lt;/span&gt;" vertex="1">
@@ -213,7 +207,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pF253yrdeg1WD5FKMExi-12" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="checks again after 3 minutes" vertex="1">
+        <mxCell id="pF253yrdeg1WD5FKMExi-12" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(214, 182, 86);&quot;&gt;checks again after 3 minutes&lt;/span&gt;" vertex="1">
           <mxGeometry relative="1" x="-0.4078" y="-5" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -272,14 +266,11 @@
             <mxPoint x="-230.56" y="100" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="gFk0ZOQCknoj4q1J7Xs2-31" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;dashed=1;dashPattern=8 4 1 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="5YGSYte2J0h3kkShMbgC-45" value="">
+        <mxCell id="gFk0ZOQCknoj4q1J7Xs2-31" edge="1" parent="1" source="270UXobJ2c03rI3WUt7u-1" style="endArrow=none;html=1;rounded=0;dashed=1;dashPattern=8 4 1 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="5YGSYte2J0h3kkShMbgC-45" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="700" y="1320" as="sourcePoint" />
             <mxPoint x="700" y="70" as="targetPoint" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-45" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Receives a Pod Create request" vertex="1">
-          <mxGeometry height="40" width="200" x="600" y="320" as="geometry" />
         </mxCell>
         <mxCell id="gFk0ZOQCknoj4q1J7Xs2-34" edge="1" parent="1" source="lNGCyAtPCnoPs1m-FRig-1" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5YGSYte2J0h3kkShMbgC-45" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -450,6 +441,24 @@
           <mxGeometry relative="1" x="0.2944" y="-1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="5YGSYte2J0h3kkShMbgC-44" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;" value="Looks for a &quot;Evicted&quot; PodMove for the pod controller owner" vertex="1">
+          <mxGeometry height="60" width="200" x="600" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="5YGSYte2J0h3kkShMbgC-43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Injects the target node" vertex="1">
+          <mxGeometry height="40" width="200" x="600" y="504" as="geometry" />
+        </mxCell>
+        <mxCell id="5YGSYte2J0h3kkShMbgC-45" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Receives a Pod Create request" vertex="1">
+          <mxGeometry height="40" width="200" x="600" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="270UXobJ2c03rI3WUt7u-2" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;dashed=1;dashPattern=8 4 1 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="270UXobJ2c03rI3WUt7u-1" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="700" y="1320" as="sourcePoint" />
+            <mxPoint x="700" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="270UXobJ2c03rI3WUt7u-1" parent="1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.no_symbol;fillColor=#f8cecc;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="50" width="50" x="675" y="445" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
