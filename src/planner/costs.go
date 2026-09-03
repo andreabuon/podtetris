@@ -70,7 +70,7 @@ type MoveCostRuleMatch struct {
 // compiledRule is a rule with compiled regex ready for reuse.
 type compiledRule struct {
 	name     string
-	selector *CompiledPodsSelector
+	selector CompiledPodsSelector
 }
 
 type compiledCostRule struct {
