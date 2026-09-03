@@ -30,12 +30,12 @@ type Rule struct {
 
 // FixedPodsRule specifies that a pod should not be moved across nodes
 type FixedPodsRule struct {
-	Rule `mapstructure:"rule, squash"`
+	Rule `mapstructure:",squash"`
 }
 
 // MoveCostRule assigns a cost to the movement of pods matching PodsSelector
 type MoveCostRule struct {
-	Rule `mapstructure:"rule, squash"`
+	Rule `mapstructure:",squash"`
 	Cost int `mapstructure:"cost"`
 }
 
