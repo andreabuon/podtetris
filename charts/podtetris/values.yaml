@@ -35,20 +35,19 @@ planner:
       - random
     parallelism: 8
     
-  # Fixed rules list: matching pods are never moved by the planner.
-  fixed: []
+  # Pod-move costs and fixed-pod rules (written to the planner costs.yaml ConfigMap).
+  # First matching moveCostRule wins; all set selector fields are ANDed.
+  costs:
+    defaultMoveCost: 10
+    fixedPodsRules: []
     # - name: pinned-statefulsets
-    #   match:
+    #   selector:
     #     kinds: [StatefulSet]
     #     namespaces: [db]
-
-  # Pod-move cost rules (first match wins; all set match fields are ANDed).
-  costs:
-    defaultCost: 10
-    rules: []
+    moveCostRules: []
     # - name: databases
     #   cost: 100
-    #   match:
+    #   selector:
     #     kinds: [StatefulSet]
     #     namespaces: [db]
     #     namespaceRegex: "^db-.*"

@@ -1,11 +1,16 @@
-defaultCost: 10
-rules: []
-fixed: []
+defaultMoveCost: 10
+fixedPodsRules: []
+moveCostRules: []
 # Example:
-# rules:
+# fixedPodsRules:
+#   - name: pinned-statefulsets
+#     selector:
+#       kinds: [StatefulSet]
+#       namespaces: [db]
+# moveCostRules:
 #   - name: databases
 #     cost: 100
-#     match:
+#     selector:
 #       kinds: [StatefulSet]
 #       namespaces: [db]
 #       namespaceRegex: "^db-.*"
@@ -13,8 +18,3 @@ fixed: []
 #       labelSelector:
 #         matchLabels:
 #           tier: database
-# fixed:
-#   - name: pinned-statefulsets
-#     match:
-#       kinds: [StatefulSet]
-#       namespaces: [db]
