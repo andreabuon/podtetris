@@ -22,7 +22,7 @@ const (
 )
 
 // isEvictable returns (true, "") if the pod can be evicted or (false, reason) explaining why it was skipped.
-func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
+func isEvictable(pod *apiv1.Pod, rules *RuleMatcher) (bool, EvictionSkipReason) {
 	if pod == nil {
 		return false, SkipNilPod
 	}
@@ -51,7 +51,11 @@ func isEvictable(pod *apiv1.Pod) (bool, EvictionSkipReason) {
 		}
 	}
 
-	if value, ok := pod.Annotations[Config.FixedPodAnnotation]; ok && value == "true" {
+	fixed, err := rules.isFixed(pod)
+	if err != nil {
+		//FIXME
+	}
+	if fixed {
 		return false, SkipFixedPod
 	}
 

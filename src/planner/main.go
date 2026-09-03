@@ -49,7 +49,7 @@ func main() {
 		log.Fatalf("error during config unmarshal: %v", err)
 	}
 
-	costRules, err := loadCostsConfig()
+	rules, err := loadCostsConfig()
 	if err != nil {
 		log.Fatalf("error loading pod move costs config: %v", err)
 	}
@@ -138,15 +138,15 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.RandomCandidateNodesNumber, Config.ByCPUCandidateNodesNumber)
+	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.RandomCandidateNodesNumber, Config.ByCPUCandidateNodesNumber, rules)
 	if err != nil {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	initialEmptyNodes := countEmptyNodes(candidateNodes)
+	initialEmptyNodes := countEmptyNodes(candidateNodes, rules)
 	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
-	evictedPods := virtuallyEvictPods(snapshot, candidateNodes)
+	evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
 	permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies)
 
 	initialState := &Baseline{
@@ -159,7 +159,7 @@ func main() {
 		framework: realFramework,
 		snapshot:  snapshot,
 		baseline:  initialState,
-		costs:     costRules,
+		costs:     rules,
 	}
 
 	var schedulingResults []*SimulationResult

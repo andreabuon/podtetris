@@ -45,6 +45,17 @@ type RulesFile struct {
 	MoveCostRules   []MoveCostRule  `mapstructure:"moveCostRules"`
 }
 
+// compiledRule is a rule with compiled regex ready for reuse.
+type compiledRule struct {
+	Name     string
+	Selector CompiledPodsSelector
+}
+
+type compiledCostRule struct {
+	compiledRule
+	Cost int
+}
+
 type CompiledPodsSelector struct {
 	podNameRegex   *regexp.Regexp
 	namespaces     []string
@@ -59,34 +70,7 @@ type RuleMatcher struct {
 	costRules      []compiledCostRule
 }
 
-type RuleMatch struct {
-	matchedRule *Rule
-}
-
-type MoveCostRuleMatch struct {
-	MoveCostRule *MoveCostRule
-}
-
-// compiledRule is a rule with compiled regex ready for reuse.
-type compiledRule struct {
-	name     string
-	selector CompiledPodsSelector
-}
-
-type compiledCostRule struct {
-	compiledRule
-	cost int
-}
-
 // ###
-
-func (rm RuleMatch) String() string {
-	return fmt.Sprintf("matched rule = %s", rm.matchedRule.Name)
-}
-
-func (moveCostRule MoveCostRuleMatch) String() string {
-	return fmt.Sprintf("matched rule = %s, cost = %d", moveCostRule.MoveCostRule.Rule.Name, moveCostRule.MoveCostRule.Cost)
-}
 
 func loadCostsConfig() (*RuleMatcher, error) {
 	v := viper.New()
@@ -107,64 +91,112 @@ func loadCostsConfig() (*RuleMatcher, error) {
 
 func newCostMatcher(file RulesFile) (*RuleMatcher, error) {
 	m := &RuleMatcher{
-		defaultCost: file.DefaultMoveCost,
-		rules:       make([]preparedRule, 0, len(file.MoveCostRules)),
+		defaultCost:    file.DefaultMoveCost,
+		fixedPodsRules: make([]compiledRule, 0, len(file.FixedPodsRules)),
+		costRules:      make([]compiledCostRule, 0, len(file.MoveCostRules)),
 	}
 
-	for i, rule := range file.MoveCostRules {
-		prepared, err := prepareRule(rule)
+	// add fixed pods rules
+	for i, rule := range file.FixedPodsRules {
+		compiledSelector, err := rule.Selector.Compile()
 		if err != nil {
-			return nil, fmt.Errorf("cost rule %q: %w", costRuleName(rule.RuleName, i), err)
+			return nil, fmt.Errorf("fixed rule %d: %w", i, err)
 		}
-		m.rules = append(m.rules, prepared)
+
+		fixedRule := compiledRule{
+			Name:     rule.Name,
+			Selector: compiledSelector,
+		}
+
+		m.fixedPodsRules = append(m.fixedPodsRules, fixedRule)
+	}
+
+	// add move cost rules
+	for i, rule := range file.MoveCostRules {
+		compiledSelector, err := rule.Selector.Compile()
+		if err != nil {
+			return nil, fmt.Errorf("cost rule %d: %w", i, err)
+		}
+
+		compiledRule := compiledRule{
+			Name:     rule.Name,
+			Selector: compiledSelector,
+		}
+
+		compiledCostRule := compiledCostRule{
+			compiledRule,
+			rule.Cost,
+		}
+
+		m.costRules = append(m.costRules, compiledCostRule)
 	}
 	return m, nil
 }
 
-func prepareRule(rule MoveCostRule) (preparedRule, error) {
-	p := preparedRule{MoveCostRule: rule}
-
-	if rule.Match.NameRegex != "" {
-		re, err := regexp.Compile(rule.Match.NameRegex)
-		if err != nil {
-			return preparedRule{}, fmt.Errorf("nameRegex: %w", err)
-		}
-		p.nameRegex = re
+func (selector *PodsSelector) Compile() (CompiledPodsSelector, error) {
+	compiledSelector := CompiledPodsSelector{
+		namespaces:    selector.Namespaces,
+		kinds:         selector.Kinds,
+		labelSelector: selector.LabelSelector,
 	}
 
-	if rule.Match.NamespaceRegex != "" {
-		re, err := regexp.Compile(rule.Match.NamespaceRegex)
+	if selector.PodNameRegex != "" {
+		re, err := regexp.Compile(selector.PodNameRegex)
 		if err != nil {
-			return preparedRule{}, fmt.Errorf("namespaceRegex: %w", err)
+			return CompiledPodsSelector{}, fmt.Errorf("PodNameRegex: %w", err)
 		}
-		p.namespaceRegex = re
+		compiledSelector.podNameRegex = re
 	}
 
-	if rule.Match.LabelSelector != nil {
-		sel, err := metav1.LabelSelectorAsSelector(rule.Match.LabelSelector)
+	if selector.NamespaceRegex != "" {
+		re, err := regexp.Compile(selector.NamespaceRegex)
 		if err != nil {
-			return preparedRule{}, fmt.Errorf("labelSelector: %w", err)
+			return CompiledPodsSelector{}, fmt.Errorf("NamespaceRegex: %w", err)
 		}
-		p.labelSelector = sel
+		compiledSelector.namespaceRegex = re
 	}
 
-	return p, nil
+	if selector.LabelSelector != nil {
+		sel, err := metav1.LabelSelectorAsSelector(selector.LabelSelector)
+		if err != nil {
+			return CompiledPodsSelector{}, fmt.Errorf("labelSelector: %w", err)
+		}
+		compiledSelector.labelSelector = sel
+	}
+
+	return compiledSelector, nil
 }
 
-func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (MoveCostRuleMatch, error) {
+func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (int, error) {
 	if m == nil {
-		return MoveCostRuleMatch{}, errors.New("cost matcher is nil")
+		return 0, errors.New("cost matcher is nil")
 	}
 	if pod == nil {
-		return MoveCostRuleMatch{}, errors.New("pod is nil")
+		return 0, errors.New("pod is nil")
 	}
 
-	for i, rule := range m.costRules {
-		if rule.selector.matches(pod) {
-			return MoveCostRuleMatch{}, nil //FIXME
+	for _, rule := range m.costRules {
+		if rule.Selector.matches(pod) {
+			return rule.Cost, nil
 		}
 	}
-	return MoveCostRuleMatch{}, nil //FIXME
+	return m.defaultCost, nil
+}
+
+func (m *RuleMatcher) isFixed(pod *apiv1.Pod) (bool, error) {
+	if m == nil {
+		return false, errors.New("cost matcher is nil")
+	}
+	if pod == nil {
+		return false, errors.New("pod is nil")
+	}
+
+	for _, rule := range m.fixedPodsRules {
+		if rule.Selector.matches(pod) {
+			return true, nil
+		}
+	}
+	return false, nil
 }
 
 func (selector CompiledPodsSelector) matches(pod *apiv1.Pod) bool {
