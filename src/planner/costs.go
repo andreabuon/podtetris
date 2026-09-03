@@ -14,54 +14,82 @@ import (
 
 const defaultCostRuleName = "default-cost"
 
-// CostsFile is the on-disk costs.yaml schema.
-type CostsFile struct {
-	DefaultCost int        `mapstructure:"defaultCost"`
-	Rules       []CostRule `mapstructure:"rules"`
+type RulesFile struct {
+	DefaultMoveCost int             `mapstructure:"defaultMoveCost"`
+	FixedPodsRules  []FixedPodsRule `mapstructure:"fixedPodsRules"`
+	MoveCostRules   []MoveCostRule  `mapstructure:"moveCostRules"`
 }
 
-// CostRule assigns a move cost to pods matching Match.
-type CostRule struct {
-	Name  string    `mapstructure:"name"`
-	Cost  int       `mapstructure:"cost"`
-	Match MatchSpec `mapstructure:"match"`
+type Rule struct {
+	RuleName     string       `mapstructure:"ruleName"`
+	PodsSelector PodsSelector `mapstructure:"podsSelector"`
 }
 
-// MatchSpec filters pods. All set fields are ANDed; omitted fields are ignored.
-type MatchSpec struct {
-	NameRegex      string                `mapstructure:"nameRegex"`
+// PodsSelector selects pods. All set fields are ANDed; omitted fields are ignored.
+type PodsSelector struct {
+	PodNameRegex   string                `mapstructure:"nameRegex"`
 	Namespaces     []string              `mapstructure:"namespaces"`
 	NamespaceRegex string                `mapstructure:"namespaceRegex"`
 	Kinds          []string              `mapstructure:"kinds"` // controller OwnerReference.Kind
 	LabelSelector  *metav1.LabelSelector `mapstructure:"labelSelector"`
 }
 
-// RuleMatch is the cost rule applied to a pod move.
-// Name is "default" when no configured rule matched.
-type RuleMatch struct {
-	Name string
-	Cost int
+// FixedPodsRule specifies that a pod should not be moved across nodes
+type FixedPodsRule struct {
+	Rule Rule `mapstructure:"rule"`
 }
 
-func (rm RuleMatch) String() string {
-	return fmt.Sprintf("rule = %s, cost = %d", rm.Name, rm.Cost)
+// MoveCostRule assigns a cost to the movement of pods matching PodsSelector
+type MoveCostRule struct {
+	Rule Rule `mapstructure:"rule"`
+	Cost int  `mapstructure:"cost"`
 }
 
-// CostMatcher resolves pod move costs from ordered rules (first match wins).
-type CostMatcher struct {
-	defaultCost int
-	rules       []preparedRule
-}
-
-// preparedRule is a CostRule with compiled matchers ready for reuse.
-type preparedRule struct {
-	CostRule
-	nameRegex      *regexp.Regexp
+type CompiledPodsSelector struct {
+	selector       *PodsSelector
+	podNameRegex   *regexp.Regexp
+	namespaces     string
 	namespaceRegex *regexp.Regexp
+	kinds          []string
 	labelSelector  labels.Selector
 }
 
-func loadCostsConfig() (*CostMatcher, error) {
+type RuleMatcher struct {
+	defaultCost    int
+	fixedPodsRules []compiledRule
+	costRules      []compiledCostRule
+}
+
+type RuleMatch struct {
+	matchedRule *Rule
+}
+
+type MoveCostRuleMatch struct {
+	MoveCostRule *MoveCostRule
+}
+
+// compiledRule is a rule with compiled regex ready for reuse.
+type compiledRule struct {
+	ruleName string
+	selector *CompiledPodsSelector
+}
+
+type compiledCostRule struct {
+	rule *compiledRule
+	cost int
+}
+
+// ###
+
+func (rm RuleMatch) String() string {
+	return fmt.Sprintf("matched rule = %s", rm.matchedRule.RuleName)
+}
+
+func (moveCostRule MoveCostRuleMatch) String() string {
+	return fmt.Sprintf("matched rule = %s, cost = %d", moveCostRule.MoveCostRule.Rule.RuleName, moveCostRule.MoveCostRule.Cost)
+}
+
+func loadCostsConfig() (*RuleMatcher, error) {
 	v := viper.New()
 	v.SetConfigName("costs")
 	v.AddConfigPath("/etc/podtetris/")
@@ -71,31 +99,31 @@ func loadCostsConfig() (*CostMatcher, error) {
 		return nil, fmt.Errorf("read costs config: %w", err)
 	}
 
-	var file CostsFile
+	var file RulesFile
 	if err := v.Unmarshal(&file); err != nil {
 		return nil, fmt.Errorf("unmarshal costs config: %w", err)
 	}
 	return newCostMatcher(file)
 }
 
-func newCostMatcher(file CostsFile) (*CostMatcher, error) {
-	m := &CostMatcher{
-		defaultCost: file.DefaultCost,
-		rules:       make([]preparedRule, 0, len(file.Rules)),
+func newCostMatcher(file RulesFile) (*RuleMatcher, error) {
+	m := &RuleMatcher{
+		defaultCost: file.DefaultMoveCost,
+		rules:       make([]preparedRule, 0, len(file.MoveCostRules)),
 	}
 
-	for i, rule := range file.Rules {
+	for i, rule := range file.MoveCostRules {
 		prepared, err := prepareRule(rule)
 		if err != nil {
-			return nil, fmt.Errorf("cost rule %q: %w", costRuleName(rule.Name, i), err)
+			return nil, fmt.Errorf("cost rule %q: %w", costRuleName(rule.RuleName, i), err)
 		}
 		m.rules = append(m.rules, prepared)
 	}
 	return m, nil
 }
 
-func prepareRule(rule CostRule) (preparedRule, error) {
-	p := preparedRule{CostRule: rule}
+func prepareRule(rule MoveCostRule) (preparedRule, error) {
+	p := preparedRule{MoveCostRule: rule}
 
 	if rule.Match.NameRegex != "" {
 		re, err := regexp.Compile(rule.Match.NameRegex)
@@ -124,7 +152,7 @@ func prepareRule(rule CostRule) (preparedRule, error) {
 	return p, nil
 }
 
-func (m *CostMatcher) getPodMovementCost(pod *apiv1.Pod) (RuleMatch, error) {
+func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (RuleMatch, error) {
 	if m == nil {
 		return RuleMatch{}, errors.New("cost matcher is nil")
 	}
@@ -134,7 +162,7 @@ func (m *CostMatcher) getPodMovementCost(pod *apiv1.Pod) (RuleMatch, error) {
 
 	for i, rule := range m.rules {
 		if rule.matches(pod) {
-			return RuleMatch{Name: costRuleName(rule.Name, i), Cost: rule.Cost}, nil
+			return RuleMatch{Name: costRuleName(rule.RuleName, i), Cost: rule.Cost}, nil
 		}
 	}
 	return RuleMatch{Name: defaultCostRuleName, Cost: m.defaultCost}, nil

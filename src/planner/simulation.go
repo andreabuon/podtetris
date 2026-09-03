@@ -20,7 +20,7 @@ type SchedulingSimulator struct {
 	framework schedframework.Framework
 	snapshot  clustersnapshot.ClusterSnapshot
 	baseline  *Baseline
-	costs     *CostMatcher
+	costs     *RuleMatcher
 }
 
 type PodOrdering struct {
