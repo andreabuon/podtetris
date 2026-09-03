@@ -14,17 +14,6 @@ import (
 
 const defaultCostRuleName = "default-cost"
 
-type RulesFile struct {
-	DefaultMoveCost int             `mapstructure:"defaultMoveCost"`
-	FixedPodsRules  []FixedPodsRule `mapstructure:"fixedPodsRules"`
-	MoveCostRules   []MoveCostRule  `mapstructure:"moveCostRules"`
-}
-
-type Rule struct {
-	RuleName     string       `mapstructure:"ruleName"`
-	PodsSelector PodsSelector `mapstructure:"podsSelector"`
-}
-
 // PodsSelector selects pods. All set fields are ANDed; omitted fields are ignored.
 type PodsSelector struct {
 	PodNameRegex   string                `mapstructure:"nameRegex"`
@@ -34,21 +23,31 @@ type PodsSelector struct {
 	LabelSelector  *metav1.LabelSelector `mapstructure:"labelSelector"`
 }
 
+type Rule struct {
+	Name     string       `mapstructure:"name"`
+	Selector PodsSelector `mapstructure:"selector"`
+}
+
 // FixedPodsRule specifies that a pod should not be moved across nodes
 type FixedPodsRule struct {
-	Rule Rule `mapstructure:"rule"`
+	Rule `mapstructure:"rule"`
 }
 
 // MoveCostRule assigns a cost to the movement of pods matching PodsSelector
 type MoveCostRule struct {
-	Rule Rule `mapstructure:"rule"`
-	Cost int  `mapstructure:"cost"`
+	Rule `mapstructure:"rule"`
+	Cost int `mapstructure:"cost"`
+}
+
+type RulesFile struct {
+	DefaultMoveCost int             `mapstructure:"defaultMoveCost"`
+	FixedPodsRules  []FixedPodsRule `mapstructure:"fixedPodsRules"`
+	MoveCostRules   []MoveCostRule  `mapstructure:"moveCostRules"`
 }
 
 type CompiledPodsSelector struct {
-	selector       *PodsSelector
 	podNameRegex   *regexp.Regexp
-	namespaces     string
+	namespaces     []string
 	namespaceRegex *regexp.Regexp
 	kinds          []string
 	labelSelector  labels.Selector
@@ -70,23 +69,23 @@ type MoveCostRuleMatch struct {
 
 // compiledRule is a rule with compiled regex ready for reuse.
 type compiledRule struct {
-	ruleName string
+	name     string
 	selector *CompiledPodsSelector
 }
 
 type compiledCostRule struct {
-	rule *compiledRule
+	compiledRule
 	cost int
 }
 
 // ###
 
 func (rm RuleMatch) String() string {
-	return fmt.Sprintf("matched rule = %s", rm.matchedRule.RuleName)
+	return fmt.Sprintf("matched rule = %s", rm.matchedRule.Name)
 }
 
 func (moveCostRule MoveCostRuleMatch) String() string {
-	return fmt.Sprintf("matched rule = %s, cost = %d", moveCostRule.MoveCostRule.Rule.RuleName, moveCostRule.MoveCostRule.Cost)
+	return fmt.Sprintf("matched rule = %s, cost = %d", moveCostRule.MoveCostRule.Rule.Name, moveCostRule.MoveCostRule.Cost)
 }
 
 func loadCostsConfig() (*RuleMatcher, error) {
@@ -152,46 +151,39 @@ func prepareRule(rule MoveCostRule) (preparedRule, error) {
 	return p, nil
 }
 
-func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (RuleMatch, error) {
+func (m *RuleMatcher) getPodMovementCost(pod *apiv1.Pod) (MoveCostRuleMatch, error) {
 	if m == nil {
-		return RuleMatch{}, errors.New("cost matcher is nil")
+		return MoveCostRuleMatch{}, errors.New("cost matcher is nil")
 	}
 	if pod == nil {
-		return RuleMatch{}, errors.New("pod is nil")
+		return MoveCostRuleMatch{}, errors.New("pod is nil")
 	}
 
-	for i, rule := range m.rules {
-		if rule.matches(pod) {
-			return RuleMatch{Name: costRuleName(rule.RuleName, i), Cost: rule.Cost}, nil
+	for i, rule := range m.costRules {
+		if rule.selector.matches(pod) {
+			return MoveCostRuleMatch{}, nil //FIXME
 		}
 	}
-	return RuleMatch{Name: defaultCostRuleName, Cost: m.defaultCost}, nil
+	return MoveCostRuleMatch{}, nil //FIXME
 }
 
-func (r preparedRule) matches(pod *apiv1.Pod) bool {
-	if r.nameRegex != nil && !r.nameRegex.MatchString(pod.Name) {
+func (selector CompiledPodsSelector) matches(pod *apiv1.Pod) bool {
+	if selector.podNameRegex != nil && !selector.podNameRegex.MatchString(pod.Name) {
 		return false
 	}
-	if len(r.Match.Namespaces) > 0 && !slices.Contains(r.Match.Namespaces, pod.Namespace) {
+	if len(selector.namespaces) > 0 && !slices.Contains(selector.namespaces, pod.Namespace) {
 		return false
 	}
-	if r.namespaceRegex != nil && !r.namespaceRegex.MatchString(pod.Namespace) {
+	if selector.namespaceRegex != nil && !selector.namespaceRegex.MatchString(pod.Namespace) {
 		return false
 	}
-	if len(r.Match.Kinds) > 0 && !slices.Contains(r.Match.Kinds, controllerKind(pod)) {
+	if len(selector.kinds) > 0 && !slices.Contains(selector.kinds, controllerKind(pod)) {
 		return false
 	}
-	if r.labelSelector != nil && !r.labelSelector.Matches(labels.Set(pod.Labels)) {
+	if selector.labelSelector != nil && !selector.labelSelector.Matches(labels.Set(pod.Labels)) {
 		return false
 	}
 	return true
-}
-
-func costRuleName(name string, index int) string {
-	if name != "" {
-		return name
-	}
-	return fmt.Sprintf("rule #%d", index)
 }
 
 func controllerKind(pod *apiv1.Pod) string {
