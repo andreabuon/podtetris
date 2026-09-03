@@ -37,6 +37,7 @@ planner:
       - memory_desc
       - random
     parallelism: 8
+    dryRun: false
 
 # Evictor controller (PodMove reconciler).
 evictor:

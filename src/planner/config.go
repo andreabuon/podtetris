@@ -25,6 +25,7 @@ type AppConfig struct {
 	PodMoveCostAnnotation             string   `mapstructure:"podMoveCostAnnotation"`
 	EnabledPermutationStrategies      []string `mapstructure:"enabledPermutationStrategies"`
 	Parallelism                       int      `mapstructure:"parallelism"`
+	DryRun                            bool     `mapstructure:"dryRun"`
 }
 
 func setDefaultConfigValues() {
@@ -40,6 +41,7 @@ func setDefaultConfigValues() {
 	viper.SetDefault("podMoveCostAnnotation", "podtetris/moveCost")
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
 	viper.SetDefault("parallelism", 8)
+	viper.SetDefault("dryRun", false)
 }
 
 func loadSchedulerConfig() *scheduler_config.KubeSchedulerConfiguration {
