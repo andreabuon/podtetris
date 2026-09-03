@@ -135,9 +135,8 @@ func newCostMatcher(file RulesFile) (*RuleMatcher, error) {
 
 func (selector *PodsSelector) Compile() (CompiledPodsSelector, error) {
 	compiledSelector := CompiledPodsSelector{
-		namespaces:    selector.Namespaces,
-		kinds:         selector.Kinds,
-		labelSelector: selector.LabelSelector,
+		namespaces: selector.Namespaces,
+		kinds:      selector.Kinds,
 	}
 
 	if selector.PodNameRegex != "" {
