@@ -25,19 +25,35 @@ planner:
     podtetrisNamespace: "{{ .Release.Namespace }}"
     randomCandidateNodesNumber: 3
     byCPUCandidateNodesNumber: 2
-    podMoveDefaultCost: 10
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
     candidateNodesSelectionMaxRetries: 15
-    fixedPodAnnotation: "podtetris/fixed"
-    podMoveCostAnnotation: "podtetris/moveCost"
     enabledPermutationStrategies:
       - cpu_desc
       - memory_desc
       - random
     parallelism: 8
     dryRun: false
+  # Pod-move costs and fixed-pod rules.
+  rules:
+    defaultMoveCost: 10
+    fixedPodsRules: []
+    # - name: pinned-statefulsets
+    #   selector:
+    #     kinds: [StatefulSet]
+    #     namespaces: [db]
+    moveCostRules: []
+    # - name: databases
+    #   cost: 100
+    #   selector:
+    #     kinds: [StatefulSet]
+    #     namespaces: [db]
+    #     namespaceRegex: "^db-.*"
+    #     nameRegex: "^postgres-.*"
+    #     labelSelector:
+    #       matchLabels:
+    #         tier: database
 
 # Evictor controller (PodMove reconciler).
 evictor:

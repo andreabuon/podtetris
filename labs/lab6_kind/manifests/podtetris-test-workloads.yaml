@@ -12,8 +12,6 @@ spec:
     metadata:
       labels:
         app: deployment-a
-      annotations:
-        "podtetris/moveCost": "75"
     spec:
       containers:
       - name: pause
@@ -40,8 +38,6 @@ spec:
     metadata:
       labels:
         app: deployment-b
-      annotations:
-        "podtetris/moveCost": "50"
     spec:
       containers:
       - name: pause
@@ -68,8 +64,6 @@ spec:
     metadata:
       labels:
         app: fixed-app
-      annotations:
-        "podtetris/fixed": "true" 
     spec:
       containers:
       - name: pause
@@ -96,8 +90,6 @@ spec:
     metadata:
       labels:
         app: rs-a
-      annotations:
-        "podtetris/moveCost": "25"
     spec:
       containers:
       - name: pause
@@ -121,8 +113,6 @@ spec:
     metadata:
       labels:
         app: rs-b
-      annotations:
-        "podtetris/moveCost": "15"
     spec:
       containers:
       - name: pause
@@ -160,8 +150,6 @@ spec:
     metadata:
       labels:
         app: nginx # has to match .spec.selector.matchLabels
-      annotations:
-        "podtetris/moveCost": "50"
     spec:
       terminationGracePeriodSeconds: 10
       containers:

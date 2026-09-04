@@ -16,13 +16,10 @@ type AppConfig struct {
 	PodtetrisNamespace                string   `mapstructure:"podtetrisNamespace"`
 	RandomCandidateNodesNumber        int      `mapstructure:"randomCandidateNodesNumber"`
 	ByCPUCandidateNodesNumber         int      `mapstructure:"byCPUCandidateNodesNumber"`
-	PodMoveDefaultCost                int      `mapstructure:"podMoveDefaultCost"`
 	EmptyNodesScoreWeight             int      `mapstructure:"emptyNodesScoreWeight"`
 	CostScoreWeight                   int      `mapstructure:"costScoreWeight"`
 	AutoConsolidationScoreThreshold   int      `mapstructure:"autoConsolidationScoreThreshold"`
 	CandidateNodesSelectionMaxRetries int      `mapstructure:"candidateNodesSelectionMaxRetries"`
-	FixedPodAnnotation                string   `mapstructure:"fixedPodAnnotation"`
-	PodMoveCostAnnotation             string   `mapstructure:"podMoveCostAnnotation"`
 	EnabledPermutationStrategies      []string `mapstructure:"enabledPermutationStrategies"`
 	Parallelism                       int      `mapstructure:"parallelism"`
 	DryRun                            bool     `mapstructure:"dryRun"`
@@ -32,13 +29,10 @@ func setDefaultConfigValues() {
 	viper.SetDefault("podtetrisNamespace", "podtetris")
 	viper.SetDefault("randomCandidateNodesNumber", 3)
 	viper.SetDefault("byCPUCandidateNodesNumber", 2)
-	viper.SetDefault("podMoveDefaultCost", 10)
 	viper.SetDefault("emptyNodesScoreWeight", 400)
 	viper.SetDefault("costScoreWeight", 1)
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)
 	viper.SetDefault("candidateNodesSelectionMaxRetries", 15)
-	viper.SetDefault("fixedPodAnnotation", "podtetris/fixed")
-	viper.SetDefault("podMoveCostAnnotation", "podtetris/moveCost")
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
 	viper.SetDefault("parallelism", 8)
 	viper.SetDefault("dryRun", false)

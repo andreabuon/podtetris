@@ -1,0 +1,20 @@
+defaultMoveCost: 10
+fixedPodsRules: []
+moveCostRules: []
+# Example:
+# fixedPodsRules:
+#   - name: pinned-statefulsets
+#     selector:
+#       kinds: [StatefulSet]
+#       namespaces: [db]
+# moveCostRules:
+#   - name: databases
+#     cost: 100
+#     selector:
+#       kinds: [StatefulSet]
+#       namespaces: [db]
+#       namespaceRegex: "^db-.*"
+#       nameRegex: "^postgres-.*"
+#       labelSelector:
+#         matchLabels:
+#           tier: database

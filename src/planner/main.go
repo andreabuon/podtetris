@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"path/filepath"
 	"sort"
@@ -43,11 +42,16 @@ func main() {
 	setDefaultConfigValues()
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %w", err))
+		log.Fatalf("error during config file load: %v", err)
 	}
 
 	if err := viper.Unmarshal(&Config); err != nil {
-		panic(fmt.Errorf("fatal error unmarshalling config: %w", err))
+		log.Fatalf("error during config unmarshal: %v", err)
+	}
+
+	rules, err := loadRulesConfig()
+	if err != nil {
+		log.Fatalf("error loading planner rules config: %v", err)
 	}
 
 	if Config.DryRun {
@@ -138,15 +142,15 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.RandomCandidateNodesNumber, Config.ByCPUCandidateNodesNumber)
+	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.RandomCandidateNodesNumber, Config.ByCPUCandidateNodesNumber, rules)
 	if err != nil {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	initialEmptyNodes := countEmptyNodes(candidateNodes)
+	initialEmptyNodes := countEmptyNodes(candidateNodes, rules)
 	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
-	evictedPods := virtuallyEvictPods(snapshot, candidateNodes)
+	evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
 	permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies)
 
 	initialState := &Baseline{
@@ -159,6 +163,7 @@ func main() {
 		framework: realFramework,
 		snapshot:  snapshot,
 		baseline:  initialState,
+		rules:     rules,
 	}
 
 	var schedulingResults []*SimulationResult

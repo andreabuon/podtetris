@@ -23,8 +23,9 @@ kind-load:
 deploy: crd build-all
 	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace
 
+# Local Kind: lab cert issuer + planner rules (→ rules ConfigMap → /etc/podtetris/rules.yaml).
 deploy-local: crd kind-load
-	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml
+	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml -f charts/podtetris/values-kind.yaml
 
 run-planner:
 	$(KUBECTL) create job --from=cronjob/podtetris-planner "podtetris-planner-$$(date +%Y%m%d-%H%M%S)" -n podtetris

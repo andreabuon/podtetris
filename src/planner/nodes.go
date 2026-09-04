@@ -10,7 +10,7 @@ import (
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
-func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int) ([]kubeframework.NodeInfo, error) {
+func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int, rules *RuleMatcher) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
 		return nil, errors.New("no available candidate nodes")
 	}
@@ -20,7 +20,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 		return nil, errors.New("there are not enough candidate nodes")
 	}
 
-	allContainFixed, err := allContainFixedPods(nodeInfos)
+	allContainFixed, err := allContainFixedPods(nodeInfos, rules)
 	if err != nil {
 		return nil, fmt.Errorf("checking if all candidate nodes contain fixed pods failed: %v", err)
 	}
@@ -45,7 +45,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 			return nil, err
 		}
 
-		allContainFixed, err := allContainFixedPods(randomNodes)
+		allContainFixed, err := allContainFixedPods(randomNodes, rules)
 		if err != nil {
 			return nil, fmt.Errorf("Error while checking candidate nodes: %v", err)
 		}
@@ -106,7 +106,7 @@ func getRandomNodes(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubefra
 	return randomNodes, nil
 }
 
-func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) (bool, error) {
+func allContainFixedPods(nodeInfos []kubeframework.NodeInfo, rules *RuleMatcher) (bool, error) {
 	if nodeInfos == nil {
 		return false, errors.New("error while checking if all given nodes contain fixed pods: nodes are nil")
 	}
@@ -123,7 +123,12 @@ func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) (bool, error) {
 				continue
 			}
 
-			if annotationValue, ok := pod.Annotations[Config.FixedPodAnnotation]; ok && annotationValue == "true" {
+			fixed, err := rules.isFixed(pod)
+			if err != nil {
+
+			}
+
+			if fixed {
 				foundFixedInCurrentNode = true
 				break
 			}
@@ -135,11 +140,11 @@ func allContainFixedPods(nodeInfos []kubeframework.NodeInfo) (bool, error) {
 	return true, nil
 }
 
-func isConsideredEmpty(node kubeframework.NodeInfo) bool {
+func isConsideredEmpty(node kubeframework.NodeInfo, rules *RuleMatcher) bool {
 	pods := node.GetPods()
 
 	for _, pod := range pods {
-		evictable, _ := isEvictable(pod.GetPod())
+		evictable, _ := isEvictable(pod.GetPod(), rules)
 		if evictable {
 			return false
 		}
@@ -147,11 +152,11 @@ func isConsideredEmpty(node kubeframework.NodeInfo) bool {
 	return true
 }
 
-func countEmptyNodes(nodes []kubeframework.NodeInfo) int {
+func countEmptyNodes(nodes []kubeframework.NodeInfo, rules *RuleMatcher) int {
 	emptyNodes := 0
 
 	for _, node := range nodes {
-		if isConsideredEmpty(node) {
+		if isConsideredEmpty(node, rules) {
 			emptyNodes++
 		}
 	}

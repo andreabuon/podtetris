@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strconv"
 
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -21,6 +20,7 @@ type SchedulingSimulator struct {
 	framework schedframework.Framework
 	snapshot  clustersnapshot.ClusterSnapshot
 	baseline  *Baseline
+	rules     *RuleMatcher
 }
 
 type PodOrdering struct {
@@ -45,7 +45,7 @@ type Baseline struct {
 	EmptyNodeCount int
 }
 
-func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo) []*apiv1.Pod {
+func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo, rules *RuleMatcher) []*apiv1.Pod {
 	var evictedPods []*apiv1.Pod
 
 	for nodeIndex, nodeInfo := range candidateNodes {
@@ -57,7 +57,7 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 
 		log.Printf("[Candidate #%d] Node: %s", nodeIndex, nodeName)
 		for _, pod := range podsOnNode {
-			if ok, reason := isEvictable(pod); !ok {
+			if ok, reason := isEvictable(pod, rules); !ok {
 				log.Printf("  > Skipping pod %s/%s: %s", pod.Namespace, pod.Name, reason)
 				continue
 			}
@@ -101,16 +101,20 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		if chosenNode.Node().Name == s.baseline.Allocations[podName] {
 			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
 		} else {
-			podMoveCost := getPodMoveCost(pod)
-			permutationCost += podMoveCost
+			cost, err := s.rules.getPodMovementCost(pod)
+			if err != nil {
+				return nil, fmt.Errorf("pod move cost for %s/%s: %w", pod.Namespace, pod.Name, err)
+			}
+			permutationCost += cost
 			pm := PodMove{
 				pod:          pod,
 				fromNodeName: s.baseline.Allocations[podName],
 				toNodeName:   chosenNode.Node().Name,
-				cost:         podMoveCost,
+				cost:         cost,
 			}
 			moves = append(moves, pm)
-			log.Printf("- Pod move: %s", pm)
+			log.Printf("- Pod move: Pod '%s' moved from '%s' to '%s' (cost = %d)",
+				pm.pod.Name, pm.fromNodeName, pm.toNodeName, cost)
 		}
 	}
 
@@ -124,7 +128,7 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		freshCandidateNodes = append(freshCandidateNodes, freshNode)
 	}
 
-	newEmptyNodes := countEmptyNodes(freshCandidateNodes)
+	newEmptyNodes := countEmptyNodes(freshCandidateNodes, s.rules)
 	freedNodes := newEmptyNodes - s.baseline.EmptyNodeCount
 
 	result := &SimulationResult{
@@ -209,16 +213,6 @@ func schedulePod(
 
 func computePermutationScore(freedNodes, permutationCost int) int {
 	return (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost)
-}
-
-func getPodMoveCost(pod *apiv1.Pod) int {
-	podMoveCost := Config.PodMoveDefaultCost
-	if annotationValue, ok := pod.Annotations[Config.PodMoveCostAnnotation]; ok {
-		if customCost, err := strconv.Atoi(annotationValue); err == nil {
-			podMoveCost = customCost
-		}
-	}
-	return podMoveCost
 }
 
 func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework.NodePluginScores) (kubeframework.NodeInfo, error) {
