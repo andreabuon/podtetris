@@ -136,15 +136,17 @@ type PodMoveStatus struct {
 	Phase PodMovePhase `json:"phase,omitempty"`
 
 	// persistAttempts is the number of times a webhook-claimed replacement CREATE failed to persist on Spec.TargetNode.
-	// +optional
+	// +kubebuilder:default=0
 	// +kubebuilder:validation:Minimum=0
-	PersistAttempts int32 `json:"persistAttempts,omitempty"`
+	// +optional
+	PersistAttempts int32 `json:"persistAttempts"`
 
 	// runningAttempts is the number of times the controller observed a verified replacement that was not yet Running.
 	// After MaxRunningAttempts the PodMove is marked as "Failed".
-	// +optional
+	// +kubebuilder:default=0
 	// +kubebuilder:validation:Minimum=0
-	RunningAttempts int32 `json:"runningAttempts,omitempty"`
+	// +optional
+	RunningAttempts int32 `json:"runningAttempts"`
 }
 
 // +kubebuilder:object:root=true
@@ -153,6 +155,8 @@ type PodMoveStatus struct {
 // +kubebuilder:printcolumn:name="Source",type=string,JSONPath=".spec.sourceNode"
 // +kubebuilder:printcolumn:name="Target",type=string,JSONPath=".spec.targetNode"
 // +kubebuilder:printcolumn:name="Phase",type=string,JSONPath=".status.phase"
+// +kubebuilder:printcolumn:name="PersistAttempts",type=integer,JSONPath=".status.persistAttempts",priority=1
+// +kubebuilder:printcolumn:name="RunningAttempts",type=integer,JSONPath=".status.runningAttempts",priority=1
 
 // PodMove is the Schema for the podmoves API
 type PodMove struct {

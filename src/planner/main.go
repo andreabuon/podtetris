@@ -54,6 +54,10 @@ func main() {
 		log.Fatalf("error loading planner rules config: %v", err)
 	}
 
+	if Config.DryRun {
+		log.Println("Dry run mode enabled: consolidation plans will be computed but not applied")
+	}
+
 	clusterConfig, err := rest.InClusterConfig()
 	if err != nil {
 		// fallback for local dev runs
@@ -195,6 +199,11 @@ func main() {
 	})
 	bestPermutationResult := schedulingResults[0]
 	log.Printf("The best consolidation plan is #%d", bestPermutationResult.Permutation.Index)
+
+	if Config.DryRun {
+		log.Printf("Score threshold reached, skipping apply because dry run is enabled")
+		return
+	}
 
 	if bestPermutationResult.Score > Config.AutoConsolidationScoreThreshold {
 		log.Printf("Score threshold reached, auto applying consolidation strategy")

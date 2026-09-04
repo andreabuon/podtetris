@@ -9,3 +9,4 @@ enabledPermutationStrategies:
   - memory_desc
   - random
 parallelism: 8
+dryRun: false

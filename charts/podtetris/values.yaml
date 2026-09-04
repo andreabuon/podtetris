@@ -34,7 +34,7 @@ planner:
       - memory_desc
       - random
     parallelism: 8
-    
+    dryRun: false
   # Pod-move costs and fixed-pod rules.
   rules:
     defaultMoveCost: 10

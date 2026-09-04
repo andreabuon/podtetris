@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
@@ -412,6 +413,9 @@ func (r *PodMoveReconciler) syncPhase(ctx context.Context, pm *podtetrisiov1.Pod
 // SetupWithManager sets up the controller with the Manager.
 func (r *PodMoveReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: 1,
+		}).
 		For(&podtetrisiov1.PodMove{}).
 		Named("podmove").
 		Complete(r)

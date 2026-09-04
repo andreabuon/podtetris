@@ -22,6 +22,7 @@ type AppConfig struct {
 	CandidateNodesSelectionMaxRetries int      `mapstructure:"candidateNodesSelectionMaxRetries"`
 	EnabledPermutationStrategies      []string `mapstructure:"enabledPermutationStrategies"`
 	Parallelism                       int      `mapstructure:"parallelism"`
+	DryRun                            bool     `mapstructure:"dryRun"`
 }
 
 func setDefaultConfigValues() {
@@ -34,6 +35,7 @@ func setDefaultConfigValues() {
 	viper.SetDefault("candidateNodesSelectionMaxRetries", 15)
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
 	viper.SetDefault("parallelism", 8)
+	viper.SetDefault("dryRun", false)
 }
 
 func loadSchedulerConfig() *scheduler_config.KubeSchedulerConfiguration {

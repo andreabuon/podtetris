@@ -27,6 +27,14 @@ spec:
     - jsonPath: .status.phase
       name: Phase
       type: string
+    - jsonPath: .status.persistAttempts
+      name: PersistAttempts
+      priority: 1
+      type: integer
+    - jsonPath: .status.runningAttempts
+      name: RunningAttempts
+      priority: 1
+      type: integer
     name: v1
     schema:
       openAPIV3Schema:
@@ -228,6 +236,7 @@ spec:
                 - type
                 x-kubernetes-list-type: map
               persistAttempts:
+                default: 0
                 description: persistAttempts is the number of times a webhook-claimed
                   replacement CREATE failed to persist on Spec.TargetNode.
                 format: int32
@@ -248,6 +257,7 @@ spec:
                 - Failed
                 type: string
               runningAttempts:
+                default: 0
                 description: |-
                   runningAttempts is the number of times the controller observed a verified replacement that was not yet Running.
                   After MaxRunningAttempts the PodMove is marked as "Failed".
