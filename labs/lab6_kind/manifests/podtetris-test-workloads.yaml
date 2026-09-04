@@ -24,6 +24,18 @@ spec:
             cpu: "256m"
             memory: "256Mi"
 ---
+# Allows one voluntary eviction at a time; concurrent PodMoves hit PDB and requeue.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: deployment-a-pdb
+  namespace: default
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: deployment-a
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

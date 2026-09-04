@@ -23,6 +23,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	policyv1 "k8s.io/api/policy/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -36,6 +37,8 @@ import (
 )
 
 const (
+	// evictionRetryInterval is how often to wait to try eviction again
+	evictionRetryInterval = 2 * time.Minute
 	// persistPollInterval is how often to re-check that a webhook-claimed replacement actually persisted on the target node.
 	persistPollInterval = 25 * time.Second
 	// persistBindTimeout is how long to wait for a labeled replacement pod to bind to Spec.TargetNode before counting a failed persist attempt.
@@ -289,12 +292,17 @@ func (r *PodMoveReconciler) reopenForReplacementClaim(ctx context.Context, pm *p
 }
 
 func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
-		return ctrl.Result{}, err
+	if !meta.IsStatusConditionFalse(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
+			return ctrl.Result{}, err
+		}
 	}
 
 	pod, err := r.getSourcePod(ctx, pm)
 	if err != nil {
+		if apierrors.IsNotFound(err) {
+			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
+		}
 		return ctrl.Result{}, err
 	}
 
@@ -306,13 +314,63 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 	}
 	err = r.SubResource("eviction").Create(ctx, pod, eviction)
 	if err != nil {
-		return ctrl.Result{}, err
+		switch {
+		case apierrors.IsNotFound(err):
+			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
+		case apierrors.IsForbidden(err), apierrors.IsInvalid(err), apierrors.IsBadRequest(err):
+			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonEvictionFailed, fmt.Sprintf("Eviction of %s permanently denied: %v", client.ObjectKeyFromObject(pod), err))
+		case apierrors.IsTooManyRequests(err):
+			return r.requeueEviction(ctx, pm, pod, podtetrisiov1.ReasonBlockedByPDB, err)
+		default:
+			return r.requeueEviction(ctx, pm, pod, podtetrisiov1.ReasonEvictionFailed, err)
+		}
 	}
 
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested"); err != nil {
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested successfully"); err != nil {
 		return ctrl.Result{}, err
 	}
 	return ctrl.Result{}, nil
+}
+
+// requeueEviction records a failed eviction attempt and requeues.
+// After MaxEvictionAttempts the PodMove is marked Failed.
+func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod, reason string, evictionErr error) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+
+	pm.Status.EvictionAttempts++
+	attempt := pm.Status.EvictionAttempts
+	if attempt >= podtetrisiov1.MaxEvictionAttempts {
+		msg := fmt.Sprintf("Eviction of %s failed after %d attempts: %v",
+			client.ObjectKeyFromObject(pod), attempt, evictionErr)
+		return ctrl.Result{}, r.markFailed(ctx, pm, reason, msg)
+	}
+
+	delay := evictionRetryInterval
+	if seconds, ok := apierrors.SuggestsClientDelay(evictionErr); ok && seconds > 0 {
+		delay = time.Duration(seconds) * time.Second
+	}
+
+	msg := fmt.Sprintf("Eviction failed (attempt %d/%d): %v; will retry",
+		attempt, podtetrisiov1.MaxEvictionAttempts, evictionErr)
+	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
+		Type:               podtetrisiov1.ConditionEvicted,
+		Status:             metav1.ConditionFalse,
+		Reason:             reason,
+		Message:            msg,
+		ObservedGeneration: pm.Generation,
+	})
+	if err := r.updateStatus(ctx, pm); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	log.Info("Eviction failed; will retry",
+		"pod", client.ObjectKeyFromObject(pod),
+		"reason", reason,
+		"evictionAttempts", attempt,
+		"maxEvictionAttempts", podtetrisiov1.MaxEvictionAttempts,
+		"requeueAfter", delay,
+	)
+	return ctrl.Result{RequeueAfter: delay}, nil
 }
 
 func (r *PodMoveReconciler) getSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {

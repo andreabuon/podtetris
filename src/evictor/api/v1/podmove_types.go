@@ -36,15 +36,26 @@ const (
 	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
 	ConditionPodRunning = "TargetPodRunning"
 	// ConditionFailed is True when:
+	// - the source pod could not be found during eviction
+	// - eviction was denied permanently (Forbidden/Invalid)
+	// - eviction failed for MaxEvictionAttempts times
 	// - the replacement could not be persisted on Spec.TargetNode for MaxPersistAttempts times
 	// - or when a verified replacement did not reach Running within MaxRunningAttempts polls.
 	ConditionFailed = "Failed"
 
+	// ReasonPodNotFound is set when the source pod could not be found while creating the eviction request.
+	ReasonPodNotFound = "PodNotFound"
+	// ReasonBlockedByPDB is set when eviction is denied by a PodDisruptionBudget (HTTP 429).
+	ReasonBlockedByPDB = "BlockedByPDB"
+	// ReasonEvictionFailed is set when eviction fails for a non-PDB reason (permanent denial or attempts exhausted).
+	ReasonEvictionFailed = "EvictionFailed"
 	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node for MaxPersistAttempts times.
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
 	// ReasonReplacementNotRunning is set when a verified replacement pod did not reach Running within MaxRunningAttempts polls.
 	ReasonReplacementNotRunning = "ReplacementNotRunning"
 
+	// MaxEvictionAttempts is how many times eviction may fail (PDB or other retryable errors) before the PodMove is marked Failed.
+	MaxEvictionAttempts = 10
 	// MaxPersistAttempts is how many webhook-claimed CREATEs may fail to persist before the PodMove is marked Failed.
 	MaxPersistAttempts = 3
 	// MaxRunningAttempts is how many Running-phase polls may fail before a Verified PodMove is marked Failed.
@@ -75,7 +86,7 @@ const (
 	PodMovePhaseVerified PodMovePhase = "Verified"
 	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
-	// PodMovePhaseFailed is set after persist attempts are exhausted, or after a verified replacement fails to reach Running.
+	// PodMovePhaseFailed is set after eviction request attempts or persist/running checks attempts are exhausted, or the source pod is missing.
 	PodMovePhaseFailed PodMovePhase = "Failed"
 )
 
@@ -134,6 +145,12 @@ type PodMoveStatus struct {
 	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded;Failed
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
+
+	// evictionAttempts is the number of times eviction failed (typically PDB denial or other retryable errors).
+	// After MaxEvictionAttempts the PodMove is marked Failed.
+	// +optional
+	// +kubebuilder:validation:Minimum=0
+	EvictionAttempts int32 `json:"evictionAttempts,omitempty"`
 
 	// persistAttempts is the number of times a webhook-claimed replacement CREATE failed to persist on Spec.TargetNode.
 	// +kubebuilder:default=0
