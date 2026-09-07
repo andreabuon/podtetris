@@ -39,7 +39,7 @@ const (
 	// - the source pod could not be found during eviction
 	// - eviction was denied permanently (Forbidden/Invalid)
 	// - eviction failed for MaxEvictionAttempts times
-	// - the replacement could not be persisted on Spec.TargetNode for MaxPersistAttempts times
+	// - the replacement could not be persisted on Spec.TargetNode within MaxPersistAttempts polls
 	// - or when a verified replacement did not reach Running within MaxRunningAttempts polls.
 	ConditionFailed = "Failed"
 
@@ -49,14 +49,14 @@ const (
 	ReasonBlockedByPDB = "BlockedByPDB"
 	// ReasonEvictionFailed is set when eviction fails for a non-PDB reason (permanent denial or attempts exhausted).
 	ReasonEvictionFailed = "EvictionFailed"
-	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node for MaxPersistAttempts times.
+	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node within MaxPersistAttempts polls.
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
 	// ReasonReplacementNotRunning is set when a verified replacement pod did not reach Running within MaxRunningAttempts polls.
 	ReasonReplacementNotRunning = "ReplacementNotRunning"
 
 	// MaxEvictionAttempts is how many times eviction may fail (PDB or other retryable errors) before the PodMove is marked Failed.
 	MaxEvictionAttempts = 10
-	// MaxPersistAttempts is how many webhook-claimed CREATEs may fail to persist before the PodMove is marked Failed.
+	// MaxPersistAttempts is how many persist polls may fail before a TargetNodeInjected PodMove is marked Failed.
 	MaxPersistAttempts = 3
 	// MaxRunningAttempts is how many Running-phase polls may fail before a Verified PodMove is marked Failed.
 	MaxRunningAttempts = 3
@@ -152,7 +152,8 @@ type PodMoveStatus struct {
 	// +kubebuilder:validation:Minimum=0
 	EvictionAttempts int32 `json:"evictionAttempts,omitempty"`
 
-	// persistAttempts is the number of times a webhook-claimed replacement CREATE failed to persist on Spec.TargetNode.
+	// persistAttempts is the number of times the controller observed the webhook-claimed replacement has not yet persisted on Spec.TargetNode.
+	// After MaxPersistAttempts the PodMove is marked Failed.
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Minimum=0
 	// +optional

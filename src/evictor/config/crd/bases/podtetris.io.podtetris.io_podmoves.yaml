@@ -244,8 +244,9 @@ spec:
                 type: integer
               persistAttempts:
                 default: 0
-                description: persistAttempts is the number of times a webhook-claimed
-                  replacement CREATE failed to persist on Spec.TargetNode.
+                description: |-
+                  persistAttempts is the number of times the controller observed the webhook-claimed replacement has not yet persisted on Spec.TargetNode.
+                  After MaxPersistAttempts the PodMove is marked Failed.
                 format: int32
                 minimum: 0
                 type: integer

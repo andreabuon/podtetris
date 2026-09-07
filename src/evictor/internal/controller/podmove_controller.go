@@ -39,10 +39,8 @@ import (
 const (
 	// evictionRetryInterval is how often to wait to try eviction again
 	evictionRetryInterval = 2 * time.Minute
-	// persistPollInterval is how often to re-check that a webhook-claimed replacement actually persisted on the target node.
+	// persistPollInterval is how long to wait between checks that a webhook-claimed replacement persisted on the target node.
 	persistPollInterval = 25 * time.Second
-	// persistBindTimeout is how long to wait for a labeled replacement pod to bind to Spec.TargetNode before counting a failed persist attempt.
-	persistBindTimeout = 1 * time.Minute
 	// runningPollInterval is how long to wait between checks that a verified replacement has reached Running.
 	runningPollInterval = 3 * time.Minute
 )
@@ -204,35 +202,31 @@ func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *pod
 	return ctrl.Result{}, nil
 }
 
-// reconcileReplacementNotFound checks whether the replacement pod landed on Spec.TargetNode.
-// It either waits for persistence, reopens the PodMove for another CREATE, or marks the PodMove as Failed.
+// reconcileReplacementNotFound waits persistPollInterval per attempt for the replacement to
+// land on Spec.TargetNode. Once the deadline for the current attempt has passed it records
+// a failed persist attempt. TargetNodeInjected is left True until MaxPersistAttempts fails.
 func (r *PodMoveReconciler) reconcileReplacementNotFound(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
-	timeWaited, err := timeSinceInjected(pm)
+	waited, err := timeSinceInjected(pm)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-	if stillWaitingForReplacement(timeWaited, replacement) {
+
+	nextDeadline := time.Duration(pm.Status.PersistAttempts+1) * persistPollInterval
+	if waited < nextDeadline {
+		remaining := nextDeadline - waited
 		log.V(1).Info("Waiting for replacement pod to persist on the target node",
-			"waited", timeWaited,
+			"waited", waited,
 			"found", replacement != nil,
 			"persistAttempts", pm.Status.PersistAttempts,
+			"maxPersistAttempts", podtetrisiov1.MaxPersistAttempts,
+			"requeueAfter", remaining,
 		)
-		return ctrl.Result{RequeueAfter: persistPollInterval}, nil
+		return ctrl.Result{RequeueAfter: remaining}, nil
 	}
 
-	return r.recordFailedPersistAttempt(ctx, pm, replacement, timeWaited)
-}
-
-// stillWaitingForReplacement reports whether this reconcile should keep waiting rather than counting a failed persist attempt.
-// A CREATE that never produces a labeled pod is treated as lost after persistPollInterval so the ReplicaSet's next CREATE can re-claim the PodMove.
-// A labeled pod that has not bound yet is given persistBindTimeout to schedule onto Spec.TargetNode.
-func stillWaitingForReplacement(waited time.Duration, replacement *corev1.Pod) bool {
-	if replacement == nil {
-		return waited < persistPollInterval
-	}
-	return waited < persistBindTimeout
+	return r.recordFailedPersistAttempt(ctx, pm, replacement, waited)
 }
 
 func timeSinceInjected(pm *podtetrisiov1.PodMove) (time.Duration, error) {
@@ -244,7 +238,7 @@ func timeSinceInjected(pm *podtetrisiov1.PodMove) (time.Duration, error) {
 }
 
 // recordFailedPersistAttempt increments PersistAttempts. After MaxPersistAttempts the PodMove
-// is marked Failed; otherwise TargetNodeInjected is cleared so a later CREATE can claim it.
+// is marked Failed; otherwise it requeues for the next poll.
 func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod, waited time.Duration) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 	pm.Status.PersistAttempts++
@@ -256,16 +250,22 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 			"found", replacement != nil,
 			"persistAttempts", attempt,
 		)
-		msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts", pm.Spec.TargetNode, persistBindTimeout, attempt)
+		msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts",
+			pm.Spec.TargetNode, persistPollInterval*time.Duration(attempt), attempt)
 		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotPersisted, msg)
 	}
 
-	log.Info("Replacement pod request did not persist; reopening PodMove for another CREATE",
+	log.Info("Replacement pod request did not persist; counting persist attempt",
 		"waited", waited,
 		"found", replacement != nil,
 		"persistAttempts", attempt,
+		"maxPersistAttempts", podtetrisiov1.MaxPersistAttempts,
+		"requeueAfter", persistPollInterval,
 	)
-	return ctrl.Result{}, r.reopenForReplacementClaim(ctx, pm, attempt)
+	if err := r.updateStatus(ctx, pm); err != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{RequeueAfter: persistPollInterval}, nil
 }
 
 func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, reason, msg string) error {
@@ -273,18 +273,6 @@ func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.Po
 		Type:               podtetrisiov1.ConditionFailed,
 		Status:             metav1.ConditionTrue,
 		Reason:             reason,
-		Message:            msg,
-		ObservedGeneration: pm.Generation,
-	})
-	return r.updateStatus(ctx, pm)
-}
-
-func (r *PodMoveReconciler) reopenForReplacementClaim(ctx context.Context, pm *podtetrisiov1.PodMove, attempt int32) error {
-	msg := fmt.Sprintf("Replacement pod was not found bound to node %q within %s (attempt %d/%d); TargetNodeInjected cleared so a later CREATE can be claimed", pm.Spec.TargetNode, persistBindTimeout, attempt, podtetrisiov1.MaxPersistAttempts)
-	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionTargetNodeInjected,
-		Status:             metav1.ConditionFalse,
-		Reason:             podtetrisiov1.ReasonReplacementNotPersisted,
 		Message:            msg,
 		ObservedGeneration: pm.Generation,
 	})
