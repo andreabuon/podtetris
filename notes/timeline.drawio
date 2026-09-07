@@ -1,6 +1,6 @@
 <mxfile host="Electron" scale="1" border="0">
   <diagram name="Page-1" id="7k7VfiGH6UyTxTJfj-CJ">
-    <mxGraphModel dx="2417" dy="1016" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1731" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,16 +13,16 @@
         <mxCell id="5YGSYte2J0h3kkShMbgC-74" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-75" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;dashPattern=8 8;curved=1;exitX=0.247;exitY=0.79;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="310" y="1110" />
-              <mxPoint x="310" y="500" />
+              <mxPoint x="250" y="1060" />
+              <mxPoint x="220" y="770" />
             </Array>
             <mxPoint x="490.37617554858934" y="998.3385579937303" as="sourcePoint" />
-            <mxPoint x="140" y="520" as="targetPoint" />
+            <mxPoint x="420" y="780" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pF253yrdeg1WD5FKMExi-2" connectable="0" parent="5YGSYte2J0h3kkShMbgC-74" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(214, 182, 86);&quot;&gt;removes the &quot;Injected&quot; condition&lt;/span&gt;" vertex="1">
+        <mxCell id="pF253yrdeg1WD5FKMExi-2" connectable="0" parent="5YGSYte2J0h3kkShMbgC-74" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(214, 182, 86);&quot;&gt;wait and check again&lt;/span&gt;" vertex="1">
           <mxGeometry relative="1" x="0.0952" y="1" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint x="7" y="-43" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-47" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-7" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 4 1 4;" target="5YGSYte2J0h3kkShMbgC-4" value="">
@@ -52,7 +52,7 @@
         <mxCell id="5YGSYte2J0h3kkShMbgC-10" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=12;fontStyle=0;fontFamily=Helvetica;textShadow=0;labelBorderColor=none;" value="&lt;h1&gt;PodMove .Status.Phase&lt;/h1&gt;" vertex="1">
           <mxGeometry height="40" width="200" x="40" y="30" as="geometry" />
         </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-14" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-41" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#d5e8d4;strokeColor=#82b366;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="">
+        <mxCell id="5YGSYte2J0h3kkShMbgC-14" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-41" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#d5e8d4;strokeColor=#82b366;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;fontColor=light-dark(#82b366, #ededed);" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="-43" y="840" as="sourcePoint" />
             <mxPoint x="140" y="990" as="targetPoint" />
@@ -63,9 +63,9 @@
             <mxPoint x="56" y="-6" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pF253yrdeg1WD5FKMExi-3" connectable="0" parent="5YGSYte2J0h3kkShMbgC-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;div&gt;sets the &quot;Verified&quot; condition&lt;/div&gt;" vertex="1">
+        <mxCell id="pF253yrdeg1WD5FKMExi-3" connectable="0" parent="5YGSYte2J0h3kkShMbgC-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#82B366;" value="&lt;div&gt;sets the &quot;Verified&quot; condition&lt;/div&gt;" vertex="1">
           <mxGeometry relative="1" x="0.2577" y="2" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint x="-10" y="3" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-13" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-39" style="endArrow=open;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeWidth=2;endFill=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="f_3-9Lb9dkm3LVcXNwvy-13" value="">
@@ -79,7 +79,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-16" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-42" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#d5e8d4;strokeColor=#82b366;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="">
+        <mxCell id="5YGSYte2J0h3kkShMbgC-16" edge="1" parent="1" source="5YGSYte2J0h3kkShMbgC-42" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#d5e8d4;strokeColor=#82b366;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <mxPoint x="-30" y="990" as="sourcePoint" />
             <mxPoint x="140" y="1190" as="targetPoint" />
@@ -90,9 +90,9 @@
             <mxPoint x="63" y="-11" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="U3ZuxYJF7DUdaZk6af8Z-1" connectable="0" parent="5YGSYte2J0h3kkShMbgC-16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="sets the &quot;Running&quot; condition" vertex="1">
+        <mxCell id="U3ZuxYJF7DUdaZk6af8Z-1" connectable="0" parent="5YGSYte2J0h3kkShMbgC-16" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#82B366;" value="sets the &quot;Running&quot;&amp;nbsp;&lt;div&gt;condition&lt;/div&gt;" vertex="1">
           <mxGeometry relative="1" x="-0.4968" y="-1" as="geometry">
-            <mxPoint x="-77" y="16" as="offset" />
+            <mxPoint x="-87" y="16" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=0;fontSize=12;fontFamily=Helvetica;textShadow=0;labelBorderColor=none;" value="&lt;h1&gt;Controller&lt;/h1&gt;" vertex="1">
@@ -117,9 +117,6 @@
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-43" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Injects the target node" vertex="1">
           <mxGeometry height="40" width="200" x="600" y="590" as="geometry" />
-        </mxCell>
-        <mxCell id="5YGSYte2J0h3kkShMbgC-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Verifies the replacement pod persisted on the target Node" vertex="1">
-          <mxGeometry height="40" width="200" x="320" y="830" as="geometry" />
         </mxCell>
         <mxCell id="5YGSYte2J0h3kkShMbgC-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;" value="Verified" vertex="1">
           <mxGeometry height="60" width="120" x="80" y="1000" as="geometry" />
@@ -203,12 +200,12 @@
         <mxCell id="pF253yrdeg1WD5FKMExi-9" edge="1" parent="1" source="pF253yrdeg1WD5FKMExi-4" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;dashPattern=8 8;curved=1;exitX=0.4;exitY=0.8;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="420" y="1360" />
+              <mxPoint x="310" y="1350" />
               <mxPoint x="280" y="1200" />
-              <mxPoint x="310" y="1030" />
+              <mxPoint x="280" y="1030" />
             </Array>
             <mxPoint x="495" y="1479" as="sourcePoint" />
-            <mxPoint x="420" y="1080" as="targetPoint" />
+            <mxPoint x="420" y="1070" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="pF253yrdeg1WD5FKMExi-11" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0); font-family: monospace; font-size: 0px; text-align: start; background-color: rgb(236, 236, 236);&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20edge%3D%221%22%20parent%3D%221%22%20style%3D%22endArrow%3Dopen%3Bhtml%3D1%3Brounded%3D0%3BstrokeWidth%3D2%3BendFill%3D0%3BfillColor%3D%23fff2cc%3BstrokeColor%3D%23d6b656%3Bdashed%3D1%3BdashPattern%3D8%208%3Bcurved%3D1%3BexitX%3D0.247%3BexitY%3D0.79%3BexitDx%3D0%3BexitDy%3D0%3BexitPerimeter%3D0%3B%22%20value%3D%22%22%3E%3CmxGeometry%20height%3D%2250%22%20relative%3D%221%22%20width%3D%2250%22%20as%3D%22geometry%22%3E%3CArray%20as%3D%22points%22%3E%3CmxPoint%20x%3D%22310%22%20y%3D%22980%22%2F%3E%3CmxPoint%20x%3D%22310%22%20y%3D%22370%22%2F%3E%3C%2FArray%3E%3CmxPoint%20x%3D%22495%22%20y%3D%22879%22%20as%3D%22sourcePoint%22%2F%3E%3CmxPoint%20x%3D%22140%22%20y%3D%22340%22%20as%3D%22targetPoint%22%2F%3E%3C%2FmxGeometry%3E%3C%2FmxCell%3E%3CmxCell%20id%3D%223%22%20connectable%3D%220%22%20parent%3D%222%22%20style%3D%22edgeLabel%3Bhtml%3D1%3Balign%3Dcenter%3BverticalAlign%3Dmiddle%3Bresizable%3D0%3Bpoints%3D%5B%5D%3B%22%20value%3D%22removes%20the%20%26quot%3BInjected%26quot%3B%20condition%22%20vertex%3D%221%22%3E%3CmxGeometry%20relative%3D%221%22%20x%3D%220.0952%22%20y%3D%221%22%20as%3D%22geometry%22%3E%3CmxPoint%20as%3D%22offset%22%2F%3E%3C%2FmxGeometry%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3ret&lt;/span&gt;" vertex="1">
@@ -216,7 +213,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pF253yrdeg1WD5FKMExi-12" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(214, 182, 86);&quot;&gt;checks again after 3 minutes&lt;/span&gt;" vertex="1">
+        <mxCell id="pF253yrdeg1WD5FKMExi-12" connectable="0" parent="pF253yrdeg1WD5FKMExi-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;span style=&quot;color: rgb(214, 182, 86);&quot;&gt;wait and check again&lt;/span&gt;" vertex="1">
           <mxGeometry relative="1" x="-0.4078" y="-5" as="geometry">
             <mxPoint x="-31" y="-38" as="offset" />
           </mxGeometry>
@@ -707,6 +704,9 @@
           <mxGeometry x="500" y="1540" as="geometry">
             <mxPoint x="-31" y="-245" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="5YGSYte2J0h3kkShMbgC-41" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Verifies the replacement pod persisted on the target Node" vertex="1">
+          <mxGeometry height="40" width="200" x="320" y="830" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
