@@ -1,0 +1,10 @@
+---
+version: 2
+plan:
+  key: DKR-PODTETRIS
+plan-permissions:
+- groups:
+  - team-podtetris
+  permissions:
+  - view
+  - build

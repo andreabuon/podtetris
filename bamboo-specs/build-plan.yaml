@@ -1,0 +1,40 @@
+---
+version: 2
+plan:
+  project-key: DKR
+  key: PODTETRIS
+  name: docker-podtetris
+stages:
+  - Default Stage:
+      manual: false
+      final: false
+      jobs:
+        - Default Job
+
+Default Job:
+  key: JOB1
+  tasks:
+    - checkout:
+        force-clean-build: "true"
+    - checkout:
+        repository: lea-scripts
+        path: scripts
+    - script:
+        interpreter: SHELL
+        file: scripts/buildDocker.sh
+        argument: -p --public -f src/evictor/Dockerfile -c src/evictor podtetris/controller ${bamboo.planRepository.branch} ${bamboo.buildNumber}
+    - script:
+        interpreter: SHELL
+        file: scripts/buildDocker.sh
+        argument: -p --public -f src/planner/Dockerfile -c src podtetris/planner ${bamboo.planRepository.branch} ${bamboo.buildNumber}
+    - script:
+        interpreter: SHELL
+        file: scripts/buildDocker.sh
+        argument: -p --public -f src/webhook/Dockerfile -c src/webhook podtetris/webhook ${bamboo.planRepository.branch} ${bamboo.buildNumber}
+
+branches:
+  create:
+    for-new-branch: (hotfix|release|feat|fix)/.*
+  delete:
+    after-deleted-days: 30
+    after-inactive-days: never
