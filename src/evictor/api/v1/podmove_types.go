@@ -26,22 +26,11 @@ import (
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 const (
-	// ConditionEvicted is True after the pod eviction on the source node has been requested.
-	ConditionEvicted = "Evicted"
-	// ConditionTargetNodeInjected is True after the mutating webhook intercepted a replacement pod CREATE and pinned it to Spec.TargetNode.
-	// Admission does not guarantee that object is persisted as admitted, so this claim is only final once ConditionPodVerified is True.
-	ConditionTargetNodeInjected = "TargetNodeInjected"
-	// ConditionPodVerified is True after the controller observed the replacement pod (after the webhook mutation) persisted and bound to Spec.TargetNode.
-	ConditionPodVerified = "TargetPodVerified"
-	// ConditionPodRunning is True after the controller observed the replacement pod persisted AND is in Running state.
-	ConditionPodRunning = "TargetPodRunning"
-	// ConditionFailed is True when:
-	// - the source pod could not be found during eviction
-	// - eviction was denied permanently (Forbidden/Invalid)
-	// - eviction failed for MaxEvictionAttempts times
-	// - the replacement could not be persisted on Spec.TargetNode within MaxPersistAttempts polls
-	// - or when a verified replacement did not reach Running within MaxRunningAttempts polls.
-	ConditionFailed = "Failed"
+	ConditionSourceEvicted        = "SourceEvicted"
+	ConditionReplacementClaimed   = "ReplacementClaimed"
+	ConditionReplacementBound     = "ReplacementBound"
+	ConditionReplacementSucceeded = "ReplacementSucceeded"
+	ConditionFailed               = "Failed"
 
 	// ReasonPodNotFound is set when the source pod could not be found while creating the eviction request.
 	ReasonPodNotFound = "PodNotFound"
@@ -74,20 +63,13 @@ const (
 type PodMovePhase string
 
 const (
-	// PodMovePhasePending is the default before eviction has started.
-	PodMovePhasePending PodMovePhase = "Pending"
-	// PodMovePhaseEvicting is set while ConditionEvicted is False.
-	PodMovePhaseEvicting PodMovePhase = "Evicting"
-	// PodMovePhaseEvicted is set after eviction has been requested and the replacement has not been claimed.
-	PodMovePhaseEvicted PodMovePhase = "Evicted"
-	// PodMovePhaseVerifying is set after the webhook claimed a replacement CREATE and before the controller verifies it persisted.
-	PodMovePhaseVerifying PodMovePhase = "Verifying"
-	// PodMovePhaseVerified is set after the replacement pod is observed on Spec.TargetNode.
-	PodMovePhaseVerified PodMovePhase = "Verified"
-	// PodMovePhaseSucceeded is set after the replacement pod is observed on Spec.TargetNode AND it is in 'Running' state.
+	PodMovePhasePending   PodMovePhase = "Pending"
+	PodMovePhaseEvicting  PodMovePhase = "Evicting"
+	PodMovePhaseEvicted   PodMovePhase = "Evicted"
+	PodMovePhaseClaimed   PodMovePhase = "Claimed"
+	PodMovePhaseBound     PodMovePhase = "Bound"
 	PodMovePhaseSucceeded PodMovePhase = "Succeeded"
-	// PodMovePhaseFailed is set after eviction request attempts or persist/running checks attempts are exhausted, or the source pod is missing.
-	PodMovePhaseFailed PodMovePhase = "Failed"
+	PodMovePhaseFailed    PodMovePhase = "Failed"
 )
 
 // PodMoveSpec defines the desired state of PodMove

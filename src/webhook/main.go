@@ -1,8 +1,6 @@
 // PODTetris mutating admission webhook
-// Intercepts Pod CREATE requests, finds a matching open PodMove (Evicted condition
-// present, TargetNodeInjected not True, Failed not True), pins the pod to PodMove.spec.targetNode
-// via nodeSelector, and marks TargetNodeInjected=True so the recreation is recorded
-// on the PodMove (LastTransitionTime is the recreation timestamp).
+// Intercepts Pod CREATE requests, finds a matching open PodMove, pins the pod to PodMove.spec.targetNode via Node nodeSelector,
+// and marks a condition so the recreation is recorded on the PodMove (LastTransitionTime is the recreation timestamp).
 package main
 
 import (
@@ -314,16 +312,15 @@ func ownerMatches(ref, owner metav1.OwnerReference) bool {
 	return ref.APIVersion == owner.APIVersion && ref.Kind == owner.Kind && ref.Name == owner.Name
 }
 
-// isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE:
-// Evicted condition is present (False=Evicting or True=Evicted), Failed is not True, and TargetNodeInjected is not True.
+// isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE.
 func isOpenForReplacement(pm *podtetrisiov1.PodMove) bool {
-	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) == nil {
+	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) == nil {
 		return false
 	}
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionFailed) {
 		return false
 	}
-	return !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
+	return !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
 }
 
 // claimReplacement records that this PodMove's replacement CREATE has been intercepted
@@ -355,7 +352,7 @@ func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev
 
 func applyTargetNodeInjected(pm *podtetrisiov1.PodMove, pod *corev1.Pod) {
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionTargetNodeInjected,
+		Type:               podtetrisiov1.ConditionReplacementClaimed,
 		Status:             metav1.ConditionTrue,
 		Reason:             conditionReasonReplacementCreated,
 		Message:            fmt.Sprintf("Replacement pod %s/%s recreated and pinned to node %q", pod.Namespace, podDisplayName(pod), pm.Spec.TargetNode),

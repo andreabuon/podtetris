@@ -80,16 +80,16 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		log.Info("PodMove already failed")
 		return ctrl.Result{}, nil
 	}
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodRunning) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementSucceeded) {
 		log.Info("PodMove already succeeded")
 		return ctrl.Result{}, nil
 	}
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementBound) {
 		return r.reconcileVerifiedReplacement(ctx, &pm)
 	}
 
 	// PodMove not Verified yet
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed) {
 		replacement, err := r.findReplacementPod(ctx, &pm)
 		if err != nil {
 			return ctrl.Result{}, err
@@ -101,7 +101,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	}
 
 	// PodMove not Injected yet
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
 		log.Info("Waiting for webhook to claim a replacement pod CREATE")
 		return ctrl.Result{}, nil
 	}
@@ -126,7 +126,7 @@ func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm
 	}
 	if replacement.Status.Phase == corev1.PodRunning {
 		msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionPodRunning, metav1.ConditionTrue, "Running", msg); err != nil {
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementSucceeded, metav1.ConditionTrue, "Running", msg); err != nil {
 			return ctrl.Result{}, err
 		}
 		return ctrl.Result{}, nil
@@ -186,7 +186,7 @@ func (r *PodMoveReconciler) recordFailedRunningAttempt(ctx context.Context, pm *
 }
 
 func timeSinceVerified(pm *podtetrisiov1.PodMove) (time.Duration, error) {
-	verified := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionPodVerified)
+	verified := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionReplacementBound)
 	if verified == nil || verified.LastTransitionTime.IsZero() {
 		return 0, fmt.Errorf("PodMove Verified time not found")
 	}
@@ -196,7 +196,7 @@ func timeSinceVerified(pm *podtetrisiov1.PodMove) (time.Duration, error) {
 func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
 	logf.FromContext(ctx).Info("Verified replacement pod", "pod", replacement.Name, "node", pm.Spec.TargetNode)
 	msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionPodVerified, metav1.ConditionTrue, "Verified", msg); err != nil {
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementBound, metav1.ConditionTrue, "Verified", msg); err != nil {
 		return ctrl.Result{}, err
 	}
 	return ctrl.Result{}, nil
@@ -230,7 +230,7 @@ func (r *PodMoveReconciler) reconcileReplacementNotFound(ctx context.Context, pm
 }
 
 func timeSinceInjected(pm *podtetrisiov1.PodMove) (time.Duration, error) {
-	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionTargetNodeInjected)
+	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
 	if injected == nil || injected.LastTransitionTime.IsZero() {
 		return 0, fmt.Errorf("PodMove Target injection time not found")
 	}
@@ -280,8 +280,8 @@ func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.Po
 }
 
 func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
-	if !meta.IsStatusConditionFalse(pm.Status.Conditions, podtetrisiov1.ConditionEvicted) {
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
+	if !meta.IsStatusConditionFalse(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
 			return ctrl.Result{}, err
 		}
 	}
@@ -314,7 +314,7 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 		}
 	}
 
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested successfully"); err != nil {
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested successfully"); err != nil {
 		return ctrl.Result{}, err
 	}
 	return ctrl.Result{}, nil
@@ -341,7 +341,7 @@ func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisio
 	msg := fmt.Sprintf("Eviction failed (attempt %d/%d): %v; will retry",
 		attempt, podtetrisiov1.MaxEvictionAttempts, evictionErr)
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionEvicted,
+		Type:               podtetrisiov1.ConditionSourceEvicted,
 		Status:             metav1.ConditionFalse,
 		Reason:             reason,
 		Message:            msg,

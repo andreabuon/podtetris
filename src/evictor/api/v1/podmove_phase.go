@@ -9,17 +9,17 @@ import (
 // Conditions remain the source of truth; phase is only a summary.
 func DerivePhase(conditions []metav1.Condition) PodMovePhase {
 	switch {
-	case meta.IsStatusConditionTrue(conditions, ConditionPodRunning):
-		return PodMovePhaseSucceeded
 	case meta.IsStatusConditionTrue(conditions, ConditionFailed):
 		return PodMovePhaseFailed
-	case meta.IsStatusConditionTrue(conditions, ConditionPodVerified):
-		return PodMovePhaseVerified
-	case meta.IsStatusConditionTrue(conditions, ConditionTargetNodeInjected):
-		return PodMovePhaseVerifying
-	case meta.IsStatusConditionTrue(conditions, ConditionEvicted):
+	case meta.IsStatusConditionTrue(conditions, ConditionReplacementSucceeded):
+		return PodMovePhaseSucceeded
+	case meta.IsStatusConditionTrue(conditions, ConditionReplacementBound):
+		return PodMovePhaseBound
+	case meta.IsStatusConditionTrue(conditions, ConditionReplacementClaimed):
+		return PodMovePhaseClaimed
+	case meta.IsStatusConditionTrue(conditions, ConditionSourceEvicted):
 		return PodMovePhaseEvicted
-	case meta.IsStatusConditionFalse(conditions, ConditionEvicted):
+	case meta.IsStatusConditionFalse(conditions, ConditionSourceEvicted):
 		return PodMovePhaseEvicting
 	default:
 		return PodMovePhasePending
