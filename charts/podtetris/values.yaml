@@ -35,6 +35,26 @@ planner:
       - random
     parallelism: 8
     dryRun: false
+  # KubeSchedulerConfiguration used by the planner's scoring framework.
+  schedulerConfig:
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    profiles:
+      - pluginConfig:
+          - name: NodeResourcesFit
+            args:
+              scoringStrategy:
+                type: MostAllocated
+                resources:
+                  - name: cpu
+                    weight: 1
+                  - name: memory
+                    weight: 1
+        plugins:
+          score:
+            enabled:
+              - name: NodeResourcesFit
+                weight: 500
   # Pod-move costs and fixed-pod rules.
   rules:
     defaultMoveCost: 10

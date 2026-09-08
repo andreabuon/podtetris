@@ -67,6 +67,8 @@ spec:
                       name: {{ include "podtetris.fullname" . }}-config
                   - configMap:
                       name: {{ include "podtetris.fullname" . }}-planner-rules
+                  - configMap:
+                      name: {{ include "podtetris.fullname" . }}-scheduler-config
             {{- with .Values.volumes }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

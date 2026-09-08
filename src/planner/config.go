@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	SCHEDULER_CONFIG_PATH = "./podtetris-scheduler-config.yaml"
+	SCHEDULER_CONFIG_PATH = "/etc/podtetris/podtetris-scheduler-config.yaml"
 )
 
 type AppConfig struct {
