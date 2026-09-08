@@ -124,7 +124,8 @@ func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm
 		log.Info("Verified replacement pod not found")
 		return ctrl.Result{}, fmt.Errorf("Verified replacement pod not found")
 	}
-	if replacement.Status.Phase == corev1.PodRunning {
+	// replacement.Status.Phase == corev1.PodFailed is included because the PodMove itself has succeded even if the Replacement Pod fails for unknown reason
+	if replacement.Status.Phase == corev1.PodRunning || replacement.Status.Phase == corev1.PodSucceeded || replacement.Status.Phase == corev1.PodFailed {
 		msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
 		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementSucceeded, metav1.ConditionTrue, "Running", msg); err != nil {
 			return ctrl.Result{}, err
