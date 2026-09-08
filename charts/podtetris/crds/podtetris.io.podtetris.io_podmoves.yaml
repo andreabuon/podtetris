@@ -259,8 +259,8 @@ spec:
                 - Pending
                 - Evicting
                 - Evicted
-                - Verifying
-                - Verified
+                - Claimed
+                - Bound
                 - Succeeded
                 - Failed
                 type: string

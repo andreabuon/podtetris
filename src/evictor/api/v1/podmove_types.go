@@ -124,7 +124,7 @@ type PodMoveStatus struct {
 	// phase is a high-level summary derived from conditions.
 	// Controllers overwrite it on every status update; do not set it manually.
 	// +kubebuilder:default=Pending
-	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Verifying;Verified;Succeeded;Failed
+	// +kubebuilder:validation:Enum=Pending;Evicting;Evicted;Claimed;Bound;Succeeded;Failed
 	// +optional
 	Phase PodMovePhase `json:"phase,omitempty"`
 
