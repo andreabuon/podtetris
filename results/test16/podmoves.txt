@@ -1,0 +1,14 @@
+NAME                                           POD                                   SOURCE         TARGET         PHASE
+cert-manager-d966bfbbf-57cdg-7d2351ed          cert-manager-d966bfbbf-57cdg          kind-worker5   kind-worker7   Succeeded
+cert-manager-webhook-9596c4d8-cq276-e720e942   cert-manager-webhook-9596c4d8-cq276   kind-worker2   kind-worker7   Succeeded
+deployment-a-67f5c8c457-986p9-5cd7de61         deployment-a-67f5c8c457-986p9         kind-worker3   kind-worker7   Failed
+deployment-a-67f5c8c457-cz4hf-2f5e94d0         deployment-a-67f5c8c457-cz4hf         kind-worker    kind-worker7   Failed
+deployment-a-67f5c8c457-dzd4l-bd85d35c         deployment-a-67f5c8c457-dzd4l         kind-worker5   kind-worker7   Succeeded
+deployment-a-67f5c8c457-nqplx-4042776c         deployment-a-67f5c8c457-nqplx         kind-worker2   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-f2rzr-27e32ef2         deployment-b-7b96bcf96d-f2rzr         kind-worker    kind-worker7   Succeeded
+deployment-b-7b96bcf96d-l7vd7-4d479011         deployment-b-7b96bcf96d-l7vd7         kind-worker5   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-qlpsh-7cda71df         deployment-b-7b96bcf96d-qlpsh         kind-worker3   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-x7hmv-69610d38         deployment-b-7b96bcf96d-x7hmv         kind-worker2   kind-worker7   Succeeded
+rs-a-cvm72-dfb16fe6                            rs-a-cvm72                            kind-worker    kind-worker7   Succeeded
+rs-a-hgnhh-b5f94691                            rs-a-hgnhh                            kind-worker3   kind-worker7   Succeeded
+rs-b-rdh9g-96e9f6f5                            rs-b-rdh9g                            kind-worker5   kind-worker7   Succeeded
