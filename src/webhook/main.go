@@ -22,8 +22,6 @@ const (
 	conditionReasonReplacementCreated = "ReplacementCreated"
 )
 
-var errPodMoveAlreadyClaimed = errors.New("podmove already claimed for a replacement pod")
-
 var (
 	k8sClient          client.Client
 	podtetrisNamespace = "podtetris"

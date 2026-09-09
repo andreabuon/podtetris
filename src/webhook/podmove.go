@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 
@@ -15,7 +14,7 @@ import (
 )
 
 // claimOpenPodMove lists matching open PodMoves once and tries to claim them in order.
-// On already-claimed it skips to the next candidate.
+// Candidates that close between list and claim are skipped.
 // Status update conflicts (e.g. controller setting SourceEvicted=True) are retried on the same PodMove.
 // Returns (nil, nil) when no open match is available.
 func claimOpenPodMove(ctx context.Context, pod *corev1.Pod, dryRun bool) (*podtetrisiov1.PodMove, error) {
@@ -31,13 +30,14 @@ func claimOpenPodMove(ctx context.Context, pod *corev1.Pod, dryRun bool) (*podte
 				pod.Namespace, podDisplayName(pod), pm.Namespace, pm.Name)
 			return pm, nil
 		}
-		if err := claimReplacement(ctx, pm, pod); err != nil {
-			if errors.Is(err, errPodMoveAlreadyClaimed) {
-				log.Printf("PodMove %s/%s already claimed; trying next open move",
-					pm.Namespace, pm.Name)
-				continue
-			}
+		claimed, err := claimReplacement(ctx, pm, pod)
+		if err != nil {
 			return nil, fmt.Errorf("could not mark PodMove replacement: %w", err)
+		}
+		if !claimed {
+			log.Printf("PodMove %s/%s no longer open; trying next candidate",
+				pm.Namespace, pm.Name)
+			continue
 		}
 		return pm, nil
 	}
@@ -70,16 +70,17 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisio
 }
 
 // claimReplacement records that this PodMove's replacement CREATE has been intercepted.
-// Returns errPodMoveAlreadyClaimed if the move is no longer open.
-// Retries on conflict so a concurrent controller status update (SourceEvicted) does not drop the claim.
-func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod) error {
-	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
+// claimed is false when the move closed between list and update (caller should try the next candidate).
+// Retries on conflict so a concurrent controller status update does not drop the claim.
+func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod) (claimed bool, err error) {
+	err = retry.RetryOnConflict(retry.DefaultRetry, func() error {
+		claimed = false
 		current := &podtetrisiov1.PodMove{}
 		if err := k8sClient.Get(ctx, client.ObjectKeyFromObject(pm), current); err != nil {
 			return err
 		}
 		if !isOpenForReplacement(current) {
-			return errPodMoveAlreadyClaimed
+			return nil
 		}
 		meta.SetStatusCondition(&current.Status.Conditions, metav1.Condition{
 			Type:               podtetrisiov1.ConditionReplacementClaimed,
@@ -92,22 +93,20 @@ func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev
 			return err
 		}
 		*pm = *current
+		claimed = true
 		return nil
 	})
+	return claimed, err
 }
 
 // isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE.
 func isOpenForReplacement(pm *podtetrisiov1.PodMove) bool {
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionFailed) ||
-		meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementSucceeded) {
+		meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementSucceeded) ||
+		meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed) {
 		return false
 	}
-
-	if !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicting) {
-		return false
-	}
-
-	return !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
+	return meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicting)
 }
 
 func replacementMatches(pm *podtetrisiov1.PodMove, pod *corev1.Pod, owner *metav1.OwnerReference) bool {
