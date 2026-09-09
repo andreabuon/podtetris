@@ -311,13 +311,18 @@ func ownerMatches(ref, owner metav1.OwnerReference) bool {
 
 // isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE.
 func isOpenForReplacement(pm *podtetrisiov1.PodMove) bool {
-	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) == nil {
-		return false
-	}
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionFailed) {
 		return false
 	}
-	return !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementSucceeded) {
+		return false
+	}
+
+	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) == nil {
+		return false
+	}
+
+	return meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) && meta.IsStatusConditionFalse(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
 }
 
 // claimReplacement records that this PodMove's replacement CREATE has been intercepted
