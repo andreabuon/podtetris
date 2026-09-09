@@ -82,6 +82,7 @@ sleep "$WAIT"
 # --- after ---
 echo "Collecting artifacts..."
 kubectl get pods -n default -o wide >"$OUT/pods-after.txt"
+kubectl get podmoves -n "$NS" >"$OUT/podmoves.txt"
 kubectl get podmoves -n "$NS" -o yaml >"$OUT/podmoves.yaml"
 kubectl get consolidationplans -A -o yaml >"$OUT/plan.yaml" || true
 
