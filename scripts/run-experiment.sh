@@ -13,7 +13,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NS=podtetris
 RESULTS="$ROOT/results"
-WAIT=300
+WAIT=90
 DEPLOY=local   # local | aws
 SKIP_DEPLOY=0
 NAME=""

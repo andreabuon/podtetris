@@ -1,0 +1,17 @@
+NAME                                                POD                                        SOURCE         TARGET         PHASE
+cert-manager-cainjector-5b68759df5-9w4px-b1b6cd4e   cert-manager-cainjector-5b68759df5-9w4px   kind-worker5   kind-worker7   Succeeded
+cert-manager-d966bfbbf-s7rp2-15ed69ca               cert-manager-d966bfbbf-s7rp2               kind-worker6   kind-worker7   Succeeded
+deployment-a-67f5c8c457-2lk44-fa3ffa9d              deployment-a-67f5c8c457-2lk44              kind-worker    kind-worker7   Succeeded
+deployment-a-67f5c8c457-mbqzw-94e959b1              deployment-a-67f5c8c457-mbqzw              kind-worker3   kind-worker7   Succeeded
+deployment-a-67f5c8c457-qh8nl-59307570              deployment-a-67f5c8c457-qh8nl              kind-worker6   kind-worker7   Succeeded
+deployment-a-67f5c8c457-xcccc-75294a9d              deployment-a-67f5c8c457-xcccc              kind-worker2   kind-worker7   Evicted
+deployment-a-67f5c8c457-zwqvb-8abc045c              deployment-a-67f5c8c457-zwqvb              kind-worker5   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-6bfst-2870fe96              deployment-b-7b96bcf96d-6bfst              kind-worker5   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-8h4bb-312cebdd              deployment-b-7b96bcf96d-8h4bb              kind-worker    kind-worker7   Succeeded
+deployment-b-7b96bcf96d-jph8k-4425124b              deployment-b-7b96bcf96d-jph8k              kind-worker2   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-n9ft8-f363d6a9              deployment-b-7b96bcf96d-n9ft8              kind-worker3   kind-worker7   Succeeded
+deployment-b-7b96bcf96d-sc2t5-5146ab34              deployment-b-7b96bcf96d-sc2t5              kind-worker6   kind-worker7   Succeeded
+rs-a-5jztm-18622828                                 rs-a-5jztm                                 kind-worker    kind-worker7   Succeeded
+rs-a-rdrx7-11444816                                 rs-a-rdrx7                                 kind-worker6   kind-worker7   Succeeded
+rs-a-rmzxr-03fd728d                                 rs-a-rmzxr                                 kind-worker2   kind-worker7   Succeeded
+rs-b-7g2lx-e57bb24e                                 rs-b-7g2lx                                 kind-worker3   kind-worker7   Succeeded
