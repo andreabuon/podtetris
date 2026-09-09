@@ -8,6 +8,8 @@ github.com/andreabuon/podtetris/src/evictor v0.0.0-20260827115124-07c7a9328717 h
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260827115124-07c7a9328717/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260908090728-598c15607e2a h1:UDhhNfDHYs+TDEfGka+HNszb+BWH+gzYPzK/873mqew=
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260908090728-598c15607e2a/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
+github.com/andreabuon/podtetris/src/evictor v0.0.0-20260909155159-2c75a9e01305 h1:2mOKfYdyIR6ApilbGiU2s+amDEccG5G/M8v3ha2CDRI=
+github.com/andreabuon/podtetris/src/evictor v0.0.0-20260909155159-2c75a9e01305/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
