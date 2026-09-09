@@ -88,12 +88,17 @@ func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev
 // isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE.
 func isOpenForReplacement(pm *podtetrisiov1.PodMove) bool {
 	conds := pm.Status.Conditions
+
 	if meta.IsStatusConditionTrue(conds, podtetrisiov1.ConditionFailed) ||
 		meta.IsStatusConditionTrue(conds, podtetrisiov1.ConditionReplacementSucceeded) {
 		return false
 	}
-	return meta.IsStatusConditionTrue(conds, podtetrisiov1.ConditionSourceEvicted) &&
-		!meta.IsStatusConditionTrue(conds, podtetrisiov1.ConditionReplacementClaimed)
+
+	if meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) == nil {
+		return false
+	}
+
+	return !meta.IsStatusConditionTrue(conds, podtetrisiov1.ConditionReplacementClaimed)
 }
 
 func replacementMatches(pm *podtetrisiov1.PodMove, pod *corev1.Pod, owner *metav1.OwnerReference) bool {
