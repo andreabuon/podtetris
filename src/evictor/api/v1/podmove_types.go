@@ -26,6 +26,9 @@ import (
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 const (
+	// ConditionSourceEvicting is True while the controller is attempting (or retrying) source-pod eviction.
+	ConditionSourceEvicting = "SourceEvicting"
+	// ConditionSourceEvicted is True once the eviction API has accepted the eviction request.
 	ConditionSourceEvicted        = "SourceEvicted"
 	ConditionReplacementClaimed   = "ReplacementClaimed"
 	ConditionReplacementBound     = "ReplacementBound"

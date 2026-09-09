@@ -106,7 +106,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return ctrl.Result{}, nil
 	}
 
-	// PodMove not Evicted yet
+	// Pending or SourceEvicting: attempt (or retry) source eviction
 	return r.evictSourcePod(ctx, &pm)
 }
 
@@ -281,8 +281,8 @@ func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.Po
 }
 
 func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
-	if !meta.IsStatusConditionFalse(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicted, metav1.ConditionFalse, "Evicting", "Evicting target pod"); err != nil {
+	if !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicting) {
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicting, metav1.ConditionTrue, "Evicting", "Evicting source pod"); err != nil {
 			return ctrl.Result{}, err
 		}
 	}
@@ -342,8 +342,8 @@ func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisio
 	msg := fmt.Sprintf("Eviction failed (attempt %d/%d): %v; will retry",
 		attempt, podtetrisiov1.MaxEvictionAttempts, evictionErr)
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionSourceEvicted,
-		Status:             metav1.ConditionFalse,
+		Type:               podtetrisiov1.ConditionSourceEvicting,
+		Status:             metav1.ConditionTrue,
 		Reason:             reason,
 		Message:            msg,
 		ObservedGeneration: pm.Generation,

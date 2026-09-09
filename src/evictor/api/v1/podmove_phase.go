@@ -19,7 +19,7 @@ func DerivePhase(conditions []metav1.Condition) PodMovePhase {
 		return PodMovePhaseClaimed
 	case meta.IsStatusConditionTrue(conditions, ConditionSourceEvicted):
 		return PodMovePhaseEvicted
-	case meta.IsStatusConditionFalse(conditions, ConditionSourceEvicted):
+	case meta.IsStatusConditionTrue(conditions, ConditionSourceEvicting):
 		return PodMovePhaseEvicting
 	default:
 		return PodMovePhasePending
