@@ -1,5 +1,5 @@
 // PODTetris mutating admission webhook
-// Intercepts Pod CREATE requests, finds a matching open PodMove, pins the pod to PodMove.spec.targetNode via Node nodeSelector,
+// Intercepts Pod CREATE requests, finds a matching open PodMove, pins the pod to PodMove.spec.targetNode via spec.nodeName,
 // and marks a condition so the recreation is recorded on the PodMove (LastTransitionTime is the recreation timestamp).
 package main
 
@@ -30,9 +30,6 @@ import (
 )
 
 const (
-	// nodeSelectorKey is the label used to force placement.
-	nodeSelectorKey = "kubernetes.io/hostname"
-
 	conditionReasonReplacementCreated = "ReplacementCreated"
 	maxClaimAttempts                  = 8
 )
@@ -362,31 +359,18 @@ func applyTargetNodeInjected(pm *podtetrisiov1.PodMove, pod *corev1.Pod) {
 
 // buildMutationPatch pins the pod to targetNode and labels it with the PodMove name.
 func buildMutationPatch(pod *corev1.Pod, targetNode, podMoveName string) []map[string]interface{} {
-	patch := buildNodeSelectorPatch(pod.Spec.NodeSelector, targetNode)
+	patch := buildNodeNamePatch(targetNode)
 	patch = append(patch, buildPodMoveLabelPatch(pod.Labels, podMoveName)...)
 	return patch
 }
 
-// buildNodeSelectorPatch returns a JSONPatch that sets the target node label.
-// It adds the /spec/nodeSelector object if the pod has none yet, otherwise it merges the single key into the existing map.
-func buildNodeSelectorPatch(existing map[string]string, targetNodeName string) []map[string]interface{} {
-	if len(existing) == 0 {
-		return []map[string]interface{}{
-			{
-				"op":   "add",
-				"path": "/spec/nodeSelector",
-				"value": map[string]string{
-					nodeSelectorKey: targetNodeName,
-				},
-			},
-		}
-	}
-
-	// nodeSelector already present: add/overwrite just our key so any other selector requirements set by the pod template are preserved.
+// buildNodeNamePatch returns a JSONPatch that sets spec.nodeName to the target node.
+// Setting nodeName at CREATE time binds the pod directly and skips the scheduler.
+func buildNodeNamePatch(targetNodeName string) []map[string]interface{} {
 	return []map[string]interface{}{
 		{
 			"op":    "add",
-			"path":  "/spec/nodeSelector/" + jsonPatchEscape(nodeSelectorKey),
+			"path":  "/spec/nodeName",
 			"value": targetNodeName,
 		},
 	}

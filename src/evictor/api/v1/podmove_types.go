@@ -54,8 +54,6 @@ const (
 	PodMoveLabelKey = "podtetris.io/podmove"
 	// ConsolidationPlanLabelKey is set on PodMoves to retrieve the PodMoves from the ConsolidationPlan that created them.
 	ConsolidationPlanLabelKey = "podtetris.io/plan"
-	// TargetNodeSelectorKey is the nodeSelector key the webhook writes to pin the replacement pod.
-	TargetNodeSelectorKey = "kubernetes.io/hostname"
 )
 
 // PodMovePhase is a controller-computed summary of a PodMove, derived from status.conditions.
@@ -93,7 +91,7 @@ type PodMoveSpec struct {
 	SourceNode string `json:"sourceNode"`
 
 	// targetNode is the node the simulator has selected for the replacement pod.
-	// The webhook injects this into the recreated pod's spec.nodeName (or nodeAffinity).
+	// The webhook injects this into the recreated pod's spec.nodeName.
 	// +required
 	// +kubebuilder:validation:MinLength=1
 	TargetNode string `json:"targetNode"`

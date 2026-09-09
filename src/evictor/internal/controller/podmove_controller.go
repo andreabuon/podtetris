@@ -415,9 +415,6 @@ func replacementOnTarget(pod *corev1.Pod, pm *podtetrisiov1.PodMove) bool {
 	if !pod.DeletionTimestamp.IsZero() || isOriginalPod(pm, pod) {
 		return false
 	}
-	if pod.Spec.NodeSelector[podtetrisiov1.TargetNodeSelectorKey] != pm.Spec.TargetNode {
-		return false
-	}
 	return pod.Spec.NodeName == pm.Spec.TargetNode
 }
 

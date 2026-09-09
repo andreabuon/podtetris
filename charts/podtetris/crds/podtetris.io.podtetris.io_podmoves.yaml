@@ -154,7 +154,7 @@ spec:
               targetNode:
                 description: |-
                   targetNode is the node the simulator has selected for the replacement pod.
-                  The webhook injects this into the recreated pod's spec.nodeName (or nodeAffinity).
+                  The webhook injects this into the recreated pod's spec.nodeName.
                 minLength: 1
                 type: string
             required:
