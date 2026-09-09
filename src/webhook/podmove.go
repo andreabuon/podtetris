@@ -8,14 +8,15 @@ import (
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	corev1 "k8s.io/api/core/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // claimOpenPodMove lists matching open PodMoves once and tries to claim them in order.
-// On conflict / already-claimed it skips to the next candidate.
+// On already-claimed it skips to the next candidate.
+// Status update conflicts (e.g. controller setting SourceEvicted=True) are retried on the same PodMove.
 // Returns (nil, nil) when no open match is available.
 func claimOpenPodMove(ctx context.Context, pod *corev1.Pod, dryRun bool) (*podtetrisiov1.PodMove, error) {
 	candidates, err := listOpenPodMoveMatches(ctx, pod)
@@ -31,9 +32,9 @@ func claimOpenPodMove(ctx context.Context, pod *corev1.Pod, dryRun bool) (*podte
 			return pm, nil
 		}
 		if err := claimReplacement(ctx, pm, pod); err != nil {
-			if errors.Is(err, errPodMoveAlreadyClaimed) || apierrors.IsConflict(err) {
-				log.Printf("PodMove %s/%s unavailable (%v); trying next open move",
-					pm.Namespace, pm.Name, err)
+			if errors.Is(err, errPodMoveAlreadyClaimed) {
+				log.Printf("PodMove %s/%s already claimed; trying next open move",
+					pm.Namespace, pm.Name)
 				continue
 			}
 			return nil, fmt.Errorf("could not mark PodMove replacement: %w", err)
@@ -70,19 +71,29 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisio
 
 // claimReplacement records that this PodMove's replacement CREATE has been intercepted.
 // Returns errPodMoveAlreadyClaimed if the move is no longer open.
-// Returns a conflict error if the update races.
+// Retries on conflict so a concurrent controller status update (SourceEvicted) does not drop the claim.
 func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod) error {
-	if !isOpenForReplacement(pm) {
-		return errPodMoveAlreadyClaimed
-	}
-	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionReplacementClaimed,
-		Status:             metav1.ConditionTrue,
-		Reason:             conditionReasonReplacementCreated,
-		Message:            fmt.Sprintf("Replacement pod %s/%s intercepted and pinned to node %q", pod.Namespace, podDisplayName(pod), pm.Spec.TargetNode),
-		ObservedGeneration: pm.Generation,
+	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
+		current := &podtetrisiov1.PodMove{}
+		if err := k8sClient.Get(ctx, client.ObjectKeyFromObject(pm), current); err != nil {
+			return err
+		}
+		if !isOpenForReplacement(current) {
+			return errPodMoveAlreadyClaimed
+		}
+		meta.SetStatusCondition(&current.Status.Conditions, metav1.Condition{
+			Type:               podtetrisiov1.ConditionReplacementClaimed,
+			Status:             metav1.ConditionTrue,
+			Reason:             conditionReasonReplacementCreated,
+			Message:            fmt.Sprintf("Replacement pod %s/%s intercepted and pinned to node %q", pod.Namespace, podDisplayName(pod), current.Spec.TargetNode),
+			ObservedGeneration: current.Generation,
+		})
+		if err := k8sClient.Status().Update(ctx, current); err != nil {
+			return err
+		}
+		*pm = *current
+		return nil
 	})
-	return k8sClient.Status().Update(ctx, pm)
 }
 
 // isOpenForReplacement reports whether the PodMove is armed for a replacement CREATE.
