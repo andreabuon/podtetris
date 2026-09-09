@@ -80,15 +80,21 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		log.Info("PodMove already failed")
 		return ctrl.Result{}, nil
 	}
+	// Eviction runs before Claimed/Bound so a webhook that claimed first still gets
+	// SourceEvicted set (and eviction retried) until the eviction API succeeds.
+	if !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
+		return r.evictSourcePod(ctx, &pm)
+	}
+
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementSucceeded) {
 		log.Info("PodMove already succeeded")
 		return ctrl.Result{}, nil
 	}
+
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementBound) {
 		return r.reconcileVerifiedReplacement(ctx, &pm)
 	}
 
-	// PodMove not Verified yet
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed) {
 		replacement, err := r.findReplacementPod(ctx, &pm)
 		if err != nil {
@@ -100,14 +106,8 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return r.reconcileReplacementNotFound(ctx, &pm, replacement)
 	}
 
-	// PodMove not Injected yet
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
-		log.Info("Waiting for webhook to claim a replacement pod CREATE")
-		return ctrl.Result{}, nil
-	}
-
-	// Pending or SourceEvicting: attempt (or retry) source eviction
-	return r.evictSourcePod(ctx, &pm)
+	log.Info("Waiting for webhook to claim a replacement pod CREATE")
+	return ctrl.Result{}, nil
 }
 
 // reconcileVerifiedReplacement checks if the (verified) replacement is Running.
@@ -290,7 +290,7 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 	pod, err := r.getSourcePod(ctx, pm)
 	if err != nil {
 		if apierrors.IsNotFound(err) {
-			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
+			return r.sourcePodGoneDuringEviction(ctx, pm)
 		}
 		return ctrl.Result{}, err
 	}
@@ -305,7 +305,7 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 	if err != nil {
 		switch {
 		case apierrors.IsNotFound(err):
-			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
+			return r.sourcePodGoneDuringEviction(ctx, pm)
 		case apierrors.IsForbidden(err), apierrors.IsInvalid(err), apierrors.IsBadRequest(err):
 			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonEvictionFailed, fmt.Sprintf("Eviction of %s permanently denied: %v", client.ObjectKeyFromObject(pod), err))
 		case apierrors.IsTooManyRequests(err):
@@ -319,6 +319,19 @@ func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov
 		return ctrl.Result{}, err
 	}
 	return ctrl.Result{}, nil
+}
+
+// sourcePodGoneDuringEviction handles a missing source pod while eviction is still outstanding.
+// If the webhook already claimed a replacement, treat the missing source as eviction success
+// so Claimed+not-Evicted races do not Fail the PodMove.
+func (r *PodMoveReconciler) sourcePodGoneDuringEviction(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed) {
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicted, metav1.ConditionTrue, "Evicted", "Source pod already gone after replacement was claimed"); err != nil {
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
+	}
+	return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
 }
 
 // requeueEviction records a failed eviction attempt and requeues.
