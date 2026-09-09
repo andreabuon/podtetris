@@ -25,7 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/rest"
-	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -180,9 +179,11 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 	var pm *podtetrisiov1.PodMove
 	claimed := false
+	skip := map[string]struct{}{}
+
 	for attempt := 0; attempt < maxClaimAttempts; attempt++ {
 		var err error
-		pm, err = findMatchingPodMove(ctx, &pod)
+		pm, err = findMatchingPodMove(ctx, &pod, skip)
 		if err != nil {
 			log.Printf("Error looking up PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(&pod), err)
 			return &admissionv1.AdmissionResponse{
@@ -205,9 +206,10 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		}
 
 		if err := claimReplacement(ctx, pm, &pod); err != nil {
-			if errors.Is(err, errPodMoveAlreadyClaimed) {
-				log.Printf("PodMove %s/%s already claimed; looking for another open move",
-					pm.Namespace, pm.Name)
+			if errors.Is(err, errPodMoveAlreadyClaimed) || apierrors.IsConflict(err) {
+				log.Printf("PodMove %s/%s unavailable (%v); looking for another open move",
+					pm.Namespace, pm.Name, err)
+				skip[pm.Name] = struct{}{}
 				pm = nil
 				continue
 			}
@@ -265,10 +267,7 @@ func podDisplayName(pod *corev1.Pod) string {
 	return pod.GenerateName + "<pending-name>"
 }
 
-// findMatchingPodMove returns the first open PodMove that matches this pod.
-// ReplicaSet and Deployment replacements match by controller owner;
-// StatefulSet replacements also require spec.podRef.name to equal the incoming pod name.
-func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*podtetrisiov1.PodMove, error) {
+func findMatchingPodMove(ctx context.Context, pod *corev1.Pod, skip map[string]struct{}) (*podtetrisiov1.PodMove, error) {
 	owner := metav1.GetControllerOf(pod)
 	if owner == nil {
 		return nil, nil
@@ -281,7 +280,13 @@ func findMatchingPodMove(ctx context.Context, pod *corev1.Pod) (*podtetrisiov1.P
 
 	for i := range list.Items {
 		pm := &list.Items[i]
-		if !isOpenForReplacement(pm) || !replacementMatches(pm, pod, owner) {
+		if !replacementMatches(pm, pod, owner) {
+			continue
+		}
+		if _, skipped := skip[pm.Name]; skipped {
+			continue
+		}
+		if !isOpenForReplacement(pm) {
 			continue
 		}
 		if pm.Spec.TargetNode == "" {
@@ -322,44 +327,25 @@ func isOpenForReplacement(pm *podtetrisiov1.PodMove) bool {
 		return false
 	}
 
-	return meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) && meta.IsStatusConditionFalse(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
+	return meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) &&
+		!meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
 }
 
 // claimReplacement records that this PodMove's replacement CREATE has been intercepted
-// by setting TargetNodeInjected=True. LastTransitionTime is the recreation timestamp.
-// Returns errPodMoveAlreadyClaimed if another CREATE won the race.
+// Returns errPodMoveAlreadyClaimed if the move is no longer open.
+// Returns a conflict error if the update races
 func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod) error {
 	if !isOpenForReplacement(pm) {
 		return errPodMoveAlreadyClaimed
 	}
-	applyTargetNodeInjected(pm, pod)
-	if err := k8sClient.Status().Update(ctx, pm); err == nil {
-		return nil
-	} else if !apierrors.IsConflict(err) {
-		return err
-	}
-
-	return retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		current := &podtetrisiov1.PodMove{}
-		if err := k8sClient.Get(ctx, client.ObjectKeyFromObject(pm), current); err != nil {
-			return err
-		}
-		if !isOpenForReplacement(current) {
-			return errPodMoveAlreadyClaimed
-		}
-		applyTargetNodeInjected(current, pod)
-		return k8sClient.Status().Update(ctx, current)
-	})
-}
-
-func applyTargetNodeInjected(pm *podtetrisiov1.PodMove, pod *corev1.Pod) {
 	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
 		Type:               podtetrisiov1.ConditionReplacementClaimed,
 		Status:             metav1.ConditionTrue,
 		Reason:             conditionReasonReplacementCreated,
-		Message:            fmt.Sprintf("Replacement pod %s/%s recreated and pinned to node %q", pod.Namespace, podDisplayName(pod), pm.Spec.TargetNode),
+		Message:            fmt.Sprintf("Replacement pod %s/%s intercepted and pinned to node %q", pod.Namespace, podDisplayName(pod), pm.Spec.TargetNode),
 		ObservedGeneration: pm.Generation,
 	})
+	return k8sClient.Status().Update(ctx, pm)
 }
 
 // buildMutationPatch pins the pod to targetNode and labels it with the PodMove name.
