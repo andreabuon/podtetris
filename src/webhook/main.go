@@ -20,7 +20,6 @@ import (
 const (
 	ADDRESS                           = ":8443"
 	conditionReasonReplacementCreated = "ReplacementCreated"
-	MAXCLAIMATTEMPS                   = 8
 )
 
 var errPodMoveAlreadyClaimed = errors.New("podmove already claimed for a replacement pod")
