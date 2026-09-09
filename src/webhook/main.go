@@ -25,8 +25,9 @@ import (
 )
 
 const (
+	ADDRESS                           = ":8443"
 	conditionReasonReplacementCreated = "ReplacementCreated"
-	maxClaimAttempts                  = 8
+	MAXCLAIMATTEMPS                   = 8
 )
 
 var errPodMoveAlreadyClaimed = errors.New("podmove already claimed for a replacement pod")
@@ -59,10 +60,6 @@ func main() {
 		podtetrisNamespace = ns
 	}
 
-	certFile := getEnvOrDefault("TLS_CERT_FILE", "/etc/webhook/certs/tls.crt")
-	keyFile := getEnvOrDefault("TLS_KEY_FILE", "/etc/webhook/certs/tls.key")
-	addr := getEnvOrDefault("LISTEN_ADDR", ":8443")
-
 	log.Printf("PODTetris webhook starting (namespace=%s)...", podtetrisNamespace)
 
 	mux := http.NewServeMux()
@@ -73,15 +70,15 @@ func main() {
 	})
 
 	server := &http.Server{
-		Addr:         addr,
+		Addr:         ADDRESS,
 		Handler:      mux,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		TLSConfig:    &tls.Config{MinVersion: tls.VersionTLS12},
 	}
 
-	log.Printf("Listening on %s", addr)
-	if err := server.ListenAndServeTLS(certFile, keyFile); err != nil && !errors.Is(err, http.ErrServerClosed) {
+	log.Printf("Listening on %s", ADDRESS)
+	if err := server.ListenAndServeTLS("/etc/webhook/certs/tls.crt", "/etc/webhook/certs/tls.key"); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatalf("Webhook server failed: %v", err)
 	}
 }
@@ -154,7 +151,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 	claimed := false
 	skip := map[string]struct{}{}
 
-	for attempt := 0; attempt < maxClaimAttempts; attempt++ {
+	for attempt := 0; attempt < MAXCLAIMATTEMPS; attempt++ {
 		var err error
 		pm, err = findMatchingPodMove(ctx, &pod, skip)
 		if err != nil {
