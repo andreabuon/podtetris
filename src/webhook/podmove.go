@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -13,41 +12,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// claimOpenPodMove lists matching open PodMoves once and tries to claim them in order.
-// Candidates that close between list and claim are skipped.
-// Status update conflicts (e.g. controller setting SourceEvicted=True) are retried on the same PodMove.
-// Returns (nil, nil) when no open match is available.
-func claimOpenPodMove(ctx context.Context, pod *corev1.Pod, dryRun bool) (*podtetrisiov1.PodMove, error) {
-	candidates, err := listOpenPodMoveMatches(ctx, pod)
-	if err != nil {
-		return nil, fmt.Errorf("could not look up PodMove: %w", err)
-	}
-
-	for i := range candidates {
-		pm := &candidates[i]
-		if dryRun {
-			log.Printf("Dry-run CREATE for pod %s/%s; skipping ReplacementClaimed update on PodMove %s/%s",
-				pod.Namespace, podDisplayName(pod), pm.Namespace, pm.Name)
-			return pm, nil
-		}
-		claimed, err := claimReplacement(ctx, pm, pod)
-		if err != nil {
-			return nil, fmt.Errorf("could not mark PodMove replacement: %w", err)
-		}
-		if !claimed {
-			log.Printf("PodMove %s/%s no longer open; trying next candidate",
-				pm.Namespace, pm.Name)
-			continue
-		}
-		return pm, nil
-	}
-	return nil, nil
-}
-
 func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisiov1.PodMove, error) {
 	owner := metav1.GetControllerOf(pod)
 	if owner == nil {
-		return nil, nil
+		return nil, fmt.Errorf("no owner controller found for the pod")
 	}
 
 	var list podtetrisiov1.PodMoveList
@@ -58,7 +26,10 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisio
 	out := make([]podtetrisiov1.PodMove, 0)
 	for i := range list.Items {
 		pm := &list.Items[i]
-		if !replacementMatches(pm, pod, owner) || !isOpenForReplacement(pm) {
+		if !replacementMatches(pm, pod, owner) {
+			continue
+		}
+		if !isOpenForReplacement(pm) {
 			continue
 		}
 		if pm.Spec.TargetNode == "" {

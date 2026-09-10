@@ -10,8 +10,10 @@ import (
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	admissionv1 "k8s.io/api/admission/v1"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func handleMutate(w http.ResponseWriter, r *http.Request) {
@@ -61,27 +63,80 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		return deny(req.UID, fmt.Sprintf("could not unmarshal pod: %v", err))
 	}
 
-	dryRun := req.DryRun != nil && *req.DryRun
-	pm, err := claimOpenPodMove(ctx, pod, dryRun)
+	owner := metav1.GetControllerOf(pod)
+	if owner == nil {
+		log.Printf("no owner controller found for the pod. Allowing")
+		return allow(req.UID)
+	}
+
+	matchingPodMoves, err := listOpenPodMoveMatches(ctx, pod)
 	if err != nil {
-		log.Printf("Error claiming PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(pod), err)
+		log.Printf("Error listing open PodMoves for pod %s/%s: %v", pod.Namespace, podDisplayName(pod), err)
 		return deny(req.UID, err.Error())
 	}
-	if pm == nil {
+
+	if len(matchingPodMoves) == 0 {
 		log.Printf("No matching PodMove for pod %s/%s; allowing without mutation",
 			pod.Namespace, podDisplayName(pod))
 		return allow(req.UID)
 	}
 
-	log.Printf("Intercepted CREATE for pod %s/%s (generateName=%q) -> pinning to node %q from PodMove %s/%s",
-		pod.Namespace, podDisplayName(pod), pod.GenerateName, pm.Spec.TargetNode, pm.Namespace, pm.Name)
+	var chosenPodMove *podtetrisiov1.PodMove = nil
+	for _, podMove := range matchingPodMoves {
+		evicted, err := hasBeenEvicted(ctx, podMove.Spec.Pod)
+		if err != nil {
+			log.Printf("Can not determine whether the pod %s/%s has been evicted: %v. Trying the next PodMove", podMove.Spec.Pod.Namespace, podMove.Spec.Pod.Name, err)
+			continue
+		}
 
-	patchBytes, err := json.Marshal(buildMutationPatch(pod, pm.Spec.TargetNode, pm.Name))
+		if !evicted {
+			continue
+		}
+
+		claimed, err := claimReplacement(ctx, &podMove, pod)
+		if err != nil {
+			log.Printf("Error claiming PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(pod), err)
+			return deny(req.UID, err.Error())
+		}
+		if !claimed {
+			log.Printf("PodMove %s/%s no longer open; trying next candidate", podMove.Namespace, podMove.Name)
+			continue
+		}
+
+		log.Printf("Intercepted CREATE for pod %s/%s (generateName=%q) -> pinning to node %q from PodMove %s/%s", pod.Namespace, podDisplayName(pod), pod.GenerateName, podMove.Spec.TargetNode, podMove.Namespace, podMove.Name)
+		chosenPodMove = &podMove
+		break
+	}
+
+	if chosenPodMove == nil {
+		log.Printf("no possible open PodMove could be chosen. Allowing with no mutation")
+		return allow(req.UID)
+	}
+
+	patchBytes, err := json.Marshal(buildMutationPatch(pod, chosenPodMove.Spec.TargetNode, chosenPodMove.Name))
 	if err != nil {
 		log.Printf("Error marshalling patch: %v", err)
 		return deny(req.UID, fmt.Sprintf("could not marshal patch: %v", err))
 	}
 	return allowPatched(req.UID, patchBytes)
+}
+
+func hasBeenEvicted(ctx context.Context, ref corev1.ObjectReference) (bool, error) {
+	var retrieved corev1.Pod
+	err := k8sClient.Get(ctx, client.ObjectKey{Namespace: ref.Namespace, Name: ref.Name}, &retrieved)
+
+	switch {
+	case apierrors.IsNotFound(err):
+		return true, nil
+	case err != nil:
+		return false, err
+	case ref.UID != "" && retrieved.UID != ref.UID:
+		return true, nil
+	case !retrieved.DeletionTimestamp.IsZero():
+		return true, nil
+	default:
+		return false, nil
+	}
 }
 
 func decodePod(req *admissionv1.AdmissionRequest) (*corev1.Pod, error) {
