@@ -11,6 +11,7 @@ import (
 	"time"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/rest"
@@ -36,6 +37,7 @@ func main() {
 	}
 
 	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
 	if err := podtetrisiov1.AddToScheme(scheme); err != nil {
 		log.Fatalf("could not register PodMove scheme: %v", err)
 	}
