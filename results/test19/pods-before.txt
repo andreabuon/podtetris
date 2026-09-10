@@ -1,0 +1,25 @@
+NAME                                READY   STATUS    RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
+deployment-a-67f5c8c457-2rgf5       1/1     Running   0          3m52s   10.244.8.2   kind-worker    <none>           <none>
+deployment-a-67f5c8c457-qvsgk       1/1     Running   0          3m52s   10.244.4.3   kind-worker4   <none>           <none>
+deployment-a-67f5c8c457-s9lg6       1/1     Running   0          3m52s   10.244.5.2   kind-worker2   <none>           <none>
+deployment-a-67f5c8c457-tjnq6       1/1     Running   0          3m52s   10.244.3.2   kind-worker3   <none>           <none>
+deployment-a-67f5c8c457-tnbjv       1/1     Running   0          3m52s   10.244.2.3   kind-worker6   <none>           <none>
+deployment-a-67f5c8c457-xxsg2       1/1     Running   0          3m52s   10.244.1.3   kind-worker7   <none>           <none>
+deployment-a-67f5c8c457-zgf6x       1/1     Running   0          3m52s   10.244.7.2   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-bncv2       1/1     Running   0          3m52s   10.244.4.4   kind-worker4   <none>           <none>
+deployment-b-7b96bcf96d-kpfc7       1/1     Running   0          3m52s   10.244.8.4   kind-worker    <none>           <none>
+deployment-b-7b96bcf96d-lqtwt       1/1     Running   0          3m52s   10.244.1.5   kind-worker7   <none>           <none>
+deployment-b-7b96bcf96d-lv42s       1/1     Running   0          3m52s   10.244.5.3   kind-worker2   <none>           <none>
+deployment-b-7b96bcf96d-npmgb       1/1     Running   0          3m52s   10.244.3.3   kind-worker3   <none>           <none>
+deployment-b-7b96bcf96d-p89mx       1/1     Running   0          3m52s   10.244.7.3   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-wt65x       1/1     Running   0          3m52s   10.244.2.4   kind-worker6   <none>           <none>
+deployment-fixed-65bffb5cd6-58tps   1/1     Running   0          3m52s   10.244.8.3   kind-worker    <none>           <none>
+deployment-fixed-65bffb5cd6-zrrcr   1/1     Running   0          3m52s   10.244.1.4   kind-worker7   <none>           <none>
+rs-a-dqvbj                          1/1     Running   0          3m52s   10.244.2.5   kind-worker6   <none>           <none>
+rs-a-gx2r9                          1/1     Running   0          3m52s   10.244.5.4   kind-worker2   <none>           <none>
+rs-a-w6m77                          1/1     Running   0          3m52s   10.244.3.4   kind-worker3   <none>           <none>
+rs-b-4q4js                          1/1     Running   0          3m52s   10.244.7.4   kind-worker5   <none>           <none>
+rs-b-swkm7                          1/1     Running   0          3m52s   10.244.4.5   kind-worker4   <none>           <none>
+statefulset-0                       1/1     Running   0          3m52s   10.244.3.6   kind-worker3   <none>           <none>
+statefulset-1                       1/1     Running   0          3m39s   10.244.5.6   kind-worker2   <none>           <none>
+statefulset-2                       1/1     Running   0          3m27s   10.244.8.6   kind-worker    <none>           <none>

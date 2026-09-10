@@ -1,0 +1,17 @@
+NAME                                                POD                                        SOURCE         TARGET         PHASE       PERSISTATTEMPTS   RUNNINGATTEMPTS
+cert-manager-cainjector-5b68759df5-65m6l-0395e6b9   cert-manager-cainjector-5b68759df5-65m6l   kind-worker6   kind-worker2   Succeeded   0                 0
+cert-manager-d966bfbbf-tf5q9-c5be81d3               cert-manager-d966bfbbf-tf5q9               kind-worker7   kind-worker2   Succeeded   0                 0
+cert-manager-webhook-9596c4d8-dpdkd-813812ed        cert-manager-webhook-9596c4d8-dpdkd        kind-worker4   kind-worker2   Succeeded   0                 0
+deployment-a-67f5c8c457-2rgf5-427a4b5e              deployment-a-67f5c8c457-2rgf5              kind-worker    kind-worker2   Failed      0                 0
+deployment-a-67f5c8c457-qvsgk-9b344809              deployment-a-67f5c8c457-qvsgk              kind-worker4   kind-worker2   Succeeded   0                 0
+deployment-a-67f5c8c457-tjnq6-a7bf2c44              deployment-a-67f5c8c457-tjnq6              kind-worker3   kind-worker2   Succeeded   0                 0
+deployment-a-67f5c8c457-tnbjv-b786bd85              deployment-a-67f5c8c457-tnbjv              kind-worker6   kind-worker2   Succeeded   0                 0
+deployment-a-67f5c8c457-xxsg2-14b64eac              deployment-a-67f5c8c457-xxsg2              kind-worker7   kind-worker2   Succeeded   0                 0
+deployment-b-7b96bcf96d-bncv2-cd1e4dff              deployment-b-7b96bcf96d-bncv2              kind-worker4   kind-worker2   Succeeded   0                 0
+deployment-b-7b96bcf96d-kpfc7-a4a53c38              deployment-b-7b96bcf96d-kpfc7              kind-worker    kind-worker2   Succeeded   0                 0
+deployment-b-7b96bcf96d-lqtwt-08e151c0              deployment-b-7b96bcf96d-lqtwt              kind-worker7   kind-worker2   Succeeded   0                 0
+deployment-b-7b96bcf96d-npmgb-14d898c0              deployment-b-7b96bcf96d-npmgb              kind-worker3   kind-worker2   Succeeded   0                 0
+deployment-b-7b96bcf96d-wt65x-3d04c49b              deployment-b-7b96bcf96d-wt65x              kind-worker6   kind-worker2   Succeeded   0                 0
+rs-a-dqvbj-b3979bd7                                 rs-a-dqvbj                                 kind-worker6   kind-worker2   Succeeded   0                 0
+rs-a-w6m77-94ef2cc4                                 rs-a-w6m77                                 kind-worker3   kind-worker2   Succeeded   0                 0
+rs-b-swkm7-759fc4af                                 rs-b-swkm7                                 kind-worker4   kind-worker2   Succeeded   0                 0
