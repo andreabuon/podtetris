@@ -1,0 +1,21 @@
+2026/09/10 12:29:38 PODTetris webhook starting (namespace=podtetris)...
+2026/09/10 12:29:38 Listening on :8443
+2026/09/10 12:29:38 PODTetris webhook starting (namespace=podtetris)...
+2026/09/10 12:29:38 Listening on :8443
+2026/09/10 12:29:51 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-a-67f5c8c457-wr6r7-318d93fa
+2026/09/10 12:29:51 Intercepted CREATE for pod cert-manager/cert-manager-cainjector-5b68759df5-<pending-name> (generateName="cert-manager-cainjector-5b68759df5-") -> pinning to node "kind-worker" from PodMove podtetris/cert-manager-cainjector-5b68759df5-xx8c4-409bbad0
+2026/09/10 12:29:52 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-a-67f5c8c457-q4tjp-ccb29e57
+2026/09/10 12:29:38 PODTetris webhook starting (namespace=podtetris)...
+2026/09/10 12:29:38 Listening on :8443
+2026/09/10 12:29:50 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker" from PodMove podtetris/rs-b-qxf6f-7657a732
+2026/09/10 12:29:50 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker" from PodMove podtetris/rs-b-rxrk4-ee3db773
+2026/09/10 12:29:50 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-a-67f5c8c457-748gt-db7bb37d
+2026/09/10 12:29:50 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-b-7b96bcf96d-264qh-a43b1674
+2026/09/10 12:29:50 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-b-7b96bcf96d-csww4-f6c5d69e
+2026/09/10 12:29:51 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-b-7b96bcf96d-tqjjd-f829380c
+2026/09/10 12:29:51 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-b-7b96bcf96d-sbhpd-2f94ae97
+2026/09/10 12:29:51 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-b-7b96bcf96d-7ghmr-118516d5
+2026/09/10 12:29:51 Intercepted CREATE for pod default/rs-a-<pending-name> (generateName="rs-a-") -> pinning to node "kind-worker" from PodMove podtetris/rs-a-577v5-48103df2
+2026/09/10 12:29:52 Intercepted CREATE for pod cert-manager/cert-manager-webhook-9596c4d8-<pending-name> (generateName="cert-manager-webhook-9596c4d8-") -> pinning to node "kind-worker" from PodMove podtetris/cert-manager-webhook-9596c4d8-njdzz-b05a1a5b
+2026/09/10 12:29:52 Intercepted CREATE for pod cert-manager/cert-manager-d966bfbbf-<pending-name> (generateName="cert-manager-d966bfbbf-") -> pinning to node "kind-worker" from PodMove podtetris/cert-manager-d966bfbbf-vdjtg-d0a8a2ce
+2026/09/10 12:29:52 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker" from PodMove podtetris/deployment-a-67f5c8c457-trzl2-5428e9eb
