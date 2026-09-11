@@ -95,6 +95,7 @@ evictor:
 
 # Mutating admission webhook (pins replacement pods to PodMove.targetNode).
 webhook:
+  enabled: true
   image:
     repository: podtetris-webhook
     pullPolicy: IfNotPresent
