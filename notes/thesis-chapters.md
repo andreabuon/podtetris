@@ -2,173 +2,182 @@
 
 ## Chapters
 
-### Introduction
+### 1. Introduction
 
-- PoliTO
-- Logistics Reply
+- Context
+  - PoliTO
+  - Logistics Reply
 
-### Prerequisites
+- The industrial problem: resource fragmentation on Kubernetes
+- Goals and non-goals
+- Constraints of the setting (preview)
+  - Amazon EKS: no control-plane / scheduler modifications
+  - custom scheduler plugins would require a second scheduler instance
+  - metrics-based schedulers should not be used (according to the documentation)
+- Contributions
+- Thesis outline
+
+### 2. Background
+
+- Containers and Docker (brief)
 
 - Kubernetes
-- Docker
-- Cloud Providers:
-    Amazon EKS
-    includi che non possiamo modificare lo scheduler! dovremmo farne girare un'altra istanza
 
-### The problem of resource fragmentation
+- Kubernetes objects
+  - Pods
+  - Deployments / ReplicaSets
+  - StatefulSets
+  - DaemonSets, Jobs
+  - system pods / system namespaces
 
-Existing tools:
+- Scheduling constraints
+  - affinity / anti-affinity
+  - nodeSelector
+  - topology (zones / areas)
+  - Pod Disruption Budgets
+
+- Default scheduler
+  - Filter + Scoring
+  - LeastAllocated / MostAllocated
+  - binding is final: no shuffle, pods cannot be moved from a node to another
+
+- Bin packing as the conceptual model
+  - NP-hard
+  - First fit, Best fit, etc
+  - how this maps to LeastAllocated / MostAllocated
+
+- Managed Kubernetes (Amazon EKS)
+  - you cannot add scheduler plugins on the default scheduler
+  - a second scheduler is possible but not the product path
+
+### 3. The problem
+
+#### 3.1 Resource fragmentation
+
+- Definition: spare CPU/memory exists in the cluster, but not on any single node in a shape that a pending pod can use
+- How it appears in Kubernetes
+  - stranded resources (e.g. free CPU on a node with no free memory, or the opposite)
+  - unschedulable pods despite unused capacity
+  - extra nodes added instead of reshaping the packing
+- Why it accumulates
+  - default scheduler binding is final
+  - create / delete / scale of Deployments over time, with no repack
+  - heterogeneous requests vs node sizes
+  - constraints (affinity, topology, PDBs) shrink the feasible placements
+- Cost: extra nodes, worse utilization, higher cloud bill
+- What “solving it” would mean: fewer nodes for the same workload, without violating scheduling constraints or causing unbounded disruption
+
+#### 3.2 Existing tools
+
+Why they do not solve 3.1.
 
 - Cluster Autoscaler
-    threshold fisso
-    no shuflling!
-    nessuna decisione sulla destinazioni dei pod di rimpiazzo: verifica solo se ci entrano su altri nodi
+  - fixed utilization threshold
+  - no pods shuffling
+  - replacement pods: CA only checks whether they fit on other nodes, no destination decision (left to the scheduler)
+  - reacts to pending pods by adding nodes (worsens fragmentation)
 - Descheduler
   - pros
-  - cons
-    nessuna garanzia spostamento
-        eviction hoping pods wont end up on the same nodes, causing useless disruption
+  - cons: no guarantee on where the pod lands
+    - eviction hoping pods will not return to the same nodes → useless disruption
 - AWS Karpenter
-    threshold fisso
-    consolidamento taglie
+  - fixed threshold
+  - consolidation by instance size
+- Coexistence with Cluster Autoscaler
+  - planning on Pending pods races with CA scale-up
 
-### Related works
+#### 3.3 Requirements
 
-- OR Tools (2 papers)
-- tesi Bologna Kubernetes
+- work with the default EKS scheduler
+- fail-open
+    if our components die, the cluster still schedules
+- respect affinity, topology, PDBs
+- bound disruption
+- idempotent actuation
+- physical node removal can be delegated to Cluster Autoscaler (cloud provider specific code)
+
+### 4. Related work
+
+Compare against chapter 3.
+
+- OR-Tools (2 papers)
+- Tesi Bologna (Kubernetes)
 - Paper Canova
-- descheduler impact on resource fragmentation
-- fondazione kessler
+- Descheduler impact on resource fragmentation
+- Fondazione Kessler
+- Comparison table vs PODTetris
 
-### Kubernetes
+### 5. Design of PODTetris
 
-#### Vincoli
+Simulator / planner computes a target packing; actuator applies it; Cluster Autoscaler removes emptied nodes.
 
-- affinity  / anti-affinity
-- nodeSelector
-- topology areas
-- pod disruption budgets
+- High-level architecture
+  - planner
+  - CRDs as shared state (how components communicate)
+  - controller (evictor)
+  - mutating admission webhook
+  - Cluster Autoscaler for physical node deletion
 
-#### Scheduler
+- Design alternatives we tried
+  - scale up / scale down to avoid disruption
+    - race conditions
+    - unclear which pod to evict
+  - cordon nodes
+  - eviction + webhook (chosen)
 
-- Filter + Scoring phases
-  - LeastAllocated + MostAllocated
-    no control planes modifications allowed
+- Planner
+  - limit computation to a subset of the cluster to bound disruption, while minimizing nodes under configured constraints
+  - node selection: non-deterministic + deterministic
+  - when it runs: cron vs when a pod does not fit and stays Pending (conflict with Cluster Autoscaler)
+  - Cluster Autoscaler snapshot tools
+  - CA simulator is filter-only; we add real scheduler function calls
+  - pod permutations (by CPU, by memory, random) and re-scheduling
+  - use of Kubernetes informers
+- Failure model
+  - controller down → nothing happens (no partial damage)
+  - webhook down → default scheduler can still place pods according to its default rules
 
-- decisione definitiva ! no shuflling
+### 6. Implementation
 
-NON SI POSSONO SPOSTARE I PODS DA UN NODO ALL'ALTRO!
-Soluzioni:
+- Deploy via Helm chart
 
-- scale up/scale down per evitare disruption
-  provato ma:
+- Planner configuration (ConfigMap)
+  - weights / scoring rules
+  - pinned / fixed nodes
+  - regex
+  - ignore DaemonSets, Jobs, system pods, system namespaces
 
-  - race condition
-  - come capire di quale pod richiedere l'eviction
-- cordon nodi
-- eviction + webhook
+- CRDs + Kubebuilder controller
+  - ConsolidationPlan
+  - PodMove
+  - idempotency
+  - a new pod cancels the current plan
+  - maxConcurrentReconciles = 1
 
-#### Plugins
+- Mutating admission webhook
+  - beat the default scheduler on node selection (`nodeName`)
+  - sideEffects
+  - pod must already be persisted
+  - Deployments / ReplicaSets: only the target node matters
+  - StatefulSets: match by stable name (need the original identity)
+  - availability: multiple replicas
+  - fail-open if the webhook is down
 
-- you can't run plugins on EKS without running a second scheduler
+### 7. Evaluation
 
-NO Metrics based schedulers
+- Testbeds and what each is valid for
+  - Kind
+  - KWOK
+  - EKS
+- Metrics (nodes saved, total moves number, total moves cost, races with CA, plan abort)
+- Results analysis
+- Threats to validity
 
-Management of Pods Deployments/ReplicaSets
+### 8. Conclusions and future work
 
-### Bin packing / repacking
-
-NP hard
-
-First fit
-Best fit
-
-Kubernetes LeastAllocated + MostAllocated
-
-### System architecture
-
-simulatore / calcolatore stato + attuatore
-
-per la rimozione fisica dei nodi si basa sul cluster autoscaler
-
-webhook, controller, planner
-how to share data among different components?
-
-#### Planner
-
-per evitare troppa disruption limitiamo il calcolo ad una porzione del cluster cercando di minimizzare rispettando i vincoli dati in configurazione
-
-scelta nodi non deterministica + deterministica
-
-idealmente gira come cron job od ogni volta che un pod non entra nello stato attuale del cluster e rimane in pending. Conflitto con cluster autoscaler!
-
-utilizzo strumenti cluster autoscaler (snapshot)
-il simulatore dell'autoscaler fa solo fase di filter!
-
-utilizza scheduler simulatore reale
-
-diverse permutazioni dei pod (by cpu, by memory, random) e re-scheduling
-
-informers
-
-##### configurazione
-
-configmap
-
-regole:
-
-- pesi/regole
-- nodi fissi
-
-regex
-
-ignora daemonSets, jobs, pod di sistema, namespace di sistema
-
-#### CRD + Controller
-
-New CRDs:
-
-- CondolidationPlan
-- PodMove
-
-Kubebuilder controller
-
-Idempotenza
-
-A new pods triggers the cancellation of the plan
-
-maxConcurrentReconciles = 1
-
-se il controller va giù non succede niente
-
-#### Mutating admission Webhook
-
-per battere lo scheduler su selezione del nodo
-
-controllare sideEffects
-
-verificare che il pod sia persistito
-
-Per i Deployment o ReplicaSet non mi serve sapere quale era il nodo di partenza, mi basta solo sapere quello finale
-Per gli StatefulSet lo devo sapere ma posso fare il match tramite il nome
-
-availability webhook
-multiple replicas
-se il webhook va giù i pod vengono rischedulati lo stesso dallo scheduler di default
-
-### Tests & results
-
-Testbeds:
-
-- Kind
-- KWOK
-- EKS
-
-Deploy via an Helm Chart
-
-Results analysis
-
-### Possible improvements
-
-- salvare stato nodi
-    se arriva un nuovo pod calcolare se può andare bene con il piano simulato e nel caso ok altrimenti stoppa tutto
+- Recap of the problem, constraints, and contribution
+- Limitations
+- Possible improvements
+  - persist simulated node state
+    - if a new pod arrives, check whether it still fits the planned packing
+    - if yes, keep the plan; otherwise abort
