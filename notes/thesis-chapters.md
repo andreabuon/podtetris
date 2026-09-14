@@ -63,8 +63,8 @@ Soluzioni:
 - scale up/scale down per evitare disruption
   provato ma:
 
-    - race condition
-    - come capire di quale pod richiedere l'eviction
+  - race condition
+  - come capire di quale pod richiedere l'eviction
 - cordon nodi
 - eviction + webhook
 
@@ -90,6 +90,9 @@ Kubernetes LeastAllocated + MostAllocated
 simulatore / calcolatore stato + attuatore
 
 per la rimozione fisica dei nodi si basa sul cluster autoscaler
+
+webhook, controller, planner
+how to share data among different components?
 
 #### Planner
 
@@ -128,11 +131,30 @@ New CRDs:
 - CondolidationPlan
 - PodMove
 
-A new pods cancels the plan
+Kubebuilder controller
+
+Idempotenza
+
+A new pods triggers the cancellation of the plan
+
+maxConcurrentReconciles = 1
+
+se il controller va giù non succede niente
 
 #### Mutating admission Webhook
 
 per battere lo scheduler su selezione del nodo
+
+controllare sideEffects
+
+verificare che il pod sia persistito
+
+Per i Deployment o ReplicaSet non mi serve sapere quale era il nodo di partenza, mi basta solo sapere quello finale
+Per gli StatefulSet lo devo sapere ma posso fare il match tramite il nome
+
+availability webhook
+multiple replicas
+se il webhook va giù i pod vengono rischedulati lo stesso dallo scheduler di default
 
 ### Tests & results
 
@@ -141,6 +163,8 @@ Testbeds:
 - Kind
 - KWOK
 - EKS
+
+Deploy via an Helm Chart
 
 Results analysis
 
