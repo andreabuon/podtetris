@@ -9,6 +9,18 @@
   - Logistics Reply
 
 - The industrial problem: resource fragmentation on Kubernetes
+  - Definition: spare CPU/memory exists in the cluster, but not on any single node in a shape that a pending pod can use
+  - How it appears in Kubernetes
+    - stranded resources (e.g. free CPU on a node with no free memory, or the opposite)
+    - unschedulable pods despite unused capacity
+    - extra nodes added instead of reshaping the packing
+  - Why it accumulates
+    - default scheduler binding is final
+    - create / delete / scale of Deployments over time, with no repack
+    - heterogeneous requests vs node sizes
+    - constraints (affinity, topology, PDBs) shrink the feasible placements
+  - Cost: extra nodes, worse utilization, higher cloud bill
+  - What “solving it” would mean: fewer nodes for the same workload, without violating scheduling constraints or causing unbounded disruption
 - Goals and non-goals
 - Constraints of the setting (preview)
   - Amazon EKS: no control-plane / scheduler modifications
@@ -50,26 +62,9 @@
   - you cannot add scheduler plugins on the default scheduler
   - a second scheduler is possible but not the product path
 
-### 3. The problem
+### 3. State of the art
 
-#### 3.1 Resource fragmentation
-
-- Definition: spare CPU/memory exists in the cluster, but not on any single node in a shape that a pending pod can use
-- How it appears in Kubernetes
-  - stranded resources (e.g. free CPU on a node with no free memory, or the opposite)
-  - unschedulable pods despite unused capacity
-  - extra nodes added instead of reshaping the packing
-- Why it accumulates
-  - default scheduler binding is final
-  - create / delete / scale of Deployments over time, with no repack
-  - heterogeneous requests vs node sizes
-  - constraints (affinity, topology, PDBs) shrink the feasible placements
-- Cost: extra nodes, worse utilization, higher cloud bill
-- What “solving it” would mean: fewer nodes for the same workload, without violating scheduling constraints or causing unbounded disruption
-
-#### 3.2 Existing tools
-
-Why they do not solve 3.1.
+Why they do not solve the problem.
 
 - Cluster Autoscaler
   - fixed utilization threshold
@@ -86,20 +81,6 @@ Why they do not solve 3.1.
 - Coexistence with Cluster Autoscaler
   - planning on Pending pods races with CA scale-up
 
-#### 3.3 Requirements
-
-- work with the default EKS scheduler
-- fail-open
-    if our components die, the cluster still schedules
-- respect affinity, topology, PDBs
-- bound disruption
-- idempotent actuation
-- physical node removal can be delegated to Cluster Autoscaler (cloud provider specific code)
-
-### 4. Related work
-
-Compare against chapter 3.
-
 - OR-Tools (2 papers)
 - Tesi Bologna (Kubernetes)
 - Paper Canova
@@ -107,9 +88,18 @@ Compare against chapter 3.
 - Fondazione Kessler
 - Comparison table vs PODTetris
 
-### 5. Design of PODTetris
+### 4. Design of PODTetris
 
 Simulator / planner computes a target packing; actuator applies it; Cluster Autoscaler removes emptied nodes.
+
+- Requirements
+  - work with the default EKS scheduler
+  - fail-open
+      if our components die, the cluster still schedules
+  - respect affinity, topology, PDBs
+  - bound disruption
+  - idempotent actuation
+  - physical node removal can be delegated to Cluster Autoscaler (cloud provider specific code)
 
 - High-level architecture
   - planner
@@ -137,7 +127,7 @@ Simulator / planner computes a target packing; actuator applies it; Cluster Auto
   - controller down → nothing happens (no partial damage)
   - webhook down → default scheduler can still place pods according to its default rules
 
-### 6. Implementation
+### 5. Implementation
 
 - Deploy via Helm chart
 
@@ -163,7 +153,7 @@ Simulator / planner computes a target packing; actuator applies it; Cluster Auto
   - availability: multiple replicas
   - fail-open if the webhook is down
 
-### 7. Evaluation
+### 6. Evaluation
 
 - Testbeds and what each is valid for
   - Kind
@@ -173,7 +163,7 @@ Simulator / planner computes a target packing; actuator applies it; Cluster Auto
 - Results analysis
 - Threats to validity
 
-### 8. Conclusions and future work
+### 7. Conclusions and future work
 
 - Recap of the problem, constraints, and contribution
 - Limitations
