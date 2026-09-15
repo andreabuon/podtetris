@@ -12,25 +12,29 @@ const (
 	SCHEDULER_CONFIG_PATH = "/etc/podtetris/podtetris-scheduler-config.yaml"
 )
 
+type CandidateNodesNumbersConfig struct {
+	Random   int `mapstructure:"random"`
+	ByCPU    int `mapstructure:"byCPU"`
+	ByMemory int `mapstructure:"byMemory"`
+}
+
 type AppConfig struct {
-	PodtetrisNamespace                string   `mapstructure:"podtetrisNamespace"`
-	RandomCandidateNodesNumber        int      `mapstructure:"randomCandidateNodesNumber"`
-	ByCPUCandidateNodesNumber         int      `mapstructure:"byCPUCandidateNodesNumber"`
-	ByMemoryCandidateNodesNumber      int      `mapstructure:"byMemoryCandidateNodesNumber"`
-	EmptyNodesScoreWeight             int      `mapstructure:"emptyNodesScoreWeight"`
-	CostScoreWeight                   int      `mapstructure:"costScoreWeight"`
-	AutoConsolidationScoreThreshold   int      `mapstructure:"autoConsolidationScoreThreshold"`
-	CandidateNodesSelectionMaxRetries int      `mapstructure:"candidateNodesSelectionMaxRetries"`
-	EnabledPermutationStrategies      []string `mapstructure:"enabledPermutationStrategies"`
-	Parallelism                       int      `mapstructure:"parallelism"`
-	DryRun                            bool     `mapstructure:"dryRun"`
+	PodtetrisNamespace                string                      `mapstructure:"podtetrisNamespace"`
+	CandidateNodesNumbers             CandidateNodesNumbersConfig `mapstructure:"candidateNodesNumbers"`
+	EmptyNodesScoreWeight             int                         `mapstructure:"emptyNodesScoreWeight"`
+	CostScoreWeight                   int                         `mapstructure:"costScoreWeight"`
+	AutoConsolidationScoreThreshold   int                         `mapstructure:"autoConsolidationScoreThreshold"`
+	CandidateNodesSelectionMaxRetries int                         `mapstructure:"candidateNodesSelectionMaxRetries"`
+	EnabledPermutationStrategies      []string                    `mapstructure:"enabledPermutationStrategies"`
+	Parallelism                       int                         `mapstructure:"parallelism"`
+	DryRun                            bool                        `mapstructure:"dryRun"`
 }
 
 func setDefaultConfigValues() {
 	viper.SetDefault("podtetrisNamespace", "podtetris")
-	viper.SetDefault("randomCandidateNodesNumber", 3)
-	viper.SetDefault("byCPUCandidateNodesNumber", 2)
-	viper.SetDefault("byMemoryCandidateNodesNumber", 2)
+	viper.SetDefault("candidateNodesNumbers.random", 3)
+	viper.SetDefault("candidateNodesNumbers.byCPU", 2)
+	viper.SetDefault("candidateNodesNumbers.byMemory", 2)
 	viper.SetDefault("emptyNodesScoreWeight", 400)
 	viper.SetDefault("costScoreWeight", 1)
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)

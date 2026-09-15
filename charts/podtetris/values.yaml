@@ -23,9 +23,10 @@ planner:
       memory: 128Mi
   config:
     podtetrisNamespace: "{{ .Release.Namespace }}"
-    randomCandidateNodesNumber: 3
-    byCPUCandidateNodesNumber: 2
-    byMemoryCandidateNodesNumber: 2
+    candidateNodesNumbers:
+      random: 3
+      byCPU: 2
+      byMemory: 2
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
