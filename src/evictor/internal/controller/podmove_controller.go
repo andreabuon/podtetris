@@ -238,6 +238,14 @@ func timeSinceInjected(pm *podtetrisiov1.PodMove) (time.Duration, error) {
 	return time.Since(injected.LastTransitionTime.Time), nil
 }
 
+func timeSinceEvicting(pm *podtetrisiov1.PodMove) (time.Duration, error) {
+	evicting := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicting)
+	if evicting == nil || evicting.LastTransitionTime.IsZero() {
+		return 0, fmt.Errorf("PodMove SourceEvicting time not found")
+	}
+	return time.Since(evicting.LastTransitionTime.Time), nil
+}
+
 // recordFailedPersistAttempt increments PersistAttempts. After MaxPersistAttempts the PodMove
 // is marked Failed; otherwise it requeues for the next poll.
 func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod, waited time.Duration) (ctrl.Result, error) {
@@ -338,6 +346,25 @@ func (r *PodMoveReconciler) sourcePodGoneDuringEviction(ctx context.Context, pm 
 // After MaxEvictionAttempts the PodMove is marked Failed.
 func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod, reason string, evictionErr error) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
+
+	waited, err := timeSinceEvicting(pm)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	nextDeadline := time.Duration(pm.Status.EvictionAttempts+1) * evictionRetryInterval
+	if waited < nextDeadline {
+		remaining := nextDeadline - waited
+		log.Info("Eviction failed; waiting before counting attempt",
+			"pod", client.ObjectKeyFromObject(pod),
+			"reason", reason,
+			"waited", waited,
+			"evictionAttempts", pm.Status.EvictionAttempts,
+			"maxEvictionAttempts", podtetrisiov1.MaxEvictionAttempts,
+			"requeueAfter", remaining,
+		)
+		return ctrl.Result{RequeueAfter: remaining}, nil
+	}
 
 	pm.Status.EvictionAttempts++
 	attempt := pm.Status.EvictionAttempts
