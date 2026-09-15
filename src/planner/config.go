@@ -26,6 +26,7 @@ type AppConfig struct {
 	AutoConsolidationScoreThreshold   int                         `mapstructure:"autoConsolidationScoreThreshold"`
 	CandidateNodesSelectionMaxRetries int                         `mapstructure:"candidateNodesSelectionMaxRetries"`
 	EnabledPermutationStrategies      []string                    `mapstructure:"enabledPermutationStrategies"`
+	RandomPermutationCount            int                         `mapstructure:"randomPermutationCount"`
 	Parallelism                       int                         `mapstructure:"parallelism"`
 	DryRun                            bool                        `mapstructure:"dryRun"`
 }
@@ -40,6 +41,7 @@ func setDefaultConfigValues() {
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)
 	viper.SetDefault("candidateNodesSelectionMaxRetries", 15)
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
+	viper.SetDefault("randomPermutationCount", 1)
 	viper.SetDefault("parallelism", 8)
 	viper.SetDefault("dryRun", false)
 }

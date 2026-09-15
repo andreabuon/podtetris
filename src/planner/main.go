@@ -151,7 +151,7 @@ func main() {
 	initialPodAllocations := createPodAllocationsMap(candidateNodes)
 
 	evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
-	permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies)
+	permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies, Config.RandomPermutationCount)
 
 	initialState := &Baseline{
 		CandidateNodes: candidateNodes,
