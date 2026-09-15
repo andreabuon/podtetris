@@ -217,7 +217,7 @@ func (r *PodMoveReconciler) reconcileReplacementNotFound(ctx context.Context, pm
 	nextDeadline := time.Duration(pm.Status.PersistAttempts+1) * persistPollInterval
 	if waited < nextDeadline {
 		remaining := nextDeadline - waited
-		log.V(1).Info("Waiting for replacement pod to persist on the target node",
+		log.Info("Waiting for replacement pod to persist on the target node",
 			"waited", waited,
 			"found", replacement != nil,
 			"persistAttempts", pm.Status.PersistAttempts,
