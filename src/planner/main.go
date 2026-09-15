@@ -142,7 +142,7 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.RandomCandidateNodesNumber, Config.ByCPUCandidateNodesNumber, rules)
+	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.RandomCandidateNodesNumber, Config.ByCPUCandidateNodesNumber, Config.ByMemoryCandidateNodesNumber, rules)
 	if err != nil {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}

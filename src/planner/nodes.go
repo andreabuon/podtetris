@@ -10,12 +10,12 @@ import (
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
-func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int, rules *RuleMatcher) ([]kubeframework.NodeInfo, error) {
+func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
 		return nil, errors.New("no available candidate nodes")
 	}
 
-	totalNodesToGet := randomNodesToGet + nodesToGetByCPU
+	totalNodesToGet := randomNodesToGet + nodesToGetByCPU + nodesToGetByMemory
 	if len(nodeInfos) < totalNodesToGet {
 		return nil, errors.New("there are not enough candidate nodes")
 	}
@@ -30,12 +30,17 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 	allNodes := sets.New(nodeInfos...)
 
-	leastUsedNodes, err := getNodesByCPUUsage(allNodes.UnsortedList(), nodesToGetByCPU)
+	leastUsedByCPU, err := getNodesByCPUUsage(allNodes.UnsortedList(), nodesToGetByCPU)
 	if err != nil {
 		return nil, err
 	}
+	remainingNodes := allNodes.Delete(leastUsedByCPU...)
 
-	remainingNodes := allNodes.Delete(leastUsedNodes...)
+	leastUsedByMemory, err := getNodesByMemoryUsage(remainingNodes.UnsortedList(), nodesToGetByMemory)
+	if err != nil {
+		return nil, err
+	}
+	remainingNodes = remainingNodes.Delete(leastUsedByMemory...)
 
 	var randomNodes []kubeframework.NodeInfo
 	attemptNum := 0
@@ -61,7 +66,8 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 	}
 
 	var candidateNodes []kubeframework.NodeInfo
-	candidateNodes = append(candidateNodes, leastUsedNodes...)
+	candidateNodes = append(candidateNodes, leastUsedByCPU...)
+	candidateNodes = append(candidateNodes, leastUsedByMemory...)
 	candidateNodes = append(candidateNodes, randomNodes...)
 	return candidateNodes, nil
 }
@@ -79,6 +85,28 @@ func getNodesByCPUUsage(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kub
 		nodeInfos,
 		func(i, j int) bool {
 			return nodeInfos[i].GetRequested().GetMilliCPU() < nodeInfos[j].GetRequested().GetMilliCPU()
+		})
+
+	var leastUsedNodes []kubeframework.NodeInfo = make([]kubeframework.NodeInfo, nodesNum)
+	for i := range nodesNum {
+		leastUsedNodes[i] = nodeInfos[i]
+	}
+	return leastUsedNodes, nil
+}
+
+func getNodesByMemoryUsage(nodeInfos []kubeframework.NodeInfo, nodesNum int) ([]kubeframework.NodeInfo, error) {
+	if nodeInfos == nil {
+		return nil, errors.New("no available candidate nodes")
+	}
+
+	if len(nodeInfos) < nodesNum {
+		return nil, errors.New("there are not enough candidate nodes")
+	}
+
+	sort.Slice(
+		nodeInfos,
+		func(i, j int) bool {
+			return nodeInfos[i].GetRequested().GetMemory() < nodeInfos[j].GetRequested().GetMemory()
 		})
 
 	var leastUsedNodes []kubeframework.NodeInfo = make([]kubeframework.NodeInfo, nodesNum)
