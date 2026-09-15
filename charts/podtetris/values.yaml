@@ -36,7 +36,7 @@ planner:
       - memory_desc
       - random
     # randomPermutationCount is the number of random permutations generated
-    randomPermutationCount: 1
+    randomPermutationCount: 5
     parallelism: 8
     dryRun: false
   # KubeSchedulerConfiguration used by the planner's scoring framework.

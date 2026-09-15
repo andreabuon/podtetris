@@ -1,0 +1,25 @@
+NAME                                READY   STATUS    RESTARTS   AGE     IP            NODE           NOMINATED NODE   READINESS GATES
+deployment-a-67f5c8c457-28rsz       1/1     Running   0          3m10s   10.244.3.2    kind-worker5   <none>           <none>
+deployment-a-67f5c8c457-c5p2k       1/1     Running   0          87s     10.244.3.20   kind-worker5   <none>           <none>
+deployment-a-67f5c8c457-hcw2p       1/1     Running   0          3m10s   10.244.2.2    kind-worker3   <none>           <none>
+deployment-a-67f5c8c457-kvcvl       1/1     Running   0          85s     10.244.3.24   kind-worker5   <none>           <none>
+deployment-a-67f5c8c457-qt297       1/1     Running   0          85s     10.244.3.23   kind-worker5   <none>           <none>
+deployment-a-67f5c8c457-tsz2w       1/1     Running   0          86s     10.244.3.22   kind-worker5   <none>           <none>
+deployment-a-67f5c8c457-vfztf       1/1     Running   0          88s     10.244.3.12   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-2mff7       1/1     Running   0          88s     10.244.3.13   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-7j4bn       1/1     Running   0          87s     10.244.3.16   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-7wn9b       1/1     Running   0          89s     10.244.3.7    kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-9ch68       1/1     Running   0          87s     10.244.3.17   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-cmrrt       1/1     Running   0          88s     10.244.3.11   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-prxvx       1/1     Running   0          3m10s   10.244.3.5    kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-tt57j       1/1     Running   0          88s     10.244.3.8    kind-worker5   <none>           <none>
+deployment-fixed-65bffb5cd6-jl727   1/1     Running   0          3m10s   10.244.6.4    kind-worker2   <none>           <none>
+deployment-fixed-65bffb5cd6-qsblb   1/1     Running   0          3m10s   10.244.2.4    kind-worker3   <none>           <none>
+rs-a-q7md2                          1/1     Running   0          87s     10.244.3.14   kind-worker5   <none>           <none>
+rs-a-xfqbx                          1/1     Running   0          3m10s   10.244.3.3    kind-worker5   <none>           <none>
+rs-a-zv846                          1/1     Running   0          87s     10.244.3.19   kind-worker5   <none>           <none>
+rs-b-5z8sn                          1/1     Running   0          86s     10.244.3.21   kind-worker5   <none>           <none>
+rs-b-6pc44                          1/1     Running   0          88s     10.244.3.10   kind-worker5   <none>           <none>
+statefulset-0                       1/1     Running   0          3m10s   10.244.3.6    kind-worker5   <none>           <none>
+statefulset-1                       1/1     Running   0          2m56s   10.244.5.6    kind-worker    <none>           <none>
+statefulset-2                       1/1     Running   0          2m35s   10.244.2.6    kind-worker3   <none>           <none>
