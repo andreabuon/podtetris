@@ -8,19 +8,9 @@
   - PoliTO
   - Logistics Reply
 
-- The industrial problem: resource fragmentation on Kubernetes
-  - Definition: spare CPU/memory exists in the cluster, but not on any single node in a shape that a pending pod can use
-  - How it appears in Kubernetes
-    - stranded resources (e.g. free CPU on a node with no free memory, or the opposite)
-    - unschedulable pods despite unused capacity
-    - extra nodes added instead of reshaping the packing
-  - Why it accumulates
-    - default scheduler binding is final
-    - create / delete / scale of Deployments over time, with no repack
-    - heterogeneous requests vs node sizes
-    - constraints (affinity, topology, PDBs) shrink the feasible placements
-  - Cost: extra nodes, worse utilization, higher cloud bill
-  - What “solving it” would mean: fewer nodes for the same workload, without violating scheduling constraints or causing unbounded disruption
+- The industrial problem: resource fragmentation on Kubernetes (preview)
+  - spare CPU/memory exists in the cluster, but not on any single node in a shape that a pending pod can use
+
 - Goals and non-goals
 - Constraints of the setting (preview)
   - Amazon EKS: no control-plane / scheduler modifications
@@ -62,7 +52,23 @@
   - you cannot add scheduler plugins on the default scheduler
   - a second scheduler is possible but not the product path
 
-### 3. State of the art
+### 3. Resource fragmentation in Kubernetes clusters
+
+- The industrial problem: resource fragmentation on Kubernetes
+  - Definition: spare CPU/memory exists in the cluster, but not on any single node in a shape that a pending pod can use
+  - How it appears in Kubernetes
+    - stranded resources (e.g. free CPU on a node with no free memory, or the opposite)
+    - unschedulable pods despite unused capacity
+    - extra nodes added instead of reshaping the packing
+  - Why it accumulates
+    - default scheduler binding is final
+    - create / delete / scale of Deployments over time, with no repack
+    - heterogeneous requests vs node sizes
+    - constraints (affinity, topology, PDBs) shrink the feasible placements
+  - Cost: extra nodes, worse utilization, higher cloud bill
+  - What “solving it” would mean: fewer nodes for the same workload, without violating scheduling constraints or causing unbounded disruption
+
+### 4. State of the art
 
 Why they do not solve the problem.
 
@@ -88,7 +94,7 @@ Why they do not solve the problem.
 - Fondazione Kessler
 - Comparison table vs PODTetris
 
-### 4. Design of PODTetris
+### 5. Design of PODTetris
 
 Simulator / planner computes a target packing; actuator applies it; Cluster Autoscaler removes emptied nodes.
 
@@ -127,7 +133,7 @@ Simulator / planner computes a target packing; actuator applies it; Cluster Auto
   - controller down → nothing happens (no partial damage)
   - webhook down → default scheduler can still place pods according to its default rules
 
-### 5. Implementation
+### 6. Implementation
 
 - Deploy via Helm chart
 
@@ -153,7 +159,7 @@ Simulator / planner computes a target packing; actuator applies it; Cluster Auto
   - availability: multiple replicas
   - fail-open if the webhook is down
 
-### 6. Evaluation
+### 7. Evaluation
 
 - Testbeds and what each is valid for
   - Kind
@@ -163,7 +169,7 @@ Simulator / planner computes a target packing; actuator applies it; Cluster Auto
 - Results analysis
 - Threats to validity
 
-### 7. Conclusions and future work
+### 8. Conclusions and future work
 
 - Recap of the problem, constraints, and contribution
 - Limitations
