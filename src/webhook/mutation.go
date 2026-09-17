@@ -56,6 +56,7 @@ func handleMutate(w http.ResponseWriter, r *http.Request) {
 
 // buildAdmissionResponse decides what patch (if any) to return for the incoming pod.
 // Matching open PodMoves are claimed and the pod is pinned to their targetNode.
+// Dry-run admission still returns the patch but does not write ReplacementClaimed.
 func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
 	pod, err := decodePod(req)
 	if err != nil {
@@ -81,6 +82,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		return allow(req.UID)
 	}
 
+	dryRun := req.DryRun != nil && *req.DryRun
 	var chosenPodMove *podtetrisiov1.PodMove = nil
 	for _, podMove := range matchingPodMoves {
 		evicted, err := hasBeenEvicted(ctx, podMove.Spec.Pod)
@@ -91,6 +93,13 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 		if !evicted {
 			continue
+		}
+
+		if dryRun {
+			log.Printf("Dry-run CREATE for pod %s/%s; skipping ReplacementClaimed update on PodMove %s/%s",
+				pod.Namespace, podDisplayName(pod), podMove.Namespace, podMove.Name)
+			chosenPodMove = &podMove
+			break
 		}
 
 		claimed, err := claimReplacement(ctx, &podMove, pod)
