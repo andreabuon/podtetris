@@ -170,6 +170,9 @@ func (r *PodMoveReconciler) recordFailedRunningAttempt(ctx context.Context, pm *
 		)
 		msg := fmt.Sprintf("Replacement pod %s/%s did not reach Running within %s after %d attempts (last phase %q)",
 			replacement.Namespace, replacement.Name, runningPollInterval*time.Duration(attempt), attempt, replacement.Status.Phase)
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementBound, metav1.ConditionTrue, podtetrisiov1.ReasonReplacementNotRunning, msg); err != nil {
+			return ctrl.Result{}, err
+		}
 		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotRunning, msg)
 	}
 
@@ -261,6 +264,9 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 		)
 		msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts",
 			pm.Spec.TargetNode, persistPollInterval*time.Duration(attempt), attempt)
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementClaimed, metav1.ConditionTrue, podtetrisiov1.ReasonReplacementNotPersisted, msg); err != nil {
+			return ctrl.Result{}, err
+		}
 		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotPersisted, msg)
 	}
 
@@ -278,14 +284,7 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 }
 
 func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, reason, msg string) error {
-	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionFailed,
-		Status:             metav1.ConditionTrue,
-		Reason:             reason,
-		Message:            msg,
-		ObservedGeneration: pm.Generation,
-	})
-	return r.updateStatus(ctx, pm)
+	return r.setCondition(ctx, pm, podtetrisiov1.ConditionFailed, metav1.ConditionTrue, reason, msg)
 }
 
 func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
@@ -371,6 +370,9 @@ func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisio
 	if attempt >= podtetrisiov1.MaxEvictionAttempts {
 		msg := fmt.Sprintf("Eviction of %s failed after %d attempts: %v",
 			client.ObjectKeyFromObject(pod), attempt, evictionErr)
+		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicting, metav1.ConditionTrue, reason, msg); err != nil {
+			return ctrl.Result{}, err
+		}
 		return ctrl.Result{}, r.markFailed(ctx, pm, reason, msg)
 	}
 
@@ -381,14 +383,7 @@ func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisio
 
 	msg := fmt.Sprintf("Eviction failed (attempt %d/%d): %v; will retry",
 		attempt, podtetrisiov1.MaxEvictionAttempts, evictionErr)
-	meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               podtetrisiov1.ConditionSourceEvicting,
-		Status:             metav1.ConditionTrue,
-		Reason:             reason,
-		Message:            msg,
-		ObservedGeneration: pm.Generation,
-	})
-	if err := r.updateStatus(ctx, pm); err != nil {
+	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicting, metav1.ConditionTrue, reason, msg); err != nil {
 		return ctrl.Result{}, err
 	}
 
