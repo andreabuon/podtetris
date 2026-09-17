@@ -65,7 +65,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 	defer func() {
-		if syncErr := r.syncPhase(ctx, &pm); syncErr != nil && err == nil {
+		if syncErr := r.updateStatus(ctx, &pm); syncErr != nil && err == nil {
 			err = syncErr
 		}
 	}()
@@ -479,13 +479,6 @@ func (r *PodMoveReconciler) setCondition(
 
 func (r *PodMoveReconciler) updateStatus(ctx context.Context, pm *podtetrisiov1.PodMove) error {
 	pm.Status.SyncPhase()
-	return r.Status().Update(ctx, pm)
-}
-
-func (r *PodMoveReconciler) syncPhase(ctx context.Context, pm *podtetrisiov1.PodMove) error {
-	if !pm.Status.SyncPhase() {
-		return nil
-	}
 	return r.Status().Update(ctx, pm)
 }
 
