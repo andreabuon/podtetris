@@ -18,16 +18,10 @@ package controller
 
 import (
 	"context"
-	"fmt"
 	"time"
 
-	corev1 "k8s.io/api/core/v1"
-	policyv1 "k8s.io/api/policy/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -37,7 +31,7 @@ import (
 )
 
 const (
-	// evictionRetryInterval is how often to wait to try eviction again
+	// evictionRetryInterval is how often to wait to try eviction again.
 	evictionRetryInterval = 2 * time.Minute
 	// persistPollInterval is how long to wait between checks that a webhook-claimed replacement persisted on the target node.
 	persistPollInterval = 25 * time.Second
@@ -45,7 +39,7 @@ const (
 	runningPollInterval = 3 * time.Minute
 )
 
-// PodMoveReconciler reconciles a PodMove object
+// PodMoveReconciler reconciles a PodMove object.
 type PodMoveReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
@@ -80,6 +74,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		log.Info("PodMove already failed")
 		return ctrl.Result{}, nil
 	}
+
 	// Eviction runs before Claimed/Bound so a webhook that claimed first still gets
 	// SourceEvicted set (and eviction retried) until the eviction API succeeds.
 	if !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
@@ -96,390 +91,11 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 	}
 
 	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed) {
-		replacement, err := r.findReplacementPod(ctx, &pm)
-		if err != nil {
-			return ctrl.Result{}, err
-		}
-		if replacementOnTarget(replacement, &pm) {
-			return r.markReplacementVerified(ctx, &pm, replacement)
-		}
-		return r.reconcileReplacementNotFound(ctx, &pm, replacement)
+		return r.reconcileClaimedReplacement(ctx, &pm)
 	}
 
 	log.Info("Waiting for webhook to claim a replacement pod CREATE")
 	return ctrl.Result{}, nil
-}
-
-// reconcileVerifiedReplacement checks if the (verified) replacement is Running.
-// Each unsuccessful poll lasting runningPollInterval counts as a running attempt;
-// after MaxRunningAttempts the PodMove is Failed.
-func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
-
-	replacement, err := r.findReplacementPod(ctx, pm)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-	if replacement == nil {
-		log.Info("Verified replacement pod not found")
-		return ctrl.Result{}, fmt.Errorf("Verified replacement pod not found")
-	}
-	// replacement.Status.Phase == corev1.PodFailed is included because the PodMove itself has succeded even if the Replacement Pod fails for unknown reason
-	if replacement.Status.Phase == corev1.PodRunning || replacement.Status.Phase == corev1.PodSucceeded || replacement.Status.Phase == corev1.PodFailed {
-		msg := fmt.Sprintf("Replacement pod %s/%s is running", replacement.Namespace, replacement.Name)
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementSucceeded, metav1.ConditionTrue, "Running", msg); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, nil
-	}
-
-	return r.recordFailedRunningAttempt(ctx, pm, replacement)
-}
-
-// recordFailedRunningAttempt waits runningPollInterval per attempt. After MaxRunningAttempts
-// unsuccessful waits the PodMove is marked Failed; otherwise it requeues for the next poll.
-func (r *PodMoveReconciler) recordFailedRunningAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
-
-	waited, err := timeSinceVerified(pm)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-
-	nextDeadline := time.Duration(pm.Status.RunningAttempts+1) * runningPollInterval
-	if waited < nextDeadline {
-		remaining := nextDeadline - waited
-		log.Info("Replacement pod is not Running yet",
-			"phase", replacement.Status.Phase,
-			"waited", waited,
-			"runningAttempts", pm.Status.RunningAttempts,
-			"maxRunningAttempts", podtetrisiov1.MaxRunningAttempts,
-			"requeueAfter", remaining,
-		)
-		return ctrl.Result{RequeueAfter: remaining}, nil
-	}
-
-	pm.Status.RunningAttempts++
-	attempt := pm.Status.RunningAttempts
-
-	if attempt >= podtetrisiov1.MaxRunningAttempts {
-		log.Info("Replacement pod did not reach Running; running attempts exhausted",
-			"phase", replacement.Status.Phase,
-			"waited", waited,
-			"runningAttempts", attempt,
-		)
-		msg := fmt.Sprintf("Replacement pod %s/%s did not reach Running within %s after %d attempts (last phase %q)",
-			replacement.Namespace, replacement.Name, runningPollInterval*time.Duration(attempt), attempt, replacement.Status.Phase)
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementBound, metav1.ConditionTrue, podtetrisiov1.ReasonReplacementNotRunning, msg); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotRunning, msg)
-	}
-
-	log.Info("Replacement pod is not Running yet; counting running attempt",
-		"phase", replacement.Status.Phase,
-		"waited", waited,
-		"runningAttempts", attempt,
-		"maxRunningAttempts", podtetrisiov1.MaxRunningAttempts,
-		"requeueAfter", runningPollInterval,
-	)
-	if err := r.updateStatus(ctx, pm); err != nil {
-		return ctrl.Result{}, err
-	}
-	return ctrl.Result{RequeueAfter: runningPollInterval}, nil
-}
-
-func timeSinceVerified(pm *podtetrisiov1.PodMove) (time.Duration, error) {
-	verified := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionReplacementBound)
-	if verified == nil || verified.LastTransitionTime.IsZero() {
-		return 0, fmt.Errorf("PodMove Verified time not found")
-	}
-	return time.Since(verified.LastTransitionTime.Time), nil
-}
-
-func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
-	logf.FromContext(ctx).Info("Verified replacement pod", "pod", replacement.Name, "node", pm.Spec.TargetNode)
-	msg := fmt.Sprintf("Replacement pod %s/%s persisted on node %q", replacement.Namespace, replacement.Name, pm.Spec.TargetNode)
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementBound, metav1.ConditionTrue, "Verified", msg); err != nil {
-		return ctrl.Result{}, err
-	}
-	return ctrl.Result{}, nil
-}
-
-// reconcileReplacementNotFound waits persistPollInterval per attempt for the replacement to
-// land on Spec.TargetNode. Once the deadline for the current attempt has passed it records
-// a failed persist attempt. TargetNodeInjected is left True until MaxPersistAttempts fails.
-func (r *PodMoveReconciler) reconcileReplacementNotFound(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
-
-	waited, err := timeSinceInjected(pm)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-
-	nextDeadline := time.Duration(pm.Status.PersistAttempts+1) * persistPollInterval
-	if waited < nextDeadline {
-		remaining := nextDeadline - waited
-		log.Info("Waiting for replacement pod to persist on the target node",
-			"waited", waited,
-			"found", replacement != nil,
-			"persistAttempts", pm.Status.PersistAttempts,
-			"maxPersistAttempts", podtetrisiov1.MaxPersistAttempts,
-			"requeueAfter", remaining,
-		)
-		return ctrl.Result{RequeueAfter: remaining}, nil
-	}
-
-	return r.recordFailedPersistAttempt(ctx, pm, replacement, waited)
-}
-
-func timeSinceInjected(pm *podtetrisiov1.PodMove) (time.Duration, error) {
-	injected := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed)
-	if injected == nil || injected.LastTransitionTime.IsZero() {
-		return 0, fmt.Errorf("PodMove Target injection time not found")
-	}
-	return time.Since(injected.LastTransitionTime.Time), nil
-}
-
-func timeSinceEvicting(pm *podtetrisiov1.PodMove) (time.Duration, error) {
-	evicting := meta.FindStatusCondition(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicting)
-	if evicting == nil || evicting.LastTransitionTime.IsZero() {
-		return 0, fmt.Errorf("PodMove SourceEvicting time not found")
-	}
-	return time.Since(evicting.LastTransitionTime.Time), nil
-}
-
-// recordFailedPersistAttempt increments PersistAttempts. After MaxPersistAttempts the PodMove
-// is marked Failed; otherwise it requeues for the next poll.
-func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod, waited time.Duration) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
-	pm.Status.PersistAttempts++
-	attempt := pm.Status.PersistAttempts
-
-	if attempt >= podtetrisiov1.MaxPersistAttempts {
-		log.Info("Replacement pod request did not persist; persist attempts exhausted",
-			"waited", waited,
-			"found", replacement != nil,
-			"persistAttempts", attempt,
-		)
-		msg := fmt.Sprintf("Replacement pod was not found/bound to node %q within %s after %d persist attempts",
-			pm.Spec.TargetNode, persistPollInterval*time.Duration(attempt), attempt)
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionReplacementClaimed, metav1.ConditionTrue, podtetrisiov1.ReasonReplacementNotPersisted, msg); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotPersisted, msg)
-	}
-
-	log.Info("Replacement pod request did not persist; counting persist attempt",
-		"waited", waited,
-		"found", replacement != nil,
-		"persistAttempts", attempt,
-		"maxPersistAttempts", podtetrisiov1.MaxPersistAttempts,
-		"requeueAfter", persistPollInterval,
-	)
-	if err := r.updateStatus(ctx, pm); err != nil {
-		return ctrl.Result{}, err
-	}
-	return ctrl.Result{RequeueAfter: persistPollInterval}, nil
-}
-
-func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, reason, msg string) error {
-	return r.setCondition(ctx, pm, podtetrisiov1.ConditionFailed, metav1.ConditionTrue, reason, msg)
-}
-
-func (r *PodMoveReconciler) evictSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
-	if !meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicting) {
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicting, metav1.ConditionTrue, "Evicting", "Evicting source pod"); err != nil {
-			return ctrl.Result{}, err
-		}
-	}
-
-	pod, err := r.getSourcePod(ctx, pm)
-	if err != nil {
-		if apierrors.IsNotFound(err) {
-			return r.sourcePodGoneDuringEviction(ctx, pm)
-		}
-		return ctrl.Result{}, err
-	}
-
-	eviction := &policyv1.Eviction{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      pod.Name,
-			Namespace: pod.Namespace,
-		},
-	}
-	err = r.SubResource("eviction").Create(ctx, pod, eviction)
-	if err != nil {
-		switch {
-		case apierrors.IsNotFound(err):
-			return r.sourcePodGoneDuringEviction(ctx, pm)
-		case apierrors.IsForbidden(err), apierrors.IsInvalid(err), apierrors.IsBadRequest(err):
-			return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonEvictionFailed, fmt.Sprintf("Eviction of %s permanently denied: %v", client.ObjectKeyFromObject(pod), err))
-		case apierrors.IsTooManyRequests(err):
-			return r.requeueEviction(ctx, pm, pod, podtetrisiov1.ReasonBlockedByPDB, err)
-		default:
-			return r.requeueEviction(ctx, pm, pod, podtetrisiov1.ReasonEvictionFailed, err)
-		}
-	}
-
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicted, metav1.ConditionTrue, "Evicted", "Pod eviction has been requested successfully"); err != nil {
-		return ctrl.Result{}, err
-	}
-	return ctrl.Result{}, nil
-}
-
-// sourcePodGoneDuringEviction handles a missing source pod while eviction is still outstanding.
-// If the webhook already claimed a replacement, treat the missing source as eviction success
-// so Claimed+not-Evicted races do not Fail the PodMove.
-func (r *PodMoveReconciler) sourcePodGoneDuringEviction(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
-	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionReplacementClaimed) {
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicted, metav1.ConditionTrue, "Evicted", "Source pod already gone after replacement was claimed"); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, nil
-	}
-	return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonPodNotFound, "Source pod not found during eviction")
-}
-
-// requeueEviction records a failed eviction attempt and requeues.
-// After MaxEvictionAttempts the PodMove is marked Failed.
-func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod, reason string, evictionErr error) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
-
-	waited, err := timeSinceEvicting(pm)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-
-	nextDeadline := time.Duration(pm.Status.EvictionAttempts+1) * evictionRetryInterval
-	if waited < nextDeadline {
-		remaining := nextDeadline - waited
-		log.Info("Eviction failed; waiting before counting attempt",
-			"pod", client.ObjectKeyFromObject(pod),
-			"reason", reason,
-			"waited", waited,
-			"evictionAttempts", pm.Status.EvictionAttempts,
-			"maxEvictionAttempts", podtetrisiov1.MaxEvictionAttempts,
-			"requeueAfter", remaining,
-		)
-		return ctrl.Result{RequeueAfter: remaining}, nil
-	}
-
-	pm.Status.EvictionAttempts++
-	attempt := pm.Status.EvictionAttempts
-	if attempt >= podtetrisiov1.MaxEvictionAttempts {
-		msg := fmt.Sprintf("Eviction of %s failed after %d attempts: %v",
-			client.ObjectKeyFromObject(pod), attempt, evictionErr)
-		if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicting, metav1.ConditionTrue, reason, msg); err != nil {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, r.markFailed(ctx, pm, reason, msg)
-	}
-
-	delay := evictionRetryInterval
-	if seconds, ok := apierrors.SuggestsClientDelay(evictionErr); ok && seconds > 0 {
-		delay = time.Duration(seconds) * time.Second
-	}
-
-	msg := fmt.Sprintf("Eviction failed (attempt %d/%d): %v; will retry",
-		attempt, podtetrisiov1.MaxEvictionAttempts, evictionErr)
-	if err := r.setCondition(ctx, pm, podtetrisiov1.ConditionSourceEvicting, metav1.ConditionTrue, reason, msg); err != nil {
-		return ctrl.Result{}, err
-	}
-
-	log.Info("Eviction failed; will retry",
-		"pod", client.ObjectKeyFromObject(pod),
-		"reason", reason,
-		"evictionAttempts", attempt,
-		"maxEvictionAttempts", podtetrisiov1.MaxEvictionAttempts,
-		"requeueAfter", delay,
-	)
-	return ctrl.Result{RequeueAfter: delay}, nil
-}
-
-func (r *PodMoveReconciler) getSourcePod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
-	ref := pm.Spec.Pod
-	ns := ref.Namespace
-	if ns == "" {
-		ns = pm.Namespace
-	}
-
-	var pod corev1.Pod
-	if err := r.Get(ctx, types.NamespacedName{Namespace: ns, Name: ref.Name}, &pod); err != nil {
-		return nil, err
-	}
-	if ref.UID != "" && pod.UID != ref.UID {
-		return nil, fmt.Errorf("pod UID mismatch: got %s, want %s", pod.UID, ref.UID)
-	}
-	return &pod, nil
-}
-
-func (r *PodMoveReconciler) findReplacementPod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
-	opts := []client.ListOption{
-		client.MatchingLabels{podtetrisiov1.PodMoveLabelKey: pm.Name},
-	}
-	if ns := pm.Spec.Pod.Namespace; ns != "" {
-		opts = append(opts, client.InNamespace(ns))
-	}
-
-	var list corev1.PodList
-	if err := r.List(ctx, &list, opts...); err != nil {
-		return nil, err
-	}
-
-	var pending *corev1.Pod
-	for i := range list.Items {
-		pod := &list.Items[i]
-		if isOriginalPod(pm, pod) || !pod.DeletionTimestamp.IsZero() {
-			continue
-		}
-		if replacementOnTarget(pod, pm) {
-			return pod, nil
-		}
-		if pending == nil {
-			pending = pod
-		}
-	}
-	return pending, nil
-}
-
-func replacementOnTarget(pod *corev1.Pod, pm *podtetrisiov1.PodMove) bool {
-	if pod == nil || pm == nil {
-		return false
-	}
-	if !pod.DeletionTimestamp.IsZero() || isOriginalPod(pm, pod) {
-		return false
-	}
-	return pod.Spec.NodeName == pm.Spec.TargetNode
-}
-
-func isOriginalPod(pm *podtetrisiov1.PodMove, pod *corev1.Pod) bool {
-	return pm.Spec.Pod.UID != "" && pod.UID == pm.Spec.Pod.UID
-}
-
-func (r *PodMoveReconciler) setCondition(
-	ctx context.Context,
-	pm *podtetrisiov1.PodMove,
-	condType string,
-	status metav1.ConditionStatus,
-	reason, message string,
-) error {
-	changed := meta.SetStatusCondition(&pm.Status.Conditions, metav1.Condition{
-		Type:               condType,
-		Status:             status,
-		Reason:             reason,
-		Message:            message,
-		ObservedGeneration: pm.Generation,
-	})
-	if !changed {
-		return nil
-	}
-	return r.updateStatus(ctx, pm)
-}
-
-func (r *PodMoveReconciler) updateStatus(ctx context.Context, pm *podtetrisiov1.PodMove) error {
-	pm.Status.SyncPhase()
-	return r.Status().Update(ctx, pm)
 }
 
 // SetupWithManager sets up the controller with the Manager.
