@@ -57,10 +57,13 @@ func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.Po
 	return r.setCondition(ctx, pm, podtetrisiov1.ConditionFailed, metav1.ConditionTrue, reason, msg)
 }
 
-func timeSinceCondition(pm *podtetrisiov1.PodMove, condType, missingMsg string) (time.Duration, error) {
+func timeSinceCondition(pm *podtetrisiov1.PodMove, condType string) (time.Duration, error) {
 	cond := meta.FindStatusCondition(pm.Status.Conditions, condType)
-	if cond == nil || cond.LastTransitionTime.IsZero() {
-		return 0, fmt.Errorf("%s", missingMsg)
+	if cond == nil {
+		return 0, fmt.Errorf("PodMove %s condition not found", condType)
+	}
+	if cond.LastTransitionTime.IsZero() {
+		return 0, fmt.Errorf("PodMove %s transition time is zero", condType)
 	}
 	return time.Since(cond.LastTransitionTime.Time), nil
 }

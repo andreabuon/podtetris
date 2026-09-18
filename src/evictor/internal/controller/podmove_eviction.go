@@ -93,7 +93,7 @@ func (r *PodMoveReconciler) sourcePodGoneDuringEviction(ctx context.Context, pm 
 func (r *PodMoveReconciler) requeueEviction(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev1.Pod, reason string, evictionErr error) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
-	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionSourceEvicting, "PodMove SourceEvicting time not found")
+	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionSourceEvicting)
 	if err != nil {
 		return ctrl.Result{}, err
 	}

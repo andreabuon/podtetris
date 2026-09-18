@@ -72,7 +72,7 @@ func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm
 func (r *PodMoveReconciler) recordFailedRunningAttempt(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
-	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionReplacementBound, "PodMove Verified time not found")
+	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionReplacementBound)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
@@ -133,7 +133,7 @@ func (r *PodMoveReconciler) markReplacementVerified(ctx context.Context, pm *pod
 func (r *PodMoveReconciler) reconcileReplacementNotFound(ctx context.Context, pm *podtetrisiov1.PodMove, replacement *corev1.Pod) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
-	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionReplacementClaimed, "PodMove Target injection time not found")
+	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionReplacementClaimed)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
