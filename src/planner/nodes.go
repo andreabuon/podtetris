@@ -10,6 +10,20 @@ import (
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
+func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([][]kubeframework.NodeInfo, error) {
+	candidateSets := make([][]kubeframework.NodeInfo, 0, setsToCreate)
+
+	for range setsToCreate {
+		candidateNodes, err := selectCandidateNodes(nodeInfos, randomNodesToGet, nodesToGetByCPU, nodesToGetByMemory, rules)
+		if err != nil {
+			return nil, err
+		}
+		candidateSets = append(candidateSets, candidateNodes)
+	}
+
+	return candidateSets, nil
+}
+
 func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
 		return nil, errors.New("no available candidate nodes")

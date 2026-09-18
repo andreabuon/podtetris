@@ -22,7 +22,10 @@ planner:
       cpu: 250m
       memory: 128Mi
   config:
-    podtetrisNamespace: "{{ .Release.Namespace }}"
+    podtetrisNamespace:
+      "{{ .Release.Namespace }}"
+      # candidateNodesSetsToCreate is how many distinct candidate node sets to evaluate
+    candidateNodesSetsToCreate: 3
     candidateNodesNumbers:
       random: 3
       byCPU: 2
@@ -185,5 +188,5 @@ certificate:
   issuerGroup: "certmanager.step.sm"
   issuerKind: "StepClusterIssuer"
   issuerName: "step-issuer"
-  duration: 2160h   # 90 days
+  duration: 2160h # 90 days
   renewBefore: 360h # 15 days

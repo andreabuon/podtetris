@@ -142,46 +142,63 @@ func main() {
 		log.Fatalf("Error listing node infos: %v", err)
 	}
 
-	candidateNodes, err := selectCandidateNodes(nodeInfos, Config.CandidateNodesNumbers.Random, Config.CandidateNodesNumbers.ByCPU, Config.CandidateNodesNumbers.ByMemory, rules)
+	candidateNodesSets, err := createCandidateNodesSets(
+		nodeInfos,
+		Config.CandidateNodesSetsToCreate,
+		Config.CandidateNodesNumbers.Random,
+		Config.CandidateNodesNumbers.ByCPU,
+		Config.CandidateNodesNumbers.ByMemory,
+		rules,
+	)
 	if err != nil {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
-	initialEmptyNodes := countEmptyNodes(candidateNodes, rules)
-	initialPodAllocations := createPodAllocationsMap(candidateNodes)
-
-	evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
-	permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies, Config.RandomPermutationCount)
-
-	initialState := &Baseline{
-		CandidateNodes: candidateNodes,
-		Allocations:    initialPodAllocations,
-		EmptyNodeCount: initialEmptyNodes,
-	}
-
-	schedulingSimulator := &SchedulingSimulator{
-		framework: realFramework,
-		snapshot:  snapshot,
-		baseline:  initialState,
-		rules:     rules,
-	}
-
 	var schedulingResults []*SimulationResult
-	for permutationIndex, permutation := range permutations {
-		log.Printf("Simulating permutation #%d", permutationIndex)
-		podPermutation := &PodOrdering{
-			Index: permutationIndex,
-			Pods:  permutation,
-		}
-		schedulingResult, err := schedulingSimulator.Run(ctx, podPermutation)
-		if err != nil {
-			log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
-			continue
+
+	for setIndex, candidateNodes := range candidateNodesSets {
+		log.Printf("Simulating candidate node set #%d (%d nodes)", setIndex, len(candidateNodes))
+
+		// Each node set must start from a clean baseline; virtuallyEvictPods mutates the snapshot.
+		snapshot.Fork()
+
+		initialEmptyNodes := countEmptyNodes(candidateNodes, rules)
+		initialPodAllocations := createPodAllocationsMap(candidateNodes)
+
+		evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
+		permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies, Config.RandomPermutationCount)
+
+		initialState := &Baseline{
+			CandidateNodes: candidateNodes,
+			Allocations:    initialPodAllocations,
+			EmptyNodeCount: initialEmptyNodes,
 		}
 
-		if schedulingResult.FreedNodes > 0 {
-			schedulingResults = append(schedulingResults, schedulingResult)
+		schedulingSimulator := &SchedulingSimulator{
+			framework: realFramework,
+			snapshot:  snapshot,
+			baseline:  initialState,
+			rules:     rules,
 		}
+
+		for permutationIndex, permutation := range permutations {
+			log.Printf("Simulating permutation #%d", permutationIndex)
+			podPermutation := &PodOrdering{
+				Index: permutationIndex,
+				Pods:  permutation,
+			}
+			schedulingResult, err := schedulingSimulator.Run(ctx, podPermutation)
+			if err != nil {
+				log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
+				continue
+			}
+
+			if schedulingResult.FreedNodes > 0 {
+				schedulingResults = append(schedulingResults, schedulingResult)
+			}
+		}
+
+		snapshot.Revert()
 	}
 
 	log.Println("Simulations results:")

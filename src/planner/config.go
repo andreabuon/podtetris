@@ -21,6 +21,7 @@ type CandidateNodesNumbersConfig struct {
 type AppConfig struct {
 	PodtetrisNamespace                string                      `mapstructure:"podtetrisNamespace"`
 	CandidateNodesNumbers             CandidateNodesNumbersConfig `mapstructure:"candidateNodesNumbers"`
+	CandidateNodesSetsToCreate        int                         `mapstructure:"candidateNodesSetsToCreate"`
 	EmptyNodesScoreWeight             int                         `mapstructure:"emptyNodesScoreWeight"`
 	CostScoreWeight                   int                         `mapstructure:"costScoreWeight"`
 	AutoConsolidationScoreThreshold   int                         `mapstructure:"autoConsolidationScoreThreshold"`
@@ -36,6 +37,7 @@ func setDefaultConfigValues() {
 	viper.SetDefault("candidateNodesNumbers.random", 3)
 	viper.SetDefault("candidateNodesNumbers.byCPU", 2)
 	viper.SetDefault("candidateNodesNumbers.byMemory", 2)
+	viper.SetDefault("candidateNodesSetsToCreate", 3)
 	viper.SetDefault("emptyNodesScoreWeight", 400)
 	viper.SetDefault("costScoreWeight", 1)
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)

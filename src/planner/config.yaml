@@ -1,3 +1,5 @@
+# candidateNodesSetsToCreate is how many distinct candidate node sets to evaluate
+candidateNodesSetsToCreate: 3
 candidateNodesNumbers:
   random: 3
   byCPU: 2
