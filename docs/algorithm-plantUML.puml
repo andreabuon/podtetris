@@ -13,13 +13,20 @@ partition "Snapshot acquisition & Isolation" {
 partition "Node selection" {
     if (Is there at least a Node with no user-fixed Pods?) then (Yes)
         :Create working node sets;
+        note right
+            Node sets differ by selection strategy, for example:
+            - least used by CPU
+            - least used by memory
+            - random samples
+            Each set must include at least one Node with no user-fixed Pods.
+        end note
         ' Outer loop to collect multiple node sets
         repeat
             ' Inner loop to ensure the selected subset is valid
             repeat
                 :Select some Nodes in the sandbox;
             repeat while (Does the subset include at least one Node with no user-fixed Pods?) is (No)
-            :Add node set to working set;
+            :Add node set to working sets;
         repeat while (Are there more node sets to generate?) is (Yes)
 
     else (No)
@@ -27,10 +34,18 @@ partition "Node selection" {
     endif
 }
 
+:Initialize an empty simulation results list;
+
 repeat
-    :Select nodes set;
+    :Select next node set from working sets;
+    :Restore the simulation sandbox from the original snapshot;
+    note right
+        Each node set must start from a clean baseline.
+        Without this restore, later sets would run on a dirty sandbox.
+    end note
+
     partition "Permutations generation" {
-        :Save the list of allocated Pods in the selected nodes;
+        :Record baseline allocations and empty-node count for the selected nodes;
         :Virtually evict movable Pods from the selected nodes;
         note right
             The following Pods types are not evicted:
@@ -61,22 +76,22 @@ repeat
                 note right: Leveraging the Kubernetes scheduler with the MostAllocated scoring strategy
             endwhile (No)
 
-            if (Does the new cluster state contain any empty Nodes?) then (Yes)
+            if (Did this permutation free at least one Node vs the baseline?) then (Yes)
                 note right
                     A Node is considered Empty if it contains no user Pods.
                     The following are excluded from this check:
                     - DaemonSets
                     - Jobs / CronJobs
                     - kube-system Pods
-                endnote
+                    Freed nodes = empty(after) - empty(baseline).
+                end note
                 :Calculate the related metrics of the resulting new state;
                 note left
-                    The success metric is a combination of:
-                    - the number of Nodes reduced by the re-allocation
-                    - the total number and cost of the pods relocation
-                    The cost is calculated by adding the cost/weight of each relocated pod.
+                    The score is:
+                    (emptyNodesWeight * freedNodes) - (costWeight * relocationCost)
+                    Relocation cost is the sum of the cost/weight of each relocated pod.
                 end note
-                :Save the permutation result metrics;
+                :Add the (node set, permutation) result to the simulation results list;
             else (No)
                 :Skip this permutation;
             endif
@@ -86,8 +101,8 @@ repeat
 
 repeat while (Is there another Node Set to evaluate?) is (Yes)
 
-if (Did any result reduce the total Nodes count?) then (Yes)
-    :Select the best simulated new cluster state;
+if (Is the simulation results list non-empty?) then (Yes)
+    :Select the highest-scoring result across all (node set, permutation) pairs;
 else (No)
     :No safe infrastructure cost reduction found;
     stop
@@ -99,8 +114,8 @@ partition "Consolidation Execution" {
     while (Are there remaining Pods to migrate in the sequence?) is (Yes)
         :"Move" the Pod;
         note right
-            1. Delete the legacy Pod
-            2. Put the replacement Pod on the target Node
+            1. Evict the legacy Pod
+            2. Replacement Pod is created and pinned to the target Node (webhook sets nodeName)
             3. Await "Running" status
         end note
     endwhile
