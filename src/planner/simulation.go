@@ -29,11 +29,13 @@ type PodOrdering struct {
 }
 
 type SimulationResult struct {
-	Permutation *PodOrdering
-	FreedNodes  int
-	Cost        int
-	Score       int
-	Moves       []PodMove
+	SetIndex       int
+	CandidateNodes []kubeframework.NodeInfo
+	Permutation    *PodOrdering
+	FreedNodes     int
+	Cost           int
+	Score          int
+	Moves          []PodMove
 }
 
 type Baseline struct {

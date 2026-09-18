@@ -157,7 +157,7 @@ func main() {
 	var schedulingResults []*SimulationResult
 
 	for setIndex, candidateNodes := range candidateNodesSets {
-		log.Printf("Simulating candidate node set #%d (%d nodes)", setIndex, len(candidateNodes))
+		log.Printf("Simulating candidate node set #%d: %v", setIndex, nodeInfoNames(candidateNodes))
 
 		// Each node set must start from a clean baseline; virtuallyEvictPods mutates the snapshot.
 		snapshot.Fork()
@@ -193,6 +193,8 @@ func main() {
 				continue
 			}
 
+			schedulingResult.SetIndex = setIndex
+			schedulingResult.CandidateNodes = candidateNodes
 			if schedulingResult.FreedNodes > 0 {
 				schedulingResults = append(schedulingResults, schedulingResult)
 			}
@@ -203,7 +205,7 @@ func main() {
 
 	log.Println("Simulations results:")
 	for _, result := range schedulingResults {
-		log.Printf("Strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.Permutation.Index, result.FreedNodes, len(result.Moves), result.Cost, result.Score)
+		log.Printf("Set #%d %v strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.SetIndex, nodeInfoNames(result.CandidateNodes), result.Permutation.Index, result.FreedNodes, len(result.Moves), result.Cost, result.Score)
 	}
 
 	if len(schedulingResults) < 1 {
@@ -215,7 +217,7 @@ func main() {
 		return schedulingResults[i].Score > schedulingResults[j].Score
 	})
 	bestPermutationResult := schedulingResults[0]
-	log.Printf("The best consolidation plan is #%d", bestPermutationResult.Permutation.Index)
+	log.Printf("The best consolidation plan is set #%d %v strategy #%d", bestPermutationResult.SetIndex, nodeInfoNames(bestPermutationResult.CandidateNodes), bestPermutationResult.Permutation.Index)
 
 	if Config.DryRun {
 		log.Printf("Score threshold reached, skipping apply because dry run is enabled")
@@ -248,4 +250,12 @@ func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[types.
 		}
 	}
 	return podAllocations
+}
+
+func nodeInfoNames(nodes []kubeframework.NodeInfo) []string {
+	names := make([]string, len(nodes))
+	for i, node := range nodes {
+		names[i] = node.Node().Name
+	}
+	return names
 }
