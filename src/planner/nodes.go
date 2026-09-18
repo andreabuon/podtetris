@@ -10,15 +10,15 @@ import (
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
-func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([][]kubeframework.NodeInfo, error) {
-	candidateSets := make([][]kubeframework.NodeInfo, 0, setsToCreate)
+func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([]sets.Set[kubeframework.NodeInfo], error) {
+	candidateSets := make([]sets.Set[kubeframework.NodeInfo], 0, setsToCreate)
 
-	for range setsToCreate {
-		candidateNodes, err := selectCandidateNodes(nodeInfos, randomNodesToGet, nodesToGetByCPU, nodesToGetByMemory, rules)
+	for len(candidateSets) < setsToCreate {
+		nodes, err := selectCandidateNodes(nodeInfos, randomNodesToGet, nodesToGetByCPU, nodesToGetByMemory, rules)
 		if err != nil {
 			return nil, err
 		}
-		candidateSets = append(candidateSets, candidateNodes)
+		candidateSets = append(candidateSets, sets.New(nodes...))
 	}
 
 	return candidateSets, nil

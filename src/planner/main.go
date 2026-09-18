@@ -156,7 +156,8 @@ func main() {
 
 	var schedulingResults []*SimulationResult
 
-	for setIndex, candidateNodes := range candidateNodesSets {
+	for setIndex, candidateSet := range candidateNodesSets {
+		candidateNodes := candidateSet.UnsortedList()
 		log.Printf("Simulating candidate node set #%d: %v", setIndex, nodeInfoNames(candidateNodes))
 
 		// Each node set must start from a clean baseline; virtuallyEvictPods mutates the snapshot.
