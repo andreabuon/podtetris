@@ -198,7 +198,7 @@ func schedulePod(
 			return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
 		}
 
-		return nil, fmt.Errorf("RunPreFilterPlugins failed: %v", preFilterStatus.AsError())
+		return nil, fmt.Errorf("runPreFilterPlugins failed: %v", preFilterStatus.AsError())
 	}
 
 	var preFilteredNodesNames []string
@@ -236,12 +236,12 @@ func schedulePod(
 	preScoreStatus := framework.RunPreScorePlugins(ctx, state, pod, feasibleNodes)
 
 	if !preScoreStatus.IsSuccess() {
-		return nil, fmt.Errorf("PreScorePlugins failed: %v", preScoreStatus.AsError())
+		return nil, fmt.Errorf("preScorePlugins failed: %v", preScoreStatus.AsError())
 	}
 
 	scores, status := framework.RunScorePlugins(ctx, state, pod, feasibleNodes)
 	if !status.IsSuccess() {
-		return nil, fmt.Errorf("ScorePlugins failed: %v", status.AsError())
+		return nil, fmt.Errorf("scorePlugins failed: %v", status.AsError())
 	}
 
 	bestNode, err := pickHighestScoreNode(feasibleNodes, scores)

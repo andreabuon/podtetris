@@ -7,6 +7,7 @@ import (
 	"slices"
 
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
@@ -84,7 +85,16 @@ func loadRulesConfig() (*RuleMatcher, error) {
 	if err := v.Unmarshal(&file); err != nil {
 		return nil, fmt.Errorf("unmarshal rules config: %w", err)
 	}
-	return newRuleMatcher(file)
+	matcher, err := newRuleMatcher(file)
+	if err != nil {
+		return nil, err
+	}
+	log.Info("Loaded planner rules",
+		zap.Int("fixedPodsRules", len(file.FixedPodsRules)),
+		zap.Int("moveCostRules", len(file.MoveCostRules)),
+		zap.Int("defaultMoveCost", file.DefaultMoveCost),
+	)
+	return matcher, nil
 }
 
 func newRuleMatcher(file RulesFile) (*RuleMatcher, error) {
@@ -140,7 +150,7 @@ func (selector *PodsSelector) Compile() (CompiledPodsSelector, error) {
 	if selector.PodNameRegex != "" {
 		re, err := regexp.Compile(selector.PodNameRegex)
 		if err != nil {
-			return CompiledPodsSelector{}, fmt.Errorf("PodNameRegex: %w", err)
+			return CompiledPodsSelector{}, fmt.Errorf("podnameRegex compilation failed: %w", err)
 		}
 		compiledSelector.podNameRegex = re
 	}
@@ -148,7 +158,7 @@ func (selector *PodsSelector) Compile() (CompiledPodsSelector, error) {
 	if selector.NamespaceRegex != "" {
 		re, err := regexp.Compile(selector.NamespaceRegex)
 		if err != nil {
-			return CompiledPodsSelector{}, fmt.Errorf("NamespaceRegex: %w", err)
+			return CompiledPodsSelector{}, fmt.Errorf("namespaceRegex compilation failed: %w", err)
 		}
 		compiledSelector.namespaceRegex = re
 	}
@@ -156,7 +166,7 @@ func (selector *PodsSelector) Compile() (CompiledPodsSelector, error) {
 	if selector.LabelSelector != nil {
 		sel, err := metav1.LabelSelectorAsSelector(selector.LabelSelector)
 		if err != nil {
-			return CompiledPodsSelector{}, fmt.Errorf("labelSelector: %w", err)
+			return CompiledPodsSelector{}, fmt.Errorf("labelSelector conversion failed: %w", err)
 		}
 		compiledSelector.labelSelector = sel
 	}

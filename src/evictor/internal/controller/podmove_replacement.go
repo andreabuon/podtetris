@@ -53,7 +53,7 @@ func (r *PodMoveReconciler) reconcileVerifiedReplacement(ctx context.Context, pm
 	}
 	if replacement == nil {
 		log.Info("Verified replacement pod not found")
-		return ctrl.Result{}, fmt.Errorf("Verified replacement pod not found")
+		return ctrl.Result{}, fmt.Errorf("verified replacement pod not found")
 	}
 	// PodFailed is treated as success: the PodMove completed even if the replacement later fails for an unrelated reason.
 	if replacement.Status.Phase == corev1.PodRunning || replacement.Status.Phase == corev1.PodSucceeded || replacement.Status.Phase == corev1.PodFailed {

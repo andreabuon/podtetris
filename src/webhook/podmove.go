@@ -33,7 +33,7 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisio
 			continue
 		}
 		if pm.Spec.TargetNode == "" {
-			return nil, fmt.Errorf("PodMove %s/%s has empty spec.targetNode", pm.Namespace, pm.Name)
+			return nil, fmt.Errorf("podmove %s/%s has empty spec.targetNode", pm.Namespace, pm.Name)
 		}
 		out = append(out, *pm)
 	}

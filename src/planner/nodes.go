@@ -66,7 +66,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 
 		allContainFixed, err := allContainFixedPods(randomNodes, rules)
 		if err != nil {
-			return nil, fmt.Errorf("Error while checking candidate nodes: %v", err)
+			return nil, fmt.Errorf("error while checking candidate nodes: %v", err)
 		}
 
 		if !allContainFixed {
