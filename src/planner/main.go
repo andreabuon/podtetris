@@ -154,11 +154,14 @@ func main() {
 		log.Fatalf("Error during the candidate nodes selection: %v", err)
 	}
 
+	for setIndex, candidateSet := range candidateNodesSets {
+		log.Printf("Candidate set #%d: %v", setIndex, nodeInfoNames(candidateSet.UnsortedList()))
+	}
+
 	var schedulingResults []*SimulationResult
 
 	for setIndex, candidateSet := range candidateNodesSets {
 		candidateNodes := candidateSet.UnsortedList()
-		log.Printf("Simulating candidate node set #%d: %v", setIndex, nodeInfoNames(candidateNodes))
 
 		// Each node set must start from a clean baseline; virtuallyEvictPods mutates the snapshot.
 		snapshot.Fork()
@@ -183,18 +186,19 @@ func main() {
 		}
 
 		for permutationIndex, permutation := range permutations {
-			log.Printf("Simulating permutation #%d", permutationIndex)
+			id := SimulationID{SetIndex: setIndex, PermIndex: permutationIndex}
+			log.Printf("Simulating %s", id)
 			podPermutation := &PodOrdering{
 				Index: permutationIndex,
 				Pods:  permutation,
 			}
 			schedulingResult, err := schedulingSimulator.Run(ctx, podPermutation)
 			if err != nil {
-				log.Printf("Error during scheduling simulation #%d: %v", permutationIndex, err)
+				log.Printf("Error during simulation %s: %v", id, err)
 				continue
 			}
 
-			schedulingResult.SetIndex = setIndex
+			schedulingResult.SimulationID = id
 			schedulingResult.CandidateNodes = candidateNodes
 			if schedulingResult.FreedNodes > 0 {
 				schedulingResults = append(schedulingResults, schedulingResult)
@@ -206,7 +210,7 @@ func main() {
 
 	log.Println("Simulations results:")
 	for _, result := range schedulingResults {
-		log.Printf("Set #%d %v strategy #%d freed %d nodes with %d moves, total cost of %d, permutation score is %d", result.SetIndex, nodeInfoNames(result.CandidateNodes), result.Permutation.Index, result.FreedNodes, len(result.Moves), result.Cost, result.Score)
+		log.Printf("%s freed %d nodes with %d moves, total cost of %d, score %d", result, result.FreedNodes, len(result.Moves), result.Cost, result.Score)
 	}
 
 	if len(schedulingResults) < 1 {
@@ -218,7 +222,7 @@ func main() {
 		return schedulingResults[i].Score > schedulingResults[j].Score
 	})
 	bestPermutationResult := schedulingResults[0]
-	log.Printf("The best consolidation plan is set #%d %v strategy #%d", bestPermutationResult.SetIndex, nodeInfoNames(bestPermutationResult.CandidateNodes), bestPermutationResult.Permutation.Index)
+	log.Printf("Best consolidation plan: %s", bestPermutationResult)
 
 	if Config.DryRun {
 		log.Printf("Score threshold reached, skipping apply because dry run is enabled")

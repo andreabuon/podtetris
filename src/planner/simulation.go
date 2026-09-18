@@ -28,8 +28,17 @@ type PodOrdering struct {
 	Pods  []*apiv1.Pod
 }
 
+type SimulationID struct {
+	SetIndex  int
+	PermIndex int
+}
+
+func (id SimulationID) String() string {
+	return fmt.Sprintf("set=%d/perm=%d", id.SetIndex, id.PermIndex)
+}
+
 type SimulationResult struct {
-	SetIndex       int
+	SimulationID
 	CandidateNodes []kubeframework.NodeInfo
 	Permutation    *PodOrdering
 	FreedNodes     int
