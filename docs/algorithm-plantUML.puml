@@ -12,76 +12,86 @@ partition "Snapshot acquisition & Isolation" {
 
 partition "Node selection" {
     if (Is there at least a Node with no user-fixed Pods?) then (Yes)
-        repeat :Select a subset of Nodes in the sandbox;
-        note right: e.g., the N=5 least-allocated Nodes
-        repeat while (Does the subset include at least one Node with no user-fixed Pods?) is (No)
+        :Create working node sets;
+        ' Outer loop to collect multiple node sets
+        repeat
+            ' Inner loop to ensure the selected subset is valid
+            repeat
+                :Select some Nodes in the sandbox;
+            repeat while (Does the subset include at least one Node with no user-fixed Pods?) is (No)
+            :Add node set to working set;
+        repeat while (Are there more node sets to generate?) is (Yes)
+
     else (No)
         stop
     endif
 }
 
-partition "Permutations generation" {
-    :Save the list of allocated Pods in the selected nodes;
-    :Virtually evict movable Pods from the selected nodes;
-    note right
-        The following Pods types are not evicted:
-        - Pods fixed to the Node by the user
-        - kube-system Pods
-        - DaemonSets
-        - Jobs
-        - Terminating Pods
-        - Pods with local storage.
-    end note
+repeat
+    :Select nodes set;
+    partition "Permutations generation" {
+        :Save the list of allocated Pods in the selected nodes;
+        :Virtually evict movable Pods from the selected nodes;
+        note right
+            The following Pods types are not evicted:
+            - Pods fixed to the Node by the user
+            - kube-system Pods
+            - DaemonSets
+            - Jobs
+            - Terminating Pods
+            - Pods with local storage.
+        end note
 
-    :Generate multiple Pod permutations;
-    note right
-        Different strategies are possible: decreasing Request size,
-        Priority-based ordering, random, etc.
-    end note
-    note right
-        Pods with PodAffinity might need to be next to
-        each other in the scheduling ordering.
-    end note
-}
+        :Generate multiple Pod permutations;
+        note right
+            Different strategies are possible: decreasing Request size,
+            Priority-based ordering, random, etc.
+        end note
+        note right
+            Pods with PodAffinity might need to be next to
+            each other in the scheduling ordering.
+        end note
+    }
 
-partition "Bin-Packing simulation" {
-    while (Are there remaining Pods permutations to evaluate?) is (Yes)
-        :Initialize a temporary sandbox;
-        while (Are there remaining Pods in the current permutation?) is (Yes)
-            :Simulate the Pod scheduling onto the WHOLE cluster;
-            note right: Leveraging the Kubernetes scheduler with the MostAllocated scoring strategy
+    partition "Bin-Packing simulation" {
+        while (Are there remaining Pods permutations to evaluate?) is (Yes)
+            :Initialize a temporary sandbox;
+            while (Are there remaining Pods in the current permutation?) is (Yes)
+                :Simulate the Pod scheduling onto the WHOLE cluster;
+                note right: Leveraging the Kubernetes scheduler with the MostAllocated scoring strategy
+            endwhile (No)
+
+            if (Does the new cluster state contain any empty Nodes?) then (Yes)
+                note right
+                    A Node is considered Empty if it contains no user Pods.
+                    The following are excluded from this check:
+                    - DaemonSets
+                    - Jobs / CronJobs
+                    - kube-system Pods
+                endnote
+                :Calculate the related metrics of the resulting new state;
+                note left
+                    The success metric is a combination of:
+                    - the number of Nodes reduced by the re-allocation
+                    - the total number and cost of the pods relocation
+                    The cost is calculated by adding the cost/weight of each relocated pod.
+                end note
+                :Save the permutation result metrics;
+            else (No)
+                :Skip this permutation;
+            endif
+
         endwhile (No)
+    }
 
-        if (Does the new cluster state contain any empty Nodes?) then (Yes)
-            note right
-                A Node is considered Empty if it contains no user Pods.
-                The following are excluded from this check:
-                - DaemonSets
-                - Jobs / CronJobs
-                - kube-system Pods
-            endnote
-            :Calculate the related metrics of the resulting new state;
-            note left
-                The success metric is a combination of:
-                - the number of Nodes reduced by the re-allocation
-                - the total number and cost of the pods relocation
-                The cost is calculated by adding the cost/weight of each relocated pod.
-            end note
-            :Save the permutation result metrics;
-        else (No)
-            :Skip this permutation;
-        endif
+repeat while (Is there another Node Set to evaluate?) is (Yes)
 
-    endwhile (No)
-
-    if (Did any permutation reduce the total Nodes count?) then (Yes)
-        :Select the best simulated new cluster state;
-    else (No)
-        :No safe infrastructure cost reduction found;
-        stop
-    endif
-
-}
+if (Did any result reduce the total Nodes count?) then (Yes)
+    :Select the best simulated new cluster state;
+else (No)
+    :No safe infrastructure cost reduction found;
+    stop
+endif
 
 partition "Consolidation Execution" {
     :Calculate the optimal temporal migration sequence;
@@ -89,9 +99,9 @@ partition "Consolidation Execution" {
     while (Are there remaining Pods to migrate in the sequence?) is (Yes)
         :"Move" the Pod;
         note right
-            1. Create a new Pod on the target Node
-            2. Await "Running" status
-            3. Delete the legacy Pod
+            1. Delete the legacy Pod
+            2. Put the replacement Pod on the target Node
+            3. Await "Running" status
         end note
     endwhile
 
