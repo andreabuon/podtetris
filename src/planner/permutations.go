@@ -1,15 +1,15 @@
 package main
 
 import (
-	"log"
 	"math/rand"
 	"sort"
 
+	"go.uber.org/zap"
 	apiv1 "k8s.io/api/core/v1"
 )
 
 type permutationStrategy struct {
-	apply  func([]*apiv1.Pod)
+	apply func([]*apiv1.Pod)
 	count int
 }
 
@@ -26,7 +26,12 @@ func sortByRequestDesc(pods []*apiv1.Pod, requestOf func(*apiv1.Pod) (int64, err
 	for _, pod := range pods {
 		req, err := requestOf(pod)
 		if err != nil {
-			log.Printf("Warning: could not get %s request for pod %s: %v", resource, pod.Name, err)
+			log.Error("Could not get pod resource request",
+				zap.Error(err),
+				zap.String("resource", resource),
+				zap.String("pod", pod.Name),
+				zap.String("namespace", pod.Namespace),
+			)
 		}
 		requests[pod] = req
 	}
@@ -63,7 +68,7 @@ func generatePermutations(evictedPods []*apiv1.Pod, enabledStrategies []string, 
 	for _, name := range enabledStrategies {
 		strategy, ok := strategies[name]
 		if !ok {
-			log.Printf("Warning: unknown permutation strategy %q, skipping", name)
+			log.Info("Unknown permutation strategy, skipping", zap.String("strategy", name))
 			continue
 		}
 

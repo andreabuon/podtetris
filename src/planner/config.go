@@ -1,9 +1,8 @@
 package main
 
 import (
-	"log"
-
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
 	scheduler_config "k8s.io/kubernetes/pkg/scheduler/apis/config"
 )
@@ -51,7 +50,7 @@ func setDefaultConfigValues() {
 func loadSchedulerConfig() *scheduler_config.KubeSchedulerConfiguration {
 	schedulerConfig, err := cascheduler.ConfigFromPath(SCHEDULER_CONFIG_PATH)
 	if err != nil {
-		log.Fatalf("Error loading scheduler config: %v", err)
+		log.Fatal("Failed to load scheduler config", zap.Error(err), zap.String("path", SCHEDULER_CONFIG_PATH))
 	}
 	return schedulerConfig
 }

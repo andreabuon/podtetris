@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 
+	"go.uber.org/zap"
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot"
@@ -66,25 +66,42 @@ func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes
 			podsOnNode = append(podsOnNode, podInfo.GetPod())
 		}
 
-		log.Printf("[Candidate #%d] Node: %s", nodeIndex, nodeName)
+		log.Debug("Virtually evicting pods from candidate node", zap.Int("candidate", nodeIndex), zap.String("node", nodeName))
 		for _, pod := range podsOnNode {
 			if ok, reason := isEvictable(pod, rules); !ok {
-				log.Printf("  > Skipping pod %s/%s: %s", pod.Namespace, pod.Name, reason)
+				log.Debug("Skipping non-evictable pod",
+					zap.String("pod", pod.Name),
+					zap.String("namespace", pod.Namespace),
+					zap.String("reason", string(reason)),
+				)
 				continue
 			}
 
 			if err := snapshot.UnschedulePod(pod.Namespace, pod.Name, nodeName); err != nil {
-				log.Printf("Failed to virtually evict pod %s/%s: %v", pod.Namespace, pod.Name, err)
+				log.Error("Failed to virtually evict pod",
+					zap.Error(err),
+					zap.String("pod", pod.Name),
+					zap.String("namespace", pod.Namespace),
+					zap.String("node", nodeName),
+				)
 				continue
 			}
 
-			log.Println("  - Evicted pod:", pod.Name)
+			log.Debug("Virtually evicted pod",
+				zap.String("pod", pod.Name),
+				zap.String("namespace", pod.Namespace),
+				zap.String("node", nodeName),
+			)
 
 			unscheduledPod := pod.DeepCopy()
 			unscheduledPod.Spec.NodeName = ""
 			evictedPods = append(evictedPods, unscheduledPod)
 		}
 	}
+	log.Debug("Virtually evicted pods from candidate nodes",
+		zap.Int("evicted", len(evictedPods)),
+		zap.Int("candidateNodes", len(candidateNodes)),
+	)
 	return evictedPods
 }
 
@@ -110,7 +127,11 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		// Compute and display pod move cost
 		podName := types.NamespacedName{Namespace: pod.Namespace, Name: pod.Name}
 		if chosenNode.Node().Name == s.baseline.Allocations[podName] {
-			log.Printf("- Pod: '%s' has been re-assigned to the same node", pod.Name)
+			log.Debug("Pod reassigned to same node",
+				zap.String("pod", pod.Name),
+				zap.String("namespace", pod.Namespace),
+				zap.String("node", chosenNode.Node().Name),
+			)
 		} else {
 			cost, err := s.rules.getPodMovementCost(pod)
 			if err != nil {
@@ -124,8 +145,13 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 				cost:         cost,
 			}
 			moves = append(moves, pm)
-			log.Printf("- Pod move: Pod '%s' moved from '%s' to '%s' (cost = %d)",
-				pm.pod.Name, pm.fromNodeName, pm.toNodeName, cost)
+			log.Debug("Pod moved during simulation",
+				zap.String("pod", pm.pod.Name),
+				zap.String("namespace", pm.pod.Namespace),
+				zap.String("from", pm.fromNodeName),
+				zap.String("to", pm.toNodeName),
+				zap.Int("cost", cost),
+			)
 		}
 	}
 
@@ -163,7 +189,11 @@ func schedulePod(
 	preFilterResult, preFilterStatus, _ := framework.RunPreFilterPlugins(ctx, state, pod)
 	if !preFilterStatus.IsSuccess() {
 		if preFilterStatus.Code() == kubeframework.Unschedulable {
-			log.Printf("Pod %s/%s is unschedulable in this permutation: %v", pod.Namespace, pod.Name, preFilterStatus.Message())
+			log.Debug("Pod unschedulable in this permutation",
+				zap.String("pod", pod.Name),
+				zap.String("namespace", pod.Namespace),
+				zap.String("reason", preFilterStatus.Message()),
+			)
 			// Return a distinct error or handle it as a failed permutation path, not a system failure
 			return nil, fmt.Errorf("pod unschedulable: %w", preFilterStatus.AsError())
 		}

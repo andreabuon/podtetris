@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"log"
 	"path/filepath"
 	"sort"
 	"time"
 
 	podtetrisv1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -28,34 +28,43 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var log *zap.Logger
+
 var Config AppConfig
 
 // control-plane nodes should never be consolidation candidates.
 const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 
 func main() {
+	logger, err := zap.NewProduction()
+	if err != nil {
+		panic(err)
+	}
+	defer logger.Sync()
+	log = logger.Named("planner")
+
 	ctx := context.Background()
 
 	viper.SetConfigName("config")
 	viper.AddConfigPath("/etc/podtetris/")
 	viper.AddConfigPath(".")
 	setDefaultConfigValues()
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 	if err != nil {
-		log.Fatalf("error during config file load: %v", err)
+		log.Fatal("Failed to load config file", zap.Error(err))
 	}
 
 	if err := viper.Unmarshal(&Config); err != nil {
-		log.Fatalf("error during config unmarshal: %v", err)
+		log.Fatal("Failed to unmarshal config", zap.Error(err))
 	}
 
 	rules, err := loadRulesConfig()
 	if err != nil {
-		log.Fatalf("error loading planner rules config: %v", err)
+		log.Fatal("Failed to load planner rules config", zap.Error(err))
 	}
 
 	if Config.DryRun {
-		log.Println("Dry run mode enabled: consolidation plans will be computed but not applied")
+		log.Info("Dry run mode enabled: consolidation plans will be computed but not applied")
 	}
 
 	clusterConfig, err := rest.InClusterConfig()
@@ -64,12 +73,12 @@ func main() {
 		kubeconfigPath := filepath.Join(homedir.HomeDir(), ".kube", "config")
 		clusterConfig, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 		if err != nil {
-			log.Fatalf("Error loading local cluster config: %v", err)
+			log.Fatal("Failed to load local cluster config", zap.Error(err))
 		}
 	}
 	clientset, err := kubernetes.NewForConfig(clusterConfig)
 	if err != nil {
-		log.Fatalf("Error creating live Kubernetes clientset: %v", err)
+		log.Fatal("Failed to create Kubernetes clientset", zap.Error(err))
 	}
 
 	// initialize and start informers
@@ -99,28 +108,28 @@ func main() {
 	schedulerConfig := loadSchedulerConfig()
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, true)
 	if err != nil {
-		log.Fatalf("Error creating framework handle: %v", err)
+		log.Fatal("Failed to create framework handle", zap.Error(err))
 	}
 
 	// retrieve nodes to build the cluster snapshot
 	workerNodeSelector, err := labels.Parse(nonControlPlaneLabelSelector)
 	if err != nil {
-		log.Fatalf("Error parsing the worker node label selector: %v", err)
+		log.Fatal("Failed to parse worker node label selector", zap.Error(err))
 	}
 	nodes, err := nodeInformer.Lister().List(workerNodeSelector)
 	if err != nil {
-		log.Fatalf("Error retrieving nodes from the informer: %v", err)
+		log.Fatal("Failed to list nodes from informer", zap.Error(err))
 	}
 	pods, err := podInformer.Lister().List(labels.Everything())
 	if err != nil {
-		log.Fatalf("Error retrieving pods from the informer: %v", err)
+		log.Fatal("Failed to list pods from informer", zap.Error(err))
 	}
 
 	snapshotStore := store.NewDeltaSnapshotStore(Config.Parallelism)
 	snapshot := predicate.NewPredicateSnapshot(snapshotStore, fwHandle, false, Config.Parallelism, true)
 	err = snapshot.SetClusterState(nodes, pods, nil, nil)
 	if err != nil {
-		log.Fatalf("Critical sandbox simulation failure during instantiation: %v", err)
+		log.Fatal("Failed to instantiate cluster snapshot", zap.Error(err))
 	}
 
 	registry := plugins.NewInTreeRegistry()
@@ -134,12 +143,12 @@ func main() {
 		fwkruntime.WithSharedCSIManager(sharedCSIManager),
 	)
 	if err != nil {
-		log.Fatalf("Error creating the framework: %v", err)
+		log.Fatal("Failed to create scheduler framework", zap.Error(err))
 	}
 
 	nodeInfos, err := snapshot.NodeInfos().List()
 	if err != nil {
-		log.Fatalf("Error listing node infos: %v", err)
+		log.Fatal("Failed to list node infos", zap.Error(err))
 	}
 
 	candidateNodesSets, err := createCandidateNodesSets(
@@ -151,11 +160,12 @@ func main() {
 		rules,
 	)
 	if err != nil {
-		log.Fatalf("Error during the candidate nodes selection: %v", err)
+		log.Fatal("Failed to select candidate nodes", zap.Error(err))
 	}
 
+	log.Info("Generated candidate node sets", zap.Int("count", len(candidateNodesSets)))
 	for setIndex, candidateSet := range candidateNodesSets {
-		log.Printf("Candidate set #%d: %v", setIndex, nodeInfoNames(candidateSet.UnsortedList()))
+		log.Debug("Candidate node set", zap.Int("set", setIndex), zap.Strings("nodes", nodeInfoNames(candidateSet.UnsortedList())))
 	}
 
 	var schedulingResults []*SimulationResult
@@ -187,14 +197,14 @@ func main() {
 
 		for permutationIndex, permutation := range permutations {
 			id := SimulationID{SetIndex: setIndex, PermIndex: permutationIndex}
-			log.Printf("Simulating %s", id)
+			log.Debug("Running simulation", zap.Int("set", id.SetIndex), zap.Int("perm", id.PermIndex))
 			podPermutation := &PodOrdering{
 				Index: permutationIndex,
 				Pods:  permutation,
 			}
 			schedulingResult, err := schedulingSimulator.Run(ctx, podPermutation)
 			if err != nil {
-				log.Printf("Error during simulation %s: %v", id, err)
+				log.Debug("Simulation failed", zap.Int("set", id.SetIndex), zap.Int("perm", id.PermIndex), zap.Error(err))
 				continue
 			}
 
@@ -208,13 +218,20 @@ func main() {
 		snapshot.Revert()
 	}
 
-	log.Println("Simulations results:")
+	log.Info("Finished simulations", zap.Int("viablePlans", len(schedulingResults)))
 	for _, result := range schedulingResults {
-		log.Printf("%s freed %d nodes with %d moves, total cost of %d, score %d", result, result.FreedNodes, len(result.Moves), result.Cost, result.Score)
+		log.Debug("Viable consolidation plan",
+			zap.Int("set", result.SetIndex),
+			zap.Int("perm", result.PermIndex),
+			zap.Int("freedNodes", result.FreedNodes),
+			zap.Int("moves", len(result.Moves)),
+			zap.Int("cost", result.Cost),
+			zap.Int("score", result.Score),
+		)
 	}
 
 	if len(schedulingResults) < 1 {
-		log.Println("No viable consolidation plans found")
+		log.Info("No viable consolidation plans found")
 		return
 	}
 
@@ -222,24 +239,39 @@ func main() {
 		return schedulingResults[i].Score > schedulingResults[j].Score
 	})
 	bestPermutationResult := schedulingResults[0]
-	log.Printf("Best consolidation plan: %s", bestPermutationResult)
+	log.Info("Selected best consolidation plan",
+		zap.Int("set", bestPermutationResult.SetIndex),
+		zap.Int("perm", bestPermutationResult.PermIndex),
+		zap.Int("freedNodes", bestPermutationResult.FreedNodes),
+		zap.Int("moves", len(bestPermutationResult.Moves)),
+		zap.Int("cost", bestPermutationResult.Cost),
+		zap.Int("score", bestPermutationResult.Score),
+	)
 
 	if Config.DryRun {
-		log.Printf("Score threshold reached, skipping apply because dry run is enabled")
+		log.Info("Skipping apply because dry run is enabled")
 		return
 	}
 
 	if bestPermutationResult.Score > Config.AutoConsolidationScoreThreshold {
-		log.Printf("Score threshold reached, auto applying consolidation strategy")
+		log.Info("Score threshold reached, applying consolidation plan",
+			zap.Int("score", bestPermutationResult.Score),
+			zap.Int("threshold", Config.AutoConsolidationScoreThreshold),
+		)
 		scheme := runtime.NewScheme()
 		if err := podtetrisv1.AddToScheme(scheme); err != nil {
-			log.Fatalf("Error registering the podtetris scheme: %v", err)
+			log.Fatal("Failed to register podtetris scheme", zap.Error(err))
 		}
 		crdClient, err := client.New(clusterConfig, client.Options{Scheme: scheme})
 		if err != nil {
-			log.Fatalf("Error creating the podtetris client: %v", err)
+			log.Fatal("Failed to create podtetris client", zap.Error(err))
 		}
 		applyConsolidationStrategy(ctx, crdClient, bestPermutationResult)
+	} else {
+		log.Info("Best plan score below auto-consolidation threshold, skipping apply",
+			zap.Int("score", bestPermutationResult.Score),
+			zap.Int("threshold", Config.AutoConsolidationScoreThreshold),
+		)
 	}
 }
 

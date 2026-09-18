@@ -73,6 +73,7 @@ replace k8s.io/externaljwt => k8s.io/externaljwt v0.35.0
 require (
 	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a
 	github.com/spf13/viper v1.21.0
+	go.uber.org/zap v1.27.1
 	k8s.io/api v0.36.2
 	k8s.io/apimachinery v0.36.2
 	k8s.io/autoscaler/cluster-autoscaler v0.0.0-20260205183032-25fc5c74f6b0
@@ -150,6 +151,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.40.0 // indirect
 	go.opentelemetry.io/otel/trace v1.41.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.9.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93 // indirect
