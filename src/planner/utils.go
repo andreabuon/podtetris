@@ -11,14 +11,17 @@ import (
 type EvictionSkipReason string
 
 const (
-	SkipDaemonSet          EvictionSkipReason = "daemonSet pod"
-	SkipJob                EvictionSkipReason = "job pod"
-	SkipStaticPod          EvictionSkipReason = "static pod"
-	SkipFixedPod           EvictionSkipReason = "pod is fixed to the node"
-	SkipNilPod             EvictionSkipReason = "pod reference is nil"
-	SkipNoController       EvictionSkipReason = "no controller owner (would not be recreated after eviction)"
+	SkipDaemonSet EvictionSkipReason = "pod owned by daemonSet"
+	SkipJob       EvictionSkipReason = "pod relative to a Jobs"
+	// SkipNodeOwnedPod covers kubelet-managed pods whose OwnerReference.Kind is "Node" (Kubernetes static/mirror pods).
+	// these are bound to that node by the kubelet (e.g. control-plane pods from /etc/kubernetes/manifests) and cannot be usefully rescheduled by the planner.
+	SkipNodeOwnedPod EvictionSkipReason = "node-owned kubelet pod"
+	SkipFixedPod     EvictionSkipReason = "pod is fixed to the node via a custom rule"
+	SkipNilPod       EvictionSkipReason = "pod ref is nil"
+	// Pods not owned by a Deloyment/ReplicaSet/... would not be recreated after their eviction
+	SkipNoController       EvictionSkipReason = "pod not owned by a controller"
 	SkipSystemPods         EvictionSkipReason = "pod belongs to namespace 'kube-system'"
-	SkipPodtetrisNamespace EvictionSkipReason = "pod belongs to podtetris own namespace"
+	SkipPodtetrisNamespace EvictionSkipReason = "pod belongs to podtetris planner own namespace"
 )
 
 // isEvictable returns (true, "") if the pod can be evicted or (false, reason) explaining why it was skipped.
@@ -47,7 +50,7 @@ func isEvictable(pod *apiv1.Pod, rules *RuleMatcher) (bool, EvictionSkipReason) 
 		case "Job":
 			return false, SkipJob
 		case "Node":
-			return false, SkipStaticPod
+			return false, SkipNodeOwnedPod
 		}
 	}
 
@@ -63,7 +66,7 @@ func isEvictable(pod *apiv1.Pod, rules *RuleMatcher) (bool, EvictionSkipReason) 
 }
 
 // isResidualPod reports whether a pod is expected to remain on an otherwise empty
-// node (kube-system, DaemonSets, Jobs, static pods, etc.).
+// node (kube-system, DaemonSets, Jobs, node-owned kubelet pods, etc.).
 // Evictable workloads, fixed pods, and bare pods without a controller are not residual.
 func isResidualPod(pod *apiv1.Pod, rules *RuleMatcher) bool {
 	evictable, reason := isEvictable(pod, rules)
@@ -71,7 +74,7 @@ func isResidualPod(pod *apiv1.Pod, rules *RuleMatcher) bool {
 		return false
 	}
 	switch reason {
-	case SkipDaemonSet, SkipJob, SkipStaticPod, SkipSystemPods, SkipPodtetrisNamespace, SkipNilPod:
+	case SkipDaemonSet, SkipJob, SkipNodeOwnedPod, SkipSystemPods, SkipPodtetrisNamespace, SkipNilPod:
 		return true
 	default:
 		// SkipFixedPod, SkipNoController, and any future non-evictable workload reasons.
