@@ -182,12 +182,12 @@ func allContainFixedPods(nodeInfos []kubeframework.NodeInfo, rules *RuleMatcher)
 	return true, nil
 }
 
+// isConsideredEmpty reports whether a node has no consolidatable workload left.
+// Residual infra pods do not count;
+// fixed pods and ordinary workloads do (the node is not empty if any remain).
 func isConsideredEmpty(node kubeframework.NodeInfo, rules *RuleMatcher) bool {
-	pods := node.GetPods()
-
-	for _, pod := range pods {
-		evictable, _ := isEvictable(pod.GetPod(), rules)
-		if evictable {
+	for _, podInfo := range node.GetPods() {
+		if !isResidualPod(podInfo.GetPod(), rules) {
 			return false
 		}
 	}

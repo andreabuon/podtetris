@@ -62,6 +62,23 @@ func isEvictable(pod *apiv1.Pod, rules *RuleMatcher) (bool, EvictionSkipReason) 
 	return true, ""
 }
 
+// isResidualPod reports whether a pod is expected to remain on an otherwise empty
+// node (kube-system, DaemonSets, Jobs, static pods, etc.).
+// Evictable workloads, fixed pods, and bare pods without a controller are not residual.
+func isResidualPod(pod *apiv1.Pod, rules *RuleMatcher) bool {
+	evictable, reason := isEvictable(pod, rules)
+	if evictable {
+		return false
+	}
+	switch reason {
+	case SkipDaemonSet, SkipJob, SkipStaticPod, SkipSystemPods, SkipPodtetrisNamespace, SkipNilPod:
+		return true
+	default:
+		// SkipFixedPod, SkipNoController, and any future non-evictable workload reasons.
+		return false
+	}
+}
+
 func getPodCPURequests(pod *apiv1.Pod) (int64, error) {
 	if pod == nil {
 		return 0, errors.New("pod is nil")
