@@ -36,7 +36,7 @@ var Config AppConfig
 const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 
 func main() {
-	logger, err := zap.NewProduction()
+	logger, err := zap.NewDevelopment()
 	if err != nil {
 		panic(err)
 	}
