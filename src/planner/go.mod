@@ -71,7 +71,7 @@ replace k8s.io/cri-client => k8s.io/cri-client v0.35.0
 replace k8s.io/externaljwt => k8s.io/externaljwt v0.35.0
 
 require (
-	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a
+	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260922085754-0ed3a40b5a19
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.1
 	k8s.io/api v0.36.2

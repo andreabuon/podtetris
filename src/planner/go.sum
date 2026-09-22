@@ -6,6 +6,8 @@ github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERo
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a h1:rKC/oBbp6m6ufu1se9kAp1OuXh/lMl3wyhFfG+ZSg54=
 github.com/andreabuon/podtetris/src/evictor v0.0.0-20260826154722-8a45f7cd186a/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
+github.com/andreabuon/podtetris/src/evictor v0.0.0-20260922085754-0ed3a40b5a19 h1:hUmJDNFDg6G6Dwg8Ro+ZV33tz+JyJuv+SczUJiGvd5w=
+github.com/andreabuon/podtetris/src/evictor v0.0.0-20260922085754-0ed3a40b5a19/go.mod h1:YLJIKz+/xd65ONNn+IbbLDq15pBkdRFy7aCz2pHuDk0=
 github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYWrPrQ=
 github.com/antlr4-go/antlr/v4 v4.13.1/go.mod h1:GKmUxMtwp6ZgGwZSva4eWPC5mS6vUAmOABFgjdkM7Nw=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
