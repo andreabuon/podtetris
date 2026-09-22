@@ -4,10 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
 
 	"go.uber.org/zap"
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/autoscaler/cluster-autoscaler/simulator/clustersnapshot"
 
 	//"k8s.io/autoscaler/cluster-autoscaler/simulator/scheduling"
@@ -42,6 +44,7 @@ type SimulationResult struct {
 	CandidateNodes []kubeframework.NodeInfo
 	Permutation    *PodOrdering
 	FreedNodes     int
+	NodesToFree    []string
 	Cost           int
 	Score          int
 	Moves          []PodMove
@@ -52,8 +55,8 @@ type Baseline struct {
 	CandidateNodes []kubeframework.NodeInfo
 	// pods allocations before the rescheduling simulation
 	Allocations map[types.NamespacedName]string
-	// number of empty nodes before the rescheduling simulation
-	EmptyNodeCount int
+	// nodes already empty before any rescheduling
+	InitialEmptyNodes sets.Set[string]
 }
 
 func virtuallyEvictPods(snapshot clustersnapshot.ClusterSnapshot, candidateNodes []kubeframework.NodeInfo, rules *RuleMatcher) []*apiv1.Pod {
@@ -165,14 +168,15 @@ func (s *SchedulingSimulator) Run(ctx context.Context, podsPermutation *PodOrder
 		freshCandidateNodes = append(freshCandidateNodes, freshNode)
 	}
 
-	newEmptyNodes := countEmptyNodes(freshCandidateNodes, s.rules)
-	freedNodes := newEmptyNodes - s.baseline.EmptyNodeCount
+	nodesToFree := getEmptyNodes(freshCandidateNodes, s.rules).Difference(s.baseline.InitialEmptyNodes).UnsortedList()
+	sort.Strings(nodesToFree)
 
 	result := &SimulationResult{
 		Permutation: podsPermutation,
-		FreedNodes:  freedNodes,
+		FreedNodes:  len(nodesToFree),
+		NodesToFree: nodesToFree,
 		Cost:        permutationCost,
-		Score:       computePermutationScore(freedNodes, permutationCost),
+		Score:       computePermutationScore(len(nodesToFree), permutationCost),
 		Moves:       moves,
 	}
 

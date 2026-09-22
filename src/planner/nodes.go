@@ -194,13 +194,13 @@ func isConsideredEmpty(node kubeframework.NodeInfo, rules *RuleMatcher) bool {
 	return true
 }
 
-func countEmptyNodes(nodes []kubeframework.NodeInfo, rules *RuleMatcher) int {
-	emptyNodes := 0
-
+// getEmptyNodes returns the set of node names considered empty.
+func getEmptyNodes(nodes []kubeframework.NodeInfo, rules *RuleMatcher) sets.Set[string] {
+	empty := sets.New[string]()
 	for _, node := range nodes {
 		if isConsideredEmpty(node, rules) {
-			emptyNodes++
+			empty.Insert(node.Node().Name)
 		}
 	}
-	return emptyNodes
+	return empty
 }

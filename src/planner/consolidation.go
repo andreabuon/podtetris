@@ -65,10 +65,11 @@ func createConsolidationPlan(ctx context.Context, c client.Client, result *Simul
 			GenerateName: "consolidationplan-",
 		},
 		Spec: podtetrisv1.ConsolidationPlanSpec{
-			FreedNodes: result.FreedNodes,
-			Cost:       result.Cost,
-			Score:      result.Score,
-			MoveCount:  len(result.Moves),
+			FreedNodes:  result.FreedNodes,
+			NodesToFree: result.NodesToFree,
+			Cost:        result.Cost,
+			Score:       result.Score,
+			MoveCount:   len(result.Moves),
 		},
 	}
 	if err := c.Create(ctx, plan); err != nil {
