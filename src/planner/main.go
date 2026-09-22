@@ -175,17 +175,14 @@ func main() {
 		// Each node set must start from a clean baseline; virtuallyEvictPods mutates the snapshot.
 		snapshot.Fork()
 
-		initialEmptyNodes := countEmptyNodes(candidateNodes, rules)
-		initialPodAllocations := createPodAllocationsMap(candidateNodes)
+		initialState := &Baseline{
+			CandidateNodes:    candidateNodes,
+			Allocations:       createPodAllocationsMap(candidateNodes),
+			InitialEmptyNodes: getEmptyNodes(candidateNodes, rules),
+		}
 
 		evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
 		permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies, Config.RandomPermutationCount)
-
-		initialState := &Baseline{
-			CandidateNodes: candidateNodes,
-			Allocations:    initialPodAllocations,
-			EmptyNodeCount: initialEmptyNodes,
-		}
 
 		schedulingSimulator := &SchedulingSimulator{
 			framework: realFramework,
@@ -239,6 +236,7 @@ func main() {
 		zap.Int("set", bestSimulationResult.SetIndex),
 		zap.Int("perm", bestSimulationResult.PermIndex),
 		zap.Int("freedNodes", bestSimulationResult.FreedNodes),
+		zap.Strings("nodesToFree", bestSimulationResult.NodesToFree),
 		zap.Int("moves", len(bestSimulationResult.Moves)),
 		zap.Int("cost", bestSimulationResult.Cost),
 		zap.Int("score", bestSimulationResult.Score),

@@ -6,4 +6,10 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
   name: consolidationplan-sample
 spec:
-  # TODO(user): Add fields here
+  freedNodes: 2
+  nodesToFree:
+    - worker-a
+    - worker-b
+  cost: 10
+  score: 90
+  moveCount: 3
