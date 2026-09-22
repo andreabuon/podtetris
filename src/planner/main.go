@@ -216,7 +216,7 @@ func main() {
 				continue
 			}
 
-			if schedulingResult.Score > bestSimulationResult.Cost {
+			if schedulingResult.Score > bestSimulationResult.Score {
 				bestSimulationResult = schedulingResult
 				continue
 			}
