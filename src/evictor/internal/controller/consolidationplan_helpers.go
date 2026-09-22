@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -58,4 +59,35 @@ func involvedNodes(moves []podtetrisiov1.PodMove) sets.Set[string] {
 		}
 	}
 	return nodes
+}
+
+// findUnexpectedPodOnNodesToFree returns a pod that appeared on a node the plan
+// intends to empty after the plan was created. Such a pod is not one the plan
+// evacuates: every source pod already existed when the planner snapshotted the
+// cluster. Its presence means the node can no longer be emptied.
+func findUnexpectedPodOnNodesToFree(ctx context.Context, c client.Client, plan *podtetrisiov1.ConsolidationPlan) (*corev1.Pod, error) {
+	toFree := sets.New(plan.Spec.NodesToFree...)
+	if toFree.Len() == 0 {
+		return nil, nil
+	}
+
+	var pods corev1.PodList
+	if err := c.List(ctx, &pods); err != nil {
+		return nil, err
+	}
+
+	for i := range pods.Items {
+		pod := &pods.Items[i]
+		if !toFree.Has(pod.Spec.NodeName) {
+			continue
+		}
+		if !pod.DeletionTimestamp.IsZero() || isReplacementPod(pod) {
+			continue
+		}
+		if !pod.CreationTimestamp.After(plan.CreationTimestamp.Time) {
+			continue
+		}
+		return pod, nil
+	}
+	return nil, nil
 }

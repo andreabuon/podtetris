@@ -79,10 +79,9 @@ func podBoundPredicate() predicate.Predicate {
 	}
 }
 
-// mapBoundPodToPlans enqueues ConsolidationPlans whose remaining moves may be
-// compromised by a newly bound Pod.
-// Replacement pods and binds that only land on nodesToFree
-// or on uninvolved nodes are logged and ignored.
+// mapBoundPodToPlans enqueues ConsolidationPlans compromised by a newly bound Pod:
+// binds on nodesToFree abort the plan; binds on involved nodes re-check fit.
+// Replacement pods and uninvolved binds are ignored.
 func (r *ConsolidationPlanReconciler) mapBoundPodToPlans(ctx context.Context, obj client.Object) []reconcile.Request {
 	pod, ok := obj.(*corev1.Pod)
 	if !ok {
@@ -110,8 +109,9 @@ func (r *ConsolidationPlanReconciler) mapBoundPodToPlans(ctx context.Context, ob
 
 		// Plan-only check: avoid listing PodMoves when the bind is on nodesToFree.
 		if slices.Contains(plan.Spec.NodesToFree, pod.Spec.NodeName) {
-			log.Info("Bound Pod landed on an node that was being freed; requeueing ConsolidationPlan",
+			log.Info("Bound Pod landed on nodesToFree; requeueing ConsolidationPlan",
 				"plan", planKey,
+				"impact", bindImpactNodesToFree.String(),
 			)
 			reqs = append(reqs, reconcile.Request{NamespacedName: planKey})
 			continue
@@ -137,12 +137,11 @@ func (r *ConsolidationPlanReconciler) mapBoundPodToPlans(ctx context.Context, ob
 			)
 			reqs = append(reqs, reconcile.Request{NamespacedName: planKey})
 		case bindImpactNodesToFree:
-			log.Info("Bound Pod landed on an node that was being freed; requeueing ConsolidationPlan",
+			log.Info("Bound Pod landed on nodesToFree; requeueing ConsolidationPlan",
 				"plan", planKey,
 				"impact", impact.String(),
 			)
 			reqs = append(reqs, reconcile.Request{NamespacedName: planKey})
-			continue
 		}
 	}
 	return reqs

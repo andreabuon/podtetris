@@ -34,8 +34,9 @@ import (
 )
 
 // ConsolidationPlanReconciler cancels a ConsolidationPlan when an unexpected Pod
-// bind compromises remaining PodMoves. Direct ConsolidationPlan watch events are
-// ignored so plan creation itself does not tear the plan down.
+// bind compromises it (nodesToFree occupancy, or remaining moves no longer fit).
+// Direct ConsolidationPlan watch events are ignored so plan creation itself does
+// not tear the plan down.
 type ConsolidationPlanReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
@@ -47,15 +48,30 @@ type ConsolidationPlanReconciler struct {
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves,verbs=get;list;watch
 // +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
 
-// Reconcile re-checks whether remaining PodMoves still fit after a bound Pod
-// landed on an involved node. When they do not, the ConsolidationPlan is deleted
-// and owned PodMoves are removed by garbage collection.
+// Reconcile aborts the ConsolidationPlan when an unexpected pod occupies a
+// nodesToFree node, or when remaining PodMoves no longer fit after a bind on an
+// involved node. Owned PodMoves are removed by garbage collection.
 func (r *ConsolidationPlanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
 	var plan podtetrisiov1.ConsolidationPlan
 	if err := r.Get(ctx, req.NamespacedName, &plan); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	intruder, err := findUnexpectedPodOnNodesToFree(ctx, r.Client, &plan)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	if intruder != nil {
+		log.Info("Cancelling ConsolidationPlan; unexpected Pod on nodesToFree",
+			"pod", client.ObjectKeyFromObject(intruder),
+			"node", intruder.Spec.NodeName,
+		)
+		if err := r.Delete(ctx, &plan); err != nil && !apierrors.IsNotFound(err) {
+			return ctrl.Result{}, err
+		}
+		return ctrl.Result{}, nil
 	}
 
 	moves, err := listPlanPodMoves(ctx, r.Client, &plan)
