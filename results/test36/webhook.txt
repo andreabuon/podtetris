@@ -1,0 +1,23 @@
+2026/09/22 16:27:44 PODTetris webhook starting (namespace=podtetris)...
+2026/09/22 16:27:44 Listening on :8443
+2026/09/22 16:27:59 Intercepted CREATE for pod default/rs-a-<pending-name> (generateName="rs-a-") -> pinning to node "kind-worker6" from PodMove podtetris/rs-a-6hpqg-1f63a899
+2026/09/22 16:29:57 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-a-67f5c8c457-rrct9-0114ac02
+2026/09/22 16:31:57 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-a-67f5c8c457-j9m49-219a5b72
+2026/09/22 16:27:44 PODTetris webhook starting (namespace=podtetris)...
+2026/09/22 16:27:44 Listening on :8443
+2026/09/22 16:27:56 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker6" from PodMove podtetris/rs-b-nx2rx-d1e62661
+2026/09/22 16:27:57 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker6" from PodMove podtetris/rs-b-ftlmw-b6622f93
+2026/09/22 16:27:57 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-a-67f5c8c457-lsrdk-15ce4fd6
+2026/09/22 16:27:57 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-b-7b96bcf96d-z2wp4-9492c6e3
+2026/09/22 16:27:57 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-b-7b96bcf96d-25t42-042a736d
+2026/09/22 16:27:57 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-b-7b96bcf96d-dmbtr-e3ec6fcc
+2026/09/22 16:27:58 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-b-7b96bcf96d-69hjg-4edc4a06
+2026/09/22 16:27:58 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-b-7b96bcf96d-nr8j7-19fdc31a
+2026/09/22 16:27:58 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-b-7b96bcf96d-9x6vw-49244fe1
+2026/09/22 16:27:58 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker6" from PodMove podtetris/deployment-a-67f5c8c457-fdpkx-9e4ae856
+2026/09/22 16:27:59 Intercepted CREATE for pod default/rs-a-<pending-name> (generateName="rs-a-") -> pinning to node "kind-worker6" from PodMove podtetris/rs-a-n9tjx-e59ccec3
+2026/09/22 16:27:59 Intercepted CREATE for pod cert-manager/cert-manager-webhook-9596c4d8-<pending-name> (generateName="cert-manager-webhook-9596c4d8-") -> pinning to node "kind-worker6" from PodMove podtetris/cert-manager-webhook-9596c4d8-8qqtm-a6aaffd6
+2026/09/22 16:28:00 Intercepted CREATE for pod cert-manager/cert-manager-cainjector-5b68759df5-<pending-name> (generateName="cert-manager-cainjector-5b68759df5-") -> pinning to node "kind-worker6" from PodMove podtetris/cert-manager-cainjector-5b68759df5-fz6fs-11cc7bb9
+2026/09/22 16:28:00 Intercepted CREATE for pod cert-manager/cert-manager-d966bfbbf-<pending-name> (generateName="cert-manager-d966bfbbf-") -> pinning to node "kind-worker6" from PodMove podtetris/cert-manager-d966bfbbf-56qfb-1741aa85
+2026/09/22 16:27:44 PODTetris webhook starting (namespace=podtetris)...
+2026/09/22 16:27:44 Listening on :8443
