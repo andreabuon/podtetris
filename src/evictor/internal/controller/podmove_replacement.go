@@ -228,3 +228,13 @@ func replacementOnTarget(pod *corev1.Pod, pm *podtetrisiov1.PodMove) bool {
 func isOriginalPod(pm *podtetrisiov1.PodMove, pod *corev1.Pod) bool {
 	return pm.Spec.Pod.UID != "" && pod.UID == pm.Spec.Pod.UID
 }
+
+// isReplacementPod reports whether the pod was created for an in-flight PodMove.
+// The mutating webhook sets podtetris.io/podmove when it claims the CREATE.
+func isReplacementPod(pod *corev1.Pod) bool {
+	if pod.Labels == nil {
+		return false
+	}
+	_, ok := pod.Labels[podtetrisiov1.PodMoveLabelKey]
+	return ok
+}
