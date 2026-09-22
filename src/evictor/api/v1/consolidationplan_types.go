@@ -31,6 +31,10 @@ type ConsolidationPlanSpec struct {
 	// +kubebuilder:validation:Minimum=0
 	FreedNodes int `json:"freedNodes"`
 
+	// nodesToFree is the set of node names this plan intends to empty, sorted by name.
+	// +required
+	NodesToFree []string `json:"nodesToFree"`
+
 	// total cost of all PodMoves in this plan.
 	// +required
 	// +kubebuilder:validation:Minimum=0

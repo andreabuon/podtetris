@@ -51,6 +51,12 @@ spec:
                 description: moveCount is the number of PodMoves in the4 plan .
                 minimum: 0
                 type: integer
+              nodesToFree:
+                description: nodesToFree is the set of node names this plan intends
+                  to empty, sorted by name.
+                items:
+                  type: string
+                type: array
               score:
                 description: total score of the plan
                 type: integer
@@ -58,6 +64,7 @@ spec:
             - cost
             - freedNodes
             - moveCount
+            - nodesToFree
             - score
             type: object
           status:
