@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"path/filepath"
-	"sort"
 	"time"
 
 	podtetrisv1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
@@ -168,7 +167,7 @@ func main() {
 		log.Debug("Candidate node set", zap.Int("set", setIndex), zap.Strings("nodes", nodeInfoNames(candidateSet.UnsortedList())))
 	}
 
-	var schedulingResults []*SimulationResult
+	var bestSimulationResult *SimulationResult
 
 	for setIndex, candidateSet := range candidateNodesSets {
 		candidateNodes := candidateSet.UnsortedList()
@@ -210,42 +209,39 @@ func main() {
 
 			schedulingResult.SimulationID = id
 			schedulingResult.CandidateNodes = candidateNodes
-			if schedulingResult.FreedNodes > 0 {
-				schedulingResults = append(schedulingResults, schedulingResult)
+
+			if schedulingResult.FreedNodes < 1 {
+				continue
+			}
+
+			if bestSimulationResult == nil {
+				bestSimulationResult = schedulingResult
+				continue
+			}
+
+			if schedulingResult.Score > bestSimulationResult.Cost {
+				bestSimulationResult = schedulingResult
+				continue
 			}
 		}
 
 		snapshot.Revert()
 	}
 
-	log.Info("Finished simulations", zap.Int("viablePlans", len(schedulingResults)))
-	for _, result := range schedulingResults {
-		log.Debug("Viable consolidation plan",
-			zap.Int("set", result.SetIndex),
-			zap.Int("perm", result.PermIndex),
-			zap.Int("freedNodes", result.FreedNodes),
-			zap.Int("moves", len(result.Moves)),
-			zap.Int("cost", result.Cost),
-			zap.Int("score", result.Score),
-		)
-	}
+	log.Info("Finished simulations")
 
-	if len(schedulingResults) < 1 {
-		log.Info("No viable consolidation plans found")
+	if bestSimulationResult == nil {
+		log.Info("No viable consolidation plan found")
 		return
 	}
 
-	sort.Slice(schedulingResults, func(i, j int) bool {
-		return schedulingResults[i].Score > schedulingResults[j].Score
-	})
-	bestPermutationResult := schedulingResults[0]
 	log.Info("Selected best consolidation plan",
-		zap.Int("set", bestPermutationResult.SetIndex),
-		zap.Int("perm", bestPermutationResult.PermIndex),
-		zap.Int("freedNodes", bestPermutationResult.FreedNodes),
-		zap.Int("moves", len(bestPermutationResult.Moves)),
-		zap.Int("cost", bestPermutationResult.Cost),
-		zap.Int("score", bestPermutationResult.Score),
+		zap.Int("set", bestSimulationResult.SetIndex),
+		zap.Int("perm", bestSimulationResult.PermIndex),
+		zap.Int("freedNodes", bestSimulationResult.FreedNodes),
+		zap.Int("moves", len(bestSimulationResult.Moves)),
+		zap.Int("cost", bestSimulationResult.Cost),
+		zap.Int("score", bestSimulationResult.Score),
 	)
 
 	if Config.DryRun {
@@ -253,9 +249,9 @@ func main() {
 		return
 	}
 
-	if bestPermutationResult.Score > Config.AutoConsolidationScoreThreshold {
+	if bestSimulationResult.Score > Config.AutoConsolidationScoreThreshold {
 		log.Info("Score threshold reached, applying consolidation plan",
-			zap.Int("score", bestPermutationResult.Score),
+			zap.Int("score", bestSimulationResult.Score),
 			zap.Int("threshold", Config.AutoConsolidationScoreThreshold),
 		)
 		scheme := runtime.NewScheme()
@@ -266,10 +262,10 @@ func main() {
 		if err != nil {
 			log.Fatal("Failed to create podtetris client", zap.Error(err))
 		}
-		applyConsolidationStrategy(ctx, crdClient, bestPermutationResult)
+		applyConsolidationStrategy(ctx, crdClient, bestSimulationResult)
 	} else {
 		log.Info("Best plan score below auto-consolidation threshold, skipping apply",
-			zap.Int("score", bestPermutationResult.Score),
+			zap.Int("score", bestSimulationResult.Score),
 			zap.Int("threshold", Config.AutoConsolidationScoreThreshold),
 		)
 	}
