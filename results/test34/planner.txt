@@ -1,0 +1,720 @@
+2026-09-22T09:26:31.713Z	INFO	planner	planner/rules.go:92	Loaded planner rules	{"fixedPodsRules": 1, "moveCostRules": 6, "defaultMoveCost": 10}
+I0922 09:26:31.819355       1 framework.go:624] "MultiPoint plugin is explicitly re-configured; overriding" plugin="NodeResourcesFit"
+I0922 09:26:31.820233       1 framework.go:624] "MultiPoint plugin is explicitly re-configured; overriding" plugin="NodeResourcesFit"
+2026-09-22T09:26:31.820Z	INFO	planner	planner/main.go:165	Generated candidate node sets	{"count": 3}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/main.go:167	Candidate node set	{"set": 0, "nodes": ["kind-worker4", "kind-worker3", "kind-worker6", "kind-worker2", "kind-worker", "kind-worker7", "kind-worker5"]}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/main.go:167	Candidate node set	{"set": 1, "nodes": ["kind-worker3", "kind-worker6", "kind-worker2", "kind-worker5", "kind-worker7", "kind-worker", "kind-worker4"]}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/main.go:167	Candidate node set	{"set": 2, "nodes": ["kind-worker6", "kind-worker2", "kind-worker7", "kind-worker", "kind-worker5", "kind-worker4", "kind-worker3"]}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 0, "node": "kind-worker7"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-zfmcr", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "deployment-fixed-65bffb5cd6-z6pnx", "namespace": "default", "reason": "pod is fixed to the node via a custom rule"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-drqpl", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 1, "node": "kind-worker5"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-8ms27", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-v95fx", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-2bshh", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 2, "node": "kind-worker4"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-b-bq4t5", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-ccwbn", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-m9685", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "node": "kind-worker4"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 3, "node": "kind-worker3"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-ncprh", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-8zhtc", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-b-m52m7", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-8ghmm", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 4, "node": "kind-worker6"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-fq64g", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-planner-20260922-112631-6qbbn", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-fbrkt", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.820Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-wh2r7", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 5, "node": "kind-worker2"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "node": "kind-worker2"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-mg6v8", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-dxr7n", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-lhxt9", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-evictor-7c9f4999dc-9s4nj", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-vzx8w", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 6, "node": "kind-worker"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-2klbz", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "deployment-fixed-65bffb5cd6-2ldzh", "namespace": "default", "reason": "pod is fixed to the node via a custom rule"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-5scg4", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:104	Virtually evicted pods from candidate nodes	{"evicted": 25, "candidateNodes": 7}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 0}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.821Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.824Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.824Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.825Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.825Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.825Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.826Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.828Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 1}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.829Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 2}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.830Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.831Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.831Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.831Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.831Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.831Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.831Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.832Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 3}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.833Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.834Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.834Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.835Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.835Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.835Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.835Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.835Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.835Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.836Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 4}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker5", "cost": 80}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-2bshh", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker5", "cost": 40}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker5", "cost": 60}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker5", "cost": 40}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker5", "cost": 40}
+2026-09-22T09:26:31.837Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker5", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker5", "cost": 10}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker5", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker5", "cost": 80}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker5", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker5", "cost": 40}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker5", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker5", "cost": 10}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker5", "cost": 40}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker5", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker5", "cost": 60}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker5", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker5", "cost": 40}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 5}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.838Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.839Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 0, "perm": 6}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.840Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 0, "node": "kind-worker3"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-ncprh", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-8zhtc", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-b-m52m7", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-8ghmm", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 1, "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-fq64g", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-planner-20260922-112631-6qbbn", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-fbrkt", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-wh2r7", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 2, "node": "kind-worker2"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "node": "kind-worker2"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-mg6v8", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-dxr7n", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-lhxt9", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-evictor-7c9f4999dc-9s4nj", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-vzx8w", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 3, "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-8ms27", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-v95fx", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-2bshh", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 4, "node": "kind-worker7"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-zfmcr", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "deployment-fixed-65bffb5cd6-z6pnx", "namespace": "default", "reason": "pod is fixed to the node via a custom rule"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-drqpl", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 5, "node": "kind-worker"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-2klbz", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "deployment-fixed-65bffb5cd6-2ldzh", "namespace": "default", "reason": "pod is fixed to the node via a custom rule"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-5scg4", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 6, "node": "kind-worker4"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-b-bq4t5", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-ccwbn", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-m9685", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "node": "kind-worker4"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:104	Virtually evicted pods from candidate nodes	{"evicted": 25, "candidateNodes": 7}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 0}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.841Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 1}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.842Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 2}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.843Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.844Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 3}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.845Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 4}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.846Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 5}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.847Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 1, "perm": 6}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.848Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 0, "node": "kind-worker5"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-8ms27", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.849Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-v95fx", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-2bshh", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 1, "node": "kind-worker4"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-b-bq4t5", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-ccwbn", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-m9685", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "node": "kind-worker4"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "node": "kind-worker4"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 2, "node": "kind-worker3"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-ncprh", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-8zhtc", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-b-m52m7", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-8ghmm", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "node": "kind-worker3"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 3, "node": "kind-worker6"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-fq64g", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-planner-20260922-112631-6qbbn", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-fbrkt", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-wh2r7", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 4, "node": "kind-worker2"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "node": "kind-worker2"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-webhook-7fc775d486-mg6v8", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "rs-a-dxr7n", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-lhxt9", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "podtetris-evictor-7c9f4999dc-9s4nj", "namespace": "podtetris", "reason": "pod belongs to podtetris planner own namespace"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "node": "kind-worker2"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-vzx8w", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 5, "node": "kind-worker7"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-zfmcr", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "deployment-fixed-65bffb5cd6-z6pnx", "namespace": "default", "reason": "pod is fixed to the node via a custom rule"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-drqpl", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:72	Virtually evicting pods from candidate node	{"candidate": 6, "node": "kind-worker"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kube-proxy-2klbz", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "deployment-fixed-65bffb5cd6-2ldzh", "namespace": "default", "reason": "pod is fixed to the node via a custom rule"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:93	Virtually evicted pod	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:75	Skipping non-evictable pod	{"pod": "kindnet-5scg4", "namespace": "kube-system", "reason": "pod belongs to namespace 'kube-system'"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:104	Virtually evicted pods from candidate nodes	{"evicted": 25, "candidateNodes": 7}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 0}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.850Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 1}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.851Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.852Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 2}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.853Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 3}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.854Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker", "cost": 10}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker", "cost": 60}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker", "cost": 40}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker", "cost": 25}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker", "cost": 80}
+2026-09-22T09:26:31.855Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 4}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker7", "cost": 60}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker7", "cost": 60}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker7", "cost": 80}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker7", "cost": 10}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker7", "cost": 80}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker7", "cost": 10}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker7", "cost": 80}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.856Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 5}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "rs-a-lxhl6", "namespace": "default", "node": "kind-worker6"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 60}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 80}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "from": "kind-worker7", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker6", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker6", "cost": 10}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "node": "kind-worker6"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/main.go:196	Running simulation	{"set": 2, "perm": 6}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-6lq65", "namespace": "default", "from": "kind-worker4", "to": "kind-worker6", "cost": 25}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-1", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-a-67f5c8c457-ft4zt", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-74477", "namespace": "default", "from": "kind-worker5", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-2t44p", "namespace": "default", "from": "kind-worker2", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.857Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-2", "namespace": "default", "node": "kind-worker"}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-bq4t5", "namespace": "default", "from": "kind-worker4", "to": "kind-worker7", "cost": 60}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-lxhl6", "namespace": "default", "from": "kind-worker6", "to": "kind-worker7", "cost": 80}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-bfpc2", "namespace": "default", "from": "kind-worker6", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "statefulset-0", "namespace": "default", "node": "kind-worker5"}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-gqs6n", "namespace": "default", "from": "kind-worker4", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-lpj57", "namespace": "default", "from": "kind-worker3", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-cainjector-5b68759df5-5f7tj", "namespace": "cert-manager", "from": "kind-worker2", "to": "kind-worker7", "cost": 10}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-vtgtw", "namespace": "default", "from": "kind-worker", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-pxngf", "namespace": "default", "from": "kind-worker5", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-2bshh", "namespace": "default", "from": "kind-worker5", "to": "kind-worker7", "cost": 80}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-m45kp", "namespace": "default", "from": "kind-worker3", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-d966bfbbf-xmhlt", "namespace": "cert-manager", "from": "kind-worker6", "to": "kind-worker7", "cost": 10}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-a-67f5c8c457-p64qn", "namespace": "default", "from": "kind-worker6", "to": "kind-worker7", "cost": 40}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:133	Pod reassigned to same node	{"pod": "deployment-b-7b96bcf96d-jxrsn", "namespace": "default", "node": "kind-worker7"}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-b-m52m7", "namespace": "default", "from": "kind-worker3", "to": "kind-worker7", "cost": 60}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-d9c9b", "namespace": "default", "from": "kind-worker2", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "cert-manager-webhook-9596c4d8-4tm7f", "namespace": "cert-manager", "from": "kind-worker4", "to": "kind-worker7", "cost": 10}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "deployment-b-7b96bcf96d-qp8v2", "namespace": "default", "from": "kind-worker", "to": "kind-worker7", "cost": 25}
+2026-09-22T09:26:31.858Z	DEBUG	planner	planner/simulation.go:151	Pod moved during simulation	{"pod": "rs-a-dxr7n", "namespace": "default", "from": "kind-worker2", "to": "kind-worker7", "cost": 80}
+2026-09-22T09:26:31.858Z	INFO	planner	planner/main.go:228	Finished simulations
+2026-09-22T09:26:31.858Z	INFO	planner	planner/main.go:235	Selected best consolidation plan	{"set": 2, "perm": 3, "freedNodes": 4, "nodesToFree": ["kind-worker2", "kind-worker3", "kind-worker4", "kind-worker6"], "moves": 20, "cost": 780, "score": 820}
+2026-09-22T09:26:31.858Z	INFO	planner	planner/main.go:251	Score threshold reached, applying consolidation plan	{"score": 820, "threshold": 0}
+2026-09-22T09:26:31.864Z	INFO	planner	planner/consolidation.go:33	Created ConsolidationPlan	{"namespace": "podtetris", "name": "consolidationplan-lgwv5"}
+2026-09-22T09:26:33.866Z	INFO	planner	planner/consolidation.go:54	Finished creating PodMoves for ConsolidationPlan	{"plan": "consolidationplan-lgwv5", "created": 20, "errors": 0}
