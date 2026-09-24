@@ -55,7 +55,9 @@ func main() {
 	}
 
 	scheme := runtime.NewScheme()
-	_ = corev1.AddToScheme(scheme)
+	if err := corev1.AddToScheme(scheme); err != nil {
+		log.Fatal("Could not register corev1 scheme", zap.Error(err))
+	}
 	if err := podtetrisiov1.AddToScheme(scheme); err != nil {
 		log.Fatal("Could not register PodMove scheme", zap.Error(err))
 	}
