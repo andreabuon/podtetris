@@ -65,7 +65,6 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 	owner := metav1.GetControllerOf(pod)
 	if owner == nil {
-		log.Printf("no owner controller found for the pod. Allowing")
 		return allow(req.UID)
 	}
 
@@ -76,8 +75,6 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 	}
 
 	if len(matchingPodMoves) == 0 {
-		log.Printf("No matching PodMove for pod %s/%s; allowing without mutation",
-			pod.Namespace, podDisplayName(pod))
 		return allow(req.UID)
 	}
 
@@ -109,7 +106,6 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 	}
 
 	if chosenPodMove == nil {
-		log.Printf("no possible open PodMove could be chosen. Allowing with no mutation")
 		return allow(req.UID)
 	}
 
