@@ -35,12 +35,20 @@ func handleMutate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var admissionResponse *admissionv1.AdmissionResponse
+	if podMoveCache.WaitForCacheSync(r.Context()) {
+		admissionResponse = buildAdmissionResponse(r.Context(), review.Request)
+	} else {
+		log.Error("PodMove cache not synced; admitting pod without pinning")
+		admissionResponse = allow(review.Request.UID)
+	}
+
 	resp := admissionv1.AdmissionReview{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: "admission.k8s.io/v1",
 			Kind:       "AdmissionReview",
 		},
-		Response: buildAdmissionResponse(r.Context(), review.Request),
+		Response: admissionResponse,
 	}
 
 	out, err := json.Marshal(resp)
