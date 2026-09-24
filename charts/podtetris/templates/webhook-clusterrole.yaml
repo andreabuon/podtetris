@@ -4,6 +4,9 @@ kind: ClusterRole
 metadata:
   name: {{ include "podtetris.serviceAccountName" . }}-webhook
 rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get"]
   - apiGroups: ["podtetris.io.podtetris.io"]
     resources: ["podmoves"]
     verbs: ["get", "list", "watch"]
