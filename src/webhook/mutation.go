@@ -95,7 +95,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 	for _, podMove := range matchingPodMoves {
 		evicted, err := hasBeenEvicted(ctx, podMove)
 		if err != nil {
-			log.Info("Could not determine whether source pod has been evicted; trying next PodMove",
+			log.Error("Could not determine whether source pod has been evicted; trying next PodMove",
 				zap.String("namespace", podMove.Spec.Pod.Namespace),
 				zap.String("pod", podMove.Spec.Pod.Name),
 				zap.Error(err),
