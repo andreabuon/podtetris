@@ -22,7 +22,7 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]*podtetrisi
 	}
 
 	var list podtetrisiov1.PodMoveList
-	if err := cacheReader.List(ctx, &list,
+	if err := podMoveCache.List(ctx, &list,
 		client.InNamespace(podtetrisNamespace),
 		client.MatchingLabels{podtetrisiov1.OwnerUIDLabelKey: string(owner.UID)},
 	); err != nil {

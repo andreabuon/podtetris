@@ -30,9 +30,9 @@ const (
 var (
 	log *zap.Logger
 
-	// cacheReader serves reads from informers (PodMoves, Pods).
-	cacheReader client.Reader
-	// apiClient is the live API client for claim writes and eviction confirmation.
+	// podMoveCache serves PodMove reads from an informer in podtetrisNamespace.
+	podMoveCache cache.Cache
+	// apiClient is the live API client for Pod reads and PodMove claim writes.
 	apiClient client.Client
 
 	podtetrisNamespace = "podtetris"
@@ -69,19 +69,30 @@ func main() {
 		podtetrisNamespace = ns
 	}
 
-	informerCache, err := cache.New(cfg, cache.Options{Scheme: scheme})
+	podMoveCache, err = cache.New(cfg, cache.Options{
+		Scheme:                      scheme,
+		DefaultNamespaces:           map[string]cache.Config{podtetrisNamespace: {}},
+		ReaderFailOnMissingInformer: true,
+	})
 	if err != nil {
-		log.Fatal("Could not create informer cache", zap.Error(err))
+		log.Fatal("Could not create PodMove cache", zap.Error(err))
 	}
 	apiClient, err = client.New(cfg, client.Options{Scheme: scheme})
 	if err != nil {
 		log.Fatal("Could not create Kubernetes client", zap.Error(err))
 	}
-	cacheReader = informerCache
 
-	go informerCache.Start(context.Background())
-	if !informerCache.WaitForCacheSync(context.Background()) {
-		log.Fatal("Timed out waiting for informer cache sync")
+	ctx := context.Background()
+	if _, err := podMoveCache.GetInformer(ctx, &podtetrisiov1.PodMove{}); err != nil {
+		log.Fatal("Could not create PodMove informer", zap.Error(err))
+	}
+	go func() {
+		if err := podMoveCache.Start(ctx); err != nil {
+			log.Fatal("PodMove cache stopped", zap.Error(err))
+		}
+	}()
+	if !podMoveCache.WaitForCacheSync(ctx) {
+		log.Fatal("Timed out waiting for PodMove cache sync")
 	}
 
 	log.Info("PODTetris webhook starting", zap.String("namespace", podtetrisNamespace))

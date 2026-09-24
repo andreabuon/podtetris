@@ -147,19 +147,8 @@ func hasBeenEvicted(ctx context.Context, pm *podtetrisiov1.PodMove) (bool, error
 	}
 
 	ref := pm.Spec.Pod
-	evicted, err := isSourcePodGone(ctx, cacheReader, ref)
-	if err != nil {
-		return false, err
-	}
-	if evicted {
-		return true, nil
-	}
-	return isSourcePodGone(ctx, apiClient, ref)
-}
-
-func isSourcePodGone(ctx context.Context, r client.Reader, ref corev1.ObjectReference) (bool, error) {
 	var retrieved corev1.Pod
-	err := r.Get(ctx, client.ObjectKey{Namespace: ref.Namespace, Name: ref.Name}, &retrieved)
+	err := apiClient.Get(ctx, client.ObjectKey{Namespace: ref.Namespace, Name: ref.Name}, &retrieved)
 
 	switch {
 	case apierrors.IsNotFound(err):
