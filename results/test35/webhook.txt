@@ -1,0 +1,128 @@
+2026/09/24 10:24:59 PODTetris webhook starting (namespace=podtetris)...
+2026/09/24 10:24:59 Listening on :8443
+2026/09/24 10:25:13 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-a-67f5c8c457-w5crk-1ab94a7f
+2026/09/24 10:25:13 Intercepted CREATE for pod default/rs-a-<pending-name> (generateName="rs-a-") -> pinning to node "kind-worker5" from PodMove podtetris/rs-a-zm75k-9e6cbddb
+2026/09/24 10:25:13 Intercepted CREATE for pod default/rs-a-<pending-name> (generateName="rs-a-") -> pinning to node "kind-worker5" from PodMove podtetris/rs-a-z9ctt-0f87467c
+2026/09/24 10:25:14 Intercepted CREATE for pod cert-manager/cert-manager-d966bfbbf-<pending-name> (generateName="cert-manager-d966bfbbf-") -> pinning to node "kind-worker5" from PodMove podtetris/cert-manager-d966bfbbf-j27zg-911cb87f
+2026/09/24 10:25:14 Intercepted CREATE for pod cert-manager/cert-manager-webhook-9596c4d8-<pending-name> (generateName="cert-manager-webhook-9596c4d8-") -> pinning to node "kind-worker5" from PodMove podtetris/cert-manager-webhook-9596c4d8-d58mm-9c7ecfda
+2026/09/24 10:25:14 Intercepted CREATE for pod cert-manager/cert-manager-cainjector-5b68759df5-<pending-name> (generateName="cert-manager-cainjector-5b68759df5-") -> pinning to node "kind-worker5" from PodMove podtetris/cert-manager-cainjector-5b68759df5-5djqq-81d1457c
+[controller-runtime] log.SetLogger(...) was never called; logs will not be displayed.
+Detected at:
+	>  goroutine 43 [running]:
+	>  runtime/debug.Stack()
+	>  	/usr/local/go/src/runtime/debug/stack.go:26 +0x64
+	>  sigs.k8s.io/controller-runtime/pkg/log.eventuallyFulfillRoot()
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/log/log.go:60 +0xe8
+	>  sigs.k8s.io/controller-runtime/pkg/log.(*delegatingLogSink).Enabled(0x156f77384380, 0x4)
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/log/deleg.go:111 +0x30
+	>  github.com/go-logr/logr.Logger.Info({{0xf598c0?, 0x156f77384380?}, 0x4?}, {0xe921f1, 0xb}, {0x156f773a8600, 0x6, 0x6})
+	>  	/go/pkg/mod/github.com/go-logr/logr@v1.4.3/logr.go:276 +0x5c
+	>  k8s.io/client-go/tools/cache.handleAnyWatch({0xf55ee8, 0x156f77481980}, {0x0?, 0x156f7710b958?, 0x18b9d80?}, {0xf4f870, 0x156f773b05a0}, {0xffff669ef600, 0x156f76fa83c0}, {0xf66a98, ...}, ...)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:1093 +0x1090
+	>  k8s.io/client-go/tools/cache.handleWatch({0xf55ee8?, 0x156f77481980?}, {0x156f7710ba68?, 0x8ba80?, 0x18b9d80?}, {0xf4f870?, 0x156f773b05a0?}, {0xffff669ef600?, 0x156f76fa83c0?}, {0xf66a98?, ...}, ...)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:958 +0x6c
+	>  k8s.io/client-go/tools/cache.(*Reflector).watch(0x156f77056100, {0xf55ee8, 0x156f77481980}, {0xf4f870, 0x156f773b05a0}, 0x156f77026ee0)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:620 +0x4c0
+	>  k8s.io/client-go/tools/cache.(*Reflector).watchWithResync(0x156f77056100, {0xf55ee8, 0x156f77481980}, {0xf4f870, 0x156f773b05a0})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:553 +0x11c
+	>  k8s.io/client-go/tools/cache.(*Reflector).ListAndWatchWithContext(0x156f77056100, {0xf55ee8, 0x156f77481980})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:508 +0x380
+	>  k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1({0xf55ee8, 0x156f77481980})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:429 +0x38
+	>  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1({0xf55ee8?, 0x156f77481980?}, 0x10000000c?)
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:53 +0x60
+	>  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext({0xf55ee8, 0x156f77481980}, {0xf557a0, 0x156f77024360}, 0x1, 0x1, 0x156f7710bf38)
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:54 +0xc4
+	>  k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until(...)
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+	>  k8s.io/client-go/tools/cache.(*Reflector).RunWithContext(0x156f77056100, {0xf55ee8, 0x156f77481980})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428 +0x238
+	>  k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3()
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63 +0x28
+	>  k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72 +0x4c
+	>  created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 36
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:70 +0x74
+2026/09/24 10:33:12 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-a-67f5c8c457-hlch8-d154bb35
+2026/09/24 10:24:59 PODTetris webhook starting (namespace=podtetris)...
+2026/09/24 10:24:59 Listening on :8443
+2026/09/24 10:25:12 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker5" from PodMove podtetris/rs-b-hd995-fb3eec75
+2026/09/24 10:25:12 Intercepted CREATE for pod default/rs-b-<pending-name> (generateName="rs-b-") -> pinning to node "kind-worker5" from PodMove podtetris/rs-b-hqbp6-c82a3126
+2026/09/24 10:25:12 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-a-67f5c8c457-bxtpd-2b3715df
+2026/09/24 10:25:12 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-b-7b96bcf96d-4mg57-2738b157
+2026/09/24 10:25:12 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-b-7b96bcf96d-zvkzr-bec13b3f
+2026/09/24 10:25:13 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-b-7b96bcf96d-k4z76-be901c3f
+2026/09/24 10:25:13 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-b-7b96bcf96d-8hcc6-4a8c4213
+2026/09/24 10:25:13 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-b-7b96bcf96d-nbps9-27280937
+2026/09/24 10:25:14 Intercepted CREATE for pod default/deployment-b-7b96bcf96d-<pending-name> (generateName="deployment-b-7b96bcf96d-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-b-7b96bcf96d-62zs8-c58559e0
+2026/09/24 10:29:12 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-a-67f5c8c457-tjnkx-46c522f2
+[controller-runtime] log.SetLogger(...) was never called; logs will not be displayed.
+Detected at:
+	>  goroutine 44 [running]:
+	>  runtime/debug.Stack()
+	>  	/usr/local/go/src/runtime/debug/stack.go:26 +0x64
+	>  sigs.k8s.io/controller-runtime/pkg/log.eventuallyFulfillRoot()
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/log/log.go:60 +0xe8
+	>  sigs.k8s.io/controller-runtime/pkg/log.(*delegatingLogSink).Enabled(0x560d10b8da00, 0x4)
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/log/deleg.go:111 +0x30
+	>  github.com/go-logr/logr.Logger.Info({{0xf598c0?, 0x560d10b8da00?}, 0x4?}, {0xe921f1, 0xb}, {0x560d10d8af60, 0x6, 0x6})
+	>  	/go/pkg/mod/github.com/go-logr/logr@v1.4.3/logr.go:276 +0x5c
+	>  k8s.io/client-go/tools/cache.handleAnyWatch({0xf55ee8, 0x560d10a50c60}, {0x0?, 0x560d10d63958?, 0x18b9d80?}, {0xf4f870, 0x560d10b22be0}, {0xffff43bc3200, 0x560d10bf4500}, {0xf66a98, ...}, ...)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:1093 +0x1090
+	>  k8s.io/client-go/tools/cache.handleWatch({0xf55ee8?, 0x560d10a50c60?}, {0x560d10ac3180?, 0x3d?, 0x18b9d80?}, {0xf4f870?, 0x560d10b22be0?}, {0xffff43bc3200?, 0x560d10bf4500?}, {0xf66a98?, ...}, ...)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:958 +0x6c
+	>  k8s.io/client-go/tools/cache.(*Reflector).watch(0x560d10b84500, {0xf55ee8, 0x560d10a50c60}, {0xf4f870, 0x560d10b22be0}, 0x560d1099f3b0)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:620 +0x4c0
+	>  k8s.io/client-go/tools/cache.(*Reflector).watchWithResync(0x560d10b84500, {0xf55ee8, 0x560d10a50c60}, {0xf4f870, 0x560d10b22be0})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:553 +0x11c
+	>  k8s.io/client-go/tools/cache.(*Reflector).ListAndWatchWithContext(0x560d10b84500, {0xf55ee8, 0x560d10a50c60})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:508 +0x380
+	>  k8s.io/client-go/tools/cache.(*Reflector).RunWithContext.func1({0xf55ee8, 0x560d10a50c60})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:429 +0x38
+	>  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1({0xf55ee8?, 0x560d10a50c60?}, 0x100000000?)
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:53 +0x60
+	>  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext({0xf55ee8, 0x560d10a50c60}, {0xf557a0, 0x560d108acc40}, 0x1, 0x1, 0x560d10d63f38)
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/loop.go:54 +0xc4
+	>  k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until(...)
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/delay.go:39
+	>  k8s.io/client-go/tools/cache.(*Reflector).RunWithContext(0x560d10b84500, {0xf55ee8, 0x560d10a50c60})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/reflector.go:428 +0x238
+	>  k8s.io/client-go/tools/cache.(*controller).RunWithContext.(*Group).StartWithContext.func3()
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:63 +0x28
+	>  k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1()
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:72 +0x4c
+	>  created by k8s.io/apimachinery/pkg/util/wait.(*Group).Start in goroutine 37
+	>  	/go/pkg/mod/k8s.io/apimachinery@v0.36.2/pkg/util/wait/wait.go:70 +0x74
+2026/09/24 10:31:12 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-a-67f5c8c457-m86k2-8cf00e98
+2026/09/24 10:24:59 PODTetris webhook starting (namespace=podtetris)...
+2026/09/24 10:24:59 Listening on :8443
+[controller-runtime] log.SetLogger(...) was never called; logs will not be displayed.
+Detected at:
+	>  goroutine 222 [running]:
+	>  runtime/debug.Stack()
+	>  	/usr/local/go/src/runtime/debug/stack.go:26 +0x64
+	>  sigs.k8s.io/controller-runtime/pkg/log.eventuallyFulfillRoot()
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/log/log.go:60 +0xe8
+	>  sigs.k8s.io/controller-runtime/pkg/log.(*delegatingLogSink).WithName(0x723e648f8700, {0x723e647834d0, 0x14})
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/log/deleg.go:147 +0x34
+	>  github.com/go-logr/logr.Logger.WithName(...)
+	>  	/go/pkg/mod/github.com/go-logr/logr@v1.4.3/logr.go:345
+	>  k8s.io/klog/v2.LoggerWithName({{0xf598c0?, 0x723e648f8700?}, 0x0?}, {0x723e647834d0?, 0x0?})
+	>  	/go/pkg/mod/k8s.io/klog/v2@v2.140.0/contextual.go:200 +0x50
+	>  k8s.io/client-go/tools/cache.NewRealFIFOWithOptions({0x723e646fc0c0, {0x723e647834d0, 0x14}, 0xf40d68, {0x0, 0x0}, 0x0, 0x1, 0x1, {{0x0, ...}, ...}, ...})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/the_real_fifo.go:856 +0x300
+	>  k8s.io/client-go/tools/cache.newQueueFIFO({{0xf598c0, 0x723e648f8700}, 0x0}, {0xe522c0, 0x723e646d2008}, {0xf5d0f0, 0x723e64751080}, 0x0, {{0x0, 0x0}, ...}, ...)
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/controller.go:866 +0x35c
+	>  k8s.io/client-go/tools/cache.(*sharedIndexInformer).RunWithContext.func1(0x723e646f4a20, {{0xf598c0?, 0x723e648f8700?}, 0x723e6495b470?})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/shared_informer.go:732 +0x150
+	>  k8s.io/client-go/tools/cache.(*sharedIndexInformer).RunWithContext(0x723e646f4a20, {0xf55ee8, 0x723e6495b4a0})
+	>  	/go/pkg/mod/k8s.io/client-go@v0.36.2/tools/cache/shared_informer.go:754 +0x94
+	>  sigs.k8s.io/controller-runtime/pkg/cache/internal.(*Cache).Start(0x723e646520e0, 0x723e649232c0?)
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/cache/internal/informers.go:128 +0xd0
+	>  sigs.k8s.io/controller-runtime/pkg/cache/internal.(*Informers).startInformerLocked.func1()
+	>  	/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.24.1/pkg/cache/internal/informers.go:260 +0x38
+	>  sync.(*WaitGroup).Go.func1()
+	>  	/usr/local/go/src/sync/waitgroup.go:258 +0x48
+	>  created by sync.(*WaitGroup).Go in goroutine 228
+	>  	/usr/local/go/src/sync/waitgroup.go:238 +0x70
+2026/09/24 10:27:12 Intercepted CREATE for pod default/deployment-a-67f5c8c457-<pending-name> (generateName="deployment-a-67f5c8c457-") -> pinning to node "kind-worker5" from PodMove podtetris/deployment-a-67f5c8c457-v9vmg-c8bd5aa5
