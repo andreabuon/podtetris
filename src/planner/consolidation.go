@@ -88,12 +88,16 @@ func createPodMoveCRD(ctx context.Context, c client.Client, plan *podtetrisv1.Co
 	if controllerRef == nil {
 		return fmt.Errorf("pod %s/%s has no controller owner", pod.Namespace, pod.Name)
 	}
+	if controllerRef.UID == "" {
+		return fmt.Errorf("pod %s/%s controller owner %s/%s has empty UID", pod.Namespace, pod.Name, controllerRef.Kind, controllerRef.Name)
+	}
 	pm := &podtetrisv1.PodMove{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: Config.PodtetrisNamespace,
 			Name:      fmt.Sprintf("%s-%s", pod.Name, string(pod.UID)[:8]),
 			Labels: map[string]string{
 				podtetrisv1.ConsolidationPlanLabelKey: plan.Name,
+				podtetrisv1.OwnerUIDLabelKey:          string(controllerRef.UID),
 			},
 		},
 		Spec: podtetrisv1.PodMoveSpec{

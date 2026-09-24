@@ -17,9 +17,15 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]*podtetrisi
 	if owner == nil {
 		return nil, fmt.Errorf("no owner controller found for the pod")
 	}
+	if owner.UID == "" {
+		return nil, fmt.Errorf("owner %s/%s has empty UID", owner.Kind, owner.Name)
+	}
 
 	var list podtetrisiov1.PodMoveList
-	if err := cacheReader.List(ctx, &list, client.InNamespace(podtetrisNamespace)); err != nil {
+	if err := cacheReader.List(ctx, &list,
+		client.InNamespace(podtetrisNamespace),
+		client.MatchingLabels{podtetrisiov1.OwnerUIDLabelKey: string(owner.UID)},
+	); err != nil {
 		return nil, err
 	}
 
