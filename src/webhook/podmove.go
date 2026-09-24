@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
+	"go.uber.org/zap"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -39,7 +40,11 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]*podtetrisi
 			continue
 		}
 		if pm.Spec.TargetNode == "" {
-			return nil, fmt.Errorf("podmove %s/%s has empty spec.targetNode", pm.Namespace, pm.Name)
+			log.Error("Skipping PodMove with empty spec.targetNode",
+				zap.String("namespace", pm.Namespace),
+				zap.String("podMove", pm.Name),
+			)
+			continue
 		}
 		out = append(out, pm)
 	}

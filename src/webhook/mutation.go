@@ -68,8 +68,8 @@ func handleMutate(w http.ResponseWriter, r *http.Request) {
 func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
 	pod, err := decodePod(req)
 	if err != nil {
-		log.Error("Error unmarshalling pod", zap.Error(err))
-		return deny(req.UID, fmt.Sprintf("could not unmarshal pod: %v", err))
+		log.Error("Error unmarshalling pod; admitting without pinning", zap.Error(err))
+		return allow(req.UID)
 	}
 
 	owner := metav1.GetControllerOf(pod)
@@ -79,12 +79,12 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 	matchingPodMoves, err := listOpenPodMoveMatches(ctx, pod)
 	if err != nil {
-		log.Error("Error listing open PodMoves",
+		log.Error("Error listing open PodMoves; admitting without pinning",
 			zap.String("namespace", pod.Namespace),
 			zap.String("pod", podDisplayName(pod)),
 			zap.Error(err),
 		)
-		return deny(req.UID, err.Error())
+		return allow(req.UID)
 	}
 
 	if len(matchingPodMoves) == 0 {
@@ -109,12 +109,13 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 		claimed, err := claimReplacement(ctx, podMove, pod)
 		if err != nil {
-			log.Error("Error claiming PodMove",
+			log.Error("Error claiming PodMove; trying next candidate",
 				zap.String("namespace", pod.Namespace),
 				zap.String("pod", podDisplayName(pod)),
+				zap.String("podMove", podMove.Name),
 				zap.Error(err),
 			)
-			return deny(req.UID, err.Error())
+			continue
 		}
 		if !claimed {
 			log.Info("PodMove no longer open; trying next candidate",
@@ -142,8 +143,8 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 	patchBytes, err := json.Marshal(buildMutationPatch(pod, chosenPodMove.Spec.TargetNode, chosenPodMove.Name))
 	if err != nil {
-		log.Error("Error marshalling patch", zap.Error(err))
-		return deny(req.UID, fmt.Sprintf("could not marshal patch: %v", err))
+		log.Error("Error marshalling patch; admitting without pinning", zap.Error(err))
+		return allow(req.UID)
 	}
 	return allowPatched(req.UID, patchBytes)
 }
@@ -197,14 +198,6 @@ func allowPatched(uid types.UID, patch []byte) *admissionv1.AdmissionResponse {
 		Allowed:   true,
 		Patch:     patch,
 		PatchType: &pt,
-	}
-}
-
-func deny(uid types.UID, msg string) *admissionv1.AdmissionResponse {
-	return &admissionv1.AdmissionResponse{
-		UID:     uid,
-		Allowed: false,
-		Result:  &metav1.Status{Message: msg},
 	}
 }
 
