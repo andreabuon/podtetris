@@ -12,18 +12,18 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisiov1.PodMove, error) {
+func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]*podtetrisiov1.PodMove, error) {
 	owner := metav1.GetControllerOf(pod)
 	if owner == nil {
 		return nil, fmt.Errorf("no owner controller found for the pod")
 	}
 
 	var list podtetrisiov1.PodMoveList
-	if err := k8sClient.List(ctx, &list, client.InNamespace(podtetrisNamespace)); err != nil {
+	if err := cacheReader.List(ctx, &list, client.InNamespace(podtetrisNamespace)); err != nil {
 		return nil, err
 	}
 
-	out := make([]podtetrisiov1.PodMove, 0)
+	out := make([]*podtetrisiov1.PodMove, 0)
 	for i := range list.Items {
 		pm := &list.Items[i]
 		if !replacementMatches(pm, pod, owner) {
@@ -35,7 +35,7 @@ func listOpenPodMoveMatches(ctx context.Context, pod *corev1.Pod) ([]podtetrisio
 		if pm.Spec.TargetNode == "" {
 			return nil, fmt.Errorf("podmove %s/%s has empty spec.targetNode", pm.Namespace, pm.Name)
 		}
-		out = append(out, *pm)
+		out = append(out, pm)
 	}
 	return out, nil
 }
@@ -47,7 +47,7 @@ func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev
 	err = retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		claimed = false
 		current := &podtetrisiov1.PodMove{}
-		if err := k8sClient.Get(ctx, client.ObjectKeyFromObject(pm), current); err != nil {
+		if err := apiClient.Get(ctx, client.ObjectKeyFromObject(pm), current); err != nil {
 			return err
 		}
 		if !isOpenForReplacement(current) {
@@ -60,7 +60,7 @@ func claimReplacement(ctx context.Context, pm *podtetrisiov1.PodMove, pod *corev
 			Message:            fmt.Sprintf("Replacement pod %s/%s intercepted and pinned to node %q", pod.Namespace, podDisplayName(pod), current.Spec.TargetNode),
 			ObservedGeneration: current.Generation,
 		})
-		if err := k8sClient.Status().Update(ctx, current); err != nil {
+		if err := apiClient.Status().Update(ctx, current); err != nil {
 			return err
 		}
 		*pm = *current

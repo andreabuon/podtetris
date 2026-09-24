@@ -11,6 +11,7 @@ import (
 	admissionv1 "k8s.io/api/admission/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -78,9 +79,9 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		return allow(req.UID)
 	}
 
-	var chosenPodMove *podtetrisiov1.PodMove = nil
+	var chosenPodMove *podtetrisiov1.PodMove
 	for _, podMove := range matchingPodMoves {
-		evicted, err := hasBeenEvicted(ctx, podMove.Spec.Pod)
+		evicted, err := hasBeenEvicted(ctx, podMove)
 		if err != nil {
 			log.Printf("Can not determine whether the pod %s/%s has been evicted: %v. Trying the next PodMove", podMove.Spec.Pod.Namespace, podMove.Spec.Pod.Name, err)
 			continue
@@ -90,7 +91,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 			continue
 		}
 
-		claimed, err := claimReplacement(ctx, &podMove, pod)
+		claimed, err := claimReplacement(ctx, podMove, pod)
 		if err != nil {
 			log.Printf("Error claiming PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(pod), err)
 			return deny(req.UID, err.Error())
@@ -101,7 +102,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		}
 
 		log.Printf("Intercepted CREATE for pod %s/%s (generateName=%q) -> pinning to node %q from PodMove %s/%s", pod.Namespace, podDisplayName(pod), pod.GenerateName, podMove.Spec.TargetNode, podMove.Namespace, podMove.Name)
-		chosenPodMove = &podMove
+		chosenPodMove = podMove
 		break
 	}
 
@@ -117,9 +118,26 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 	return allowPatched(req.UID, patchBytes)
 }
 
-func hasBeenEvicted(ctx context.Context, ref corev1.ObjectReference) (bool, error) {
+// hasBeenEvicted reports whether the PodMove's source pod is gone (or already marked SourceEvicted).
+func hasBeenEvicted(ctx context.Context, pm *podtetrisiov1.PodMove) (bool, error) {
+	if meta.IsStatusConditionTrue(pm.Status.Conditions, podtetrisiov1.ConditionSourceEvicted) {
+		return true, nil
+	}
+
+	ref := pm.Spec.Pod
+	evicted, err := isSourcePodGone(ctx, cacheReader, ref)
+	if err != nil {
+		return false, err
+	}
+	if evicted {
+		return true, nil
+	}
+	return isSourcePodGone(ctx, apiClient, ref)
+}
+
+func isSourcePodGone(ctx context.Context, r client.Reader, ref corev1.ObjectReference) (bool, error) {
 	var retrieved corev1.Pod
-	err := k8sClient.Get(ctx, client.ObjectKey{Namespace: ref.Namespace, Name: ref.Name}, &retrieved)
+	err := r.Get(ctx, client.ObjectKey{Namespace: ref.Namespace, Name: ref.Name}, &retrieved)
 
 	switch {
 	case apierrors.IsNotFound(err):

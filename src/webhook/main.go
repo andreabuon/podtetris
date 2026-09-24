@@ -4,6 +4,7 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"errors"
 	"log"
@@ -15,6 +16,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/client-go/rest"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -24,7 +26,11 @@ const (
 )
 
 var (
-	k8sClient          client.Client
+	// cacheReader serves reads from informers (PodMoves, Pods).
+	cacheReader client.Reader
+	// apiClient is the live API client for claim writes and eviction confirmation.
+	apiClient client.Client
+
 	podtetrisNamespace = "podtetris"
 	codecs             = serializer.NewCodecFactory(runtime.NewScheme())
 	deserializer       = codecs.UniversalDeserializer()
@@ -41,15 +47,26 @@ func main() {
 	if err := podtetrisiov1.AddToScheme(scheme); err != nil {
 		log.Fatalf("could not register PodMove scheme: %v", err)
 	}
-	k8sClient, err = client.New(cfg, client.Options{Scheme: scheme})
-	if err != nil {
-		log.Fatalf("could not create Kubernetes client: %v", err)
-	}
 
 	if ns, err := currentNamespace(); err != nil {
 		log.Printf("Cannot determine current pod namespace: %v; using %q", err, podtetrisNamespace)
 	} else {
 		podtetrisNamespace = ns
+	}
+
+	informerCache, err := cache.New(cfg, cache.Options{Scheme: scheme})
+	if err != nil {
+		log.Fatalf("could not create informer cache: %v", err)
+	}
+	apiClient, err = client.New(cfg, client.Options{Scheme: scheme})
+	if err != nil {
+		log.Fatalf("could not create Kubernetes client: %v", err)
+	}
+	cacheReader = informerCache
+
+	go informerCache.Start(context.Background())
+	if !informerCache.WaitForCacheSync(context.Background()) {
+		log.Fatal("timed out waiting for informer cache sync")
 	}
 
 	log.Printf("PODTetris webhook starting (namespace=%s)...", podtetrisNamespace)
