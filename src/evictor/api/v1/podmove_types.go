@@ -55,6 +55,8 @@ const (
 
 	// PodMoveLabelKey is set on replacement pods by the mutating webhook to link them back to the PodMove that claimed the CREATE.
 	PodMoveLabelKey = "podtetris.io/podmove"
+	// OwnerUIDLabelKey is set on PodMoves to the controller owner UID (e.g. ReplicaSet) so the webhook can list candidates by owner.
+	OwnerUIDLabelKey = "podtetris.io/owner-uid"
 	// ConsolidationPlanLabelKey is set on PodMoves to retrieve the PodMoves from the ConsolidationPlan that created them.
 	ConsolidationPlanLabelKey = "podtetris.io/plan"
 )
