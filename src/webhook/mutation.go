@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
+	"go.uber.org/zap"
 	admissionv1 "k8s.io/api/admission/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -51,7 +51,7 @@ func handleMutate(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	if _, err := w.Write(out); err != nil {
-		log.Printf("Error writing response: %v", err)
+		log.Error("Error writing response", zap.Error(err))
 	}
 }
 
@@ -60,7 +60,7 @@ func handleMutate(w http.ResponseWriter, r *http.Request) {
 func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionRequest) *admissionv1.AdmissionResponse {
 	pod, err := decodePod(req)
 	if err != nil {
-		log.Printf("Error unmarshalling pod: %v", err)
+		log.Error("Error unmarshalling pod", zap.Error(err))
 		return deny(req.UID, fmt.Sprintf("could not unmarshal pod: %v", err))
 	}
 
@@ -71,7 +71,11 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 	matchingPodMoves, err := listOpenPodMoveMatches(ctx, pod)
 	if err != nil {
-		log.Printf("Error listing open PodMoves for pod %s/%s: %v", pod.Namespace, podDisplayName(pod), err)
+		log.Error("Error listing open PodMoves",
+			zap.String("namespace", pod.Namespace),
+			zap.String("pod", podDisplayName(pod)),
+			zap.Error(err),
+		)
 		return deny(req.UID, err.Error())
 	}
 
@@ -83,7 +87,11 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 	for _, podMove := range matchingPodMoves {
 		evicted, err := hasBeenEvicted(ctx, podMove)
 		if err != nil {
-			log.Printf("Can not determine whether the pod %s/%s has been evicted: %v. Trying the next PodMove", podMove.Spec.Pod.Namespace, podMove.Spec.Pod.Name, err)
+			log.Info("Could not determine whether source pod has been evicted; trying next PodMove",
+				zap.String("namespace", podMove.Spec.Pod.Namespace),
+				zap.String("pod", podMove.Spec.Pod.Name),
+				zap.Error(err),
+			)
 			continue
 		}
 
@@ -93,15 +101,29 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 		claimed, err := claimReplacement(ctx, podMove, pod)
 		if err != nil {
-			log.Printf("Error claiming PodMove for pod %s/%s: %v", pod.Namespace, podDisplayName(pod), err)
+			log.Error("Error claiming PodMove",
+				zap.String("namespace", pod.Namespace),
+				zap.String("pod", podDisplayName(pod)),
+				zap.Error(err),
+			)
 			return deny(req.UID, err.Error())
 		}
 		if !claimed {
-			log.Printf("PodMove %s/%s no longer open; trying next candidate", podMove.Namespace, podMove.Name)
+			log.Info("PodMove no longer open; trying next candidate",
+				zap.String("namespace", podMove.Namespace),
+				zap.String("podMove", podMove.Name),
+			)
 			continue
 		}
 
-		log.Printf("Intercepted CREATE for pod %s/%s (generateName=%q) -> pinning to node %q from PodMove %s/%s", pod.Namespace, podDisplayName(pod), pod.GenerateName, podMove.Spec.TargetNode, podMove.Namespace, podMove.Name)
+		log.Info("Intercepted CREATE; pinning pod to target node",
+			zap.String("namespace", pod.Namespace),
+			zap.String("pod", podDisplayName(pod)),
+			zap.String("generateName", pod.GenerateName),
+			zap.String("targetNode", podMove.Spec.TargetNode),
+			zap.String("podMoveNamespace", podMove.Namespace),
+			zap.String("podMove", podMove.Name),
+		)
 		chosenPodMove = podMove
 		break
 	}
@@ -112,7 +134,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 
 	patchBytes, err := json.Marshal(buildMutationPatch(pod, chosenPodMove.Spec.TargetNode, chosenPodMove.Name))
 	if err != nil {
-		log.Printf("Error marshalling patch: %v", err)
+		log.Error("Error marshalling patch", zap.Error(err))
 		return deny(req.UID, fmt.Sprintf("could not marshal patch: %v", err))
 	}
 	return allowPatched(req.UID, patchBytes)

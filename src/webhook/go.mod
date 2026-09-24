@@ -4,6 +4,8 @@ go 1.26.0
 
 require (
 	github.com/andreabuon/podtetris/src/evictor v0.0.0-20260924101435-1413548efe87
+	github.com/go-logr/zapr v1.3.0
+	go.uber.org/zap v1.27.1
 	k8s.io/api v0.36.2
 	k8s.io/apimachinery v0.36.2
 	k8s.io/client-go v0.36.2
