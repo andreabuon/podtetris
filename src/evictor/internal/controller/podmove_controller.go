@@ -33,6 +33,8 @@ import (
 const (
 	// evictionRetryInterval is how often to wait to try eviction again.
 	evictionRetryInterval = 2 * time.Minute
+	// claimTimeout is how long after eviction the webhook may take to claim a replacement pod CREATE.
+	claimTimeout = 5 * time.Minute
 	// persistPollInterval is how long to wait between checks that a webhook-claimed replacement persisted on the target node.
 	persistPollInterval = 25 * time.Second
 	// runningPollInterval is how long to wait between checks that a verified replacement has reached Running.
@@ -94,8 +96,7 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return r.reconcileClaimedReplacement(ctx, &pm)
 	}
 
-	log.Info("Waiting for webhook to claim a replacement pod CREATE")
-	return ctrl.Result{}, nil
+	return r.waitForClaim(ctx, &pm)
 }
 
 // SetupWithManager sets up the controller with the Manager.

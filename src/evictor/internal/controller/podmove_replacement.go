@@ -30,6 +30,34 @@ import (
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 )
 
+// waitForClaim requeues until the webhook claims a replacement CREATE.
+// A PodMove still unclaimed claimTimeout after SourceEvicted is marked Failed.
+func (r *PodMoveReconciler) waitForClaim(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
+
+	waited, err := timeSinceCondition(pm, podtetrisiov1.ConditionSourceEvicted)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	if waited < claimTimeout {
+		requeueAfter := claimTimeout - waited
+		log.Info("Waiting for webhook to claim a replacement pod CREATE",
+			"waited", waited,
+			"claimTimeout", claimTimeout,
+			"requeueAfter", requeueAfter,
+		)
+		return ctrl.Result{RequeueAfter: requeueAfter}, nil
+	}
+
+	log.Info("Webhook did not claim a replacement pod CREATE; claim timeout exceeded",
+		"waited", waited,
+		"claimTimeout", claimTimeout,
+	)
+	msg := fmt.Sprintf("No replacement pod CREATE was claimed within %s after eviction", claimTimeout)
+	return ctrl.Result{}, r.markFailed(ctx, pm, podtetrisiov1.ReasonReplacementNotClaimed, msg)
+}
+
 func (r *PodMoveReconciler) reconcileClaimedReplacement(ctx context.Context, pm *podtetrisiov1.PodMove) (ctrl.Result, error) {
 	replacement, err := r.findReplacementPod(ctx, pm)
 	if err != nil {

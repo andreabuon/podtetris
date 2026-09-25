@@ -41,6 +41,8 @@ const (
 	ReasonBlockedByPDB = "BlockedByPDB"
 	// ReasonEvictionFailed is set when eviction fails for a non-PDB reason (permanent denial or attempts exhausted).
 	ReasonEvictionFailed = "EvictionFailed"
+	// ReasonReplacementNotClaimed is set when the webhook did not claim a replacement CREATE within the claim timeout after eviction.
+	ReasonReplacementNotClaimed = "ReplacementNotClaimed"
 	// ReasonReplacementNotPersisted is set when an admitted replacement could not be bound to the target node within MaxPersistAttempts polls.
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
 	// ReasonReplacementNotRunning is set when a verified replacement pod did not reach Running within MaxRunningAttempts polls.
