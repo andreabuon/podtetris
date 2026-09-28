@@ -72,6 +72,15 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		return allow(req.UID)
 	}
 
+	if podMoveName, ok := pod.Labels[podtetrisiov1.PodMoveLabelKey]; ok {
+		log.Info("Pod already linked to a PodMove; admitting without claiming",
+			zap.String("namespace", pod.Namespace),
+			zap.String("pod", podDisplayName(pod)),
+			zap.String("podMove", podMoveName),
+		)
+		return allow(req.UID)
+	}
+
 	owner := metav1.GetControllerOf(pod)
 	if owner == nil {
 		return allow(req.UID)
