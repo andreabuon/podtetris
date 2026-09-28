@@ -116,6 +116,31 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 			continue
 		}
 
+		if dryRun {
+			log.Info("Dry run: would pin pod to target node; admitting without pinning",
+				zap.String("namespace", pod.Namespace),
+				zap.String("pod", podDisplayName(pod)),
+				zap.String("targetNode", podMove.Spec.TargetNode),
+				zap.String("podMoveNamespace", podMove.Namespace),
+				zap.String("podMove", podMove.Name),
+			)
+			return allow(req.UID)
+		}
+
+		// Admission dry-run requests must not have side effects (sideEffects: NoneOnDryRun),
+		// so the PodMove is not claimed but the patch is still returned.
+		if req.DryRun != nil && *req.DryRun {
+			log.Info("Admission dry-run request; pinning pod without claiming PodMove",
+				zap.String("namespace", pod.Namespace),
+				zap.String("pod", podDisplayName(pod)),
+				zap.String("targetNode", podMove.Spec.TargetNode),
+				zap.String("podMoveNamespace", podMove.Namespace),
+				zap.String("podMove", podMove.Name),
+			)
+			chosenPodMove = podMove
+			break
+		}
+
 		claimed, err := claimReplacement(ctx, podMove, pod)
 		if err != nil {
 			log.Error("Error claiming PodMove; trying next candidate",

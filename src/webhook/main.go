@@ -8,6 +8,8 @@ import (
 	"crypto/tls"
 	"errors"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
@@ -35,6 +37,9 @@ var (
 	// apiClient is the live API client for Pod reads and PodMove claim writes.
 	apiClient client.Client
 
+	// dryRun logs matching PodMoves without claiming them or pinning pods.
+	dryRun bool
+
 	podtetrisNamespace = "podtetris"
 	codecs             = serializer.NewCodecFactory(runtime.NewScheme())
 	deserializer       = codecs.UniversalDeserializer()
@@ -48,6 +53,16 @@ func main() {
 	defer logger.Sync()
 	log = logger.Named("webhook")
 	ctrl.SetLogger(zapr.NewLogger(logger))
+
+	if v, ok := os.LookupEnv("DRY_RUN"); ok {
+		dryRun, err = strconv.ParseBool(v)
+		if err != nil {
+			log.Fatal("Invalid DRY_RUN value", zap.String("value", v), zap.Error(err))
+		}
+	}
+	if dryRun {
+		log.Info("Dry run mode enabled: matching PodMoves will be logged but not claimed, and pods will not be pinned")
+	}
 
 	cfg, err := rest.InClusterConfig()
 	if err != nil {
@@ -97,7 +112,7 @@ func main() {
 		log.Fatal("Timed out waiting for PodMove cache sync")
 	}
 
-	log.Info("PODTetris webhook starting", zap.String("namespace", podtetrisNamespace))
+	log.Info("PODTetris webhook starting", zap.String("namespace", podtetrisNamespace), zap.Bool("dryRun", dryRun))
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/mutate", handleMutate)

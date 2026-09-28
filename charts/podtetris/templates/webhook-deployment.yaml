@@ -21,6 +21,9 @@ spec:
         - name: podtetris-webhook
           image: "{{ .Values.webhook.image.repository }}:{{ .Values.webhook.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.webhook.image.pullPolicy }}
+          env:
+            - name: DRY_RUN
+              value: {{ .Values.webhook.dryRun | quote }}
           ports:
             - containerPort: 8443
               name: https
