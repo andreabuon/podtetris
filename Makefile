@@ -7,6 +7,9 @@ all: deploy
 cluster:
 	cd labs/lab6_kind && ./setup-cluster.sh
 
+cluster-boutique:
+	cd labs/lab7_boutique-kind && ./setup-cluster.sh
+
 crd:
 	$(MAKE) -C src/evictor manifests
 
@@ -26,6 +29,12 @@ deploy: crd build-all
 # Local Kind: lab cert issuer + planner rules (→ rules ConfigMap → /etc/podtetris/rules.yaml).
 deploy-local: crd kind-load
 	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml -f charts/podtetris/values-kind.yaml
+
+# Local Kind + Online Boutique planner rules (labs/lab7_boutique-kind).
+deploy-local-boutique: crd kind-load
+	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace \
+	  -f labs/lab7_boutique-kind/values-kind.yaml \
+	  -f labs/lab7_boutique-kind/values-boutique-rules.yaml
 
 run-planner:
 	$(KUBECTL) create job --from=cronjob/podtetris-planner "podtetris-planner-$$(date +%Y%m%d-%H%M%S)" -n podtetris

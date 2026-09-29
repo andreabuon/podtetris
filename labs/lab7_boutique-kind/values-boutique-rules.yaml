@@ -1,0 +1,98 @@
+# Planner rules for Google Online Boutique (microservices-demo) in default ns.
+# First match wins. Higher cost = prefer leaving the pod where it is.
+#
+# Move costs (approx):
+#   redis-cart              → fixed (in-memory cart state)
+#   checkoutservice         → 100  (checkout path)
+#   paymentservice          → 90
+#   cartservice             → 80
+#   frontend                → 60
+#   recommendationservice   → 40
+#   productcatalogservice   → 35
+#   adservice               → 30
+#   other boutique apps     → 20
+#   loadgenerator           → 5   (cheap to move)
+#   anything else           → 10
+
+planner:
+  rules:
+    defaultMoveCost: 10
+    fixedPodsRules:
+      - name: redis-cart
+        selector:
+          labelSelector:
+            matchLabels:
+              app: redis-cart
+    moveCostRules:
+      - name: checkoutservice
+        cost: 100
+        selector:
+          labelSelector:
+            matchLabels:
+              app: checkoutservice
+
+      - name: paymentservice
+        cost: 90
+        selector:
+          labelSelector:
+            matchLabels:
+              app: paymentservice
+
+      - name: cartservice
+        cost: 80
+        selector:
+          labelSelector:
+            matchLabels:
+              app: cartservice
+
+      - name: frontend
+        cost: 60
+        selector:
+          labelSelector:
+            matchLabels:
+              app: frontend
+
+      - name: recommendationservice
+        cost: 40
+        selector:
+          labelSelector:
+            matchLabels:
+              app: recommendationservice
+
+      - name: productcatalogservice
+        cost: 35
+        selector:
+          labelSelector:
+            matchLabels:
+              app: productcatalogservice
+
+      - name: adservice
+        cost: 30
+        selector:
+          labelSelector:
+            matchLabels:
+              app: adservice
+
+      - name: boutique-core
+        cost: 20
+        selector:
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - shippingservice
+                  - currencyservice
+                  - emailservice
+
+      - name: loadgenerator
+        cost: 5
+        selector:
+          labelSelector:
+            matchLabels:
+              app: loadgenerator
+
+      - name: default-namespace
+        cost: 15
+        selector:
+          namespaceRegex: "^default$"

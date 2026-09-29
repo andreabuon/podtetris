@@ -1,0 +1,46 @@
+# PDB for multi-replica boutique services. Concurrent PodMoves hit these and requeue
+# (same pattern as labs/lab6_kind/manifests/podtetris-test-workloads.yaml).
+# redis-cart stays single-replica and is marked fixed in values-boutique-rules.yaml.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: frontend-pdb
+  namespace: default
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: frontend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: checkoutservice-pdb
+  namespace: default
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: checkoutservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cartservice-pdb
+  namespace: default
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: cartservice
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: productcatalogservice-pdb
+  namespace: default
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: productcatalogservice

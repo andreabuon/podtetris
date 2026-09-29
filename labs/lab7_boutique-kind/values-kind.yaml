@@ -1,0 +1,6 @@
+# Local Kind overrides for charts/podtetris.
+# Company clusters use StepClusterIssuer; Kind uses cert-manager's self-signed ClusterIssuer.
+certificate:
+  issuerGroup: cert-manager.io
+  issuerKind: ClusterIssuer
+  issuerName: selfsigned-issuer
