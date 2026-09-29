@@ -1,0 +1,27 @@
+NAME                                     READY   STATUS    RESTARTS        AGE   IP            NODE           NOMINATED NODE   READINESS GATES
+adservice-84b79f4569-56b9q               1/1     Running   0               19m   10.244.9.7    kind-worker9   <none>           <none>
+adservice-84b79f4569-cspzv               1/1     Running   0               19m   10.244.9.8    kind-worker9   <none>           <none>
+adservice-84b79f4569-v67pl               1/1     Running   0               19m   10.244.9.10   kind-worker9   <none>           <none>
+cartservice-574c7f4cdd-hl8h5             1/1     Running   5 (3m44s ago)   19m   10.244.9.9    kind-worker9   <none>           <none>
+cartservice-574c7f4cdd-q9785             1/1     Running   4 (2m34s ago)   15m   10.244.9.27   kind-worker9   <none>           <none>
+cartservice-574c7f4cdd-x4rwq             1/1     Running   6 (4m13s ago)   22m   10.244.7.3    kind-worker3   <none>           <none>
+checkoutservice-7ddc4696cf-qfp68         1/1     Running   0               17m   10.244.9.24   kind-worker9   <none>           <none>
+checkoutservice-7ddc4696cf-qvh24         1/1     Running   0               19m   10.244.9.14   kind-worker9   <none>           <none>
+checkoutservice-7ddc4696cf-xq65q         1/1     Running   0               22m   10.244.7.4    kind-worker3   <none>           <none>
+currencyservice-6478b9fcf7-wfhjn         1/1     Running   0               22m   10.244.7.2    kind-worker3   <none>           <none>
+currencyservice-6478b9fcf7-xcv9l         1/1     Running   0               22m   10.244.9.3    kind-worker9   <none>           <none>
+currencyservice-6478b9fcf7-zrsc8         1/1     Running   0               19m   10.244.9.13   kind-worker9   <none>           <none>
+emailservice-59d546db77-l8wsz            1/1     Running   0               19m   10.244.9.12   kind-worker9   <none>           <none>
+frontend-54b9f9678-c2xg8                 1/1     Running   0               19m   10.244.9.11   kind-worker9   <none>           <none>
+frontend-54b9f9678-mr7rx                 1/1     Running   0               17m   10.244.9.25   kind-worker9   <none>           <none>
+frontend-54b9f9678-qdwd7                 1/1     Running   0               22m   10.244.9.4    kind-worker9   <none>           <none>
+loadgenerator-9878487f4-94r9h            1/1     Running   0               19m   10.244.9.6    kind-worker9   <none>           <none>
+paymentservice-78478447c-sxwvk           1/1     Running   0               19m   10.244.9.18   kind-worker9   <none>           <none>
+productcatalogservice-99c4c7c7f-fhcjw    1/1     Running   0               17m   10.244.9.26   kind-worker9   <none>           <none>
+productcatalogservice-99c4c7c7f-kn2fj    1/1     Running   0               19m   10.244.9.16   kind-worker9   <none>           <none>
+productcatalogservice-99c4c7c7f-wwdkx    1/1     Running   0               22m   10.244.9.2    kind-worker9   <none>           <none>
+recommendationservice-59654c7cb9-8hwm9   1/1     Running   0               19m   10.244.9.15   kind-worker9   <none>           <none>
+recommendationservice-59654c7cb9-sb2m4   1/1     Running   0               19m   10.244.9.20   kind-worker9   <none>           <none>
+recommendationservice-59654c7cb9-tvfj2   1/1     Running   0               19m   10.244.9.23   kind-worker9   <none>           <none>
+redis-cart-6fdc7894b7-g8hb4              1/1     Running   0               22m   10.244.1.3    kind-worker2   <none>           <none>
+shippingservice-57457d4b97-zlzdc         1/1     Running   0               19m   10.244.9.17   kind-worker9   <none>           <none>
