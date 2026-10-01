@@ -32,13 +32,13 @@ import (
 
 const (
 	// evictionRetryInterval is how often to wait to try eviction again.
-	evictionRetryInterval = 2 * time.Minute
+	evictionRetryInterval = 30 * time.Second
 	// claimTimeout is how long after eviction the webhook may take to claim a replacement pod CREATE.
-	claimTimeout = 5 * time.Minute
+	claimTimeout = 1 * time.Minute
 	// persistPollInterval is how long to wait between checks that a webhook-claimed replacement persisted on the target node.
-	persistPollInterval = 25 * time.Second
+	persistPollInterval = 5 * time.Second
 	// runningPollInterval is how long to wait between checks that a verified replacement has reached Running.
-	runningPollInterval = 3 * time.Minute
+	runningPollInterval = 30 * time.Second
 )
 
 // PodMoveReconciler reconciles a PodMove object.
