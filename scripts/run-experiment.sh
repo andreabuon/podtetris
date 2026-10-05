@@ -56,9 +56,9 @@ dump_cm_key() {
 }
 
 echo "Saving cluster name..."
-CLUSTER="${kubectl config current-context 2>/dev/null}"
-CLUSTER="${s##*/}"
-echo $CLUSTER > "$OUT/cluster-name.txt"
+CLUSTER="$(kubectl config current-context)"
+CLUSTER="${CLUSTER##*/}"
+echo "$CLUSTER" > "$OUT/cluster-name.txt"
 
 echo "Saving planner config and rules..."
 dump_cm_key "podtetris-config" 'config\.yaml' "$OUT/planner-config.yaml"
@@ -66,7 +66,7 @@ dump_cm_key "podtetris-scheduler-config" 'podtetris-scheduler-config\.yaml' "$OU
 dump_cm_key "podtetris-planner-rules" 'rules\.yaml' "$OUT/planner-rules.yaml"
 
 echo "Saving cluster-autoscaler config..."
-kubectl get deploy -n kube-sytem autoscaler-aws-cluster-autoscaler -o yaml >"$OUT/cluster-autoscaler.yaml" | grep -i "containers" -A 30
+kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml | grep -i "containers" -A 30 >"$OUT/cluster-autoscaler.yaml"
 
 echo "Capturing node resource requests (before)..."
 #kubectl get nodes > "$OUT/nodes-before.txt"
@@ -76,6 +76,9 @@ echo "Capturing pod state (before)..."
 #kubectl get pods -n default -o wide >"$OUT/pods-before.txt"
 kubectl get pods -A -o wide >"$OUT/pods-before.txt"
 
+echo "Deleting old consolidation plans..."
+kubectl delete consolidationplans -n "$NS" --all
+
 JOB="podtetris-planner-$NAME"
 echo "Starting planner job: $JOB"
 kubectl create job --from=cronjob/podtetris-planner "$JOB" -n "$NS"
@@ -84,6 +87,7 @@ if [[ "$PLANNER_ONLY" -eq 1 ]]; then
   echo "Waiting up to ${WAIT}s for planner job to finish..."
   kubectl wait --for=condition=complete "job/$JOB" -n "$NS" --timeout="${WAIT}s" \
     || echo "warning: planner job did not complete within ${WAIT}s; collecting artifacts anyway" >&2
+  kubectl -n "$NS" logs "job/$JOB" | grep "Selected best consolidation plan" | jq .
 else
   echo "Waiting ${WAIT}s for consolidation to settle..."
   sleep "$WAIT"
@@ -104,4 +108,3 @@ if [[ "$PLANNER_ONLY" -eq 0 ]]; then
 fi
 
 echo "Experiment complete: $OUT"
-ls -la "$OUT"
