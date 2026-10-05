@@ -5,6 +5,23 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// IsTerminal reports whether the PodMove has finished (Succeeded or Failed).
+// Missing conditions are not terminal: DerivePhase maps an empty list to Pending,
+// so a newly created PodMove is still considered in progress.
+func IsTerminal(conditions []metav1.Condition) bool {
+	switch DerivePhase(conditions) {
+	case PodMovePhaseFailed, PodMovePhaseSucceeded:
+		return true
+	default:
+		return false
+	}
+}
+
+// IsTerminal reports whether this PodMove has finished.
+func (pm *PodMove) IsTerminal() bool {
+	return IsTerminal(pm.Status.Conditions)
+}
+
 // DerivePhase maps PodMove conditions onto a single kubectl-friendly phase.
 // Conditions remain the source of truth; phase is only a summary.
 func DerivePhase(conditions []metav1.Condition) PodMovePhase {
