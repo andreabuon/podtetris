@@ -239,6 +239,7 @@ func main() {
 	log.Info("Selected best consolidation plan",
 		zap.Int("set", bestSimulationResult.SetIndex),
 		zap.Int("perm", bestSimulationResult.PermIndex),
+		zap.Strings("candidateNodes", nodeInfoNames(bestSimulationResult.CandidateNodes)),
 		zap.Int("freedNodes", bestSimulationResult.FreedNodes),
 		zap.Strings("nodesToFree", bestSimulationResult.NodesToFree),
 		zap.Int("moves", len(bestSimulationResult.Moves)),
