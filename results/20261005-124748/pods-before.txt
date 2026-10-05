@@ -1,0 +1,25 @@
+NAME                                READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
+deployment-a-67f5c8c457-4qcc7       1/1     Running   0          103s   10.244.3.2   kind-worker5   <none>           <none>
+deployment-a-67f5c8c457-99tnk       1/1     Running   0          103s   10.244.5.2   kind-worker3   <none>           <none>
+deployment-a-67f5c8c457-9tf5g       1/1     Running   0          103s   10.244.1.3   kind-worker    <none>           <none>
+deployment-a-67f5c8c457-df86r       1/1     Running   0          103s   10.244.4.3   kind-worker4   <none>           <none>
+deployment-a-67f5c8c457-mszmm       1/1     Running   0          103s   10.244.7.2   kind-worker6   <none>           <none>
+deployment-a-67f5c8c457-scv6h       1/1     Running   0          103s   10.244.2.3   kind-worker2   <none>           <none>
+deployment-a-67f5c8c457-vk2p8       1/1     Running   0          103s   10.244.6.2   kind-worker7   <none>           <none>
+deployment-b-7b96bcf96d-6jdc9       1/1     Running   0          103s   10.244.1.4   kind-worker    <none>           <none>
+deployment-b-7b96bcf96d-7nwb8       1/1     Running   0          103s   10.244.2.4   kind-worker2   <none>           <none>
+deployment-b-7b96bcf96d-kmnzx       1/1     Running   0          103s   10.244.3.3   kind-worker5   <none>           <none>
+deployment-b-7b96bcf96d-lbczm       1/1     Running   0          103s   10.244.7.3   kind-worker6   <none>           <none>
+deployment-b-7b96bcf96d-pnpgd       1/1     Running   0          103s   10.244.5.3   kind-worker3   <none>           <none>
+deployment-b-7b96bcf96d-tj6n5       1/1     Running   0          103s   10.244.4.4   kind-worker4   <none>           <none>
+deployment-b-7b96bcf96d-w8h7s       1/1     Running   0          103s   10.244.6.3   kind-worker7   <none>           <none>
+deployment-fixed-65bffb5cd6-dxf6b   1/1     Running   0          103s   10.244.7.4   kind-worker6   <none>           <none>
+deployment-fixed-65bffb5cd6-pddqm   1/1     Running   0          103s   10.244.5.4   kind-worker3   <none>           <none>
+rs-a-59xrv                          1/1     Running   0          103s   10.244.6.4   kind-worker7   <none>           <none>
+rs-a-lf2cm                          1/1     Running   0          103s   10.244.1.5   kind-worker    <none>           <none>
+rs-a-rjm8x                          1/1     Running   0          103s   10.244.4.5   kind-worker4   <none>           <none>
+rs-b-497rm                          1/1     Running   0          103s   10.244.2.5   kind-worker2   <none>           <none>
+rs-b-d5vjl                          1/1     Running   0          103s   10.244.3.4   kind-worker5   <none>           <none>
+statefulset-0                       1/1     Running   0          103s   10.244.6.6   kind-worker7   <none>           <none>
+statefulset-1                       1/1     Running   0          95s    10.244.5.6   kind-worker3   <none>           <none>
+statefulset-2                       1/1     Running   0          88s    10.244.7.6   kind-worker6   <none>           <none>

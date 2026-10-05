@@ -1,0 +1,9 @@
+{"level":"info","ts":1791197269.2997515,"logger":"planner","caller":"planner/rules.go:92","msg":"Loaded planner rules","fixedPodsRules":1,"moveCostRules":6,"defaultMoveCost":10}
+I1005 10:47:49.402470       1 framework.go:624] "MultiPoint plugin is explicitly re-configured; overriding" plugin="NodeResourcesFit"
+I1005 10:47:49.402904       1 framework.go:624] "MultiPoint plugin is explicitly re-configured; overriding" plugin="NodeResourcesFit"
+{"level":"info","ts":1791197269.4029682,"logger":"planner","caller":"planner/main.go:165","msg":"Generated candidate node sets","count":3}
+{"level":"info","ts":1791197269.4283953,"logger":"planner","caller":"planner/main.go:228","msg":"Finished simulations"}
+{"level":"info","ts":1791197269.4284394,"logger":"planner","caller":"planner/main.go:235","msg":"Selected best consolidation plan","set":0,"perm":0,"freedNodes":4,"nodesToFree":["kind-worker","kind-worker2","kind-worker4","kind-worker5"],"moves":20,"cost":780,"score":820}
+{"level":"info","ts":1791197269.4284518,"logger":"planner","caller":"planner/main.go:251","msg":"Score threshold reached, applying consolidation plan","score":820,"threshold":0}
+{"level":"info","ts":1791197269.4330473,"logger":"planner","caller":"planner/consolidation.go:33","msg":"Created ConsolidationPlan","namespace":"podtetris","name":"consolidationplan-8c55f"}
+{"level":"info","ts":1791197271.436546,"logger":"planner","caller":"planner/consolidation.go:54","msg":"Finished creating PodMoves for ConsolidationPlan","plan":"consolidationplan-8c55f","created":20,"errors":0}
