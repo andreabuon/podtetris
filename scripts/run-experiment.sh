@@ -6,8 +6,6 @@
 #   ./scripts/run-experiment.sh
 #   ./scripts/run-experiment.sh --wait 300
 
-set -euo pipefail
-
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NS=podtetris
 RESULTS="$ROOT/results"
@@ -45,11 +43,11 @@ echo "Collecting artifacts..."
 kubectl get pods -n default -o wide >"$OUT/pods-after.txt"
 kubectl get podmoves -n "$NS" >"$OUT/podmoves.txt"
 kubectl get podmoves -n "$NS" -o yaml >"$OUT/podmoves.yaml"
-kubectl get consolidationplans -A -o yaml >"$OUT/plan.yaml" || true
+kubectl get consolidationplans -A -o yaml >"$OUT/plan.yaml"
 
-kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$OUT/evictor.txt" || true
-kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$OUT/webhook.txt" || true
-kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$OUT/planner.txt" || true
+kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$OUT/evictor.txt"
+kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$OUT/webhook.txt"
+kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$OUT/planner.txt"
 
 echo "Experiment complete: $OUT"
 ls -la "$OUT"
