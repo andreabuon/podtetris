@@ -164,13 +164,17 @@ func main() {
 
 	log.Info("Generated candidate node sets", zap.Int("count", len(candidateNodesSets)))
 	for setIndex, candidateSet := range candidateNodesSets {
-		log.Debug("Candidate node set", zap.Int("set", setIndex), zap.Strings("nodes", nodeInfoNames(candidateSet.UnsortedList())))
+		log.Info("Candidate node set", zap.Int("set", setIndex), zap.Strings("nodes", nodeInfoNames(candidateSet.UnsortedList())))
 	}
 
 	var bestSimulationResult *SimulationResult
 
 	for setIndex, candidateSet := range candidateNodesSets {
 		candidateNodes := candidateSet.UnsortedList()
+		log.Info("Starting simulations for candidate node set",
+			zap.Int("set", setIndex),
+			zap.Strings("nodes", nodeInfoNames(candidateNodes)),
+		)
 
 		// Each node set must start from a clean baseline; virtuallyEvictPods mutates the snapshot.
 		snapshot.Fork()
