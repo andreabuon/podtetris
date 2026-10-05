@@ -1,6 +1,6 @@
 KUBECTL = kubectl
 
-.PHONY: all build-all cluster crd install deploy deploy-local run-planner experiment experiment-aws uninstall clean
+.PHONY: all build-all cluster crd install deploy deploy-local run-planner experiment uninstall clean
 
 all: deploy
 
@@ -39,12 +39,9 @@ deploy-local-boutique: crd kind-load
 run-planner:
 	$(KUBECTL) create job --from=cronjob/podtetris-planner "podtetris-planner-$$(date +%Y%m%d-%H%M%S)" -n podtetris
 
-# Uses current kubeconfig. Create the cluster separately with: make cluster
+# Uses current kubeconfig. Cluster and chart must already be up.
 experiment:
-	./scripts/run-experiment.sh --local
-
-experiment-aws:
-	./scripts/run-experiment.sh --aws
+	./scripts/run-experiment.sh
 
 clean:
 	kind delete cluster --name kind

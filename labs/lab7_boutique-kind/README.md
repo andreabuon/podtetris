@@ -53,5 +53,5 @@ helm upgrade --install podtetris ../../charts/podtetris \
 ## Run an experiment
 ```
 # from repo root (cluster already up, chart already installed)
-./scripts/run-experiment.sh --skip-deploy
+./scripts/run-experiment.sh
 ```
