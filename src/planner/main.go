@@ -245,10 +245,12 @@ func main() {
 		return
 	}
 
+	bestCandidateNodes := nodeInfoNames(bestSimulationResult.CandidateNodes)
+	slices.Sort(bestCandidateNodes)
 	log.Info("Selected best consolidation plan",
 		zap.Int("set", bestSimulationResult.SetIndex),
 		zap.Int("perm", bestSimulationResult.PermIndex),
-		zap.Strings("candidateNodes", nodeInfoNames(bestSimulationResult.CandidateNodes)),
+		zap.Strings("candidateNodes", bestCandidateNodes),
 		zap.Int("freedNodes", bestSimulationResult.FreedNodes),
 		zap.Strings("nodesToFree", bestSimulationResult.NodesToFree),
 		zap.Int("moves", len(bestSimulationResult.Moves)),
