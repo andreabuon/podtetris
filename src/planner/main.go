@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"path/filepath"
+	"slices"
 	"time"
 
 	podtetrisv1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
@@ -164,7 +165,9 @@ func main() {
 
 	log.Info("Generated candidate node sets", zap.Int("count", len(candidateNodesSets)))
 	for setIndex, candidateSet := range candidateNodesSets {
-		log.Info("Candidate node set", zap.Int("set", setIndex), zap.Strings("nodes", nodeInfoNames(candidateSet.UnsortedList())))
+		names := nodeInfoNames(candidateSet.UnsortedList())
+		slices.Sort(names)
+		log.Info("Candidate node set", zap.Int("set", setIndex), zap.Strings("nodes", names))
 	}
 
 	var bestSimulationResult *SimulationResult
