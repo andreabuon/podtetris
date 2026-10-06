@@ -10,6 +10,7 @@
 # Always saved: planner config, cluster name, cluster-autoscaler config,
 # node resource requests (before), podtetris rules, planner logs,
 # consolidation plan, podmoves.
+# Cluster-autoscaler config is saved on non-kind clusters.
 #
 # Default also saves pods-before/after, evictor logs, and webhook logs.
 # --planner-only skips those extra artifacts and waits for the planner job
@@ -22,6 +23,7 @@ NS=podtetris
 RESULTS="$ROOT/benchmarks"
 WAIT=180
 PLANNER_ONLY=0
+KIND_CLUSTER_NAME="kind-kind"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -57,7 +59,9 @@ dump_cm_key() {
 
 echo "Saving cluster name..."
 CLUSTER="$(kubectl config current-context)"
-CLUSTER="${CLUSTER##*/}"
+if [[ "$CLUSTER" != "$KIND_CLUSTER_NAME" ]]; then
+  CLUSTER="${CLUSTER##*/}"
+fi
 echo "$CLUSTER" > "$OUT/cluster-name.txt"
 
 echo "Saving planner config and rules..."
@@ -65,12 +69,18 @@ dump_cm_key "podtetris-config" 'config\.yaml' "$OUT/planner-config.yaml"
 dump_cm_key "podtetris-scheduler-config" 'podtetris-scheduler-config\.yaml' "$OUT/planner-scheduler-config.yaml"
 dump_cm_key "podtetris-planner-rules" 'rules\.yaml' "$OUT/planner-rules.yaml"
 
-echo "Saving cluster-autoscaler config..."
-kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml | grep -i "containers" -A 30 >"$OUT/cluster-autoscaler.yaml"
+if [[ "$CLUSTER" != "$KIND_CLUSTER_NAME" ]]; then
+  echo "Saving cluster-autoscaler config..."
+  if ! kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml >"$OUT/cluster-autoscaler.yaml"; then
+    echo "# deploy autoscaler-aws-cluster-autoscaler not found in kube-system" >"$OUT/cluster-autoscaler.yaml"
+  fi
+fi
 
 echo "Capturing node resource requests (before)..."
 #kubectl get nodes > "$OUT/nodes-before.txt"
-kubectl top nodes > "$OUT/top-nodes-before.txt"
+if ! kubectl top nodes >"$OUT/top-nodes-before.txt" 2>&1; then
+  echo "warning: kubectl top nodes failed; continuing" >&2
+fi
 
 echo "Capturing pod state (before)..."
 #kubectl get pods -n default -o wide >"$OUT/pods-before.txt"
