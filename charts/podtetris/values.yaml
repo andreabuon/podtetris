@@ -42,6 +42,8 @@ planner:
     randomPermutationCount: 5
     parallelism: 8
     dryRun: false
+    # debug, info, warn, error, dpanic, panic, fatal
+    logLevel: info
   # KubeSchedulerConfiguration used by the planner's scoring framework.
   schedulerConfig:
     apiVersion: kubescheduler.config.k8s.io/v1

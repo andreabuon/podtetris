@@ -36,11 +36,11 @@ var Config AppConfig
 const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 
 func main() {
-	logger, err := zap.NewProduction()
+	logger, err := newLogger("info")
 	if err != nil {
 		panic(err)
 	}
-	defer logger.Sync()
+	defer func() { _ = logger.Sync() }()
 	log = logger.Named("planner")
 
 	ctx := context.Background()
@@ -57,6 +57,12 @@ func main() {
 	if err := viper.Unmarshal(&Config); err != nil {
 		log.Fatal("Failed to unmarshal config", zap.Error(err))
 	}
+
+	logger, err = newLogger(Config.LogLevel)
+	if err != nil {
+		log.Fatal("Invalid logLevel", zap.Error(err), zap.String("logLevel", Config.LogLevel))
+	}
+	log = logger.Named("planner")
 
 	rules, err := loadRulesConfig()
 	if err != nil {

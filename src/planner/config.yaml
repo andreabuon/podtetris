@@ -16,3 +16,5 @@ enabledPermutationStrategies:
 randomPermutationCount: 1
 parallelism: 8
 dryRun: false
+# debug, info, warn, error, dpanic, panic, fatal
+logLevel: info

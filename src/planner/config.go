@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	cascheduler "k8s.io/autoscaler/cluster-autoscaler/utils/scheduler"
 	scheduler_config "k8s.io/kubernetes/pkg/scheduler/apis/config"
 )
@@ -29,6 +30,7 @@ type AppConfig struct {
 	RandomPermutationCount            int                         `mapstructure:"randomPermutationCount"`
 	Parallelism                       int                         `mapstructure:"parallelism"`
 	DryRun                            bool                        `mapstructure:"dryRun"`
+	LogLevel                          string                      `mapstructure:"logLevel"`
 }
 
 func setDefaultConfigValues() {
@@ -45,6 +47,17 @@ func setDefaultConfigValues() {
 	viper.SetDefault("randomPermutationCount", 1)
 	viper.SetDefault("parallelism", 8)
 	viper.SetDefault("dryRun", false)
+	viper.SetDefault("logLevel", "info")
+}
+
+func newLogger(levelName string) (*zap.Logger, error) {
+	level, err := zapcore.ParseLevel(levelName)
+	if err != nil {
+		return nil, err
+	}
+	cfg := zap.NewProductionConfig()
+	cfg.Level = zap.NewAtomicLevelAt(level)
+	return cfg.Build()
 }
 
 func loadSchedulerConfig() *scheduler_config.KubeSchedulerConfiguration {
