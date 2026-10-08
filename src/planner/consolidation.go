@@ -6,6 +6,7 @@ import (
 
 	podtetrisv1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	apiv1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -22,6 +23,15 @@ type PodMove struct {
 
 func (pm PodMove) String() string {
 	return fmt.Sprintf("Pod '%s' moved from '%s' to '%s' (cost = %d)", pm.pod.Name, pm.fromNodeName, pm.toNodeName, pm.cost)
+}
+
+func (pm PodMove) MarshalLogObject(enc zapcore.ObjectEncoder) error {
+	enc.AddString("pod", pm.pod.Name)
+	enc.AddString("namespace", pm.pod.Namespace)
+	enc.AddString("from", pm.fromNodeName)
+	enc.AddString("to", pm.toNodeName)
+	enc.AddInt("cost", pm.cost)
+	return nil
 }
 
 func applyConsolidationStrategy(ctx context.Context, c client.Client, result *SimulationResult) {

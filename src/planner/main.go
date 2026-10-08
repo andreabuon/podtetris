@@ -264,6 +264,8 @@ func main() {
 		zap.Int("score", bestSimulationResult.Score),
 	)
 
+	log.Info("Chosen plan podmoves", zap.Objects("podMoves", bestSimulationResult.Moves))
+
 	if Config.DryRun {
 		log.Info("Skipping apply because dry run is enabled")
 		return
