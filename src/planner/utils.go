@@ -22,6 +22,7 @@ const (
 	SkipNoController       EvictionSkipReason = "pod not owned by a controller"
 	SkipSystemPods         EvictionSkipReason = "pod belongs to namespace 'kube-system'"
 	SkipPodtetrisNamespace EvictionSkipReason = "pod belongs to podtetris planner own namespace"
+	SkipCompletedPods      EvictionSkipReason = "pod completed (succeded/failed)"
 )
 
 // isEvictable returns (true, "") if the pod can be evicted or (false, reason) explaining why it was skipped.
@@ -36,6 +37,10 @@ func isEvictable(pod *apiv1.Pod, rules *RuleMatcher) (bool, EvictionSkipReason) 
 
 	if pod.Namespace == Config.PodtetrisNamespace {
 		return false, SkipPodtetrisNamespace
+	}
+
+	if pod.Status.Phase == apiv1.PodSucceeded || pod.Status.Phase == apiv1.PodFailed {
+		return false, SkipCompletedPods
 	}
 
 	// Bare pods (and any pods without a controller) would not be recreated after eviction
