@@ -12,4 +12,5 @@ spec:
     - worker-b
   cost: 10
   score: 90
+  permutationStrategy: cpu_desc
   moveCount: 3

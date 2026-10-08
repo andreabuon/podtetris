@@ -53,7 +53,7 @@ func copyPods(pods []*apiv1.Pod) []*apiv1.Pod {
 	return copied
 }
 
-func generatePermutations(evictedPods []*apiv1.Pod, enabledStrategies []string, randomCount int) [][]*apiv1.Pod {
+func generatePermutations(evictedPods []*apiv1.Pod, enabledStrategies []string, randomCount int) []*PodOrdering {
 	if evictedPods == nil {
 		return nil
 	}
@@ -64,7 +64,7 @@ func generatePermutations(evictedPods []*apiv1.Pod, enabledStrategies []string, 
 		"random":      {apply: shufflePods, count: randomCount},
 	}
 
-	var permutations [][]*apiv1.Pod
+	var permutations []*PodOrdering
 	for _, name := range enabledStrategies {
 		strategy, ok := strategies[name]
 		if !ok {
@@ -75,7 +75,11 @@ func generatePermutations(evictedPods []*apiv1.Pod, enabledStrategies []string, 
 		for i := 0; i < strategy.count; i++ {
 			pods := copyPods(evictedPods)
 			strategy.apply(pods)
-			permutations = append(permutations, pods)
+			permutations = append(permutations, &PodOrdering{
+				Index:    len(permutations),
+				Strategy: name,
+				Pods:     pods,
+			})
 		}
 	}
 

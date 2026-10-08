@@ -26,8 +26,9 @@ type SchedulingSimulator struct {
 }
 
 type PodOrdering struct {
-	Index int
-	Pods  []*apiv1.Pod
+	Index    int
+	Strategy string
+	Pods     []*apiv1.Pod
 }
 
 type SimulationID struct {

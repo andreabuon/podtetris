@@ -204,16 +204,21 @@ func main() {
 			rules:     rules,
 		}
 
-		for permutationIndex, permutation := range permutations {
-			id := SimulationID{SetIndex: setIndex, PermIndex: permutationIndex}
-			log.Debug("Running simulation", zap.Int("set", id.SetIndex), zap.Int("perm", id.PermIndex))
-			podPermutation := &PodOrdering{
-				Index: permutationIndex,
-				Pods:  permutation,
-			}
+		for _, podPermutation := range permutations {
+			id := SimulationID{SetIndex: setIndex, PermIndex: podPermutation.Index}
+			log.Debug("Running simulation",
+				zap.Int("set", id.SetIndex),
+				zap.Int("perm", id.PermIndex),
+				zap.String("strategy", podPermutation.Strategy),
+			)
 			schedulingResult, err := schedulingSimulator.Run(ctx, podPermutation)
 			if err != nil {
-				log.Debug("Simulation failed", zap.Int("set", id.SetIndex), zap.Int("perm", id.PermIndex), zap.Error(err))
+				log.Debug("Simulation failed",
+					zap.Int("set", id.SetIndex),
+					zap.Int("perm", id.PermIndex),
+					zap.String("strategy", podPermutation.Strategy),
+					zap.Error(err),
+				)
 				continue
 			}
 
@@ -250,6 +255,7 @@ func main() {
 	log.Info("Selected best consolidation plan",
 		zap.Int("set", bestSimulationResult.SetIndex),
 		zap.Int("perm", bestSimulationResult.PermIndex),
+		zap.String("strategy", permutationStrategyOf(bestSimulationResult)),
 		zap.Strings("candidateNodes", bestCandidateNodes),
 		zap.Int("freedNodes", bestSimulationResult.FreedNodes),
 		zap.Strings("nodesToFree", bestSimulationResult.NodesToFree),

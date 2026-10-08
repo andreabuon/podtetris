@@ -58,6 +58,13 @@ func applyConsolidationStrategy(ctx context.Context, c client.Client, result *Si
 	)
 }
 
+func permutationStrategyOf(result *SimulationResult) string {
+	if result == nil || result.Permutation == nil {
+		return ""
+	}
+	return result.Permutation.Strategy
+}
+
 func createConsolidationPlan(ctx context.Context, c client.Client, result *SimulationResult) (*podtetrisv1.ConsolidationPlan, error) {
 	plan := &podtetrisv1.ConsolidationPlan{
 		ObjectMeta: metav1.ObjectMeta{
@@ -65,11 +72,12 @@ func createConsolidationPlan(ctx context.Context, c client.Client, result *Simul
 			GenerateName: "consolidationplan-",
 		},
 		Spec: podtetrisv1.ConsolidationPlanSpec{
-			FreedNodes:  result.FreedNodes,
-			NodesToFree: result.NodesToFree,
-			Cost:        result.Cost,
-			Score:       result.Score,
-			MoveCount:   len(result.Moves),
+			FreedNodes:          result.FreedNodes,
+			NodesToFree:         result.NodesToFree,
+			Cost:                result.Cost,
+			Score:               result.Score,
+			PermutationStrategy: permutationStrategyOf(result),
+			MoveCount:           len(result.Moves),
 		},
 	}
 	if err := c.Create(ctx, plan); err != nil {

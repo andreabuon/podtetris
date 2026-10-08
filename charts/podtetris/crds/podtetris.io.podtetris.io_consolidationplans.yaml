@@ -57,6 +57,11 @@ spec:
                 items:
                   type: string
                 type: array
+              permutationStrategy:
+                description: |-
+                  permutationStrategy is the pod ordering strategy that produced this plan
+                  (e.g. cpu_desc, memory_desc, random).
+                type: string
               score:
                 description: total score of the plan
                 type: integer
@@ -65,6 +70,7 @@ spec:
             - freedNodes
             - moveCount
             - nodesToFree
+            - permutationStrategy
             - score
             type: object
           status:

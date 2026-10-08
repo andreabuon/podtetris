@@ -44,6 +44,11 @@ type ConsolidationPlanSpec struct {
 	// +required
 	Score int `json:"score"`
 
+	// permutationStrategy is the pod ordering strategy that produced this plan
+	// (e.g. cpu_desc, memory_desc, random).
+	// +required
+	PermutationStrategy string `json:"permutationStrategy"`
+
 	// moveCount is the number of PodMoves in the4 plan .
 	// +required
 	// +kubebuilder:validation:Minimum=0
