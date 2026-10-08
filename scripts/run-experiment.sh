@@ -78,9 +78,7 @@ fi
 
 echo "Capturing node resource requests (before)..."
 #kubectl get nodes > "$OUT/nodes-before.txt"
-if ! kubectl top nodes >"$OUT/top-nodes-before.txt" 2>&1; then
-  echo "warning: kubectl top nodes failed; continuing" >&2
-fi
+kube-capacity >"$OUT/capacity-nodes-before.txt" 2>&1
 
 echo "Capturing pod state (before)..."
 #kubectl get pods -n default -o wide >"$OUT/pods-before.txt"
@@ -108,6 +106,8 @@ kubectl get podmoves -n "$NS" >"$OUT/podmoves.txt"
 kubectl get podmoves -n "$NS" -o yaml >"$OUT/podmoves.yaml"
 kubectl get consolidationplans -A -o yaml >"$OUT/plan.yaml"
 kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$OUT/planner.txt" || true
+
+kube-capacity >"$OUT/capacity-nodes-after.txt" 2>&1
 
 if [[ "$PLANNER_ONLY" -eq 0 ]]; then
   echo "Collecting evictor/webhook artifacts..."
