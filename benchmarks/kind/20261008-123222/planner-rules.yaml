@@ -1,0 +1,45 @@
+defaultMoveCost: 10
+fixedPodsRules:
+- name: deployment-fixed
+  selector:
+    labelSelector:
+      matchLabels:
+        app: fixed-app
+moveCostRules:
+- cost: 100
+  name: statefulset-nginx
+  selector:
+    kinds:
+    - StatefulSet
+    labelSelector:
+      matchLabels:
+        app: nginx
+    nameRegex: ^statefulset-[0-9]+$
+- cost: 80
+  name: rs-a-by-name
+  selector:
+    nameRegex: ^rs-a-
+- cost: 60
+  name: rs-b-by-label
+  selector:
+    labelSelector:
+      matchLabels:
+        app: rs-b
+- cost: 40
+  name: deployment-a-by-label
+  selector:
+    labelSelector:
+      matchLabels:
+        app: deployment-a
+- cost: 25
+  name: deployment-b-by-namespace-and-label
+  selector:
+    labelSelector:
+      matchLabels:
+        app: deployment-b
+    namespaces:
+    - default
+- cost: 15
+  name: default-namespace-regex
+  selector:
+    namespaceRegex: ^default$
