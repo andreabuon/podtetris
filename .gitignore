@@ -1,4 +1,5 @@
 research/files
+benchmarks/eks/
 
 # macOS
 .DS_Store
