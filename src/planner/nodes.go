@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
 	"math/rand"
 	"sort"
 
@@ -10,11 +11,68 @@ import (
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
 
-func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([]sets.Set[kubeframework.NodeInfo], error) {
+type CandidateNodesCounts struct {
+	ByCPU    int
+	ByMemory int
+	Random   int
+}
+
+func (c CandidateNodesCounts) Total() int {
+	return c.ByCPU + c.ByMemory + c.Random
+}
+
+// resolveCandidateNodesCounts turns the cluster-size-independent config into
+// concrete per-strategy node counts for a cluster of clusterSize nodes.
+// At least one node is always left out of the candidates so evicted pods have somewhere to go.
+func resolveCandidateNodesCounts(clusterSize int, fraction float64, minNodes int, maxNodes int, mix CandidateNodesMixConfig) (CandidateNodesCounts, error) {
+	if clusterSize < 2 {
+		return CandidateNodesCounts{}, fmt.Errorf("at least 2 worker nodes are needed for consolidation, got %d", clusterSize)
+	}
+
+	total := int(math.Round(float64(clusterSize) * fraction))
+	total = max(total, minNodes)
+	total = min(total, maxNodes, clusterSize-1)
+
+	weights := []float64{mix.ByCPU, mix.ByMemory, mix.Random}
+	counts := apportion(total, weights)
+	return CandidateNodesCounts{ByCPU: counts[0], ByMemory: counts[1], Random: counts[2]}, nil
+}
+
+// apportion splits total into integer parts proportional to weights using the
+// largest remainder method, so the parts always sum to total.
+func apportion(total int, weights []float64) []int {
+	weightSum := 0.0
+	for _, w := range weights {
+		weightSum += w
+	}
+
+	counts := make([]int, len(weights))
+	remainders := make([]float64, len(weights))
+	assigned := 0
+	for i, w := range weights {
+		exact := float64(total) * w / weightSum
+		counts[i] = int(math.Floor(exact))
+		remainders[i] = exact - float64(counts[i])
+		assigned += counts[i]
+	}
+
+	order := make([]int, len(weights))
+	for i := range order {
+		order[i] = i
+	}
+	sort.SliceStable(order, func(a, b int) bool { return remainders[order[a]] > remainders[order[b]] })
+	for i := 0; assigned < total; i++ {
+		counts[order[i%len(order)]]++
+		assigned++
+	}
+	return counts
+}
+
+func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, counts CandidateNodesCounts, rules *RuleMatcher) ([]sets.Set[kubeframework.NodeInfo], error) {
 	candidateSets := make([]sets.Set[kubeframework.NodeInfo], 0, setsToCreate)
 
 	for len(candidateSets) < setsToCreate {
-		nodes, err := selectCandidateNodes(nodeInfos, randomNodesToGet, nodesToGetByCPU, nodesToGetByMemory, rules)
+		nodes, err := selectCandidateNodes(nodeInfos, counts.Random, counts.ByCPU, counts.ByMemory, rules)
 		if err != nil {
 			return nil, err
 		}

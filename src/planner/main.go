@@ -57,6 +57,9 @@ func main() {
 	if err := viper.Unmarshal(&Config); err != nil {
 		log.Fatal("Failed to unmarshal config", zap.Error(err))
 	}
+	if err := validateConfig(&Config); err != nil {
+		log.Fatal("Invalid config", zap.Error(err))
+	}
 
 	logger, err = newLogger(Config.LogLevel)
 	if err != nil {
@@ -157,12 +160,29 @@ func main() {
 		log.Fatal("Failed to list node infos", zap.Error(err))
 	}
 
+	candidateNodesCounts, err := resolveCandidateNodesCounts(
+		len(nodeInfos),
+		Config.CandidateNodesFraction,
+		Config.CandidateNodesMin,
+		Config.CandidateNodesMax,
+		Config.CandidateNodesMix,
+	)
+	if err != nil {
+		log.Fatal("Failed to compute candidate nodes counts", zap.Error(err))
+	}
+	log.Info("Resolved candidate nodes counts",
+		zap.Int("clusterNodes", len(nodeInfos)),
+		zap.Float64("fraction", Config.CandidateNodesFraction),
+		zap.Int("total", candidateNodesCounts.Total()),
+		zap.Int("byCPU", candidateNodesCounts.ByCPU),
+		zap.Int("byMemory", candidateNodesCounts.ByMemory),
+		zap.Int("random", candidateNodesCounts.Random),
+	)
+
 	candidateNodesSets, err := createCandidateNodesSets(
 		nodeInfos,
 		Config.CandidateNodesSetsToCreate,
-		Config.CandidateNodesNumbers.Random,
-		Config.CandidateNodesNumbers.ByCPU,
-		Config.CandidateNodesNumbers.ByMemory,
+		candidateNodesCounts,
 		rules,
 	)
 	if err != nil {
