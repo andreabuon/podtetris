@@ -28,13 +28,11 @@ planner:
     candidateNodesSetsToCreate: 3
     # candidateNodesPercent is the percentage of worker nodes to try emptying in each candidate set
     candidateNodesPercent: 30
-    # candidateNodesMin and candidateNodesMax clamp the resulting node count
-    # (at least one worker node is always kept out of the candidates)
     candidateNodesMin: 3
     candidateNodesMax: 20
     # candidateNodesMix is the percentage of candidate nodes chosen by each strategy (must sum to 100).
     # byCPU and byMemory are rounded down and random gets the remainder.
-    # With random set to 0 only a single candidate set is generated, since all sets would be identical.
+    # With random set to 0, or when every worker node is a candidate, only a single candidate set is generated, since all sets would be identical.
     candidateNodesMix:
       byCPU: 40
       byMemory: 40

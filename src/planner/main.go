@@ -181,10 +181,13 @@ func main() {
 		zap.Int("candidateNodesRandom", candidateNodesCounts.Random),
 	)
 
-	// Without random nodes every candidate set would be identical.
+	// Without random nodes, or when every worker node is a candidate, every candidate set would be identical.
 	candidateNodesSetsToCreate := Config.CandidateNodesSetsToCreate
 	if Config.CandidateNodesMix.Random == 0 {
 		log.Warn("No random candidate nodes, generating a single candidate node set")
+		candidateNodesSetsToCreate = 1
+	} else if candidateNodesCounts.Total() == len(nodeInfos) {
+		log.Warn("All worker nodes are candidates, generating a single candidate node set")
 		candidateNodesSetsToCreate = 1
 	}
 

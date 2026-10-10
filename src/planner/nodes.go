@@ -20,44 +20,29 @@ func (c CandidateNodesCounts) Total() int {
 	return c.ByCPU + c.ByMemory + c.Random
 }
 
-// resolveCandidateNodesCounts turns the cluster-size-independent config into
-// concrete per-strategy node counts for a cluster of clusterSize nodes.
-// At least one node is always left out of the candidates so evicted pods have somewhere to go.
+// resolveCandidateNodesCounts turns the configured percentages into node counts for a cluster of clusterSize nodes.
+// The counts always sum to the total, and random always gets at least one node when its percentage is non-zero.
 func resolveCandidateNodesCounts(clusterSize int, percent int, minNodes int, maxNodes int, mix CandidateNodesMixConfig) (CandidateNodesCounts, error) {
 	if clusterSize < 2 {
 		return CandidateNodesCounts{}, fmt.Errorf("at least 2 worker nodes are needed for consolidation, got %d", clusterSize)
 	}
 
+	// Integer division rounds down; adding 50 (half of 100) first rounds to the nearest node instead,
+	// e.g. 30% of 22 nodes = 6.6 -> (660+50)/100 = 7 rather than 660/100 = 6.
 	total := (clusterSize*percent + 50) / 100
 	total = max(total, minNodes)
-	total = min(total, maxNodes, clusterSize-1)
+	// Every worker node can be a candidate: evicted pods may be rescheduled onto candidate nodes too.
+	total = min(total, maxNodes, clusterSize)
 
-	counts := apportionPercentages(total, []int{mix.ByCPU, mix.ByMemory, mix.Random})
-	return CandidateNodesCounts{ByCPU: counts[0], ByMemory: counts[1], Random: counts[2]}, nil
-}
-
-// apportionPercentages splits total into integer parts proportional to percentages
-// (which must sum to 100) using the largest remainder method, so the parts always sum to total.
-func apportionPercentages(total int, percentages []int) []int {
-	counts := make([]int, len(percentages))
-	remainders := make([]int, len(percentages))
-	assigned := 0
-	for i, p := range percentages {
-		counts[i] = total * p / 100
-		remainders[i] = total * p % 100
-		assigned += counts[i]
-	}
-
-	order := make([]int, len(percentages))
-	for i := range order {
-		order[i] = i
-	}
-	sort.SliceStable(order, func(a, b int) bool { return remainders[order[a]] > remainders[order[b]] })
-	for i := 0; assigned < total; i++ {
-		counts[order[i]]++
-		assigned++
-	}
-	return counts
+	var counts CandidateNodesCounts
+	// Random is rounded up (adding 99 before dividing), so any non-zero percentage gets at least one node,
+	// e.g. 20% of 3 nodes = 0.6 -> 1.
+	counts.Random = (total*mix.Random + 99) / 100
+	// CPU is rounded to the nearest node (adding 50 before dividing), without taking more nodes than random left.
+	counts.ByCPU = min((total*mix.ByCPU+50)/100, total-counts.Random)
+	// Memory takes the rest, so the counts always sum to total.
+	counts.ByMemory = total - counts.Random - counts.ByCPU
+	return counts, nil
 }
 
 func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, counts CandidateNodesCounts, rules *RuleMatcher) ([]sets.Set[kubeframework.NodeInfo], error) {
