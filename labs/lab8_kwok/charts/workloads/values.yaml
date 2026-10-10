@@ -1,0 +1,202 @@
+# replicaMode=peak is the burst the setup script schedules first.
+# replicaMode=steady (default) is the scale-down that leaves the holes.
+# Only spec.replicas changes between the two, so surviving pods stay put.
+replicaMode: steady
+
+namespaces:
+  - checkout
+  - payments
+  - catalog
+  - search
+  - recommendations
+  - edge
+  - observability
+  - batch
+  - platform
+  - monitoring
+
+# Steady requests are about 46 CPU on 91 CPU of allocatable (24 × 3800m).
+# A perfect pack fits on ~12 nodes. LeastAllocated still occupies every node.
+# Sizes are deliberately awkward against 3800m: 2000m, 1700m, 1500m.
+#
+# Keep move costs in sync with ../../values-kwok-rules.yaml.
+workloads:
+  - name: checkout-api
+    namespace: checkout
+    kind: Deployment
+    replicas: 6
+    peakReplicas: 8
+    cpu: 500m
+    memory: 512Mi
+    antiAffinity: preferred
+    pdb: true
+
+  - name: checkout-worker
+    namespace: checkout
+    kind: Deployment
+    replicas: 3
+    peakReplicas: 5
+    cpu: 1000m
+    memory: 1Gi
+    antiAffinity: preferred
+
+  - name: payments-api
+    namespace: payments
+    kind: Deployment
+    replicas: 4
+    peakReplicas: 6
+    cpu: 500m
+    memory: 512Mi
+    antiAffinity: preferred
+    pdb: true
+
+  # Fixed in the planner rules (in-cluster state). Required anti-affinity.
+  - name: payments-redis
+    namespace: payments
+    kind: StatefulSet
+    replicas: 3
+    peakReplicas: 3
+    cpu: 250m
+    memory: 1Gi
+    antiAffinity: required
+
+  - name: catalog-api
+    namespace: catalog
+    kind: Deployment
+    replicas: 6
+    peakReplicas: 8
+    cpu: 250m
+    memory: 256Mi
+    pdb: true
+
+  - name: catalog-feed
+    namespace: catalog
+    kind: Deployment
+    replicas: 3
+    peakReplicas: 4
+    cpu: 1000m
+    memory: 1Gi
+
+  # Memory pool only. Required anti-affinity, so replicas cannot share a node.
+  - name: search-indexer
+    namespace: search
+    kind: Deployment
+    replicas: 3
+    peakReplicas: 4
+    cpu: 1000m
+    memory: 6Gi
+    pool: memory
+    antiAffinity: required
+
+  - name: search-query
+    namespace: search
+    kind: Deployment
+    replicas: 4
+    peakReplicas: 6
+    cpu: 500m
+    memory: 2Gi
+    pool: memory
+    pdb: true
+
+  - name: recommendations
+    namespace: recommendations
+    kind: Deployment
+    replicas: 4
+    peakReplicas: 6
+    cpu: 1500m
+    memory: 1536Mi
+    antiAffinity: preferred
+
+  - name: frontend
+    namespace: edge
+    kind: Deployment
+    replicas: 6
+    peakReplicas: 10
+    cpu: 200m
+    memory: 256Mi
+    pdb: true
+
+  - name: edge-proxy
+    namespace: edge
+    kind: Deployment
+    replicas: 2
+    peakReplicas: 2
+    cpu: 1700m
+    memory: 1Gi
+    antiAffinity: preferred
+
+  - name: collector
+    namespace: observability
+    kind: Deployment
+    replicas: 6
+    peakReplicas: 6
+    cpu: 200m
+    memory: 512Mi
+
+  - name: batch-worker
+    namespace: batch
+    kind: Deployment
+    replicas: 6
+    peakReplicas: 12
+    cpu: 100m
+    memory: 128Mi
+
+  - name: batch-large
+    namespace: batch
+    kind: Deployment
+    replicas: 2
+    peakReplicas: 4
+    cpu: 2000m
+    memory: 3Gi
+
+  - name: jvm-service
+    namespace: platform
+    kind: Deployment
+    replicas: 3
+    peakReplicas: 4
+    cpu: 1700m
+    memory: 2Gi
+    antiAffinity: preferred
+
+  - name: notifications
+    namespace: platform
+    kind: Deployment
+    replicas: 4
+    peakReplicas: 5
+    cpu: 300m
+    memory: 256Mi
+
+  - name: inventory
+    namespace: platform
+    kind: Deployment
+    replicas: 4
+    peakReplicas: 5
+    cpu: 400m
+    memory: 512Mi
+
+  - name: media
+    namespace: platform
+    kind: Deployment
+    replicas: 3
+    peakReplicas: 4
+    cpu: 800m
+    memory: 1Gi
+
+  # Expensive to move, not fixed. No volumes: KWOK has no CSI, so the
+  # constraint the planner has to honor is anti-affinity, not storage.
+  - name: session
+    namespace: platform
+    kind: StatefulSet
+    replicas: 3
+    peakReplicas: 3
+    cpu: 200m
+    memory: 256Mi
+    antiAffinity: required
+
+  - name: feature-flags
+    namespace: platform
+    kind: Deployment
+    replicas: 2
+    peakReplicas: 2
+    cpu: 100m
+    memory: 128Mi

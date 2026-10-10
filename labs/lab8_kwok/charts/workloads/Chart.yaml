@@ -1,0 +1,4 @@
+apiVersion: v2
+name: benchmark-workloads
+description: Production-shaped workloads for the KWOK lab
+version: 0.1.0

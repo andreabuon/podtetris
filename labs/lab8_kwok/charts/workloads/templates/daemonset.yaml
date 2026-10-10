@@ -1,0 +1,42 @@
+# Stand-in for a node agent (log shipper, exporter). DaemonSet pods are residual:
+# they keep a little CPU on every worker and the planner will not move them.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: monitoring
+  labels:
+    app: node-exporter
+    podtetris.io/benchmark: "true"
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+        podtetris.io/benchmark: "true"
+    spec:
+      terminationGracePeriodSeconds: 1
+      tolerations:
+        - key: podtetris.io/workload
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values: ["kwok"]
+      containers:
+        - name: pause
+          image: registry.k8s.io/pause:3.10
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi

@@ -23,7 +23,6 @@ NS=podtetris
 RESULTS="$ROOT/benchmarks"
 WAIT=180
 PLANNER_ONLY=0
-KIND_CLUSTER_NAME="kind-kind"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -58,9 +57,11 @@ dump_cm_key() {
 }
 
 echo "Saving cluster name..."
-CLUSTER="$(kubectl config current-context)"
-if [[ "$CLUSTER" != "$KIND_CLUSTER_NAME" ]]; then
-  CLUSTER="${CLUSTER##*/}"
+CONTEXT="$(kubectl config current-context)"
+if [[ "$CONTEXT" == kind-* ]]; then
+  CLUSTER="$CONTEXT"
+else
+  CLUSTER="${CONTEXT##*/}"
 fi
 echo "$CLUSTER" > "$OUT/cluster-name.txt"
 
@@ -69,7 +70,7 @@ dump_cm_key "podtetris-config" 'config\.yaml' "$OUT/planner-config.yaml"
 dump_cm_key "podtetris-scheduler-config" 'podtetris-scheduler-config\.yaml' "$OUT/planner-scheduler-config.yaml"
 dump_cm_key "podtetris-planner-rules" 'rules\.yaml' "$OUT/planner-rules.yaml"
 
-if [[ "$CLUSTER" != "$KIND_CLUSTER_NAME" ]]; then
+if [[ "$CONTEXT" != kind-* ]]; then
   echo "Saving cluster-autoscaler config..."
   if ! kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml >"$OUT/cluster-autoscaler.yaml"; then
     echo "# deploy autoscaler-aws-cluster-autoscaler not found in kube-system" >"$OUT/cluster-autoscaler.yaml"

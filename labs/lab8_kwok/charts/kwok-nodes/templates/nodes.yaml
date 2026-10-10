@@ -1,0 +1,55 @@
+{{- range $pool := .Values.pools }}
+{{- range $i := until (int $pool.count) }}
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: kwok-{{ $pool.name }}-{{ $i }}
+  annotations:
+    node.alpha.kubernetes.io/ttl: "0"
+    kwok.x-k8s.io/node: fake
+  labels:
+    kubernetes.io/hostname: kwok-{{ $pool.name }}-{{ $i }}
+    node.kubernetes.io/instance-type: {{ $pool.instanceType }}
+    podtetris.io/pool: {{ $pool.name }}
+    type: kwok
+    kubernetes.io/arch: amd64
+    kubernetes.io/os: linux
+spec:
+  # Keeps Kind system pods (and anything without this toleration) off the fake pool.
+  # kube-proxy still lands here because its DaemonSet tolerates every taint; KWOK
+  # marks it Running and the planner treats it as residual.
+  taints:
+    - key: podtetris.io/workload
+      value: "true"
+      effect: NoSchedule
+status:
+  # Helm install ignores status. setup-cluster.sh applies this subresource afterward.
+  allocatable:
+    cpu: {{ $pool.allocatableCpu | quote }}
+    memory: {{ $pool.allocatableMemory | quote }}
+    pods: {{ $pool.pods | quote }}
+  capacity:
+    cpu: {{ $pool.cpu | quote }}
+    memory: {{ $pool.memory | quote }}
+    pods: {{ $pool.pods | quote }}
+  phase: Running
+  daemonEndpoints:
+    kubeletEndpoint:
+      Port: 10250
+  nodeInfo:
+    architecture: amd64
+    operatingSystem: linux
+    kubeletVersion: fake
+    kubeProxyVersion: fake
+    osImage: kwok
+    containerRuntimeVersion: kwok://0.0.0
+  conditions:
+    - type: Ready
+      status: "True"
+      reason: KubeletReady
+      message: kwok fake node
+      lastHeartbeatTime: {{ now | date "2006-01-02T15:04:05Z07:00" | quote }}
+      lastTransitionTime: {{ now | date "2006-01-02T15:04:05Z07:00" | quote }}
+{{ end }}
+{{ end }}

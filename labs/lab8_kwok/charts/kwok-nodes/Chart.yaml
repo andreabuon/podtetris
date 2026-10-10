@@ -1,0 +1,4 @@
+apiVersion: v2
+name: kwok-nodes
+description: Fake worker nodes for the KWOK lab
+version: 0.1.0

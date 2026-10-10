@@ -1,0 +1,163 @@
+# Planner rules for the KWOK lab.
+# First match wins. Higher cost = prefer leaving the pod where it is.
+# App names match charts/workloads/values.yaml.
+#
+#   payments-redis          → fixed
+#   session                 → 100
+#   payments-api            → 90
+#   checkout-api            → 80
+#   checkout-worker         → 70
+#   search-indexer          → 60
+#   frontend                → 55
+#   edge-proxy, search-query → 50
+#   recommendations         → 40
+#   jvm-service             → 35
+#   catalog-api             → 30
+#   catalog-feed            → 25
+#   notifications, inventory → 20
+#   media                   → 15
+#   batch-large             → 8
+#   collector, batch-worker → 5
+
+planner:
+  rules:
+    defaultMoveCost: 10
+    fixedPodsRules:
+      - name: payments-redis
+        selector:
+          labelSelector:
+            matchLabels:
+              app: payments-redis
+    moveCostRules:
+      - name: session
+        cost: 100
+        selector:
+          labelSelector:
+            matchLabels:
+              app: session
+
+      - name: payments-api
+        cost: 90
+        selector:
+          labelSelector:
+            matchLabels:
+              app: payments-api
+
+      - name: checkout-api
+        cost: 80
+        selector:
+          labelSelector:
+            matchLabels:
+              app: checkout-api
+
+      - name: checkout-worker
+        cost: 70
+        selector:
+          labelSelector:
+            matchLabels:
+              app: checkout-worker
+
+      - name: search-indexer
+        cost: 60
+        selector:
+          labelSelector:
+            matchLabels:
+              app: search-indexer
+
+      - name: frontend
+        cost: 55
+        selector:
+          labelSelector:
+            matchLabels:
+              app: frontend
+
+      - name: edge-proxy
+        cost: 50
+        selector:
+          labelSelector:
+            matchLabels:
+              app: edge-proxy
+
+      - name: search-query
+        cost: 50
+        selector:
+          labelSelector:
+            matchLabels:
+              app: search-query
+
+      - name: recommendations
+        cost: 40
+        selector:
+          labelSelector:
+            matchLabels:
+              app: recommendations
+
+      - name: jvm-service
+        cost: 35
+        selector:
+          labelSelector:
+            matchLabels:
+              app: jvm-service
+
+      - name: catalog-api
+        cost: 30
+        selector:
+          labelSelector:
+            matchLabels:
+              app: catalog-api
+
+      - name: catalog-feed
+        cost: 25
+        selector:
+          labelSelector:
+            matchLabels:
+              app: catalog-feed
+
+      - name: notifications
+        cost: 20
+        selector:
+          labelSelector:
+            matchLabels:
+              app: notifications
+
+      - name: inventory
+        cost: 20
+        selector:
+          labelSelector:
+            matchLabels:
+              app: inventory
+
+      - name: media
+        cost: 15
+        selector:
+          labelSelector:
+            matchLabels:
+              app: media
+
+      - name: feature-flags
+        cost: 10
+        selector:
+          labelSelector:
+            matchLabels:
+              app: feature-flags
+
+      - name: batch-large
+        cost: 8
+        selector:
+          labelSelector:
+            matchLabels:
+              app: batch-large
+
+      - name: collector
+        cost: 5
+        selector:
+          labelSelector:
+            matchLabels:
+              app: collector
+
+      - name: batch-worker
+        cost: 5
+        selector:
+          labelSelector:
+            matchLabels:
+              app: batch-worker

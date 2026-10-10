@@ -1,0 +1,23 @@
+# Cloud-shaped nodes, small enough that leftover CPU is a real bin-packing hole.
+# allocatable is capacity minus a kube-reserved / system-reserved slice.
+#
+# general: 18 × 3800m = 68400m CPU, 18 × 14Gi memory
+# memory:   6 × 3800m = 22800m CPU,  6 × 30Gi memory
+# total:    24 nodes, 91200m CPU
+pools:
+  - name: general
+    instanceType: m6i.xlarge
+    cpu: "4"
+    memory: 16Gi
+    allocatableCpu: 3800m
+    allocatableMemory: 14Gi
+    pods: "110"
+    count: 18
+  - name: memory
+    instanceType: r6i.xlarge
+    cpu: "4"
+    memory: 32Gi
+    allocatableCpu: 3800m
+    allocatableMemory: 30Gi
+    pods: "110"
+    count: 6

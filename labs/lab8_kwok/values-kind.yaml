@@ -1,0 +1,27 @@
+# Local Kind overrides for charts/podtetris.
+# Company clusters use StepClusterIssuer; Kind uses cert-manager's self-signed ClusterIssuer.
+certificate:
+  issuerGroup: cert-manager.io
+  issuerKind: ClusterIssuer
+  issuerName: selfsigned-issuer
+
+# This lab snapshots ~24 nodes and ~80 pods. The chart default memory limit is
+# sized for the small kind labs and can OOM the planner here.
+planner:
+  activeDeadlineSeconds: 1800
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+
+# Real worker from kind-config.yaml. KWOK nodes are tainted, so this also
+# keeps the planner, evictor, and webhook off the fake pool.
+nodeSelector:
+  podtetris.io/system: "true"
+
+# One webhook replica is enough for the lab.
+webhook:
+  replicas: 1

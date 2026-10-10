@@ -1,0 +1,12 @@
+# Control-plane stays tainted. PODTetris, cert-manager, and KWOK run on the
+# real worker. Benchmark pods require type=kwok, so they never schedule on
+# that worker even though its allocatable is the whole Docker VM.
+# The planner skips nodes labeled podtetris.io/system.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: kwok
+nodes:
+  - role: control-plane
+  - role: worker
+    labels:
+      podtetris.io/system: "true"
