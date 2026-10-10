@@ -42,8 +42,8 @@ type AppConfig struct {
 
 func setDefaultConfigValues() {
 	viper.SetDefault("podtetrisNamespace", "podtetris")
-	viper.SetDefault("candidateNodesPercent", 20)
-	viper.SetDefault("candidateNodesMin", 2)
+	viper.SetDefault("candidateNodesPercent", 30)
+	viper.SetDefault("candidateNodesMin", 3)
 	viper.SetDefault("candidateNodesMax", 20)
 	viper.SetDefault("candidateNodesMix.byCPU", 40)
 	viper.SetDefault("candidateNodesMix.byMemory", 40)
