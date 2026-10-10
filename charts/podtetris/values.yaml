@@ -26,17 +26,18 @@ planner:
       "{{ .Release.Namespace }}"
       # candidateNodesSetsToCreate is how many distinct candidate node sets to evaluate
     candidateNodesSetsToCreate: 3
-    # candidateNodesFraction is the fraction of worker nodes to try emptying in each candidate set
-    candidateNodesFraction: 0.20
+    # candidateNodesPercent is the percentage of worker nodes to try emptying in each candidate set
+    candidateNodesPercent: 20
     # candidateNodesMin and candidateNodesMax clamp the resulting node count
     # (at least one worker node is always kept out of the candidates)
     candidateNodesMin: 2
     candidateNodesMax: 20
-    # candidateNodesMix is the relative weight of each selection strategy (normalized by their sum)
+    # candidateNodesMix is the percentage of candidate nodes chosen by each strategy (must sum to 100).
+    # Without random nodes only a single candidate set is generated, since all sets would be identical.
     candidateNodesMix:
-      byCPU: 0.4
-      byMemory: 0.4
-      random: 0.2
+      byCPU: 40
+      byMemory: 40
+      random: 20
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0

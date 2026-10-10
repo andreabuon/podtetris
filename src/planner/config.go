@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/spf13/viper"
@@ -15,17 +14,17 @@ const (
 	SCHEDULER_CONFIG_PATH = "/etc/podtetris/podtetris-scheduler-config.yaml"
 )
 
-// CandidateNodesMixConfig holds the relative weights of each selection strategy.
-// Weights are normalized by their sum, so they need not add up to 1.
+// CandidateNodesMixConfig holds the percentage of candidate nodes chosen by each selection strategy.
+// The percentages must sum to 100.
 type CandidateNodesMixConfig struct {
-	ByCPU    float64 `mapstructure:"byCPU"`
-	ByMemory float64 `mapstructure:"byMemory"`
-	Random   float64 `mapstructure:"random"`
+	ByCPU    int `mapstructure:"byCPU"`
+	ByMemory int `mapstructure:"byMemory"`
+	Random   int `mapstructure:"random"`
 }
 
 type AppConfig struct {
 	PodtetrisNamespace                string                  `mapstructure:"podtetrisNamespace"`
-	CandidateNodesFraction            float64                 `mapstructure:"candidateNodesFraction"`
+	CandidateNodesPercent             int                     `mapstructure:"candidateNodesPercent"`
 	CandidateNodesMin                 int                     `mapstructure:"candidateNodesMin"`
 	CandidateNodesMax                 int                     `mapstructure:"candidateNodesMax"`
 	CandidateNodesMix                 CandidateNodesMixConfig `mapstructure:"candidateNodesMix"`
@@ -43,12 +42,12 @@ type AppConfig struct {
 
 func setDefaultConfigValues() {
 	viper.SetDefault("podtetrisNamespace", "podtetris")
-	viper.SetDefault("candidateNodesFraction", 0.20)
+	viper.SetDefault("candidateNodesPercent", 20)
 	viper.SetDefault("candidateNodesMin", 2)
 	viper.SetDefault("candidateNodesMax", 20)
-	viper.SetDefault("candidateNodesMix.byCPU", 0.4)
-	viper.SetDefault("candidateNodesMix.byMemory", 0.4)
-	viper.SetDefault("candidateNodesMix.random", 0.2)
+	viper.SetDefault("candidateNodesMix.byCPU", 40)
+	viper.SetDefault("candidateNodesMix.byMemory", 40)
+	viper.SetDefault("candidateNodesMix.random", 20)
 	viper.SetDefault("candidateNodesSetsToCreate", 3)
 	viper.SetDefault("emptyNodesScoreWeight", 400)
 	viper.SetDefault("costScoreWeight", 1)
@@ -62,8 +61,8 @@ func setDefaultConfigValues() {
 }
 
 func validateConfig(cfg *AppConfig) error {
-	if cfg.CandidateNodesFraction <= 0 || cfg.CandidateNodesFraction > 1 {
-		return fmt.Errorf("candidateNodesFraction must be in (0, 1], got %v", cfg.CandidateNodesFraction)
+	if cfg.CandidateNodesPercent < 1 || cfg.CandidateNodesPercent > 100 {
+		return fmt.Errorf("candidateNodesPercent must be in [1, 100], got %d", cfg.CandidateNodesPercent)
 	}
 	if cfg.CandidateNodesMin < 1 {
 		return fmt.Errorf("candidateNodesMin must be >= 1, got %d", cfg.CandidateNodesMin)
@@ -73,10 +72,10 @@ func validateConfig(cfg *AppConfig) error {
 	}
 	mix := cfg.CandidateNodesMix
 	if mix.ByCPU < 0 || mix.ByMemory < 0 || mix.Random < 0 {
-		return fmt.Errorf("candidateNodesMix weights must be >= 0, got %+v", mix)
+		return fmt.Errorf("candidateNodesMix percentages must be >= 0, got %+v", mix)
 	}
-	if mix.ByCPU+mix.ByMemory+mix.Random <= 0 {
-		return errors.New("candidateNodesMix weights must not all be zero")
+	if sum := mix.ByCPU + mix.ByMemory + mix.Random; sum != 100 {
+		return fmt.Errorf("candidateNodesMix percentages must sum to 100, got %d", sum)
 	}
 	return nil
 }

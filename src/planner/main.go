@@ -162,7 +162,7 @@ func main() {
 
 	candidateNodesCounts, err := resolveCandidateNodesCounts(
 		len(nodeInfos),
-		Config.CandidateNodesFraction,
+		Config.CandidateNodesPercent,
 		Config.CandidateNodesMin,
 		Config.CandidateNodesMax,
 		Config.CandidateNodesMix,
@@ -172,16 +172,26 @@ func main() {
 	}
 	log.Info("Resolved candidate nodes counts",
 		zap.Int("clusterNodes", len(nodeInfos)),
-		zap.Float64("fraction", Config.CandidateNodesFraction),
+		zap.Int("percent", Config.CandidateNodesPercent),
 		zap.Int("total", candidateNodesCounts.Total()),
 		zap.Int("byCPU", candidateNodesCounts.ByCPU),
 		zap.Int("byMemory", candidateNodesCounts.ByMemory),
 		zap.Int("random", candidateNodesCounts.Random),
 	)
 
+	// Without random nodes every candidate set would be identical.
+	candidateNodesSetsToCreate := Config.CandidateNodesSetsToCreate
+	if candidateNodesCounts.Random == 0 && candidateNodesSetsToCreate > 1 {
+		log.Warn("No random candidate nodes, generating a single candidate node set",
+			zap.Int("configuredSets", candidateNodesSetsToCreate),
+			zap.Int("randomPercent", Config.CandidateNodesMix.Random),
+		)
+		candidateNodesSetsToCreate = 1
+	}
+
 	candidateNodesSets, err := createCandidateNodesSets(
 		nodeInfos,
-		Config.CandidateNodesSetsToCreate,
+		candidateNodesSetsToCreate,
 		candidateNodesCounts,
 		rules,
 	)

@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"math"
 	"math/rand"
 	"sort"
 
@@ -24,45 +23,38 @@ func (c CandidateNodesCounts) Total() int {
 // resolveCandidateNodesCounts turns the cluster-size-independent config into
 // concrete per-strategy node counts for a cluster of clusterSize nodes.
 // At least one node is always left out of the candidates so evicted pods have somewhere to go.
-func resolveCandidateNodesCounts(clusterSize int, fraction float64, minNodes int, maxNodes int, mix CandidateNodesMixConfig) (CandidateNodesCounts, error) {
+func resolveCandidateNodesCounts(clusterSize int, percent int, minNodes int, maxNodes int, mix CandidateNodesMixConfig) (CandidateNodesCounts, error) {
 	if clusterSize < 2 {
 		return CandidateNodesCounts{}, fmt.Errorf("at least 2 worker nodes are needed for consolidation, got %d", clusterSize)
 	}
 
-	total := int(math.Round(float64(clusterSize) * fraction))
+	total := (clusterSize*percent + 50) / 100
 	total = max(total, minNodes)
 	total = min(total, maxNodes, clusterSize-1)
 
-	weights := []float64{mix.ByCPU, mix.ByMemory, mix.Random}
-	counts := apportion(total, weights)
+	counts := apportionPercentages(total, []int{mix.ByCPU, mix.ByMemory, mix.Random})
 	return CandidateNodesCounts{ByCPU: counts[0], ByMemory: counts[1], Random: counts[2]}, nil
 }
 
-// apportion splits total into integer parts proportional to weights using the
-// largest remainder method, so the parts always sum to total.
-func apportion(total int, weights []float64) []int {
-	weightSum := 0.0
-	for _, w := range weights {
-		weightSum += w
-	}
-
-	counts := make([]int, len(weights))
-	remainders := make([]float64, len(weights))
+// apportionPercentages splits total into integer parts proportional to percentages
+// (which must sum to 100) using the largest remainder method, so the parts always sum to total.
+func apportionPercentages(total int, percentages []int) []int {
+	counts := make([]int, len(percentages))
+	remainders := make([]int, len(percentages))
 	assigned := 0
-	for i, w := range weights {
-		exact := float64(total) * w / weightSum
-		counts[i] = int(math.Floor(exact))
-		remainders[i] = exact - float64(counts[i])
+	for i, p := range percentages {
+		counts[i] = total * p / 100
+		remainders[i] = total * p % 100
 		assigned += counts[i]
 	}
 
-	order := make([]int, len(weights))
+	order := make([]int, len(percentages))
 	for i := range order {
 		order[i] = i
 	}
 	sort.SliceStable(order, func(a, b int) bool { return remainders[order[a]] > remainders[order[b]] })
 	for i := 0; assigned < total; i++ {
-		counts[order[i%len(order)]]++
+		counts[order[i]]++
 		assigned++
 	}
 	return counts
