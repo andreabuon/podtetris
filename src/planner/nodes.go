@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"sort"
 
+	"go.uber.org/zap"
 	"k8s.io/apimachinery/pkg/util/sets"
 	kubeframework "k8s.io/kube-scheduler/framework"
 )
@@ -47,10 +48,20 @@ func resolveCandidateNodesCounts(clusterSize int, percent int, minNodes int, max
 
 func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate int, counts CandidateNodesCounts, rules *RuleMatcher) ([]sets.Set[kubeframework.NodeInfo], error) {
 	candidateSets := make([]sets.Set[kubeframework.NodeInfo], 0, setsToCreate)
+	// CPU/memory picks are deterministic, so sets stay distinct by not reusing random nodes.
+	usedRandomNodes := sets.New[string]()
 
 	for len(candidateSets) < setsToCreate {
-		nodes, err := selectCandidateNodes(nodeInfos, counts.Random, counts.ByCPU, counts.ByMemory, rules)
+		nodes, err := selectCandidateNodes(nodeInfos, counts.Random, counts.ByCPU, counts.ByMemory, rules, usedRandomNodes)
 		if err != nil {
+			if len(candidateSets) > 0 {
+				log.Warn("Could not generate enough distinct candidate node sets",
+					zap.Error(err),
+					zap.Int("generated", len(candidateSets)),
+					zap.Int("requested", setsToCreate),
+				)
+				break
+			}
 			return nil, err
 		}
 		candidateSets = append(candidateSets, sets.New(nodes...))
@@ -59,7 +70,7 @@ func createCandidateNodesSets(nodeInfos []kubeframework.NodeInfo, setsToCreate i
 	return candidateSets, nil
 }
 
-func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher) ([]kubeframework.NodeInfo, error) {
+func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet int, nodesToGetByCPU int, nodesToGetByMemory int, rules *RuleMatcher, usedRandomNodes sets.Set[string]) ([]kubeframework.NodeInfo, error) {
 	if nodeInfos == nil {
 		return nil, errors.New("no available candidate nodes")
 	}
@@ -91,10 +102,21 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 	}
 	remainingNodes = remainingNodes.Delete(leastUsedByMemory...)
 
+	// Skip random nodes already used by earlier candidate sets.
+	randomPool := make([]kubeframework.NodeInfo, 0, remainingNodes.Len())
+	for _, node := range remainingNodes.UnsortedList() {
+		if !usedRandomNodes.Has(node.Node().Name) {
+			randomPool = append(randomPool, node)
+		}
+	}
+	if len(randomPool) < randomNodesToGet {
+		return nil, fmt.Errorf("not enough unused random candidate nodes: need %d, have %d", randomNodesToGet, len(randomPool))
+	}
+
 	var randomNodes []kubeframework.NodeInfo
 	attemptNum := 0
 	for {
-		randomNodes, err = getRandomNodes(remainingNodes.UnsortedList(), randomNodesToGet)
+		randomNodes, err = getRandomNodes(randomPool, randomNodesToGet)
 		if err != nil {
 			return nil, err
 		}
@@ -103,7 +125,6 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 		if err != nil {
 			return nil, fmt.Errorf("error while checking candidate nodes: %v", err)
 		}
-
 		if !allContainFixed {
 			break
 		}
@@ -112,6 +133,10 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 		if attemptNum >= Config.CandidateNodesSelectionMaxRetries {
 			return nil, errors.New("max random candidate nodes selection retries reached")
 		}
+	}
+
+	for _, node := range randomNodes {
+		usedRandomNodes.Insert(node.Node().Name)
 	}
 
 	var candidateNodes []kubeframework.NodeInfo
