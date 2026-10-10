@@ -1,0 +1,1137 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 55d0b387-fa65-4724-94e3-84cfe4e99a24
+      podtetris.io/plan: consolidationplan-ms46x
+    name: batch-worker-5ffd668fc-psfrk-9a3992cc
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3058"
+    uid: 41723dd6-c50e-4884-8398-4f10a30c2020
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 55d0b387-fa65-4724-94e3-84cfe4e99a24
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-psfrk
+      namespace: batch
+      uid: 9a3992cc-c85b-4c38-9e8e-1c3fb5ce195b
+    sourceNode: kwok-general-6
+    targetNode: kwok-memory-3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod batch/batch-worker-5ffd668fc-<pending-name> intercepted
+        and pinned to node "kwok-memory-3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod batch/batch-worker-5ffd668fc-j4dmk persisted on node
+        "kwok-memory-3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod batch/batch-worker-5ffd668fc-j4dmk is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 55d0b387-fa65-4724-94e3-84cfe4e99a24
+      podtetris.io/plan: consolidationplan-ms46x
+    name: batch-worker-5ffd668fc-tfrc7-72b49413
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3087"
+    uid: 923097f8-c57d-4817-b491-1797ab49c97e
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 55d0b387-fa65-4724-94e3-84cfe4e99a24
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-tfrc7
+      namespace: batch
+      uid: 72b49413-4b4f-4cec-98bc-93a78d92340e
+    sourceNode: kwok-memory-5
+    targetNode: kwok-general-3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod batch/batch-worker-5ffd668fc-<pending-name> intercepted
+        and pinned to node "kwok-general-3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod batch/batch-worker-5ffd668fc-n7b42 persisted on node
+        "kwok-general-3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod batch/batch-worker-5ffd668fc-n7b42 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 41819a94-e09d-4238-be23-d74eaa661a7d
+      podtetris.io/plan: consolidationplan-ms46x
+    name: catalog-api-b4c686854-m6qb9-6eae0bf6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3020"
+    uid: d35596e5-0f4c-4f88-b5fe-0efa8b296384
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: 41819a94-e09d-4238-be23-d74eaa661a7d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-m6qb9
+      namespace: catalog
+      uid: 6eae0bf6-55bc-4ae2-82e2-404a364e02bb
+    sourceNode: kwok-general-8
+    targetNode: kwok-memory-3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod catalog/catalog-api-b4c686854-<pending-name> intercepted
+        and pinned to node "kwok-memory-3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod catalog/catalog-api-b4c686854-x5h9m persisted on node
+        "kwok-memory-3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod catalog/catalog-api-b4c686854-x5h9m is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 1508801a-aeba-4211-a288-a75b3b3cd2cb
+      podtetris.io/plan: consolidationplan-ms46x
+    name: catalog-feed-685dd949cb-54pd7-ccde513b
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "2988"
+    uid: 40f69a33-6757-492a-a68a-8c937784dc67
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-feed-685dd949cb
+      uid: 1508801a-aeba-4211-a288-a75b3b3cd2cb
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-feed-685dd949cb-54pd7
+      namespace: catalog
+      uid: ccde513b-f840-4190-8b8b-3e6bba59b9f6
+    sourceNode: kwok-general-11
+    targetNode: kwok-general-7
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod catalog/catalog-feed-685dd949cb-<pending-name> intercepted
+        and pinned to node "kwok-general-7"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod catalog/catalog-feed-685dd949cb-5zbqp persisted on
+        node "kwok-general-7"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod catalog/catalog-feed-685dd949cb-5zbqp is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 79c4c07b-dd6b-44df-a31d-2fa450fc6c9f
+      podtetris.io/plan: consolidationplan-ms46x
+    name: checkout-api-8c947447d-f9vg4-b56086ed
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "2999"
+    uid: 9156b18a-07bf-4570-a4f6-117ff29d0419
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-api-8c947447d
+      uid: 79c4c07b-dd6b-44df-a31d-2fa450fc6c9f
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-api-8c947447d-f9vg4
+      namespace: checkout
+      uid: b56086ed-8d3c-4e71-bc1a-7f0ddd705641
+    sourceNode: kwok-general-14
+    targetNode: kwok-general-16
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod checkout/checkout-api-8c947447d-<pending-name> intercepted
+        and pinned to node "kwok-general-16"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod checkout/checkout-api-8c947447d-k6kmc persisted on
+        node "kwok-general-16"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod checkout/checkout-api-8c947447d-k6kmc is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23a1dd94-1fc2-435c-9c56-4a7b69674586
+      podtetris.io/plan: consolidationplan-ms46x
+    name: feature-flags-5565fb9b8b-mfgvc-32d6d372
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3070"
+    uid: f5f21bdf-60eb-4429-a2e5-817cfcbb62c4
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: feature-flags-5565fb9b8b
+      uid: 23a1dd94-1fc2-435c-9c56-4a7b69674586
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: feature-flags-5565fb9b8b-mfgvc
+      namespace: platform
+      uid: 32d6d372-abf4-4f9f-b40e-569bc8e8c181
+    sourceNode: kwok-memory-2
+    targetNode: kwok-general-7
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod platform/feature-flags-5565fb9b8b-<pending-name> intercepted
+        and pinned to node "kwok-general-7"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod platform/feature-flags-5565fb9b8b-m4tld persisted on
+        node "kwok-general-7"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:24Z"
+      message: Replacement pod platform/feature-flags-5565fb9b8b-m4tld is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 58f94fc1-3513-45b2-8c80-a31eb19ed5a7
+      podtetris.io/plan: consolidationplan-ms46x
+    name: frontend-9687b7d98-cqmxc-5abdaee9
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3264"
+    uid: 2330e43c-ffdc-4137-80fe-4929a174cee2
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 58f94fc1-3513-45b2-8c80-a31eb19ed5a7
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-cqmxc
+      namespace: edge
+      uid: 5abdaee9-6f61-406d-b0fa-2943db23d4c5
+    sourceNode: kwok-memory-5
+    targetNode: kwok-memory-4
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Replacement pod edge/frontend-9687b7d98-<pending-name> intercepted
+        and pinned to node "kwok-memory-4"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Replacement pod edge/frontend-9687b7d98-kbslb persisted on node "kwok-memory-4"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Replacement pod edge/frontend-9687b7d98-kbslb is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 58f94fc1-3513-45b2-8c80-a31eb19ed5a7
+      podtetris.io/plan: consolidationplan-ms46x
+    name: frontend-9687b7d98-p55x6-b247c45c
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3048"
+    uid: 34f82d12-3439-47d3-baa7-8a15fc471273
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 58f94fc1-3513-45b2-8c80-a31eb19ed5a7
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-p55x6
+      namespace: edge
+      uid: b247c45c-bd24-459b-8240-4dd686e5baf2
+    sourceNode: kwok-general-11
+    targetNode: kwok-general-16
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod edge/frontend-9687b7d98-<pending-name> intercepted
+        and pinned to node "kwok-general-16"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod edge/frontend-9687b7d98-k6l6s persisted on node "kwok-general-16"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod edge/frontend-9687b7d98-k6l6s is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 58f94fc1-3513-45b2-8c80-a31eb19ed5a7
+      podtetris.io/plan: consolidationplan-ms46x
+    name: frontend-9687b7d98-p5hmm-39372ad9
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3265"
+    uid: e5de3d65-efb9-4195-a329-7b523ae041fc
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 58f94fc1-3513-45b2-8c80-a31eb19ed5a7
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-p5hmm
+      namespace: edge
+      uid: 39372ad9-14d1-45a2-adb9-f6994e6927fd
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-16
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Replacement pod edge/frontend-9687b7d98-<pending-name> intercepted
+        and pinned to node "kwok-general-16"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Replacement pod edge/frontend-9687b7d98-cs2f5 persisted on node "kwok-general-16"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:52Z"
+      message: Replacement pod edge/frontend-9687b7d98-cs2f5 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e73ff857-c734-4b4d-b163-f394b5a1f5e1
+      podtetris.io/plan: consolidationplan-ms46x
+    name: inventory-787d949f6b-8l5bd-32a14915
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3001"
+    uid: a249a99d-a9c2-42c2-bd0b-e7f0270b99ea
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: inventory-787d949f6b
+      uid: e73ff857-c734-4b4d-b163-f394b5a1f5e1
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: inventory-787d949f6b-8l5bd
+      namespace: platform
+      uid: 32a14915-416f-4413-9123-fe909d83d73f
+    sourceNode: kwok-general-13
+    targetNode: kwok-general-9
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod platform/inventory-787d949f6b-<pending-name> intercepted
+        and pinned to node "kwok-general-9"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod platform/inventory-787d949f6b-7l9bf persisted on node
+        "kwok-general-9"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod platform/inventory-787d949f6b-7l9bf is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 84763c5d-d426-478c-9b12-32d0fd43b0ce
+      podtetris.io/plan: consolidationplan-ms46x
+    name: jvm-service-594d9956fb-h52ft-fa2b6029
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3399"
+    uid: ee48e462-4e00-4104-b92e-727906556499
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: jvm-service-594d9956fb
+      uid: 84763c5d-d426-478c-9b12-32d0fd43b0ce
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: jvm-service-594d9956fb-h52ft
+      namespace: platform
+      uid: fa2b6029-fe66-4b04-a6f7-1b4a6bc28bd4
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-12
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:46:21Z"
+      message: No replacement pod CREATE was claimed within 1m0s after eviction
+      observedGeneration: 1
+      reason: ReplacementNotClaimed
+      status: "True"
+      type: Failed
+    persistAttempts: 0
+    phase: Failed
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 2610ec27-0e4b-417f-b808-ebea3f344554
+      podtetris.io/plan: consolidationplan-ms46x
+    name: media-bcf8c47d9-5qqsx-64792df0
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "2989"
+    uid: 157f9e5d-868e-431c-9afb-d7a52375fe68
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: media-bcf8c47d9
+      uid: 2610ec27-0e4b-417f-b808-ebea3f344554
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: media-bcf8c47d9-5qqsx
+      namespace: platform
+      uid: 64792df0-f83e-4def-a369-063c6350b211
+    sourceNode: kwok-memory-2
+    targetNode: kwok-general-9
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod platform/media-bcf8c47d9-<pending-name> intercepted
+        and pinned to node "kwok-general-9"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod platform/media-bcf8c47d9-rzbt5 persisted on node "kwok-general-9"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod platform/media-bcf8c47d9-rzbt5 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 2610ec27-0e4b-417f-b808-ebea3f344554
+      podtetris.io/plan: consolidationplan-ms46x
+    name: media-bcf8c47d9-8th6c-b3199ccf
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "2990"
+    uid: 2e8dcd94-b312-4add-9c8d-8a113f1066ec
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: media-bcf8c47d9
+      uid: 2610ec27-0e4b-417f-b808-ebea3f344554
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: media-bcf8c47d9-8th6c
+      namespace: platform
+      uid: b3199ccf-9063-45ca-a29d-916dc93e3e18
+    sourceNode: kwok-memory-5
+    targetNode: kwok-general-4
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod platform/media-bcf8c47d9-<pending-name> intercepted
+        and pinned to node "kwok-general-4"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod platform/media-bcf8c47d9-t6gbq persisted on node "kwok-general-4"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod platform/media-bcf8c47d9-t6gbq is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 3257777f-b07c-4ad0-9045-5fbe095e1c92
+      podtetris.io/plan: consolidationplan-ms46x
+    name: recommendations-cf75fd886-tkntp-acc3f758
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "2980"
+    uid: 590ff49a-d006-40db-a754-1aef986db797
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: recommendations-cf75fd886
+      uid: 3257777f-b07c-4ad0-9045-5fbe095e1c92
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: recommendations-cf75fd886-tkntp
+      namespace: recommendations
+      uid: acc3f758-8a1b-4098-b47b-8550d28aa431
+    sourceNode: kwok-memory-5
+    targetNode: kwok-general-3
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod recommendations/recommendations-cf75fd886-<pending-name>
+        intercepted and pinned to node "kwok-general-3"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod recommendations/recommendations-cf75fd886-xrxmq persisted
+        on node "kwok-general-3"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod recommendations/recommendations-cf75fd886-xrxmq is
+        running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 571e248f-a637-458c-8848-a4811b47507f
+      podtetris.io/plan: consolidationplan-ms46x
+    name: search-query-788b8d6f4-vpl2g-a72cafc1
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3000"
+    uid: cc1d39e3-2868-401b-8268-06b80fc0cdef
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-query-788b8d6f4
+      uid: 571e248f-a637-458c-8848-a4811b47507f
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-query-788b8d6f4-vpl2g
+      namespace: search
+      uid: a72cafc1-2d3f-476a-b016-c0c085c3565b
+    sourceNode: kwok-memory-5
+    targetNode: kwok-memory-4
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:21Z"
+      message: Replacement pod search/search-query-788b8d6f4-<pending-name> intercepted
+        and pinned to node "kwok-memory-4"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod search/search-query-788b8d6f4-z75wt persisted on node
+        "kwok-memory-4"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod search/search-query-788b8d6f4-z75wt is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-10T10:45:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 3719b8d9-d7dd-44b9-b06b-43ada87c637d
+      podtetris.io/plan: consolidationplan-ms46x
+    name: session-2-43de86e1
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-ms46x
+      uid: e852e9ff-c6b6-4f85-8438-e81ae2ad3a3e
+    resourceVersion: "3037"
+    uid: aea608d7-707e-486d-90af-0f6cb54382a2
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: session
+      uid: 3719b8d9-d7dd-44b9-b06b-43ada87c637d
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: session-2
+      namespace: platform
+      uid: 43de86e1-1666-4b42-8c6a-9ceb60b24d33
+    sourceNode: kwok-general-6
+    targetNode: kwok-general-16
+  status:
+    conditions:
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Evicting source pod
+      observedGeneration: 1
+      reason: Evicting
+      status: "True"
+      type: SourceEvicting
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Pod eviction has been requested successfully
+      observedGeneration: 1
+      reason: Evicted
+      status: "True"
+      type: SourceEvicted
+    - lastTransitionTime: "2026-10-10T10:45:22Z"
+      message: Replacement pod platform/session-2 intercepted and pinned to node "kwok-general-16"
+      observedGeneration: 1
+      reason: ReplacementCreated
+      status: "True"
+      type: ReplacementClaimed
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod platform/session-2 persisted on node "kwok-general-16"
+      observedGeneration: 1
+      reason: Verified
+      status: "True"
+      type: ReplacementBound
+    - lastTransitionTime: "2026-10-10T10:45:23Z"
+      message: Replacement pod platform/session-2 is running
+      observedGeneration: 1
+      reason: Running
+      status: "True"
+      type: ReplacementSucceeded
+    persistAttempts: 0
+    phase: Succeeded
+    runningAttempts: 0
+kind: List
+metadata:
+  resourceVersion: ""

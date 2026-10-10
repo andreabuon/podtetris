@@ -1,0 +1,122 @@
+defaultMoveCost: 10
+fixedPodsRules:
+- name: payments-redis
+  selector:
+    labelSelector:
+      matchLabels:
+        app: payments-redis
+moveCostRules:
+- cost: 100
+  name: session
+  selector:
+    labelSelector:
+      matchLabels:
+        app: session
+- cost: 90
+  name: payments-api
+  selector:
+    labelSelector:
+      matchLabels:
+        app: payments-api
+- cost: 80
+  name: checkout-api
+  selector:
+    labelSelector:
+      matchLabels:
+        app: checkout-api
+- cost: 70
+  name: checkout-worker
+  selector:
+    labelSelector:
+      matchLabels:
+        app: checkout-worker
+- cost: 60
+  name: search-indexer
+  selector:
+    labelSelector:
+      matchLabels:
+        app: search-indexer
+- cost: 55
+  name: frontend
+  selector:
+    labelSelector:
+      matchLabels:
+        app: frontend
+- cost: 50
+  name: edge-proxy
+  selector:
+    labelSelector:
+      matchLabels:
+        app: edge-proxy
+- cost: 50
+  name: search-query
+  selector:
+    labelSelector:
+      matchLabels:
+        app: search-query
+- cost: 40
+  name: recommendations
+  selector:
+    labelSelector:
+      matchLabels:
+        app: recommendations
+- cost: 35
+  name: jvm-service
+  selector:
+    labelSelector:
+      matchLabels:
+        app: jvm-service
+- cost: 30
+  name: catalog-api
+  selector:
+    labelSelector:
+      matchLabels:
+        app: catalog-api
+- cost: 25
+  name: catalog-feed
+  selector:
+    labelSelector:
+      matchLabels:
+        app: catalog-feed
+- cost: 20
+  name: notifications
+  selector:
+    labelSelector:
+      matchLabels:
+        app: notifications
+- cost: 20
+  name: inventory
+  selector:
+    labelSelector:
+      matchLabels:
+        app: inventory
+- cost: 15
+  name: media
+  selector:
+    labelSelector:
+      matchLabels:
+        app: media
+- cost: 10
+  name: feature-flags
+  selector:
+    labelSelector:
+      matchLabels:
+        app: feature-flags
+- cost: 8
+  name: batch-large
+  selector:
+    labelSelector:
+      matchLabels:
+        app: batch-large
+- cost: 5
+  name: collector
+  selector:
+    labelSelector:
+      matchLabels:
+        app: collector
+- cost: 5
+  name: batch-worker
+  selector:
+    labelSelector:
+      matchLabels:
+        app: batch-worker

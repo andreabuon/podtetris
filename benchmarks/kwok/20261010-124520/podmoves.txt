@@ -1,0 +1,17 @@
+NAME                                       POD                               SOURCE            TARGET            PHASE
+batch-worker-5ffd668fc-psfrk-9a3992cc      batch-worker-5ffd668fc-psfrk      kwok-general-6    kwok-memory-3     Succeeded
+batch-worker-5ffd668fc-tfrc7-72b49413      batch-worker-5ffd668fc-tfrc7      kwok-memory-5     kwok-general-3    Succeeded
+catalog-api-b4c686854-m6qb9-6eae0bf6       catalog-api-b4c686854-m6qb9       kwok-general-8    kwok-memory-3     Succeeded
+catalog-feed-685dd949cb-54pd7-ccde513b     catalog-feed-685dd949cb-54pd7     kwok-general-11   kwok-general-7    Succeeded
+checkout-api-8c947447d-f9vg4-b56086ed      checkout-api-8c947447d-f9vg4      kwok-general-14   kwok-general-16   Succeeded
+feature-flags-5565fb9b8b-mfgvc-32d6d372    feature-flags-5565fb9b8b-mfgvc    kwok-memory-2     kwok-general-7    Succeeded
+frontend-9687b7d98-cqmxc-5abdaee9          frontend-9687b7d98-cqmxc          kwok-memory-5     kwok-memory-4     Succeeded
+frontend-9687b7d98-p55x6-b247c45c          frontend-9687b7d98-p55x6          kwok-general-11   kwok-general-16   Succeeded
+frontend-9687b7d98-p5hmm-39372ad9          frontend-9687b7d98-p5hmm          kwok-general-8    kwok-general-16   Succeeded
+inventory-787d949f6b-8l5bd-32a14915        inventory-787d949f6b-8l5bd        kwok-general-13   kwok-general-9    Succeeded
+jvm-service-594d9956fb-h52ft-fa2b6029      jvm-service-594d9956fb-h52ft      kwok-general-8    kwok-general-12   Failed
+media-bcf8c47d9-5qqsx-64792df0             media-bcf8c47d9-5qqsx             kwok-memory-2     kwok-general-9    Succeeded
+media-bcf8c47d9-8th6c-b3199ccf             media-bcf8c47d9-8th6c             kwok-memory-5     kwok-general-4    Succeeded
+recommendations-cf75fd886-tkntp-acc3f758   recommendations-cf75fd886-tkntp   kwok-memory-5     kwok-general-3    Succeeded
+search-query-788b8d6f4-vpl2g-a72cafc1      search-query-788b8d6f4-vpl2g      kwok-memory-5     kwok-memory-4     Succeeded
+session-2-43de86e1                         session-2                         kwok-general-6    kwok-general-16   Succeeded
