@@ -1,0 +1,10 @@
+NODE                 CPU REQUESTS   CPU LIMITS     MEMORY REQUESTS   MEMORY LIMITS
+*                    8196m (10%)    10184m (12%)   5234Mi (5%)       8120Mi (8%)
+kind-control-plane   950m (9%)      0m (0%)        290Mi (2%)        340Mi (2%)
+kind-worker          2332m (23%)    3324m (33%)    1794Mi (15%)      2848Mi (23%)
+kind-worker2         648m (6%)      456m (4%)      598Mi (5%)        456Mi (3%)
+kind-worker3         600m (6%)      1000m (10%)    306Mi (2%)        512Mi (4%)
+kind-worker4         473m (4%)      746m (7%)      301Mi (2%)        502Mi (4%)
+kind-worker5         1392m (13%)    1956m (19%)    854Mi (7%)        1480Mi (12%)
+kind-worker6         1451m (14%)    2202m (22%)    913Mi (7%)        1726Mi (14%)
+kind-worker7         350m (3%)      500m (5%)      178Mi (1%)        256Mi (2%)

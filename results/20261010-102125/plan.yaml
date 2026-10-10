@@ -1,0 +1,24 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: ConsolidationPlan
+  metadata:
+    creationTimestamp: "2026-10-10T08:21:26Z"
+    generateName: consolidationplan-
+    generation: 1
+    name: consolidationplan-6grvd
+    namespace: podtetris
+    resourceVersion: "2224"
+    uid: 48cc3394-3045-4861-8037-d09bb5721eab
+  spec:
+    cost: 355
+    freedNodes: 2
+    moveCount: 10
+    nodesToFree:
+    - kind-worker3
+    - kind-worker7
+    permutationStrategy: cpu_desc
+    score: 445
+kind: List
+metadata:
+  resourceVersion: ""

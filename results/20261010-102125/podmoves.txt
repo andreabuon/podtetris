@@ -1,0 +1,11 @@
+NAME                                                POD                                        SOURCE         TARGET        PHASE
+cert-manager-cainjector-5b68759df5-gpm5q-f28d30d5   cert-manager-cainjector-5b68759df5-gpm5q   kind-worker4   kind-worker   Succeeded
+cert-manager-d966bfbbf-vmk4c-01e1ff79               cert-manager-d966bfbbf-vmk4c               kind-worker3   kind-worker   Succeeded
+deployment-a-67f5c8c457-8gx2l-a4fd2d63              deployment-a-67f5c8c457-8gx2l              kind-worker3   kind-worker   Succeeded
+deployment-a-67f5c8c457-95hsz-5a2f901d              deployment-a-67f5c8c457-95hsz              kind-worker4   kind-worker   Succeeded
+deployment-a-67f5c8c457-mk8td-a661a84f              deployment-a-67f5c8c457-mk8td              kind-worker7   kind-worker   Succeeded
+deployment-b-7b96bcf96d-78n5q-550d735a              deployment-b-7b96bcf96d-78n5q              kind-worker7   kind-worker   Succeeded
+deployment-b-7b96bcf96d-xbhzt-cd695209              deployment-b-7b96bcf96d-xbhzt              kind-worker4   kind-worker   Succeeded
+deployment-b-7b96bcf96d-zjf7d-f158e834              deployment-b-7b96bcf96d-zjf7d              kind-worker3   kind-worker   Succeeded
+rs-a-ct82k-94732687                                 rs-a-ct82k                                 kind-worker3   kind-worker   Succeeded
+rs-b-dzvgr-7776b0ef                                 rs-b-dzvgr                                 kind-worker7   kind-worker   Succeeded
