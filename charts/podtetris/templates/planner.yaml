@@ -12,6 +12,7 @@ spec:
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
+      backoffLimit: {{ .Values.planner.backoffLimit | default 0 }}
       {{- if .Values.planner.ttlSecondsAfterFinished }}
       ttlSecondsAfterFinished: {{ .Values.planner.ttlSecondsAfterFinished }}
       {{- end }}

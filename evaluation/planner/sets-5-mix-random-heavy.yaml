@@ -1,0 +1,7 @@
+planner:
+  config:
+    candidateNodesSetsToCreate: 5
+    candidateNodesMix:
+      byCPU: 20
+      byMemory: 20
+      random: 60

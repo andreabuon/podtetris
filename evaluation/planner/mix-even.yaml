@@ -1,0 +1,6 @@
+planner:
+  config:
+    candidateNodesMix:
+      byCPU: 34
+      byMemory: 33
+      random: 33

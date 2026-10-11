@@ -14,13 +14,15 @@ planner:
     tag: "latest"
   ttlSecondsAfterFinished: 86400
   activeDeadlineSeconds: 600
+  # A failed planner run is not retried.
+  backoffLimit: 0
   resources:
     limits:
-      cpu: 500m
-      memory: 256Mi
+      cpu: "4"
+      memory: 4Gi
     requests:
-      cpu: 250m
-      memory: 128Mi
+      cpu: "1"
+      memory: 1Gi
   config:
     podtetrisNamespace:
       "{{ .Release.Namespace }}"

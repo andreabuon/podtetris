@@ -54,7 +54,7 @@ func setDefaultConfigValues() {
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)
 	viper.SetDefault("candidateNodesSelectionMaxRetries", 15)
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
-	viper.SetDefault("randomPermutationCount", 1)
+	viper.SetDefault("randomPermutationCount", 3)
 	viper.SetDefault("parallelism", 8)
 	viper.SetDefault("dryRun", false)
 	viper.SetDefault("logLevel", "info")
