@@ -1,0 +1,75 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-12T13:25:59Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 420fb7c7-9d61-4e2c-8671-d2fc74d44549
+      podtetris.io/plan: consolidationplan-xmgkx
+    name: catalog-feed-685dd949cb-p89st-382752c1
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-xmgkx
+      uid: 7eadde03-447e-4172-be0e-30613555e23e
+    resourceVersion: "3617"
+    uid: d58dce2b-e9bc-46ca-b98c-a9064d06adaa
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-feed-685dd949cb
+      uid: 420fb7c7-9d61-4e2c-8671-d2fc74d44549
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-feed-685dd949cb-p89st
+      namespace: catalog
+      uid: 382752c1-7e0d-445a-be60-655ec4780be6
+    sourceNode: kwok-general-3
+    targetNode: kwok-general-12
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-12T13:25:59Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: b26cb4f0-3aef-45c2-a4bb-13fd323655c8
+      podtetris.io/plan: consolidationplan-xmgkx
+    name: inventory-787d949f6b-6bk8p-733a71e5
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-xmgkx
+      uid: 7eadde03-447e-4172-be0e-30613555e23e
+    resourceVersion: "3618"
+    uid: 7dbe3038-9b2c-42a9-9d84-ac5b20242ed3
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: inventory-787d949f6b
+      uid: b26cb4f0-3aef-45c2-a4bb-13fd323655c8
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: inventory-787d949f6b-6bk8p
+      namespace: platform
+      uid: 733a71e5-e1f0-40f3-b217-920d7ab4676a
+    sourceNode: kwok-general-15
+    targetNode: kwok-memory-1
+kind: List
+metadata:
+  resourceVersion: ""

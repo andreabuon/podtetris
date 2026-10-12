@@ -1,0 +1,5 @@
+NAME                                    POD                            SOURCE            TARGET            PHASE
+catalog-api-b4c686854-ng2g7-750b07f1    catalog-api-b4c686854-ng2g7    kwok-general-15   kwok-general-2    
+catalog-api-b4c686854-nqg99-dc0327e4    catalog-api-b4c686854-nqg99    kwok-memory-0     kwok-general-16   
+inventory-787d949f6b-6bk8p-733a71e5     inventory-787d949f6b-6bk8p     kwok-general-15   kwok-memory-1     
+jvm-service-594d9956fb-mdj5p-659747cc   jvm-service-594d9956fb-mdj5p   kwok-memory-0     kwok-memory-2     

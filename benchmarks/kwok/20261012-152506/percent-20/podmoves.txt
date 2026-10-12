@@ -1,0 +1,3 @@
+NAME                                     POD                             SOURCE            TARGET            PHASE
+catalog-feed-685dd949cb-p89st-382752c1   catalog-feed-685dd949cb-p89st   kwok-general-3    kwok-general-12   
+inventory-787d949f6b-6bk8p-733a71e5      inventory-787d949f6b-6bk8p      kwok-general-15   kwok-memory-1     
