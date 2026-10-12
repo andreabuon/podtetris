@@ -18,10 +18,12 @@ The setup script:
 3. Applies test workloads
 
 ## Install PODTetris chart
-Use `values-kind.yaml` so webhook certificates use the local issuer (not the company Step issuer):
+Use `values-kind.yaml` so webhook certificates use the local issuer (not the company Step issuer).
+Use `values-kind-rules.yaml` for this lab's planner rules.
 
 ```
 helm upgrade --install podtetris ../../charts/podtetris \
   -n podtetris --create-namespace \
-  -f values-kind.yaml
+  -f values-kind.yaml \
+  -f values-kind-rules.yaml
 ```

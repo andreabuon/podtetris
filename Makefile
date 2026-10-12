@@ -33,7 +33,9 @@ deploy: crd build-all
 
 # Local Kind: lab cert issuer + planner rules (→ rules ConfigMap → /etc/podtetris/rules.yaml).
 deploy-local: crd kind-load
-	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace -f labs/lab6_kind/values-kind.yaml -f charts/podtetris/values-kind.yaml
+	helm upgrade --install podtetris charts/podtetris --namespace="podtetris" --create-namespace \
+	  -f labs/lab6_kind/values-kind.yaml \
+	  -f labs/lab6_kind/values-kind-rules.yaml
 
 # Local Kind + Online Boutique planner rules (labs/lab7_boutique-kind).
 deploy-local-boutique: crd kind-load
