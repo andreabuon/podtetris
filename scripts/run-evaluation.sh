@@ -37,18 +37,25 @@ echo "Evaluation run directory: $RUN_DIR"
 
 for config in "$CONFIG_DIR"/*.yaml; do
   config_name="$(basename "$config" .yaml)"
-  kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
+  kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
   echo "Applying $config_name"
-  helm upgrade "$RELEASE" charts/podtetris -n "$NS" \
+  helm_out="$(mktemp)"
+  if ! helm upgrade "$RELEASE" charts/podtetris -n "$NS" \
     --reuse-values \
     -f "$CONFIG_DIR/baseline.yaml" \
-    -f "$config"
+    -f "$config" >"$helm_out" 2>&1; then
+    echo "error: helm upgrade failed for $config_name" >&2
+    cat "$helm_out" >&2
+    rm -f "$helm_out"
+    exit 1
+  fi
+  rm -f "$helm_out"
   ./scripts/run-experiment.sh --planner-only --ns "$NS" \
     --run-id "$RUN_ID" \
     --config-name "$config_name"
 done
 
-kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
+kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
 
 # Runs results Summary
 SUMMARY="$RUN_DIR/summary.csv"

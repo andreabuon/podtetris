@@ -67,7 +67,6 @@ dump_cm_key() {
   fi
 }
 
-echo "Saving cluster name..."
 CONTEXT="$(kubectl config current-context)"
 if [[ "$CONTEXT" == kind-* ]]; then
   CLUSTER="$CONTEXT"
@@ -76,48 +75,38 @@ else
 fi
 echo "$CLUSTER" > "$RESULTS_DIR/cluster-name.txt"
 
-echo "Saving planner config and rules..."
 dump_cm_key "podtetris-config" 'config\.yaml' "$RESULTS_DIR/planner-config.yaml"
 dump_cm_key "podtetris-scheduler-config" 'podtetris-scheduler-config\.yaml' "$RESULTS_DIR/planner-scheduler-config.yaml"
 dump_cm_key "podtetris-planner-rules" 'rules\.yaml' "$RESULTS_DIR/planner-rules.yaml"
 
 if [[ "$CONTEXT" != kind-* ]]; then
-  echo "Saving cluster-autoscaler config..."
   if ! kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml >"$RESULTS_DIR/cluster-autoscaler.yaml"; then
     echo "# deploy autoscaler-aws-cluster-autoscaler not found in kube-system" >"$RESULTS_DIR/cluster-autoscaler.yaml"
   fi
 fi
 
-echo "Capturing node resource requests (before)..."
 #kubectl get nodes > "$RESULTS_DIR/nodes-before.txt"
 kube-capacity >"$RESULTS_DIR/capacity-nodes-before.txt" 2>&1
 
-echo "Capturing pod state (before)..."
 #kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-before.txt"
 kubectl get pods -A -o wide >"$RESULTS_DIR/pods-before.txt"
 
-echo "Deleting old consolidation plans..."
-kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
+kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
 
 if [[ -n "$CONFIG_NAME" ]]; then
   JOB="podtetris-planner-${RUN_ID}-${CONFIG_NAME}"
 else
   JOB="podtetris-planner-${RUN_ID}"
 fi
-echo "Starting planner job: $JOB"
-kubectl create job --from=cronjob/podtetris-planner "$JOB" -n "$NS"
+kubectl create job --from=cronjob/podtetris-planner "$JOB" -n "$NS" >/dev/null
 
 if [[ "$PLANNER_ONLY" -eq 1 ]]; then
-  echo "Waiting up to ${WAIT}s for planner job to finish..."
-  kubectl wait --for=condition=complete "job/$JOB" -n "$NS" --timeout="${WAIT}s" \
+  kubectl wait --for=condition=complete "job/$JOB" -n "$NS" --timeout="${WAIT}s" >/dev/null \
     || echo "warning: planner job did not complete within ${WAIT}s; collecting artifacts anyway" >&2
-  kubectl -n "$NS" logs "job/$JOB" | grep "Selected best consolidation plan" | jq . || echo "No consolidation plan selected"
 else
-  echo "Waiting ${WAIT}s for consolidation to settle..."
   sleep "$WAIT"
 fi
 
-echo "Collecting planner artifacts..."
 kubectl get podmoves -n "$NS" >"$RESULTS_DIR/podmoves.txt"
 kubectl get podmoves -n "$NS" -o yaml >"$RESULTS_DIR/podmoves.yaml"
 kubectl get consolidationplans -A -o yaml >"$RESULTS_DIR/plan.yaml"
@@ -126,7 +115,6 @@ kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$RESULTS_DIR/planner.txt" |
 kube-capacity >"$RESULTS_DIR/capacity-nodes-after.txt" 2>&1
 
 if [[ "$PLANNER_ONLY" -eq 0 ]]; then
-  echo "Collecting evictor/webhook artifacts..."
   #kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-after.txt"
   kubectl get pods -A -o wide >"$RESULTS_DIR/pods-after.txt"
   kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$RESULTS_DIR/evictor.txt" || true
