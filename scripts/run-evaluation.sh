@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Apply every file in evaluation/planner/, then record the planner run.
 # Results land under benchmarks/<run-id>/<config-name>/.
+# A summary.csv is written in the run directory.
 # The planner CronJob must already be installed. --reuse-values keeps that release.
 #
 # Usage:
@@ -20,7 +21,7 @@ while [[ $# -gt 0 ]]; do
     --ns) NS="$2"; shift 2 ;;
     --release) RELEASE="$2"; shift 2 ;;
     -h|--help)
-      sed -n '2,8p' "$0"
+      sed -n '2,9p' "$0"
       exit 0
       ;;
     *) echo "error: unknown option: $1" >&2; exit 1 ;;
@@ -48,4 +49,45 @@ for config in "$CONFIG_DIR"/*.yaml; do
 done
 
 kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
+
+# Runs results Summary
+SUMMARY="$RUN_DIR/summary.csv"
+echo "config,strategy,freed_nodes,moves,cost,score,result" >"$SUMMARY"
+
+for config_dir in "$RUN_DIR"/*/; do
+  [[ -d "$config_dir" ]] || continue
+  config_name="$(basename "$config_dir")"
+  planner="$config_dir/planner.txt"
+  strategy=""
+  freed_nodes=""
+  moves=""
+  cost=""
+  score=""
+  result="missing"
+
+  if [[ -f "$planner" ]]; then
+    selected="$(grep "Selected best consolidation plan" "$planner" || true)"
+    if [[ -n "$selected" ]]; then
+      strategy="$(jq -r '.strategy' <<<"$selected")"
+      freed_nodes="$(jq -r '.freedNodes' <<<"$selected")"
+      moves="$(jq -r '.moves' <<<"$selected")"
+      cost="$(jq -r '.cost' <<<"$selected")"
+      score="$(jq -r '.score' <<<"$selected")"
+      if grep -q "applying consolidation plan" "$planner"; then
+        result="applied"
+      elif grep -q "dry run is enabled" "$planner"; then
+        result="dry-run"
+      elif grep -q "skipping apply" "$planner"; then
+        result="skipped"
+      else
+        result="selected"
+      fi
+    elif grep -q "No viable consolidation plan found" "$planner"; then
+      result="none"
+    fi
+  fi
+
+  echo "$config_name,$strategy,$freed_nodes,$moves,$cost,$score,$result" >>"$SUMMARY"
+done
+
 echo "Evaluation complete: $RUN_DIR"
