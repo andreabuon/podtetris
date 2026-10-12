@@ -2,7 +2,8 @@
 # Apply every file in evaluation/planner/, then record the planner run.
 # Results land under benchmarks/<run-id>/<config-name>/.
 # A summary.csv is written in the run directory.
-# The planner CronJob must already be installed. --reuse-values keeps that release.
+# The planner CronJob must already be installed. Its values are captured once at the start
+# and layered under baseline.yaml + the config, so configs never inherit from each other.
 #
 # Usage:
 #   ./scripts/run-evaluation.sh --ns <namespace>
@@ -21,7 +22,7 @@ while [[ $# -gt 0 ]]; do
     --ns) NS="$2"; shift 2 ;;
     --release) RELEASE="$2"; shift 2 ;;
     -h|--help)
-      sed -n '2,9p' "$0"
+      sed -n '2,10p' "$0"
       exit 0
       ;;
     *) echo "error: unknown option: $1" >&2; exit 1 ;;
@@ -35,13 +36,16 @@ RUN_DIR="$RESULTS/$RUN_ID"
 mkdir -p "$RUN_DIR"
 echo "Evaluation run directory: $RUN_DIR"
 
+install_values="$RUN_DIR/install-values.yaml"
+helm get values "$RELEASE" -n "$NS" -o yaml >"$install_values"
+
 for config in "$CONFIG_DIR"/*.yaml; do
   config_name="$(basename "$config" .yaml)"
   kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
   echo "Applying $config_name"
   helm_out="$(mktemp)"
   if ! helm upgrade "$RELEASE" charts/podtetris -n "$NS" \
-    --reuse-values \
+    -f "$install_values" \
     -f "$CONFIG_DIR/baseline.yaml" \
     -f "$config" >"$helm_out" 2>&1; then
     echo "error: helm upgrade failed for $config_name" >&2
