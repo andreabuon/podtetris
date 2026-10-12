@@ -28,6 +28,7 @@ done
 cd "$ROOT"
 
 for config in "$CONFIG_DIR"/*.yaml; do
+  kubectl delete consolidationplans -n "$NS" --all
   echo "Applying $(basename "$config")"
   helm upgrade "$RELEASE" charts/podtetris -n "$NS" \
     --reuse-values \
@@ -35,3 +36,5 @@ for config in "$CONFIG_DIR"/*.yaml; do
     -f "$config"
   ./scripts/run-experiment.sh --planner-only --ns "$NS"
 done
+
+kubectl delete consolidationplans -n "$NS" --all
