@@ -97,7 +97,7 @@ echo "Capturing pod state (before)..."
 kubectl get pods -A -o wide >"$RESULTS_DIR/pods-before.txt"
 
 echo "Deleting old consolidation plans..."
-kubectl delete consolidationplans -n "$NS" --all
+kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
 
 if [[ -n "$CONFIG_NAME" ]]; then
   JOB="podtetris-planner-${RUN_ID}-${CONFIG_NAME}"
@@ -111,7 +111,7 @@ if [[ "$PLANNER_ONLY" -eq 1 ]]; then
   echo "Waiting up to ${WAIT}s for planner job to finish..."
   kubectl wait --for=condition=complete "job/$JOB" -n "$NS" --timeout="${WAIT}s" \
     || echo "warning: planner job did not complete within ${WAIT}s; collecting artifacts anyway" >&2
-  kubectl -n "$NS" logs "job/$JOB" | grep "Selected best consolidation plan" | jq .
+  kubectl -n "$NS" logs "job/$JOB" | grep "Selected best consolidation plan" | jq . || echo "No consolidation plan selected"
 else
   echo "Waiting ${WAIT}s for consolidation to settle..."
   sleep "$WAIT"

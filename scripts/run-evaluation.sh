@@ -36,7 +36,7 @@ echo "Evaluation run directory: $RUN_DIR"
 
 for config in "$CONFIG_DIR"/*.yaml; do
   config_name="$(basename "$config" .yaml)"
-  kubectl delete consolidationplans -n "$NS" --all
+  kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
   echo "Applying $config_name"
   helm upgrade "$RELEASE" charts/podtetris -n "$NS" \
     --reuse-values \
@@ -47,5 +47,5 @@ for config in "$CONFIG_DIR"/*.yaml; do
     --config-name "$config_name"
 done
 
-kubectl delete consolidationplans -n "$NS" --all
+kubectl delete consolidationplans -n "$NS" --all --ignore-not-found
 echo "Evaluation complete: $RUN_DIR"
