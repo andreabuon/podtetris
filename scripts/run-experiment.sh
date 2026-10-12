@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # Run planner against the current kubeconfig and save results under
-# benchmarks/<timestamp>/. Cluster setup and chart deploy must be done separately.
+# benchmarks/<run-id>/, or benchmarks/<run-id>/<config-name>/ when
+# --config-name is set. Cluster setup and chart deploy must be done separately.
 #
 # Usage:
 #   ./scripts/run-experiment.sh
 #   ./scripts/run-experiment.sh --wait 300
 #   ./scripts/run-experiment.sh --planner-only
+#   ./scripts/run-experiment.sh --run-id 20261012-103400 --config-name percent-50
 #
 # Always saved: planner config, cluster name, cluster-autoscaler config,
 # node resource requests (before), podtetris rules, planner logs,
@@ -23,14 +25,18 @@ NS=podtetris
 RESULTS="$ROOT/benchmarks"
 WAIT=180
 PLANNER_ONLY=0
+RUN_ID=""
+CONFIG_NAME=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --wait) WAIT="$2"; shift 2 ;;
     --ns) NS="$2"; shift 2 ;;
+    --run-id) RUN_ID="$2"; shift 2 ;;
+    --config-name) CONFIG_NAME="$2"; shift 2 ;;
     --planner-only) PLANNER_ONLY=1; shift ;;
     -h|--help)
-      sed -n '2,20p' "$0"
+      sed -n '2,19p' "$0"
       exit 0
       ;;
     *) echo "error: unknown option: $1" >&2; exit 1 ;;
@@ -39,10 +45,15 @@ done
 
 cd "$ROOT"
 
-NAME="$(date +%Y%m%d-%H%M%S)"
-OUT="$RESULTS/$NAME"
-mkdir -p "$OUT"
-echo "Benchmark directory: $OUT"
+if [[ -z "$RUN_ID" ]]; then
+  RUN_ID="$(date +%Y%m%d-%H%M%S)"
+fi
+RESULTS_DIR="$RESULTS/$RUN_ID"
+if [[ -n "$CONFIG_NAME" ]]; then
+  RESULTS_DIR="$RESULTS_DIR/$CONFIG_NAME"
+fi
+mkdir -p "$RESULTS_DIR"
+echo "Benchmark directory: $RESULTS_DIR"
 
 dump_cm_key() {
   local name="$1" key="$2" dest="$3"
@@ -63,32 +74,36 @@ if [[ "$CONTEXT" == kind-* ]]; then
 else
   CLUSTER="${CONTEXT##*/}"
 fi
-echo "$CLUSTER" > "$OUT/cluster-name.txt"
+echo "$CLUSTER" > "$RESULTS_DIR/cluster-name.txt"
 
 echo "Saving planner config and rules..."
-dump_cm_key "podtetris-config" 'config\.yaml' "$OUT/planner-config.yaml"
-dump_cm_key "podtetris-scheduler-config" 'podtetris-scheduler-config\.yaml' "$OUT/planner-scheduler-config.yaml"
-dump_cm_key "podtetris-planner-rules" 'rules\.yaml' "$OUT/planner-rules.yaml"
+dump_cm_key "podtetris-config" 'config\.yaml' "$RESULTS_DIR/planner-config.yaml"
+dump_cm_key "podtetris-scheduler-config" 'podtetris-scheduler-config\.yaml' "$RESULTS_DIR/planner-scheduler-config.yaml"
+dump_cm_key "podtetris-planner-rules" 'rules\.yaml' "$RESULTS_DIR/planner-rules.yaml"
 
 if [[ "$CONTEXT" != kind-* ]]; then
   echo "Saving cluster-autoscaler config..."
-  if ! kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml >"$OUT/cluster-autoscaler.yaml"; then
-    echo "# deploy autoscaler-aws-cluster-autoscaler not found in kube-system" >"$OUT/cluster-autoscaler.yaml"
+  if ! kubectl get deploy -n kube-system autoscaler-aws-cluster-autoscaler -o yaml >"$RESULTS_DIR/cluster-autoscaler.yaml"; then
+    echo "# deploy autoscaler-aws-cluster-autoscaler not found in kube-system" >"$RESULTS_DIR/cluster-autoscaler.yaml"
   fi
 fi
 
 echo "Capturing node resource requests (before)..."
-#kubectl get nodes > "$OUT/nodes-before.txt"
-kube-capacity >"$OUT/capacity-nodes-before.txt" 2>&1
+#kubectl get nodes > "$RESULTS_DIR/nodes-before.txt"
+kube-capacity >"$RESULTS_DIR/capacity-nodes-before.txt" 2>&1
 
 echo "Capturing pod state (before)..."
-#kubectl get pods -n default -o wide >"$OUT/pods-before.txt"
-kubectl get pods -A -o wide >"$OUT/pods-before.txt"
+#kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-before.txt"
+kubectl get pods -A -o wide >"$RESULTS_DIR/pods-before.txt"
 
 echo "Deleting old consolidation plans..."
 kubectl delete consolidationplans -n "$NS" --all
 
-JOB="podtetris-planner-$NAME"
+if [[ -n "$CONFIG_NAME" ]]; then
+  JOB="podtetris-planner-${RUN_ID}-${CONFIG_NAME}"
+else
+  JOB="podtetris-planner-${RUN_ID}"
+fi
 echo "Starting planner job: $JOB"
 kubectl create job --from=cronjob/podtetris-planner "$JOB" -n "$NS"
 
@@ -103,19 +118,19 @@ else
 fi
 
 echo "Collecting planner artifacts..."
-kubectl get podmoves -n "$NS" >"$OUT/podmoves.txt"
-kubectl get podmoves -n "$NS" -o yaml >"$OUT/podmoves.yaml"
-kubectl get consolidationplans -A -o yaml >"$OUT/plan.yaml"
-kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$OUT/planner.txt" || true
+kubectl get podmoves -n "$NS" >"$RESULTS_DIR/podmoves.txt"
+kubectl get podmoves -n "$NS" -o yaml >"$RESULTS_DIR/podmoves.yaml"
+kubectl get consolidationplans -A -o yaml >"$RESULTS_DIR/plan.yaml"
+kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$RESULTS_DIR/planner.txt" || true
 
-kube-capacity >"$OUT/capacity-nodes-after.txt" 2>&1
+kube-capacity >"$RESULTS_DIR/capacity-nodes-after.txt" 2>&1
 
 if [[ "$PLANNER_ONLY" -eq 0 ]]; then
   echo "Collecting evictor/webhook artifacts..."
-  #kubectl get pods -n default -o wide >"$OUT/pods-after.txt"
-  kubectl get pods -A -o wide >"$OUT/pods-after.txt"
-  kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$OUT/evictor.txt" || true
-  kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$OUT/webhook.txt" || true
+  #kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-after.txt"
+  kubectl get pods -A -o wide >"$RESULTS_DIR/pods-after.txt"
+  kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$RESULTS_DIR/evictor.txt" || true
+  kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$RESULTS_DIR/webhook.txt" || true
 fi
 
-echo "Experiment complete: $OUT"
+echo "Experiment complete: $RESULTS_DIR"
