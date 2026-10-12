@@ -6,9 +6,9 @@ planner:
     candidateNodesMin: 3
     candidateNodesMax: 30
     candidateNodesMix:
-      byCPU: 40
-      byMemory: 40
-      random: 20
+      byCPU: 30
+      byMemory: 30
+      random: 40
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
