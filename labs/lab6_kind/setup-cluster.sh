@@ -48,4 +48,4 @@ kubectl apply -f manifests/podtetris-test-workloads.yaml
 
 echo "Cluster setup completed."
 echo "When installing PODTetris, use the Kind issuer overrides:"
-echo "  helm upgrade --install podtetris ../../charts/podtetris -n podtetris --create-namespace -f values-kind.yaml -f values-kind-rules.yaml"
+echo "  helm upgrade --install podtetris ../../charts/podtetris -n podtetris --create-namespace -f values.yaml -f planner-rules.yaml"

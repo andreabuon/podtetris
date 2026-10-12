@@ -19,7 +19,7 @@ namespaces:
 # A perfect pack fits on ~12 nodes. LeastAllocated still occupies every node.
 # Sizes are deliberately awkward against 3800m: 2000m, 1700m, 1500m.
 #
-# Keep move costs in sync with ../../values-kwok-rules.yaml.
+# Keep move costs in sync with ../../planner-rules.yaml.
 workloads:
   - name: checkout-api
     namespace: checkout

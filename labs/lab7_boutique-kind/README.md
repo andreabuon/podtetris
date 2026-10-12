@@ -46,8 +46,8 @@ Or from this directory:
 ```
 helm upgrade --install podtetris ../../charts/podtetris \
   -n podtetris --create-namespace \
-  -f values-kind.yaml \
-  -f values-boutique-rules.yaml
+  -f values.yaml \
+  -f planner-rules.yaml
 ```
 
 ## Run an experiment
