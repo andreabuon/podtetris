@@ -1,6 +1,0 @@
-NAME                                      POD                              SOURCE           TARGET            PHASE
-catalog-feed-685dd949cb-4h6qn-49b537bc    catalog-feed-685dd949cb-4h6qn    kwok-general-7   kwok-general-17   
-checkout-api-8c947447d-77v9s-d86ecc74     checkout-api-8c947447d-77v9s     kwok-general-0   kwok-general-13   
-frontend-9687b7d98-nv97z-89741a8b         frontend-9687b7d98-nv97z         kwok-general-0   kwok-general-4    
-notifications-77896b4cb8-8qf2c-9e81281d   notifications-77896b4cb8-8qf2c   kwok-memory-4    kwok-general-11   
-session-0-0972e891                        session-0                        kwok-memory-4    kwok-general-4    
