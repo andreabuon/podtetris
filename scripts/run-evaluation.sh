@@ -59,7 +59,7 @@ kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
 
 # Runs results Summary
 SUMMARY="$RUN_DIR/summary.csv"
-echo "config,strategy,freed_nodes,moves,cost,score,result" >"$SUMMARY"
+echo "run_id,config,strategy,freed_nodes,moves,cost,score,result" >"$SUMMARY"
 
 for config_dir in "$RUN_DIR"/*/; do
   [[ -d "$config_dir" ]] || continue
@@ -94,7 +94,7 @@ for config_dir in "$RUN_DIR"/*/; do
     fi
   fi
 
-  echo "$config_name,$strategy,$freed_nodes,$moves,$cost,$score,$result" >>"$SUMMARY"
+  echo "$RUN_ID,$config_name,$strategy,$freed_nodes,$moves,$cost,$score,$result" >>"$SUMMARY"
 done
 
 echo "Evaluation complete: $RUN_DIR"
