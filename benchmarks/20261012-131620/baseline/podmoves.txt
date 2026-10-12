@@ -1,0 +1,17 @@
+NAME                                      POD                              SOURCE            TARGET            PHASE
+batch-worker-5ffd668fc-tpsgf-c08c8eb0     batch-worker-5ffd668fc-tpsgf     kwok-general-14   kwok-general-5    
+batch-worker-5ffd668fc-xhl8d-31862654     batch-worker-5ffd668fc-xhl8d     kwok-general-1    kwok-general-17   
+catalog-api-b4c686854-n5zn4-91643427      catalog-api-b4c686854-n5zn4      kwok-general-15   kwok-general-4    
+catalog-feed-685dd949cb-4h6qn-49b537bc    catalog-feed-685dd949cb-4h6qn    kwok-general-7    kwok-general-17   
+checkout-api-8c947447d-77v9s-d86ecc74     checkout-api-8c947447d-77v9s     kwok-general-0    kwok-general-13   
+collector-7946b46f59-brvzs-29dd0525       collector-7946b46f59-brvzs       kwok-general-14   kwok-general-4    
+edge-proxy-6855968857-6xlsl-dd520393      edge-proxy-6855968857-6xlsl      kwok-general-15   kwok-general-9    
+feature-flags-5565fb9b8b-pt8m7-267207b9   feature-flags-5565fb9b8b-pt8m7   kwok-general-15   kwok-memory-3     
+frontend-9687b7d98-nv97z-89741a8b         frontend-9687b7d98-nv97z         kwok-general-0    kwok-general-16   
+inventory-787d949f6b-2dcbv-9c4e72bd       inventory-787d949f6b-2dcbv       kwok-general-1    kwok-general-11   
+inventory-787d949f6b-xjhq9-291fcb98       inventory-787d949f6b-xjhq9       kwok-general-14   kwok-memory-3     
+media-bcf8c47d9-rl5j7-f9b19905            media-bcf8c47d9-rl5j7            kwok-general-15   kwok-general-5    
+notifications-77896b4cb8-8qf2c-9e81281d   notifications-77896b4cb8-8qf2c   kwok-memory-4     kwok-general-9    
+payments-api-658f54c46-r8dh7-77d03028     payments-api-658f54c46-r8dh7     kwok-general-1    kwok-memory-3     
+search-query-788b8d6f4-nmmp8-5282c07e     search-query-788b8d6f4-nmmp8     kwok-memory-0     kwok-memory-3     
+session-0-0972e891                        session-0                        kwok-memory-4     kwok-general-16   
