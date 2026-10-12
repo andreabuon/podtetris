@@ -3,7 +3,7 @@ IMG ?= podtetris-evictor:latest
 # YEAR defines the year value used for substituting the YEAR placeholder in the boilerplate header.
 YEAR ?= $(shell date +%Y)
 
-HELM_CRDS_DIR ?= ../../charts/podtetris/crds
+HELM_CRDS_DIR ?= ../../charts/podtetris/templates
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
