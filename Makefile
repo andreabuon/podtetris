@@ -1,6 +1,6 @@
 KUBECTL = kubectl
 
-.PHONY: all build-all cluster cluster-boutique cluster-kwok crd install deploy deploy-local deploy-local-boutique deploy-local-kwok run-planner experiment uninstall clean
+.PHONY: all build-all cluster cluster-boutique cluster-kwok crd install deploy deploy-local deploy-local-boutique deploy-local-kwok run-planner uninstall
 
 all: deploy
 
@@ -52,12 +52,4 @@ deploy-local-kwok: crd
 
 run-planner:
 	$(KUBECTL) create job --from=cronjob/podtetris-planner "podtetris-planner-$$(date +%Y%m%d-%H%M%S)" -n podtetris
-
-# Uses current kubeconfig. Cluster and chart must already be up.
-experiment:
-	./scripts/run-experiment.sh
-
-clean:
-	-kind delete cluster --name kind
-	-kind delete cluster --name kwok
 

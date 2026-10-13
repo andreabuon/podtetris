@@ -4,10 +4,10 @@
 # --config-name is set. Cluster setup and chart deploy must be done separately.
 #
 # Usage:
-#   ./scripts/run-experiment.sh
-#   ./scripts/run-experiment.sh --wait 300
-#   ./scripts/run-experiment.sh --planner-only
-#   ./scripts/run-experiment.sh --run-id 20261012-103400 --config-name percent-50
+#   ./scripts/record-run.sh
+#   ./scripts/record-run.sh --wait 300
+#   ./scripts/record-run.sh --planner-only
+#   ./scripts/record-run.sh --run-id 20261012-103400 --config-name percent-50
 #
 # Always saved: planner config, cluster name, cluster-autoscaler config,
 # node resource requests (before), podtetris rules, planner logs,
@@ -121,4 +121,4 @@ if [[ "$PLANNER_ONLY" -eq 0 ]]; then
   kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$RESULTS_DIR/webhook.log" || true
 fi
 
-echo "Experiment complete: $RESULTS_DIR"
+echo "Run recorded: $RESULTS_DIR"

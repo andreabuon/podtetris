@@ -6,8 +6,8 @@
 # and layered under baseline.yaml + the config, so configs never inherit from each other.
 #
 # Usage:
-#   ./scripts/run-evaluation.sh --ns <namespace>
-#   ./scripts/run-evaluation.sh --ns <namespace> --release <helm-release>
+#   ./scripts/sweep-configs.sh --ns <namespace>
+#   ./scripts/sweep-configs.sh --ns <namespace> --release <helm-release>
 
 set -euo pipefail
 
@@ -34,7 +34,7 @@ cd "$ROOT"
 RUN_ID="$(date +%Y%m%d-%H%M%S)"
 RUN_DIR="$RESULTS/$RUN_ID"
 mkdir -p "$RUN_DIR"
-echo "Evaluation run directory: $RUN_DIR"
+echo "Sweep directory: $RUN_DIR"
 
 install_values="$RUN_DIR/install-values.yaml"
 helm get values "$RELEASE" -n "$NS" -o yaml >"$install_values"
@@ -54,7 +54,7 @@ for config in "$CONFIG_DIR"/*.yaml; do
     exit 1
   fi
   rm -f "$helm_out"
-  ./scripts/run-experiment.sh --planner-only --ns "$NS" \
+  ./scripts/record-run.sh --planner-only --ns "$NS" \
     --run-id "$RUN_ID" \
     --config-name "$config_name"
 done

@@ -50,8 +50,8 @@ helm upgrade --install podtetris ../../charts/podtetris \
   -f planner-rules.yaml
 ```
 
-## Run an experiment
+## Record a planner run
 ```
 # from repo root (cluster already up, chart already installed)
-./scripts/run-experiment.sh
+./scripts/record-run.sh
 ```
