@@ -47,6 +47,8 @@ const (
 	ReasonReplacementNotPersisted = "ReplacementNotPersisted"
 	// ReasonReplacementNotRunning is set when a verified replacement pod did not reach Running within MaxRunningAttempts polls.
 	ReasonReplacementNotRunning = "ReplacementNotRunning"
+	// ReasonReplacementNotFound is set when a verified replacement pod can no longer be found.
+	ReasonReplacementNotFound = "ReplacementNotFound"
 
 	// MaxEvictionAttempts is how many times eviction may fail (PDB or other retryable errors) before the PodMove is marked Failed.
 	MaxEvictionAttempts = 10
