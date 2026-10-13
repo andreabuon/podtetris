@@ -21,9 +21,11 @@ import (
 	"fmt"
 	"time"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
+	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 )
@@ -50,7 +52,14 @@ func (r *PodMoveReconciler) setCondition(
 
 func (r *PodMoveReconciler) updateStatus(ctx context.Context, pm *podtetrisiov1.PodMove) error {
 	pm.Status.SyncPhase()
-	return r.Status().Update(ctx, pm)
+	if err := r.Status().Update(ctx, pm); err != nil {
+		if apierrors.IsNotFound(err) {
+			logf.FromContext(ctx).Info("PodMove was not found; skipping status update")
+			return nil
+		}
+		return err
+	}
+	return nil
 }
 
 func (r *PodMoveReconciler) markFailed(ctx context.Context, pm *podtetrisiov1.PodMove, reason, msg string) error {
