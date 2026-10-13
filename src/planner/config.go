@@ -32,17 +32,22 @@ type CandidatesConfig struct {
 	SelectionMaxRetries   int                     `mapstructure:"selectionMaxRetries"`
 }
 
+// PermutationsConfig controls which pod orderings are simulated.
+type PermutationsConfig struct {
+	EnabledStrategies []string `mapstructure:"enabledStrategies"`
+	RandomCount       int      `mapstructure:"randomCount"`
+}
+
 type AppConfig struct {
-	PodtetrisNamespace              string           `mapstructure:"podtetrisNamespace"`
-	Candidates                      CandidatesConfig `mapstructure:"candidates"`
-	EmptyNodesScoreWeight           int              `mapstructure:"emptyNodesScoreWeight"`
-	CostScoreWeight                 int              `mapstructure:"costScoreWeight"`
-	AutoConsolidationScoreThreshold int              `mapstructure:"autoConsolidationScoreThreshold"`
-	EnabledPermutationStrategies    []string         `mapstructure:"enabledPermutationStrategies"`
-	RandomPermutationCount          int              `mapstructure:"randomPermutationCount"`
-	Parallelism                     int              `mapstructure:"parallelism"`
-	DryRun                          bool             `mapstructure:"dryRun"`
-	LogLevel                        string           `mapstructure:"logLevel"`
+	PodtetrisNamespace              string             `mapstructure:"podtetrisNamespace"`
+	Candidates                      CandidatesConfig   `mapstructure:"candidates"`
+	EmptyNodesScoreWeight           int                `mapstructure:"emptyNodesScoreWeight"`
+	CostScoreWeight                 int                `mapstructure:"costScoreWeight"`
+	AutoConsolidationScoreThreshold int                `mapstructure:"autoConsolidationScoreThreshold"`
+	Permutations                    PermutationsConfig `mapstructure:"permutations"`
+	Parallelism                     int                `mapstructure:"parallelism"`
+	DryRun                          bool               `mapstructure:"dryRun"`
+	LogLevel                        string             `mapstructure:"logLevel"`
 }
 
 func setDefaultConfigValues() {
@@ -58,8 +63,8 @@ func setDefaultConfigValues() {
 	viper.SetDefault("costScoreWeight", 1)
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)
 	viper.SetDefault("candidates.selectionMaxRetries", 15)
-	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
-	viper.SetDefault("randomPermutationCount", 3)
+	viper.SetDefault("permutations.enabledStrategies", []string{"cpu_desc", "memory_desc", "random"})
+	viper.SetDefault("permutations.randomCount", 3)
 	viper.SetDefault("parallelism", 8)
 	viper.SetDefault("dryRun", false)
 	viper.SetDefault("logLevel", "info")

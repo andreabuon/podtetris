@@ -227,7 +227,7 @@ func main() {
 		}
 
 		evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
-		permutations := generatePermutations(evictedPods, Config.EnabledPermutationStrategies, Config.RandomPermutationCount)
+		permutations := generatePermutations(evictedPods, Config.Permutations.EnabledStrategies, Config.Permutations.RandomCount)
 
 		schedulingSimulator := &SchedulingSimulator{
 			framework: realFramework,

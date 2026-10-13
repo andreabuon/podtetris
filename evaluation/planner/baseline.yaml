@@ -14,11 +14,12 @@ planner:
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
-    enabledPermutationStrategies:
-      - cpu_desc
-      - memory_desc
-      - random
-    randomPermutationCount: 5
+    permutations:
+      enabledStrategies:
+        - cpu_desc
+        - memory_desc
+        - random
+      randomCount: 5
     parallelism: 8
     dryRun: false
     logLevel: info

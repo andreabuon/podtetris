@@ -1,5 +1,6 @@
 planner:
   config:
-    enabledPermutationStrategies:
-      - cpu_desc
-      - memory_desc
+    permutations:
+      enabledStrategies:
+        - cpu_desc
+        - memory_desc
