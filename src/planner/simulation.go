@@ -258,7 +258,7 @@ func schedulePod(
 }
 
 func computePermutationScore(freedNodes, permutationCost int) int {
-	return (Config.EmptyNodesScoreWeight * freedNodes) - (Config.CostScoreWeight * permutationCost)
+	return (Config.Score.EmptyNodesWeight * freedNodes) - (Config.Score.CostWeight * permutationCost)
 }
 
 func pickHighestScoreNode(nodes []kubeframework.NodeInfo, scores []kubeframework.NodePluginScores) (kubeframework.NodeInfo, error) {

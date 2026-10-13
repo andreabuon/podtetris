@@ -38,16 +38,21 @@ type PermutationsConfig struct {
 	RandomCount       int      `mapstructure:"randomCount"`
 }
 
+// ScoreConfig controls how a plan is scored and when it is applied.
+type ScoreConfig struct {
+	EmptyNodesWeight           int `mapstructure:"emptyNodesWeight"`
+	CostWeight                 int `mapstructure:"costWeight"`
+	AutoConsolidationThreshold int `mapstructure:"autoConsolidationThreshold"`
+}
+
 type AppConfig struct {
-	PodtetrisNamespace              string             `mapstructure:"podtetrisNamespace"`
-	Candidates                      CandidatesConfig   `mapstructure:"candidates"`
-	EmptyNodesScoreWeight           int                `mapstructure:"emptyNodesScoreWeight"`
-	CostScoreWeight                 int                `mapstructure:"costScoreWeight"`
-	AutoConsolidationScoreThreshold int                `mapstructure:"autoConsolidationScoreThreshold"`
-	Permutations                    PermutationsConfig `mapstructure:"permutations"`
-	Parallelism                     int                `mapstructure:"parallelism"`
-	DryRun                          bool               `mapstructure:"dryRun"`
-	LogLevel                        string             `mapstructure:"logLevel"`
+	PodtetrisNamespace string             `mapstructure:"podtetrisNamespace"`
+	Candidates         CandidatesConfig   `mapstructure:"candidates"`
+	Score              ScoreConfig        `mapstructure:"score"`
+	Permutations       PermutationsConfig `mapstructure:"permutations"`
+	Parallelism        int                `mapstructure:"parallelism"`
+	DryRun             bool               `mapstructure:"dryRun"`
+	LogLevel           string             `mapstructure:"logLevel"`
 }
 
 func setDefaultConfigValues() {
@@ -59,9 +64,9 @@ func setDefaultConfigValues() {
 	viper.SetDefault("candidates.mix.byMemory", 40)
 	viper.SetDefault("candidates.mix.random", 20)
 	viper.SetDefault("candidates.setsToCreate", 3)
-	viper.SetDefault("emptyNodesScoreWeight", 400)
-	viper.SetDefault("costScoreWeight", 1)
-	viper.SetDefault("autoConsolidationScoreThreshold", 0)
+	viper.SetDefault("score.emptyNodesWeight", 400)
+	viper.SetDefault("score.costWeight", 1)
+	viper.SetDefault("score.autoConsolidationThreshold", 0)
 	viper.SetDefault("candidates.selectionMaxRetries", 15)
 	viper.SetDefault("permutations.enabledStrategies", []string{"cpu_desc", "memory_desc", "random"})
 	viper.SetDefault("permutations.randomCount", 3)

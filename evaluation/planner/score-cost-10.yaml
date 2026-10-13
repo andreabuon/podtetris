@@ -1,3 +1,4 @@
 planner:
   config:
-    costScoreWeight: 10
+    score:
+      costWeight: 10

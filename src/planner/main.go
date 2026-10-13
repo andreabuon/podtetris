@@ -303,10 +303,10 @@ func main() {
 		return
 	}
 
-	if bestSimulationResult.Score > Config.AutoConsolidationScoreThreshold {
+	if bestSimulationResult.Score > Config.Score.AutoConsolidationThreshold {
 		log.Info("Score threshold reached, applying consolidation plan",
 			zap.Int("score", bestSimulationResult.Score),
-			zap.Int("threshold", Config.AutoConsolidationScoreThreshold),
+			zap.Int("threshold", Config.Score.AutoConsolidationThreshold),
 		)
 		scheme := runtime.NewScheme()
 		if err := podtetrisv1.AddToScheme(scheme); err != nil {
@@ -320,7 +320,7 @@ func main() {
 	} else {
 		log.Info("Best plan score below auto-consolidation threshold, skipping apply",
 			zap.Int("score", bestSimulationResult.Score),
-			zap.Int("threshold", Config.AutoConsolidationScoreThreshold),
+			zap.Int("threshold", Config.Score.AutoConsolidationThreshold),
 		)
 	}
 }

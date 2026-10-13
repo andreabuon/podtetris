@@ -11,9 +11,10 @@ planner:
         byMemory: 30
         random: 40
       selectionMaxRetries: 15
-    emptyNodesScoreWeight: 400
-    costScoreWeight: 1
-    autoConsolidationScoreThreshold: 0
+    score:
+      emptyNodesWeight: 400
+      costWeight: 1
+      autoConsolidationThreshold: 0
     permutations:
       enabledStrategies:
         - cpu_desc
