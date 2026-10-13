@@ -72,11 +72,11 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		return allow(req.UID)
 	}
 
-	if podMoveName, ok := pod.Labels[podtetrisiov1.PodMoveLabelKey]; ok {
+	if podMoveUID, ok := pod.Labels[podtetrisiov1.PodMoveLabelKey]; ok {
 		log.Info("Pod already linked to a PodMove; admitting without claiming",
 			zap.String("namespace", pod.Namespace),
 			zap.String("pod", podDisplayName(pod)),
-			zap.String("podMove", podMoveName),
+			zap.String("podMoveUID", podMoveUID),
 		)
 		return allow(req.UID)
 	}
@@ -113,6 +113,14 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		}
 
 		if !evicted {
+			continue
+		}
+
+		if podMove.UID == "" {
+			log.Error("PodMove has empty UID; trying next candidate",
+				zap.String("namespace", podMove.Namespace),
+				zap.String("podMove", podMove.Name),
+			)
 			continue
 		}
 
@@ -175,7 +183,7 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		return allow(req.UID)
 	}
 
-	patchBytes, err := json.Marshal(buildMutationPatch(pod, chosenPodMove.Spec.TargetNode, chosenPodMove.Name))
+	patchBytes, err := json.Marshal(buildMutationPatch(pod, chosenPodMove.Spec.TargetNode, string(chosenPodMove.UID)))
 	if err != nil {
 		log.Error("Error marshalling patch; admitting without pinning", zap.Error(err))
 		return allow(req.UID)
@@ -235,9 +243,9 @@ func allowPatched(uid types.UID, patch []byte) *admissionv1.AdmissionResponse {
 	}
 }
 
-func buildMutationPatch(pod *corev1.Pod, targetNode, podMoveName string) []map[string]interface{} {
+func buildMutationPatch(pod *corev1.Pod, targetNode, podMoveUID string) []map[string]interface{} {
 	patch := buildNodeNamePatch(targetNode)
-	patch = append(patch, buildLabelPatch(pod.Labels, podMoveName)...)
+	patch = append(patch, buildLabelPatch(pod.Labels, podMoveUID)...)
 	return patch
 }
 
@@ -251,14 +259,14 @@ func buildNodeNamePatch(targetNodeName string) []map[string]interface{} {
 	}
 }
 
-func buildLabelPatch(existing map[string]string, podMoveName string) []map[string]interface{} {
+func buildLabelPatch(existing map[string]string, podMoveUID string) []map[string]interface{} {
 	if len(existing) == 0 {
 		return []map[string]interface{}{
 			{
 				"op":   "add",
 				"path": "/metadata/labels",
 				"value": map[string]string{
-					podtetrisiov1.PodMoveLabelKey: podMoveName,
+					podtetrisiov1.PodMoveLabelKey: podMoveUID,
 				},
 			},
 		}
@@ -267,7 +275,7 @@ func buildLabelPatch(existing map[string]string, podMoveName string) []map[strin
 		{
 			"op":    "add",
 			"path":  "/metadata/labels/" + jsonPatchEscape(podtetrisiov1.PodMoveLabelKey),
-			"value": podMoveName,
+			"value": podMoveUID,
 		},
 	}
 }

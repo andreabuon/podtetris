@@ -216,7 +216,7 @@ func (r *PodMoveReconciler) recordFailedPersistAttempt(ctx context.Context, pm *
 
 func (r *PodMoveReconciler) findReplacementPod(ctx context.Context, pm *podtetrisiov1.PodMove) (*corev1.Pod, error) {
 	opts := []client.ListOption{
-		client.MatchingLabels{podtetrisiov1.PodMoveLabelKey: pm.Name},
+		client.MatchingLabels{podtetrisiov1.PodMoveLabelKey: string(pm.UID)},
 	}
 	if ns := pm.Spec.Pod.Namespace; ns != "" {
 		opts = append(opts, client.InNamespace(ns))
@@ -258,7 +258,7 @@ func isOriginalPod(pm *podtetrisiov1.PodMove, pod *corev1.Pod) bool {
 }
 
 // isReplacementPod reports whether the pod was created for an in-flight PodMove.
-// The mutating webhook sets podtetris.io/podmove when it claims the CREATE.
+// The mutating webhook sets podtetris.io/podmove to the PodMove UID when it claims the CREATE.
 func isReplacementPod(pod *corev1.Pod) bool {
 	if pod.Labels == nil {
 		return false
