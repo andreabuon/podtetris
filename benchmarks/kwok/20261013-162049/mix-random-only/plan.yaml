@@ -1,0 +1,29 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: ConsolidationPlan
+  metadata:
+    creationTimestamp: "2026-10-13T14:21:22Z"
+    generateName: consolidationplan-
+    generation: 1
+    name: consolidationplan-lw8kp
+    namespace: podtetris
+    resourceVersion: "3563"
+    uid: 9d903fb7-935d-4e46-873f-c862e331d83c
+  spec:
+    cost: 583
+    freedNodes: 7
+    moveCount: 20
+    nodesToFree:
+    - kwok-general-1
+    - kwok-general-10
+    - kwok-general-13
+    - kwok-general-16
+    - kwok-general-7
+    - kwok-general-8
+    - kwok-memory-4
+    permutationStrategy: cpu_desc
+    score: 2217
+kind: List
+metadata:
+  resourceVersion: ""

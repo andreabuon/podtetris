@@ -1,0 +1,16 @@
+NAME                                        POD                                SOURCE            TARGET            PHASE
+batch-worker-5ffd668fc-pdqqf-3baccf0c       batch-worker-5ffd668fc-pdqqf       kwok-general-11   kwok-general-3    
+catalog-api-b4c686854-grg7b-2a52e33f        catalog-api-b4c686854-grg7b        kwok-general-4    kwok-memory-2     
+catalog-api-b4c686854-xplt5-78aa9de2        catalog-api-b4c686854-xplt5        kwok-general-13   kwok-memory-2     
+checkout-api-8c947447d-5n5q9-7cf690a8       checkout-api-8c947447d-5n5q9       kwok-general-11   kwok-memory-3     
+checkout-api-8c947447d-7h5tt-0ad5fd53       checkout-api-8c947447d-7h5tt       kwok-general-6    kwok-memory-3     
+checkout-api-8c947447d-qf6zg-8d87314c       checkout-api-8c947447d-qf6zg       kwok-general-17   kwok-general-2    
+checkout-worker-5cf68475c8-2bh5j-d0513a58   checkout-worker-5cf68475c8-2bh5j   kwok-memory-0     kwok-general-3    
+collector-7946b46f59-wfmm4-6114af17         collector-7946b46f59-wfmm4         kwok-general-17   kwok-general-12   
+frontend-9687b7d98-9qn24-cdedfb90           frontend-9687b7d98-9qn24           kwok-general-17   kwok-memory-2     
+inventory-787d949f6b-8r5g8-846ab77d         inventory-787d949f6b-8r5g8         kwok-general-13   kwok-memory-2     
+jvm-service-594d9956fb-w4qdj-4b1cee25       jvm-service-594d9956fb-w4qdj       kwok-general-1    kwok-general-15   
+notifications-77896b4cb8-kqczq-6c33593a     notifications-77896b4cb8-kqczq     kwok-general-13   kwok-general-9    
+payments-api-658f54c46-lzwhg-ae56e4a3       payments-api-658f54c46-lzwhg       kwok-general-4    kwok-general-2    
+recommendations-cf75fd886-4rlnt-8aa8a78a    recommendations-cf75fd886-4rlnt    kwok-general-6    kwok-general-14   
+recommendations-cf75fd886-lc74q-c2a9ba9d    recommendations-cf75fd886-lc74q    kwok-general-1    kwok-general-0    

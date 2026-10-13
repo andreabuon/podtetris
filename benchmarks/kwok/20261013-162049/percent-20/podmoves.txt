@@ -1,0 +1,5 @@
+NAME                                        POD                                SOURCE           TARGET            PHASE
+catalog-api-b4c686854-grg7b-2a52e33f        catalog-api-b4c686854-grg7b        kwok-general-4   kwok-general-9    
+checkout-worker-5cf68475c8-2bh5j-d0513a58   checkout-worker-5cf68475c8-2bh5j   kwok-memory-0    kwok-general-3    
+collector-7946b46f59-hpdqq-8b0d3d84         collector-7946b46f59-hpdqq         kwok-memory-4    kwok-general-15   
+payments-api-658f54c46-lzwhg-ae56e4a3       payments-api-658f54c46-lzwhg       kwok-general-4   kwok-general-2    

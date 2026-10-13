@@ -1,0 +1,145 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-13T14:21:48Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 62e655c6-9851-479b-8a8d-fa0351d6cb12
+      podtetris.io/plan: consolidationplan-5gl54
+    name: catalog-api-b4c686854-grg7b-2a52e33f
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-5gl54
+      uid: 90c0b1b0-088d-479e-abdb-ef988e6e68e8
+    resourceVersion: "3938"
+    uid: 89e2aa0d-1e7e-4510-ada6-a55e51de8807
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: 62e655c6-9851-479b-8a8d-fa0351d6cb12
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-grg7b
+      namespace: catalog
+      uid: 2a52e33f-6786-4707-a30d-3da22793e37c
+    sourceNode: kwok-general-4
+    targetNode: kwok-general-9
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-13T14:21:48Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 71f9aab4-5bb4-4b73-ba76-b184bab66d3c
+      podtetris.io/plan: consolidationplan-5gl54
+    name: checkout-worker-5cf68475c8-2bh5j-d0513a58
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-5gl54
+      uid: 90c0b1b0-088d-479e-abdb-ef988e6e68e8
+    resourceVersion: "3936"
+    uid: cd5fb095-5eae-4d3f-a09b-38447b8695b3
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-worker-5cf68475c8
+      uid: 71f9aab4-5bb4-4b73-ba76-b184bab66d3c
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-worker-5cf68475c8-2bh5j
+      namespace: checkout
+      uid: d0513a58-0ea0-4208-83b3-9cfbf7778986
+    sourceNode: kwok-memory-0
+    targetNode: kwok-general-3
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-13T14:21:48Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 4a261d2c-3774-4fd3-8749-eb2b2397d033
+      podtetris.io/plan: consolidationplan-5gl54
+    name: collector-7946b46f59-hpdqq-8b0d3d84
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-5gl54
+      uid: 90c0b1b0-088d-479e-abdb-ef988e6e68e8
+    resourceVersion: "3939"
+    uid: db24c33f-8257-4bb6-80e0-54fd323af1ec
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 4a261d2c-3774-4fd3-8749-eb2b2397d033
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-hpdqq
+      namespace: observability
+      uid: 8b0d3d84-624f-49cc-b0c3-d0faeb506ce1
+    sourceNode: kwok-memory-4
+    targetNode: kwok-general-15
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-13T14:21:48Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 06ac633d-d440-4ae3-a406-ccf0b8ed773a
+      podtetris.io/plan: consolidationplan-5gl54
+    name: payments-api-658f54c46-lzwhg-ae56e4a3
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-5gl54
+      uid: 90c0b1b0-088d-479e-abdb-ef988e6e68e8
+    resourceVersion: "3937"
+    uid: 8c973e99-0b96-43e6-9f51-345716afc57b
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: payments-api-658f54c46
+      uid: 06ac633d-d440-4ae3-a406-ccf0b8ed773a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: payments-api-658f54c46-lzwhg
+      namespace: payments
+      uid: ae56e4a3-253b-4d48-a25c-20aec7e2cecd
+    sourceNode: kwok-general-4
+    targetNode: kwok-general-2
+kind: List
+metadata:
+  resourceVersion: ""

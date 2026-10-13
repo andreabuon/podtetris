@@ -1,0 +1,24 @@
+candidates:
+  max: 30
+  min: 3
+  mix:
+    byCPU: 30
+    byMemory: 30
+    random: 40
+  percentOfClusterNodes: 10
+  selectionMaxRetries: 15
+  setsToCreate: 3
+dryRun: false
+logLevel: info
+parallelism: 8
+permutations:
+  enabledStrategies:
+  - cpu_desc
+  - memory_desc
+  - random
+  randomCount: 5
+podtetrisNamespace: 'podtetris'
+score:
+  autoConsolidationThreshold: 0
+  costWeight: 1
+  emptyNodesWeight: 400
