@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -61,7 +62,15 @@ func (r *PodMoveReconciler) Reconcile(ctx context.Context, req ctrl.Request) (re
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 	defer func() {
+		if errors.Is(err, errPodMoveNotFound) {
+			result, err = ctrl.Result{}, nil
+			return
+		}
 		if syncErr := r.updateStatus(ctx, &pm); syncErr != nil && err == nil {
+			if errors.Is(syncErr, errPodMoveNotFound) {
+				result, err = ctrl.Result{}, nil
+				return
+			}
 			err = syncErr
 		}
 	}()

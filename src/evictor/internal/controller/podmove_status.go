@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -29,6 +30,10 @@ import (
 
 	podtetrisiov1 "github.com/andreabuon/podtetris/src/evictor/api/v1"
 )
+
+// errPodMoveNotFound means the PodMove was deleted while this reconcile was writing status.
+// Reconcile turns it into a successful empty result so cancellation does not surface as an error.
+var errPodMoveNotFound = errors.New("podmove not found")
 
 func (r *PodMoveReconciler) setCondition(
 	ctx context.Context,
@@ -55,7 +60,7 @@ func (r *PodMoveReconciler) updateStatus(ctx context.Context, pm *podtetrisiov1.
 	if err := r.Status().Update(ctx, pm); err != nil {
 		if apierrors.IsNotFound(err) {
 			logf.FromContext(ctx).Info("PodMove was not found; skipping status update")
-			return nil
+			return errPodMoveNotFound
 		}
 		return err
 	}
