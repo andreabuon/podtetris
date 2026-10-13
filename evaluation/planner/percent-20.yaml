@@ -1,3 +1,4 @@
 planner:
   config:
-    candidateNodesPercent: 20
+    candidates:
+      percentOfClusterNodes: 20

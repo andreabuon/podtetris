@@ -1,3 +1,4 @@
 planner:
   config:
-    candidateNodesSetsToCreate: 1
+    candidates:
+      setsToCreate: 1

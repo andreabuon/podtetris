@@ -22,37 +22,42 @@ type CandidateNodesMixConfig struct {
 	Random   int `mapstructure:"random"`
 }
 
+// CandidatesConfig controls how candidate node sets are chosen.
+type CandidatesConfig struct {
+	PercentOfClusterNodes int                     `mapstructure:"percentOfClusterNodes"`
+	Min                   int                     `mapstructure:"min"`
+	Max                   int                     `mapstructure:"max"`
+	Mix                   CandidateNodesMixConfig `mapstructure:"mix"`
+	SetsToCreate          int                     `mapstructure:"setsToCreate"`
+	SelectionMaxRetries   int                     `mapstructure:"selectionMaxRetries"`
+}
+
 type AppConfig struct {
-	PodtetrisNamespace                string                  `mapstructure:"podtetrisNamespace"`
-	CandidateNodesPercent             int                     `mapstructure:"candidateNodesPercent"`
-	CandidateNodesMin                 int                     `mapstructure:"candidateNodesMin"`
-	CandidateNodesMax                 int                     `mapstructure:"candidateNodesMax"`
-	CandidateNodesMix                 CandidateNodesMixConfig `mapstructure:"candidateNodesMix"`
-	CandidateNodesSetsToCreate        int                     `mapstructure:"candidateNodesSetsToCreate"`
-	EmptyNodesScoreWeight             int                     `mapstructure:"emptyNodesScoreWeight"`
-	CostScoreWeight                   int                     `mapstructure:"costScoreWeight"`
-	AutoConsolidationScoreThreshold   int                     `mapstructure:"autoConsolidationScoreThreshold"`
-	CandidateNodesSelectionMaxRetries int                     `mapstructure:"candidateNodesSelectionMaxRetries"`
-	EnabledPermutationStrategies      []string                `mapstructure:"enabledPermutationStrategies"`
-	RandomPermutationCount            int                     `mapstructure:"randomPermutationCount"`
-	Parallelism                       int                     `mapstructure:"parallelism"`
-	DryRun                            bool                    `mapstructure:"dryRun"`
-	LogLevel                          string                  `mapstructure:"logLevel"`
+	PodtetrisNamespace              string           `mapstructure:"podtetrisNamespace"`
+	Candidates                      CandidatesConfig `mapstructure:"candidates"`
+	EmptyNodesScoreWeight           int              `mapstructure:"emptyNodesScoreWeight"`
+	CostScoreWeight                 int              `mapstructure:"costScoreWeight"`
+	AutoConsolidationScoreThreshold int              `mapstructure:"autoConsolidationScoreThreshold"`
+	EnabledPermutationStrategies    []string         `mapstructure:"enabledPermutationStrategies"`
+	RandomPermutationCount          int              `mapstructure:"randomPermutationCount"`
+	Parallelism                     int              `mapstructure:"parallelism"`
+	DryRun                          bool             `mapstructure:"dryRun"`
+	LogLevel                        string           `mapstructure:"logLevel"`
 }
 
 func setDefaultConfigValues() {
 	viper.SetDefault("podtetrisNamespace", "podtetris")
-	viper.SetDefault("candidateNodesPercent", 30)
-	viper.SetDefault("candidateNodesMin", 3)
-	viper.SetDefault("candidateNodesMax", 20)
-	viper.SetDefault("candidateNodesMix.byCPU", 40)
-	viper.SetDefault("candidateNodesMix.byMemory", 40)
-	viper.SetDefault("candidateNodesMix.random", 20)
-	viper.SetDefault("candidateNodesSetsToCreate", 3)
+	viper.SetDefault("candidates.percentOfClusterNodes", 30)
+	viper.SetDefault("candidates.min", 3)
+	viper.SetDefault("candidates.max", 20)
+	viper.SetDefault("candidates.mix.byCPU", 40)
+	viper.SetDefault("candidates.mix.byMemory", 40)
+	viper.SetDefault("candidates.mix.random", 20)
+	viper.SetDefault("candidates.setsToCreate", 3)
 	viper.SetDefault("emptyNodesScoreWeight", 400)
 	viper.SetDefault("costScoreWeight", 1)
 	viper.SetDefault("autoConsolidationScoreThreshold", 0)
-	viper.SetDefault("candidateNodesSelectionMaxRetries", 15)
+	viper.SetDefault("candidates.selectionMaxRetries", 15)
 	viper.SetDefault("enabledPermutationStrategies", []string{"cpu_desc", "memory_desc", "random"})
 	viper.SetDefault("randomPermutationCount", 3)
 	viper.SetDefault("parallelism", 8)
@@ -61,21 +66,22 @@ func setDefaultConfigValues() {
 }
 
 func validateConfig(cfg *AppConfig) error {
-	if cfg.CandidateNodesPercent < 1 || cfg.CandidateNodesPercent > 100 {
-		return fmt.Errorf("candidateNodesPercent must be in [1, 100], got %d", cfg.CandidateNodesPercent)
+	candidates := cfg.Candidates
+	if candidates.PercentOfClusterNodes < 1 || candidates.PercentOfClusterNodes > 100 {
+		return fmt.Errorf("candidates.percentOfClusterNodes must be in [1, 100], got %d", candidates.PercentOfClusterNodes)
 	}
-	if cfg.CandidateNodesMin < 1 {
-		return fmt.Errorf("candidateNodesMin must be >= 1, got %d", cfg.CandidateNodesMin)
+	if candidates.Min < 1 {
+		return fmt.Errorf("candidates.min must be >= 1, got %d", candidates.Min)
 	}
-	if cfg.CandidateNodesMax < cfg.CandidateNodesMin {
-		return fmt.Errorf("candidateNodesMax (%d) must be >= candidateNodesMin (%d)", cfg.CandidateNodesMax, cfg.CandidateNodesMin)
+	if candidates.Max < candidates.Min {
+		return fmt.Errorf("candidates.max (%d) must be >= candidates.min (%d)", candidates.Max, candidates.Min)
 	}
-	mix := cfg.CandidateNodesMix
+	mix := candidates.Mix
 	if mix.ByCPU < 0 || mix.ByMemory < 0 || mix.Random < 0 {
-		return fmt.Errorf("candidateNodesMix percentages must be >= 0, got %+v", mix)
+		return fmt.Errorf("candidates.mix percentages must be >= 0, got %+v", mix)
 	}
 	if sum := mix.ByCPU + mix.ByMemory + mix.Random; sum != 100 {
-		return fmt.Errorf("candidateNodesMix percentages must sum to 100, got %d", sum)
+		return fmt.Errorf("candidates.mix percentages must sum to 100, got %d", sum)
 	}
 	return nil
 }

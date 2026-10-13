@@ -162,19 +162,19 @@ func main() {
 
 	candidateNodesCounts, err := resolveCandidateNodesCounts(
 		len(nodeInfos),
-		Config.CandidateNodesPercent,
-		Config.CandidateNodesMin,
-		Config.CandidateNodesMax,
-		Config.CandidateNodesMix,
+		Config.Candidates.PercentOfClusterNodes,
+		Config.Candidates.Min,
+		Config.Candidates.Max,
+		Config.Candidates.Mix,
 	)
 	if err != nil {
 		log.Fatal("Failed to compute candidate nodes counts", zap.Error(err))
 	}
 	log.Info("Chosen number of candidate nodes from config percentages",
 		zap.Int("workerNodes", len(nodeInfos)),
-		zap.Int("candidateNodesPercent", Config.CandidateNodesPercent),
-		zap.Int("candidateNodesMin", Config.CandidateNodesMin),
-		zap.Int("candidateNodesMax", Config.CandidateNodesMax),
+		zap.Int("percentOfClusterNodes", Config.Candidates.PercentOfClusterNodes),
+		zap.Int("candidateNodesMin", Config.Candidates.Min),
+		zap.Int("candidateNodesMax", Config.Candidates.Max),
 		zap.Int("candidateNodes", candidateNodesCounts.Total()),
 		zap.Int("candidateNodesByCPU", candidateNodesCounts.ByCPU),
 		zap.Int("candidateNodesByMemory", candidateNodesCounts.ByMemory),
@@ -182,8 +182,8 @@ func main() {
 	)
 
 	// Without random nodes, or when every worker node is a candidate, every candidate set would be identical.
-	candidateNodesSetsToCreate := Config.CandidateNodesSetsToCreate
-	if Config.CandidateNodesMix.Random == 0 {
+	candidateNodesSetsToCreate := Config.Candidates.SetsToCreate
+	if Config.Candidates.Mix.Random == 0 {
 		log.Warn("No random candidate nodes, generating a single candidate node set")
 		candidateNodesSetsToCreate = 1
 	} else if candidateNodesCounts.Total() == len(nodeInfos) {

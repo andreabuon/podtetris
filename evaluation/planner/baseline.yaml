@@ -1,18 +1,19 @@
 planner:
   config:
     podtetrisNamespace: "{{ .Release.Namespace }}"
-    candidateNodesSetsToCreate: 3
-    candidateNodesPercent: 30
-    candidateNodesMin: 3
-    candidateNodesMax: 30
-    candidateNodesMix:
-      byCPU: 30
-      byMemory: 30
-      random: 40
+    candidates:
+      setsToCreate: 3
+      percentOfClusterNodes: 30
+      min: 3
+      max: 30
+      mix:
+        byCPU: 30
+        byMemory: 30
+        random: 40
+      selectionMaxRetries: 15
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
-    candidateNodesSelectionMaxRetries: 15
     enabledPermutationStrategies:
       - cpu_desc
       - memory_desc

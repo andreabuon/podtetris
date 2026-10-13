@@ -24,25 +24,25 @@ planner:
       cpu: "1"
       memory: 1Gi
   config:
-    podtetrisNamespace:
-      "{{ .Release.Namespace }}"
-      # candidateNodesSetsToCreate is how many distinct candidate node sets to evaluate
-    candidateNodesSetsToCreate: 3
-    # candidateNodesPercent is the percentage of worker nodes to try emptying in each candidate set
-    candidateNodesPercent: 30
-    candidateNodesMin: 3
-    candidateNodesMax: 20
-    # candidateNodesMix is the percentage of candidate nodes chosen by each strategy (must sum to 100).
-    # byCPU and byMemory are rounded down and random gets the remainder.
-    # With random set to 0, or when every worker node is a candidate, only a single candidate set is generated, since all sets would be identical.
-    candidateNodesMix:
-      byCPU: 40
-      byMemory: 40
-      random: 20
+    podtetrisNamespace: "{{ .Release.Namespace }}"
+    candidates:
+      # candidates.setsToCreate is how many distinct candidate node sets to evaluate per each iteration
+      setsToCreate: 3
+      # percentOfClusterNodes is the percentage of worker nodes, relative to the whole cluster, to try emptying in each candidate set
+      percentOfClusterNodes: 30
+      min: 3
+      max: 20
+      # mix is the percentage of candidate nodes chosen by each strategy (must sum to 100).
+      # byCPU and byMemory are rounded down and random gets the remainder.
+      # With random set to 0, or when every worker node is a candidate, only a single candidate set is generated, since all sets would be identical.
+      mix:
+        byCPU: 40
+        byMemory: 40
+        random: 20
+      selectionMaxRetries: 15
     emptyNodesScoreWeight: 400
     costScoreWeight: 1
     autoConsolidationScoreThreshold: 0
-    candidateNodesSelectionMaxRetries: 15
     enabledPermutationStrategies:
       - cpu_desc
       - memory_desc

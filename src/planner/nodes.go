@@ -109,7 +109,7 @@ func selectCandidateNodes(nodeInfos []kubeframework.NodeInfo, randomNodesToGet i
 		}
 
 		attemptNum++
-		if attemptNum >= Config.CandidateNodesSelectionMaxRetries {
+		if attemptNum >= Config.Candidates.SelectionMaxRetries {
 			return nil, errors.New("max random candidate nodes selection retries reached")
 		}
 	}
