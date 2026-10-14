@@ -57,6 +57,7 @@ for config in "$CONFIG_DIR"/*.yaml; do
   ./scripts/record-run.sh --planner-only --ns "$NS" \
     --run-id "$RUN_ID" \
     --config-name "$config_name"
+  kubectl delete job "podtetris-planner-${RUN_ID}-${config_name}" -n "$NS" --ignore-not-found >/dev/null
 done
 
 kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
