@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Apply every file in evaluation/planner/, then record the planner run.
 # Results land under benchmarks/<run-id>/<config-name>/.
-# A summary.csv is written in the run directory.
+# A summary.csv is written in the run directory, including per-config timing
+# (planner_seconds from planner log timestamps, job_seconds from the Job status,
+# total_seconds for the whole config step including helm upgrade).
 # The planner CronJob must already be installed. Its values are captured once at the start
 # and layered under baseline.yaml + the config, so configs never inherit from each other.
 #
@@ -22,7 +24,7 @@ while [[ $# -gt 0 ]]; do
     --ns) NS="$2"; shift 2 ;;
     --release) RELEASE="$2"; shift 2 ;;
     -h|--help)
-      sed -n '2,10p' "$0"
+      sed -n '2,12p' "$0"
       exit 0
       ;;
     *) echo "error: unknown option: $1" >&2; exit 1 ;;
@@ -41,6 +43,7 @@ helm get values "$RELEASE" -n "$NS" -o yaml >"$install_values"
 
 for config in "$CONFIG_DIR"/*.yaml; do
   config_name="$(basename "$config" .yaml)"
+  config_start=$SECONDS
   kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
   echo "Applying $config_name"
   helm_out="$(mktemp)"
@@ -58,13 +61,22 @@ for config in "$CONFIG_DIR"/*.yaml; do
     --run-id "$RUN_ID" \
     --config-name "$config_name"
   kubectl delete job "planner-${RUN_ID}-${config_name}" -n "$NS" --ignore-not-found >/dev/null
+  timing="$RUN_DIR/$config_name/timing.json"
+  total_seconds=$((SECONDS - config_start))
+  if [[ -f "$timing" ]]; then
+    jq --argjson total "$total_seconds" '. + {total_seconds: $total}' "$timing" >"$timing.tmp" \
+      && mv "$timing.tmp" "$timing"
+  else
+    jq -n --argjson total "$total_seconds" '{total_seconds: $total}' >"$timing"
+  fi
+  echo "Finished $config_name in ${total_seconds}s"
 done
 
 kubectl delete consolidationplans,podmoves -n "$NS" --all --ignore-not-found --wait=true >/dev/null
 
 # Runs results Summary
 SUMMARY="$RUN_DIR/summary.csv"
-echo "run_id,config,strategy,freed_nodes,moves,cost,score,result" >"$SUMMARY"
+echo "run_id,config,strategy,freed_nodes,moves,cost,score,result,planner_seconds,job_seconds,total_seconds" >"$SUMMARY"
 
 for config_dir in "$RUN_DIR"/*/; do
   [[ -d "$config_dir" ]] || continue
@@ -76,8 +88,20 @@ for config_dir in "$RUN_DIR"/*/; do
   cost=""
   score=""
   result="missing"
+  planner_seconds=""
+  job_seconds=""
+  total_seconds=""
+
+  timing="$config_dir/timing.json"
+  if [[ -f "$timing" ]]; then
+    job_seconds="$(jq -r '.job_seconds // empty' "$timing")"
+    total_seconds="$(jq -r '.total_seconds // empty' "$timing")"
+  fi
 
   if [[ -f "$planner" ]]; then
+    # Only the JSON log lines carry an epoch ts; klog lines are skipped.
+    planner_seconds="$( (grep '^{' "$planner" || true) \
+      | jq -rs 'map(.ts | numbers) | if length > 1 then (max - min) * 1000 | round / 1000 else empty end' 2>/dev/null || true)"
     selected="$(grep "Selected best consolidation plan" "$planner" || true)"
     if [[ -n "$selected" ]]; then
       strategy="$(jq -r '.strategy' <<<"$selected")"
@@ -99,7 +123,7 @@ for config_dir in "$RUN_DIR"/*/; do
     fi
   fi
 
-  echo "$RUN_ID,$config_name,$strategy,$freed_nodes,$moves,$cost,$score,$result" >>"$SUMMARY"
+  echo "$RUN_ID,$config_name,$strategy,$freed_nodes,$moves,$cost,$score,$result,$planner_seconds,$job_seconds,$total_seconds" >>"$SUMMARY"
 done
 
 echo "Evaluation complete: $RUN_DIR"

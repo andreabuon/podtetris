@@ -11,7 +11,8 @@
 #
 # Always saved: planner config, cluster name, cluster-autoscaler config,
 # node resource requests (before), podtetris rules, planner logs,
-# consolidation plan, podmoves.
+# consolidation plan, podmoves, timing.json (planner job duration and
+# wall-clock duration of this script).
 # Cluster-autoscaler config is saved on non-kind clusters.
 #
 # Default also saves pods-before/after, evictor logs, and webhook logs.
@@ -36,7 +37,7 @@ while [[ $# -gt 0 ]]; do
     --config-name) CONFIG_NAME="$2"; shift 2 ;;
     --planner-only) PLANNER_ONLY=1; shift ;;
     -h|--help)
-      sed -n '2,19p' "$0"
+      sed -n '2,20p' "$0"
       exit 0
       ;;
     *) echo "error: unknown option: $1" >&2; exit 1 ;;
@@ -44,6 +45,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 cd "$ROOT"
+SECONDS=0
 
 if [[ -z "$RUN_ID" ]]; then
   RUN_ID="$(date +%Y%m%d-%H%M%S)"
@@ -135,5 +137,20 @@ if [[ "$PLANNER_ONLY" -eq 0 ]]; then
   kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$RESULTS_DIR/controller.log" || true
   kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$RESULTS_DIR/webhook.log" || true
 fi
+
+echo "Saving timing..."
+kubectl get job "$JOB" -n "$NS" -o json 2>/dev/null \
+  | jq --argjson record_seconds "$SECONDS" '{
+      job: .metadata.name,
+      job_start: .status.startTime,
+      job_completion: .status.completionTime,
+      job_seconds: (if .status.startTime and .status.completionTime
+        then (.status.completionTime | fromdate) - (.status.startTime | fromdate)
+        else null end),
+      record_seconds: $record_seconds
+    }' >"$RESULTS_DIR/timing.json" \
+  || jq -n --arg job "$JOB" --argjson record_seconds "$SECONDS" \
+    '{job: $job, job_start: null, job_completion: null, job_seconds: null, record_seconds: $record_seconds}' \
+    >"$RESULTS_DIR/timing.json"
 
 echo "Run recorded: $RESULTS_DIR"
