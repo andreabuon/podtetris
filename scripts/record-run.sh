@@ -90,11 +90,14 @@ fi
 
 echo "Capturing node resource requests (before)..."
 #kubectl get nodes > "$RESULTS_DIR/nodes-before.txt"
+kubectl get nodes -o json >"$RESULTS_DIR/nodes-before.json"
 kube-capacity >"$RESULTS_DIR/capacity-nodes-before.txt" 2>&1
+kube-capacity -o json >"$RESULTS_DIR/capacity-nodes-before.json"
 
 echo "Capturing pod state (before)..."
 #kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-before.txt"
 kubectl get pods -A -o wide >"$RESULTS_DIR/pods-before.txt"
+kubectl get pods -A -o json >"$RESULTS_DIR/pods-before.json"
 
 echo "Deleting old consolidation plans..."
 kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
@@ -123,6 +126,7 @@ kubectl get consolidationplans -A -o yaml >"$RESULTS_DIR/plan.yaml"
 kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$RESULTS_DIR/planner.log" || true
 
 kube-capacity >"$RESULTS_DIR/capacity-nodes-after.txt" 2>&1
+kube-capacity -o json >"$RESULTS_DIR/capacity-nodes-after.json" 2>&1
 
 if [[ "$PLANNER_ONLY" -eq 0 ]]; then
   echo "Collecting evictor/webhook artifacts..."
