@@ -99,8 +99,8 @@ echo "Capturing pod state (before)..."
 kubectl get pods -A -o wide >"$RESULTS_DIR/pods-before.txt"
 kubectl get pods -A -o json >"$RESULTS_DIR/pods-before.json"
 
-echo "Deleting old consolidation plans..."
-kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
+echo "Deleting old ConsolidationPlans and PodMoves..."
+kubectl delete consolidationplans,podmoves -n "$NS" --all --ignore-not-found --wait=true >/dev/null
 
 if [[ -n "$CONFIG_NAME" ]]; then
   JOB="planner-${RUN_ID}-${CONFIG_NAME}"

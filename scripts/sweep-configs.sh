@@ -60,7 +60,7 @@ for config in "$CONFIG_DIR"/*.yaml; do
   kubectl delete job "planner-${RUN_ID}-${config_name}" -n "$NS" --ignore-not-found >/dev/null
 done
 
-kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
+kubectl delete consolidationplans,podmoves -n "$NS" --all --ignore-not-found --wait=true >/dev/null
 
 # Runs results Summary
 SUMMARY="$RUN_DIR/summary.csv"
