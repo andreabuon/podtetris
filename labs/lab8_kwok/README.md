@@ -2,7 +2,7 @@
 
 Production-shaped packing lab for the planner. Workloads are pause pods on [KWOK](https://kwok.sigs.k8s.io/) nodes, so nothing pulls images or runs a container. Kind runs a tainted control-plane plus one real worker for cert-manager, KWOK, and PODTetris.
 
-Online Boutique is a single namespace of ~11 services on a handful of Kind nodes. Requests are tiny next to a Kind worker, so the scheduler never has to leave a hole that the next pod cannot fill. This lab is the opposite shape: many namespaces, mixed request sizes, a memory pool, anti-affinity, PDBs, one fixed StatefulSet, and more nodes than the steady workload needs.
+Online Boutique is a single namespace of ~11 services on a handful of Kind nodes. Requests are tiny next to a Kind worker, so the scheduler never has to leave a hole that the next pod cannot fill. This lab is the opposite shape: many namespaces, mixed request sizes, anti-affinity, PDBs, one fixed StatefulSet, and more nodes than the steady workload needs.
 
 ## Why the default scheduler is enough
 
@@ -21,12 +21,11 @@ Steady requests are about **46 CPU** on **24 × 3800m ≈ 91 CPU** allocatable. 
 
 | Pool | Instance | Nodes | Allocatable |
 | --- | --- | --- | --- |
-| general | m6i.xlarge | 18 | 3800m / 14Gi |
-| memory | r6i.xlarge | 6 | 3800m / 30Gi |
+| general | m6i.xlarge | 24 | 3800m / 14Gi |
 
 KWOK nodes are tainted `podtetris.io/workload=true:NoSchedule`. Benchmark pods tolerate that and require `type=kwok`, so they cannot land on the real worker. That worker is labeled `podtetris.io/system=true`, which the planner skips. Its allocatable is the whole Docker VM and would otherwise look like the emptiest consolidation candidate.
 
-`search-indexer` and `search-query` are pinned to the memory pool. `payments-redis` is a fixed pod. `session` is a StatefulSet with required anti-affinity and move cost 100 (no volumes: KWOK has no CSI). `node-exporter` is a DaemonSet on the fake nodes; the planner treats DaemonSets as residual, same as kube-proxy.
+`payments-redis` is a fixed pod. `session` is a StatefulSet with required anti-affinity and move cost 100 (no volumes: KWOK has no CSI). `node-exporter` is a DaemonSet on the fake nodes; the planner treats DaemonSets as residual, same as kube-proxy.
 
 ## Prerequisites
 
