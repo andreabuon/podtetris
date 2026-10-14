@@ -168,5 +168,5 @@ func (r *ConsolidationPlanReconciler) remainingMovesFit(ctx context.Context, pla
 	_ = ctx
 	_ = plan
 	_ = moves
-	return true, "live fit check not implemented"
+	return false, "live fit check not implemented"
 }
