@@ -100,9 +100,9 @@ echo "Deleting old consolidation plans..."
 kubectl delete consolidationplans -n "$NS" --all --ignore-not-found >/dev/null
 
 if [[ -n "$CONFIG_NAME" ]]; then
-  JOB="podtetris-planner-${RUN_ID}-${CONFIG_NAME}"
+  JOB="planner-${RUN_ID}-${CONFIG_NAME}"
 else
-  JOB="podtetris-planner-${RUN_ID}"
+  JOB="planner-${RUN_ID}"
 fi
 echo "Starting planner job: $JOB"
 kubectl create job --from=cronjob/podtetris-planner "$JOB" -n "$NS" >/dev/null
