@@ -134,6 +134,7 @@ if [[ "$PLANNER_ONLY" -eq 0 ]]; then
   echo "Collecting evictor/webhook artifacts..."
   #kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-after.txt"
   kubectl get pods -A -o wide >"$RESULTS_DIR/pods-after.txt"
+  kubectl get pods -A -o json >"$RESULTS_DIR/pods-after.json"
   kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$RESULTS_DIR/controller.log" || true
   kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$RESULTS_DIR/webhook.log" || true
 fi
