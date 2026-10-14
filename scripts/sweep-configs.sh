@@ -68,7 +68,7 @@ echo "run_id,config,strategy,freed_nodes,moves,cost,score,result" >"$SUMMARY"
 for config_dir in "$RUN_DIR"/*/; do
   [[ -d "$config_dir" ]] || continue
   config_name="$(basename "$config_dir")"
-  planner="$config_dir/planner.txt"
+  planner="$config_dir/planner.log"
   strategy=""
   freed_nodes=""
   moves=""
