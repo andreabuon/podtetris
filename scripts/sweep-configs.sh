@@ -103,7 +103,15 @@ for config_dir in "$RUN_DIR"/*/; do
     planner_seconds="$( (grep '^{' "$planner" || true) \
       | jq -rs 'map(.ts | numbers) | if length > 1 then (max - min) * 1000 | round / 1000 else empty end' 2>/dev/null || true)"
     selected="$(grep "Selected best consolidation plan" "$planner" || true)"
-    if [[ -n "$selected" ]]; then
+    not_worth="$(grep "Best plan is not worth the moves" "$planner" || true)"
+    if [[ -n "$not_worth" ]]; then
+      strategy="$(jq -r '.strategy' <<<"$not_worth")"
+      freed_nodes="$(jq -r '.freedNodes' <<<"$not_worth")"
+      moves="$(jq -r '.moves' <<<"$not_worth")"
+      cost="$(jq -r '.cost' <<<"$not_worth")"
+      score="$(jq -r '.score' <<<"$not_worth")"
+      result="not-worth"
+    elif [[ -n "$selected" ]]; then
       strategy="$(jq -r '.strategy' <<<"$selected")"
       freed_nodes="$(jq -r '.freedNodes' <<<"$selected")"
       moves="$(jq -r '.moves' <<<"$selected")"
