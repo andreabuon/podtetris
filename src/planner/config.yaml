@@ -14,7 +14,7 @@ candidates:
     random: 20
   selectionMaxRetries: 15
 score:
-  emptyNodesWeight: 400
+  emptyNodesWeight: 1000
   costWeight: 1
   autoConsolidationThreshold: 0
 permutations:
