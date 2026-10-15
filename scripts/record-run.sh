@@ -127,14 +127,20 @@ kubectl get podmoves -n "$NS" -o yaml >"$RESULTS_DIR/podmoves.yaml"
 kubectl get consolidationplans -A -o yaml >"$RESULTS_DIR/plan.yaml"
 kubectl logs -n "$NS" -l "job-name=$JOB" --tail=-1 >"$RESULTS_DIR/planner.log" || true
 
-kube-capacity >"$RESULTS_DIR/capacity-nodes-after.txt" 2>&1
-kube-capacity -o json >"$RESULTS_DIR/capacity-nodes-after.json" 2>&1
 
 if [[ "$PLANNER_ONLY" -eq 0 ]]; then
+  kube-capacity >"$RESULTS_DIR/capacity-nodes-after.txt" 2>&1
+  kube-capacity -o json >"$RESULTS_DIR/capacity-nodes-after.json" 2>&1
+
   echo "Collecting evictor/webhook artifacts..."
+  
+  kubectl get nodes > "$RESULTS_DIR/nodes-before.txt"
+  kubectl get nodes -o json >"$RESULTS_DIR/nodes-before.json"
+
   #kubectl get pods -n default -o wide >"$RESULTS_DIR/pods-after.txt"
   kubectl get pods -A -o wide >"$RESULTS_DIR/pods-after.txt"
   kubectl get pods -A -o json >"$RESULTS_DIR/pods-after.json"
+
   kubectl logs -n "$NS" -l app.kubernetes.io/component=evictor --tail=-1 >"$RESULTS_DIR/controller.log" || true
   kubectl logs -n "$NS" -l app=podtetris-webhook --tail=-1 >"$RESULTS_DIR/webhook.log" || true
 fi
