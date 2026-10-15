@@ -12,7 +12,7 @@ planner:
         random: 40
       selectionMaxRetries: 15
     score:
-      emptyNodesWeight: 400
+      emptyNodesWeight: 800
       costWeight: 1
       autoConsolidationThreshold: 0
     permutations:
