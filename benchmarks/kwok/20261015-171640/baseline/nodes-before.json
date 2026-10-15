@@ -1,0 +1,3354 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                },
+                "creationTimestamp": "2026-10-15T15:00:19Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "arm64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "arm64",
+                    "kubernetes.io/hostname": "kwok-control-plane",
+                    "kubernetes.io/os": "linux",
+                    "node-role.kubernetes.io/control-plane": "",
+                    "node.kubernetes.io/exclude-from-external-load-balancers": ""
+                },
+                "name": "kwok-control-plane",
+                "resourceVersion": "5281",
+                "uid": "cb79b4a9-1d2d-4fae-b055-243b42736898"
+            },
+            "spec": {
+                "podCIDR": "10.244.0.0/24",
+                "podCIDRs": [
+                    "10.244.0.0/24"
+                ],
+                "providerID": "kind://docker/kwok/kwok-control-plane",
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "node-role.kubernetes.io/control-plane"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "172.18.0.2",
+                        "type": "InternalIP"
+                    },
+                    {
+                        "address": "kwok-control-plane",
+                        "type": "Hostname"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "10",
+                    "ephemeral-storage": "42090168320",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "hugepages-32Mi": "0",
+                    "hugepages-64Ki": "0",
+                    "memory": "12232784Ki",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "10",
+                    "ephemeral-storage": "42090168320",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "hugepages-32Mi": "0",
+                    "hugepages-64Ki": "0",
+                    "memory": "12232784Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:12:26Z",
+                        "lastTransitionTime": "2026-10-15T15:00:18Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:12:26Z",
+                        "lastTransitionTime": "2026-10-15T15:00:18Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:12:26Z",
+                        "lastTransitionTime": "2026-10-15T15:00:18Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:12:26Z",
+                        "lastTransitionTime": "2026-10-15T15:00:40Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "declaredFeatures": [
+                    "ExtendWebSocketsToKubelet",
+                    "InPlacePodLevelResourcesVerticalScaling",
+                    "InPlacePodVerticalScalingInitContainers",
+                    "RestartAllContainersOnContainerExits"
+                ],
+                "features": {
+                    "supplementalGroupsPolicy": true
+                },
+                "images": [
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:4fbbef5581e6ed60b96426e3786371b57da07f66e350b4ff2b0077413c2b0444",
+                            "registry.k8s.io/kube-apiserver-arm64:v1.37.0",
+                            "registry.k8s.io/kube-apiserver:v1.37.0"
+                        ],
+                        "sizeBytes": 97074036
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:dda35f6553455c1dde75aebfbb20759d24b7de776b884eb06415f242f276200c",
+                            "registry.k8s.io/kube-controller-manager-arm64:v1.37.0",
+                            "registry.k8s.io/kube-controller-manager:v1.37.0"
+                        ],
+                        "sizeBytes": 85082212
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:d5e740cce95911da5590b633aae2f7f7e3370ec9d212d4dbbbf3bf19fa07551f",
+                            "registry.k8s.io/kube-proxy-arm64:v1.37.0",
+                            "registry.k8s.io/kube-proxy:v1.37.0"
+                        ],
+                        "sizeBytes": 84533341
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:2aa78b45454b3df79d15bf6a57b4f9871f11ce16c8b645109ba2310076d228dd",
+                            "registry.k8s.io/kube-scheduler-arm64:v1.37.0",
+                            "registry.k8s.io/kube-scheduler:v1.37.0"
+                        ],
+                        "sizeBytes": 59129565
+                    },
+                    {
+                        "names": [
+                            "docker.io/kindest/kindnetd:v20260820-69b56db7"
+                        ],
+                        "sizeBytes": 35652389
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-10-15@sha256:a87c12e1e8afb00ba137c0f9b968fcba603eb1c032f455195d45c50aa9ea414d",
+                            "docker.io/library/podtetris-planner:latest"
+                        ],
+                        "sizeBytes": 34627891
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-10-15@sha256:659a4fadb3a6cf286dd909a30936c77cc9002addcf2639282ec7d9b148973c9a",
+                            "docker.io/library/podtetris-evictor:latest"
+                        ],
+                        "sizeBytes": 30526545
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/coredns/coredns:v1.14.6"
+                        ],
+                        "sizeBytes": 21239459
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/etcd:3.7.0-0"
+                        ],
+                        "sizeBytes": 20455189
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-10-15@sha256:95ad6319cc8217d1145f285ce17aa6a3ea30580eb944659e48c6d1bc0bcf8beb",
+                            "docker.io/library/podtetris-webhook:latest"
+                        ],
+                        "sizeBytes": 18008569
+                    },
+                    {
+                        "names": [
+                            "docker.io/kindest/local-path-provisioner:v20260820-69b56db7"
+                        ],
+                        "sizeBytes": 14217939
+                    },
+                    {
+                        "names": [
+                            "docker.io/kindest/local-path-helper:v20260131-7181c60a"
+                        ],
+                        "sizeBytes": 2740462
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/pause:3.10"
+                        ],
+                        "sizeBytes": 267933
+                    }
+                ],
+                "nodeInfo": {
+                    "architecture": "arm64",
+                    "bootID": "7ca1afa7-98a0-4757-aa86-c70bd102c299",
+                    "containerRuntimeVersion": "containerd://2.3.4",
+                    "kernelVersion": "7.0.14-linuxkit",
+                    "kubeProxyVersion": "",
+                    "kubeletVersion": "v1.37.0",
+                    "machineID": "166086ebdf3a4d48a1aeac70e09036ba",
+                    "operatingSystem": "linux",
+                    "osImage": "Debian GNU/Linux 13 (trixie)",
+                    "runningInUserNamespace": false,
+                    "swap": {
+                        "capacity": 1073737728
+                    },
+                    "systemUUID": "166086ebdf3a4d48a1aeac70e09036ba"
+                },
+                "runtimeHandlers": [
+                    {
+                        "features": {
+                            "recursiveReadOnlyMounts": true,
+                            "userNamespaces": true
+                        },
+                        "name": ""
+                    },
+                    {
+                        "features": {
+                            "recursiveReadOnlyMounts": true,
+                            "userNamespaces": true
+                        },
+                        "name": "runc"
+                    },
+                    {
+                        "features": {
+                            "recursiveReadOnlyMounts": true,
+                            "userNamespaces": true
+                        },
+                        "name": "test-handler"
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-0",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-0",
+                "resourceVersion": "4861",
+                "uid": "008027f2-89ff-4384-a821-dc9785c1ccfc"
+            },
+            "spec": {
+                "podCIDR": "10.244.11.0/24",
+                "podCIDRs": [
+                    "10.244.11.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-1",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-1",
+                "resourceVersion": "4868",
+                "uid": "6bd0593d-2084-4579-ab14-b7fd05993808"
+            },
+            "spec": {
+                "podCIDR": "10.244.22.0/24",
+                "podCIDRs": [
+                    "10.244.22.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-10",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-10",
+                "resourceVersion": "4867",
+                "uid": "7ec006df-bfab-45a5-af3e-cc28aec1aa84"
+            },
+            "spec": {
+                "podCIDR": "10.244.6.0/24",
+                "podCIDRs": [
+                    "10.244.6.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:17Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:17Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:17Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:17Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:17Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-11",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-11",
+                "resourceVersion": "4884",
+                "uid": "79aa9bc6-a66f-402e-be89-4fb1e8c9f630"
+            },
+            "spec": {
+                "podCIDR": "10.244.7.0/24",
+                "podCIDRs": [
+                    "10.244.7.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-12",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-12",
+                "resourceVersion": "4871",
+                "uid": "9753cb85-ec82-4ae2-88bb-cbefdf3a2b24"
+            },
+            "spec": {
+                "podCIDR": "10.244.5.0/24",
+                "podCIDRs": [
+                    "10.244.5.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-13",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-13",
+                "resourceVersion": "4918",
+                "uid": "17bdc164-d922-40af-92fb-97973fafa258"
+            },
+            "spec": {
+                "podCIDR": "10.244.24.0/24",
+                "podCIDRs": [
+                    "10.244.24.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:25Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:25Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:25Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:25Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:25Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-14",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-14",
+                "resourceVersion": "4910",
+                "uid": "61ab70e2-0e11-4691-9a13-6429ed761b09"
+            },
+            "spec": {
+                "podCIDR": "10.244.17.0/24",
+                "podCIDRs": [
+                    "10.244.17.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:24Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:24Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:24Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:24Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:24Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-15",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-15",
+                "resourceVersion": "4870",
+                "uid": "7a06e985-b571-4536-91ac-3ca62105f8f8"
+            },
+            "spec": {
+                "podCIDR": "10.244.8.0/24",
+                "podCIDRs": [
+                    "10.244.8.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-16",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-16",
+                "resourceVersion": "4862",
+                "uid": "4d1ec8a8-cf8b-4d4b-9d2d-0b8444d0d02f"
+            },
+            "spec": {
+                "podCIDR": "10.244.14.0/24",
+                "podCIDRs": [
+                    "10.244.14.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-17",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-17",
+                "resourceVersion": "4874",
+                "uid": "714d2b15-875c-44e6-82ba-24981df4f468"
+            },
+            "spec": {
+                "podCIDR": "10.244.3.0/24",
+                "podCIDRs": [
+                    "10.244.3.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:19Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:19Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:19Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:19Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:19Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-18",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-18",
+                "resourceVersion": "4869",
+                "uid": "6e974da5-ce2b-463c-8349-bf27927b548e"
+            },
+            "spec": {
+                "podCIDR": "10.244.15.0/24",
+                "podCIDRs": [
+                    "10.244.15.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:18Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-19",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-19",
+                "resourceVersion": "4891",
+                "uid": "c63acb98-b1c2-4bd9-a417-ee65d5646aaf"
+            },
+            "spec": {
+                "podCIDR": "10.244.16.0/24",
+                "podCIDRs": [
+                    "10.244.16.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-2",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-2",
+                "resourceVersion": "4863",
+                "uid": "70863868-d1b8-45ed-bfe7-777b937b59bd"
+            },
+            "spec": {
+                "podCIDR": "10.244.21.0/24",
+                "podCIDRs": [
+                    "10.244.21.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-20",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-20",
+                "resourceVersion": "4883",
+                "uid": "ae85cf46-e29b-464d-a2dc-6ca04b0493ff"
+            },
+            "spec": {
+                "podCIDR": "10.244.23.0/24",
+                "podCIDRs": [
+                    "10.244.23.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-21",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-21",
+                "resourceVersion": "4887",
+                "uid": "3c79caad-b53d-406f-9756-de74fa33f39a"
+            },
+            "spec": {
+                "podCIDR": "10.244.20.0/24",
+                "podCIDRs": [
+                    "10.244.20.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-22",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-22",
+                "resourceVersion": "4885",
+                "uid": "b97a5790-bb9b-4e4d-a35a-e1cbaba53d77"
+            },
+            "spec": {
+                "podCIDR": "10.244.18.0/24",
+                "podCIDRs": [
+                    "10.244.18.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-23",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-23",
+                "resourceVersion": "4857",
+                "uid": "cef8a137-265b-45bc-b4fd-3b4d2175c49c"
+            },
+            "spec": {
+                "podCIDR": "10.244.12.0/24",
+                "podCIDRs": [
+                    "10.244.12.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:15Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-3",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-3",
+                "resourceVersion": "4879",
+                "uid": "4530b171-d09d-4ed9-879c-c2ae58b9a05b"
+            },
+            "spec": {
+                "podCIDR": "10.244.2.0/24",
+                "podCIDRs": [
+                    "10.244.2.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-4",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-4",
+                "resourceVersion": "4843",
+                "uid": "e4350c30-e15a-4e6a-b5bd-7ad94f124d66"
+            },
+            "spec": {
+                "podCIDR": "10.244.4.0/24",
+                "podCIDRs": [
+                    "10.244.4.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:13Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:13Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:13Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:13Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:13Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-5",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-5",
+                "resourceVersion": "4876",
+                "uid": "74b126f8-e6ae-4b01-88ee-2ce5ba565c96"
+            },
+            "spec": {
+                "podCIDR": "10.244.10.0/24",
+                "podCIDRs": [
+                    "10.244.10.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:20Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-6",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-6",
+                "resourceVersion": "4889",
+                "uid": "dfdab000-2858-4236-88b7-fe8ca358e591"
+            },
+            "spec": {
+                "podCIDR": "10.244.19.0/24",
+                "podCIDRs": [
+                    "10.244.19.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:22Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-7",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-7",
+                "resourceVersion": "4829",
+                "uid": "1aa16d25-8752-4416-8f3e-5b4a8993fffd"
+            },
+            "spec": {
+                "podCIDR": "10.244.9.0/24",
+                "podCIDRs": [
+                    "10.244.9.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:12Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:12Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:12Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:12Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:12Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-8",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-8",
+                "resourceVersion": "4849",
+                "uid": "a001aa45-2b51-4a85-81a8-36c1afe75747"
+            },
+            "spec": {
+                "podCIDR": "10.244.13.0/24",
+                "podCIDRs": [
+                    "10.244.13.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:14Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:14Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:14Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:14Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:14Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "kwok.x-k8s.io/node": "fake",
+                    "meta.helm.sh/release-name": "kwok-nodes",
+                    "meta.helm.sh/release-namespace": "kube-system",
+                    "node.alpha.kubernetes.io/ttl": "0"
+                },
+                "creationTimestamp": "2026-10-15T15:01:11Z",
+                "labels": {
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "kwok-general-9",
+                    "kubernetes.io/os": "linux",
+                    "node.kubernetes.io/instance-type": "m6i.xlarge",
+                    "podtetris.io/pool": "general",
+                    "type": "kwok"
+                },
+                "name": "kwok-general-9",
+                "resourceVersion": "4882",
+                "uid": "a534c96f-2ed5-4c81-91f3-4d40b2daf93d"
+            },
+            "spec": {
+                "podCIDR": "10.244.25.0/24",
+                "podCIDRs": [
+                    "10.244.25.0/24"
+                ],
+                "taints": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "podtetris.io/workload",
+                        "value": "true"
+                    }
+                ]
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "10.244.1.5",
+                        "type": "InternalIP"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "3800m",
+                    "memory": "14Gi",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "4",
+                    "memory": "16Gi",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:11:21Z",
+                        "lastTransitionTime": "2026-10-15T15:01:11Z",
+                        "message": "RouteController created a route",
+                        "reason": "RouteCreated",
+                        "status": "False",
+                        "type": "NetworkUnavailable"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10247
+                    }
+                },
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "",
+                    "containerRuntimeVersion": "kwok://0.0.0",
+                    "kernelVersion": "",
+                    "kubeProxyVersion": "fake",
+                    "kubeletVersion": "fake",
+                    "machineID": "",
+                    "operatingSystem": "linux",
+                    "osImage": "kwok",
+                    "systemUUID": ""
+                },
+                "phase": "Running"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                },
+                "creationTimestamp": "2026-10-15T15:00:33Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "arm64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "arm64",
+                    "kubernetes.io/hostname": "kwok-worker",
+                    "kubernetes.io/os": "linux",
+                    "podtetris.io/system": "true"
+                },
+                "name": "kwok-worker",
+                "resourceVersion": "6465",
+                "uid": "e8df675d-0920-41cb-99d6-0198ee851f74"
+            },
+            "spec": {
+                "podCIDR": "10.244.1.0/24",
+                "podCIDRs": [
+                    "10.244.1.0/24"
+                ],
+                "providerID": "kind://docker/kwok/kwok-worker"
+            },
+            "status": {
+                "addresses": [
+                    {
+                        "address": "172.18.0.3",
+                        "type": "InternalIP"
+                    },
+                    {
+                        "address": "kwok-worker",
+                        "type": "Hostname"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "10",
+                    "ephemeral-storage": "42090168320",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "hugepages-32Mi": "0",
+                    "hugepages-64Ki": "0",
+                    "memory": "12232784Ki",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "10",
+                    "ephemeral-storage": "42090168320",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "hugepages-32Mi": "0",
+                    "hugepages-64Ki": "0",
+                    "memory": "12232784Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:16:41Z",
+                        "lastTransitionTime": "2026-10-15T15:00:33Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:16:41Z",
+                        "lastTransitionTime": "2026-10-15T15:00:33Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:16:41Z",
+                        "lastTransitionTime": "2026-10-15T15:00:33Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-10-15T15:16:41Z",
+                        "lastTransitionTime": "2026-10-15T15:00:45Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "declaredFeatures": [
+                    "ExtendWebSocketsToKubelet",
+                    "InPlacePodLevelResourcesVerticalScaling",
+                    "InPlacePodVerticalScalingInitContainers",
+                    "RestartAllContainersOnContainerExits"
+                ],
+                "features": {
+                    "supplementalGroupsPolicy": true
+                },
+                "images": [
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:4fbbef5581e6ed60b96426e3786371b57da07f66e350b4ff2b0077413c2b0444",
+                            "registry.k8s.io/kube-apiserver-arm64:v1.37.0",
+                            "registry.k8s.io/kube-apiserver:v1.37.0"
+                        ],
+                        "sizeBytes": 97074036
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:dda35f6553455c1dde75aebfbb20759d24b7de776b884eb06415f242f276200c",
+                            "registry.k8s.io/kube-controller-manager-arm64:v1.37.0",
+                            "registry.k8s.io/kube-controller-manager:v1.37.0"
+                        ],
+                        "sizeBytes": 85081821
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:d5e740cce95911da5590b633aae2f7f7e3370ec9d212d4dbbbf3bf19fa07551f",
+                            "registry.k8s.io/kube-proxy-arm64:v1.37.0",
+                            "registry.k8s.io/kube-proxy:v1.37.0"
+                        ],
+                        "sizeBytes": 84532964
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-08-26@sha256:2aa78b45454b3df79d15bf6a57b4f9871f11ce16c8b645109ba2310076d228dd",
+                            "registry.k8s.io/kube-scheduler-arm64:v1.37.0",
+                            "registry.k8s.io/kube-scheduler:v1.37.0"
+                        ],
+                        "sizeBytes": 59129565
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/kwok/kwok@sha256:6d25aa8fbdfe78845423160bf125b5513f9522e2770981f0945c2a250c2b26f0",
+                            "registry.k8s.io/kwok/kwok:v0.8.0"
+                        ],
+                        "sizeBytes": 38511382
+                    },
+                    {
+                        "names": [
+                            "docker.io/kindest/kindnetd:v20260820-69b56db7"
+                        ],
+                        "sizeBytes": 35652389
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-10-15@sha256:a87c12e1e8afb00ba137c0f9b968fcba603eb1c032f455195d45c50aa9ea414d",
+                            "docker.io/library/podtetris-planner:latest"
+                        ],
+                        "sizeBytes": 34627891
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-10-15@sha256:659a4fadb3a6cf286dd909a30936c77cc9002addcf2639282ec7d9b148973c9a",
+                            "docker.io/library/podtetris-evictor:latest"
+                        ],
+                        "sizeBytes": 30526545
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/coredns/coredns:v1.14.6"
+                        ],
+                        "sizeBytes": 21239459
+                    },
+                    {
+                        "names": [
+                            "quay.io/jetstack/cert-manager-controller@sha256:fe0623d7d04a382c888f03343a3a2da716e0d96ad3d5d790c0ebcbcb2a4329a5",
+                            "quay.io/jetstack/cert-manager-controller:v1.20.2"
+                        ],
+                        "sizeBytes": 21156828
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/etcd:3.7.0-0"
+                        ],
+                        "sizeBytes": 20455189
+                    },
+                    {
+                        "names": [
+                            "docker.io/library/import-2026-10-15@sha256:95ad6319cc8217d1145f285ce17aa6a3ea30580eb944659e48c6d1bc0bcf8beb",
+                            "docker.io/library/podtetris-webhook:latest"
+                        ],
+                        "sizeBytes": 18008569
+                    },
+                    {
+                        "names": [
+                            "quay.io/jetstack/cert-manager-webhook@sha256:baf651128b9f05c426cbd5e60e2036bf382c99ca270f49d0757d6f7d2452f4e5",
+                            "quay.io/jetstack/cert-manager-webhook:v1.20.2"
+                        ],
+                        "sizeBytes": 17436598
+                    },
+                    {
+                        "names": [
+                            "quay.io/jetstack/cert-manager-cainjector@sha256:6f5a644135887b2aa7d5cc145072fa56421560e3586ff1f184358022d490f4e1",
+                            "quay.io/jetstack/cert-manager-cainjector:v1.20.2"
+                        ],
+                        "sizeBytes": 14631306
+                    },
+                    {
+                        "names": [
+                            "docker.io/kindest/local-path-provisioner:v20260820-69b56db7"
+                        ],
+                        "sizeBytes": 14217939
+                    },
+                    {
+                        "names": [
+                            "docker.io/kindest/local-path-helper:v20260131-7181c60a"
+                        ],
+                        "sizeBytes": 2740462
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/pause:3.10"
+                        ],
+                        "sizeBytes": 267933
+                    }
+                ],
+                "nodeInfo": {
+                    "architecture": "arm64",
+                    "bootID": "7ca1afa7-98a0-4757-aa86-c70bd102c299",
+                    "containerRuntimeVersion": "containerd://2.3.4",
+                    "kernelVersion": "7.0.14-linuxkit",
+                    "kubeProxyVersion": "",
+                    "kubeletVersion": "v1.37.0",
+                    "machineID": "87a69d55a60045d198e13c1597c1cda6",
+                    "operatingSystem": "linux",
+                    "osImage": "Debian GNU/Linux 13 (trixie)",
+                    "runningInUserNamespace": false,
+                    "swap": {
+                        "capacity": 1073737728
+                    },
+                    "systemUUID": "87a69d55a60045d198e13c1597c1cda6"
+                },
+                "runtimeHandlers": [
+                    {
+                        "features": {
+                            "recursiveReadOnlyMounts": true,
+                            "userNamespaces": true
+                        },
+                        "name": ""
+                    },
+                    {
+                        "features": {
+                            "recursiveReadOnlyMounts": true,
+                            "userNamespaces": true
+                        },
+                        "name": "runc"
+                    },
+                    {
+                        "features": {
+                            "recursiveReadOnlyMounts": true,
+                            "userNamespaces": true
+                        },
+                        "name": "test-handler"
+                    }
+                ]
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

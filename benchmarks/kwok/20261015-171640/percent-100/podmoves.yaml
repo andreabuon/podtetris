@@ -1,0 +1,2455 @@
+apiVersion: v1
+items:
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:30Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e7e14fa4-c0e6-44c7-9cf0-c621a0e79043
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-large-65fc5575-bs4t6-7285379b
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7208"
+    uid: 39b25aa0-ad18-4ddc-984d-f03fca0e47d4
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-large-65fc5575
+      uid: e7e14fa4-c0e6-44c7-9cf0-c621a0e79043
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-large-65fc5575-bs4t6
+      namespace: batch
+      uid: 7285379b-b997-4f88-9d8a-efb1364c1b9d
+    sourceNode: kwok-general-11
+    targetNode: kwok-general-17
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:23Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e7e14fa4-c0e6-44c7-9cf0-c621a0e79043
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-large-65fc5575-jcz5n-75aaed6e
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7154"
+    uid: 9a4ee12c-7a2e-46b0-9f4c-cf38ee45f6fb
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-large-65fc5575
+      uid: e7e14fa4-c0e6-44c7-9cf0-c621a0e79043
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-large-65fc5575-jcz5n
+      namespace: batch
+      uid: 75aaed6e-096f-44ff-88ab-ecf72dc5ae0b
+    sourceNode: kwok-general-23
+    targetNode: kwok-general-9
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-worker-5ffd668fc-4bh7r-6770bc5e
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7132"
+    uid: 0d4d1c84-ae5f-467e-8f01-72c6d60d8b8b
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-4bh7r
+      namespace: batch
+      uid: 6770bc5e-1989-45b3-9600-56d9e2a4ac5c
+    sourceNode: kwok-general-23
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:26Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-worker-5ffd668fc-5t4ck-c0f1e750
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7178"
+    uid: 77daee28-accc-4a0d-ad85-baf16c04237a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-5t4ck
+      namespace: batch
+      uid: c0f1e750-1807-4737-9984-179b64e6e89b
+    sourceNode: kwok-general-2
+    targetNode: kwok-general-14
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:23Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-worker-5ffd668fc-79x56-7c16dac2
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7156"
+    uid: b558af60-2dbb-4ab9-ab0a-25ad58af2ef3
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-79x56
+      namespace: batch
+      uid: 7c16dac2-f8bf-4d3e-94af-28248a2134bd
+    sourceNode: kwok-general-20
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-worker-5ffd668fc-jvbkv-32d72177
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7104"
+    uid: a121cbff-a355-4d36-afe1-869c8191d880
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-jvbkv
+      namespace: batch
+      uid: 32d72177-0459-4d2f-80a2-397963414442
+    sourceNode: kwok-general-22
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-worker-5ffd668fc-qfjvt-5ab232da
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7109"
+    uid: 18111fe3-35b1-4d95-b1cf-3b2be0844ac5
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-qfjvt
+      namespace: batch
+      uid: 5ab232da-d5e2-4eed-9e57-a56cab33de42
+    sourceNode: kwok-general-14
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: batch-worker-5ffd668fc-x4rgp-629d0004
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7105"
+    uid: 67052ccf-a7e1-40bf-bc00-b2e01f6cafea
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: batch-worker-5ffd668fc
+      uid: 816f68b8-d519-45f8-b324-578b4f5b58ea
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: batch-worker-5ffd668fc-x4rgp
+      namespace: batch
+      uid: 629d0004-49fc-44b7-9fbd-f15d6d0f8e7d
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:26Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-api-b4c686854-4xf5q-5e7d9399
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7177"
+    uid: 1c804841-71d1-4085-9631-2892f8191db2
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-4xf5q
+      namespace: catalog
+      uid: 5e7d9399-0a99-464d-bc59-ad47eb41a701
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:28Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-api-b4c686854-7lrnz-a91d1922
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7191"
+    uid: 070f3a0a-9524-4913-a345-81807d6620b1
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-7lrnz
+      namespace: catalog
+      uid: a91d1922-909b-427b-ad62-fcc771fff5db
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-16
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:26Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-api-b4c686854-dfdfs-8a0087a0
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7172"
+    uid: ab3f5c0d-90e1-4ba0-88ed-f1115060b406
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-dfdfs
+      namespace: catalog
+      uid: 8a0087a0-b1ec-4257-a679-8e3893d1e94d
+    sourceNode: kwok-general-2
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:31Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-api-b4c686854-n5wlt-ed0134ea
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7222"
+    uid: 7522edd0-8b8e-4edf-82e2-9680f9de9b19
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-n5wlt
+      namespace: catalog
+      uid: ed0134ea-4a2e-4f57-93b1-178c9e979e7a
+    sourceNode: kwok-general-18
+    targetNode: kwok-general-17
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:27Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-api-b4c686854-nhcqq-b93bb87b
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7185"
+    uid: 8bdb339c-5d72-407b-a0fe-d2b067295175
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-nhcqq
+      namespace: catalog
+      uid: b93bb87b-5210-496b-b3c8-e335264848ca
+    sourceNode: kwok-general-16
+    targetNode: kwok-general-10
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:25Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-api-b4c686854-zrv6x-c3292fce
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7171"
+    uid: a0696a0f-cede-4814-8991-a031aaeac635
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-api-b4c686854
+      uid: e0e2769f-d702-4b97-b1c1-2b55603a7702
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-api-b4c686854-zrv6x
+      namespace: catalog
+      uid: c3292fce-5c3c-4771-bcfd-0c4bb09c4d8b
+    sourceNode: kwok-general-12
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:25Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 338852e2-fd34-4526-946e-a33a6ea0cdbb
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-feed-685dd949cb-7n5cp-c02c0457
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7169"
+    uid: 694cb531-f808-4e43-8bda-2f56546b9820
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-feed-685dd949cb
+      uid: 338852e2-fd34-4526-946e-a33a6ea0cdbb
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-feed-685dd949cb-7n5cp
+      namespace: catalog
+      uid: c02c0457-db22-4035-ab49-834dd8c13e48
+    sourceNode: kwok-general-6
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:24Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 338852e2-fd34-4526-946e-a33a6ea0cdbb
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-feed-685dd949cb-wk4m7-8ee4d615
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7164"
+    uid: 2a1034f9-77ed-42a9-9a6c-133f9fccc457
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-feed-685dd949cb
+      uid: 338852e2-fd34-4526-946e-a33a6ea0cdbb
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-feed-685dd949cb-wk4m7
+      namespace: catalog
+      uid: 8ee4d615-3510-4735-bbe8-421f1675766e
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-14
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:24Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 338852e2-fd34-4526-946e-a33a6ea0cdbb
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: catalog-feed-685dd949cb-z74wd-ca9b6482
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7165"
+    uid: 8bb5a123-1181-40e8-ac04-f71c04d1f215
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: catalog-feed-685dd949cb
+      uid: 338852e2-fd34-4526-946e-a33a6ea0cdbb
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: catalog-feed-685dd949cb-z74wd
+      namespace: catalog
+      uid: ca9b6482-16f5-4595-8d32-8da19c46cb98
+    sourceNode: kwok-general-21
+    targetNode: kwok-general-14
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:31Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-api-8c947447d-64rxz-5fe63b13
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7229"
+    uid: b18a6efe-481b-4a0b-b1f3-c196d0378697
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-api-8c947447d
+      uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-api-8c947447d-64rxz
+      namespace: checkout
+      uid: 5fe63b13-a6ef-4cde-b09b-26f76c282d61
+    sourceNode: kwok-general-18
+    targetNode: kwok-general-23
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:26Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-api-8c947447d-gbvdv-2e0896ce
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7173"
+    uid: 789643d4-42d7-4fef-ab5a-dc49aa60358c
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-api-8c947447d
+      uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-api-8c947447d-gbvdv
+      namespace: checkout
+      uid: 2e0896ce-5128-4f73-a199-6dcb8068bbeb
+    sourceNode: kwok-general-17
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-api-8c947447d-sh6g7-8544faa6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7126"
+    uid: 90afe590-f829-4350-9fdd-8d1eb3109197
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-api-8c947447d
+      uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-api-8c947447d-sh6g7
+      namespace: checkout
+      uid: 8544faa6-04fd-494a-8db9-43790efea432
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-4
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-api-8c947447d-wsvg4-d3413ae6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7138"
+    uid: bfa469fd-a647-4846-ad61-1e3f2e5177d7
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-api-8c947447d
+      uid: d5f8b2f7-a6dc-4a15-afb3-e6117c19a9e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-api-8c947447d-wsvg4
+      namespace: checkout
+      uid: d3413ae6-94a3-4c2d-a370-1180bdf89533
+    sourceNode: kwok-general-12
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:27Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 6b3e4db2-7aeb-4d8c-b5ff-f2d57468a52a
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-worker-5cf68475c8-9zlp2-76487c81
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7184"
+    uid: e7850f39-5c55-44e1-884a-2169f9d7a142
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-worker-5cf68475c8
+      uid: 6b3e4db2-7aeb-4d8c-b5ff-f2d57468a52a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-worker-5cf68475c8-9zlp2
+      namespace: checkout
+      uid: 76487c81-c11d-43bc-b6ae-12d8a2d147de
+    sourceNode: kwok-general-13
+    targetNode: kwok-general-16
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:24Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 6b3e4db2-7aeb-4d8c-b5ff-f2d57468a52a
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-worker-5cf68475c8-clp8f-5b3f14d6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7161"
+    uid: 82ab17b3-ecc4-48ef-9e96-ae57b3f1b4c4
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-worker-5cf68475c8
+      uid: 6b3e4db2-7aeb-4d8c-b5ff-f2d57468a52a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-worker-5cf68475c8-clp8f
+      namespace: checkout
+      uid: 5b3f14d6-83ab-42ff-949e-58c09f1ff587
+    sourceNode: kwok-general-6
+    targetNode: kwok-general-14
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:28Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 6b3e4db2-7aeb-4d8c-b5ff-f2d57468a52a
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: checkout-worker-5cf68475c8-hnwgp-f554ac25
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7186"
+    uid: 6f927291-b1d1-4a9a-b210-38973e5fdb71
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: checkout-worker-5cf68475c8
+      uid: 6b3e4db2-7aeb-4d8c-b5ff-f2d57468a52a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: checkout-worker-5cf68475c8-hnwgp
+      namespace: checkout
+      uid: f554ac25-682a-43e0-88bd-19ec46df8f49
+    sourceNode: kwok-general-14
+    targetNode: kwok-general-16
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: collector-7946b46f59-459mz-c6ce1ae0
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7147"
+    uid: 458757af-2cb7-4ec5-aba1-d885f4c6345a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-459mz
+      namespace: observability
+      uid: c6ce1ae0-9ea7-436e-a204-26f15587c51c
+    sourceNode: kwok-general-9
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:30Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: collector-7946b46f59-9rv2n-4899797d
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7211"
+    uid: c633568f-8c5c-4958-a5ad-4b8ef6ead739
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-9rv2n
+      namespace: observability
+      uid: 4899797d-f760-4cb5-800c-7b8e1e26c555
+    sourceNode: kwok-general-10
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: collector-7946b46f59-jdqbc-c0f4a0a6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7150"
+    uid: 99bb887b-6987-41f1-aaa2-279b4d97a02c
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-jdqbc
+      namespace: observability
+      uid: c0f4a0a6-eacb-467b-b7b3-72757efad360
+    sourceNode: kwok-general-23
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:29Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: collector-7946b46f59-k9w7q-c98a69e2
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7198"
+    uid: 2e5fa2ea-a16b-4855-a4ba-5944dc8cf8f2
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-k9w7q
+      namespace: observability
+      uid: c98a69e2-67ed-4b53-a68d-50c0648e4602
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:30Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: collector-7946b46f59-tbv4q-aa667d34
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7215"
+    uid: 11a9ba39-a462-4281-9b30-906d1afc2d4f
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-tbv4q
+      namespace: observability
+      uid: aa667d34-37d6-4a45-95ef-77814769de51
+    sourceNode: kwok-general-12
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:26Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: collector-7946b46f59-z95lx-a71b2919
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7176"
+    uid: cd4ab9ee-2c61-4b19-ac85-6d6d22a321ed
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: collector-7946b46f59
+      uid: 0abaaff4-6a58-437d-be8a-6952dd5be1e5
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: collector-7946b46f59-z95lx
+      namespace: observability
+      uid: a71b2919-7b65-4610-abbc-29ccd0c775b0
+    sourceNode: kwok-general-21
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:27Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 236decb2-04af-4dc1-b8cd-a7172925c567
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: edge-proxy-6855968857-fjhhp-7ed74201
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7183"
+    uid: 950b409a-a248-4104-96ba-82c914a96859
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: edge-proxy-6855968857
+      uid: 236decb2-04af-4dc1-b8cd-a7172925c567
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: edge-proxy-6855968857-fjhhp
+      namespace: edge
+      uid: 7ed74201-de30-4432-be5f-22bb9f0ba163
+    sourceNode: kwok-general-5
+    targetNode: kwok-general-10
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:25Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0db13453-e7cf-4733-8ed4-fd95e7972483
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: feature-flags-5565fb9b8b-mh7fr-3ba14068
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7170"
+    uid: 6c8de4c8-69fc-47b3-aceb-2b9e5cca553a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: feature-flags-5565fb9b8b
+      uid: 0db13453-e7cf-4733-8ed4-fd95e7972483
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: feature-flags-5565fb9b8b-mh7fr
+      namespace: platform
+      uid: 3ba14068-3b05-4a11-8ec5-4ac12ef98d9d
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-9
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 0db13453-e7cf-4733-8ed4-fd95e7972483
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: feature-flags-5565fb9b8b-pcndh-ecdb8d37
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7129"
+    uid: af7454d1-e204-45dd-873d-1607a6e3d394
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: feature-flags-5565fb9b8b
+      uid: 0db13453-e7cf-4733-8ed4-fd95e7972483
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: feature-flags-5565fb9b8b-pcndh
+      namespace: platform
+      uid: ecdb8d37-9abc-4dab-b19d-fd4e74e7937f
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-4
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:30Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23311d7f-503e-4140-84d3-2df069131c43
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: frontend-9687b7d98-9qhlm-5d2b4162
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7202"
+    uid: 9ce0a9b9-9051-49b5-92cf-9c732c82de05
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 23311d7f-503e-4140-84d3-2df069131c43
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-9qhlm
+      namespace: edge
+      uid: 5d2b4162-ef01-4daa-adce-7549796dcfb7
+    sourceNode: kwok-general-19
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23311d7f-503e-4140-84d3-2df069131c43
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: frontend-9687b7d98-ccpbt-9167c974
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7101"
+    uid: 523f8eae-07b3-404a-b464-6ccc78063e0e
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 23311d7f-503e-4140-84d3-2df069131c43
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-ccpbt
+      namespace: edge
+      uid: 9167c974-3da4-43f9-ae1f-9267279d161c
+    sourceNode: kwok-general-21
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:27Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23311d7f-503e-4140-84d3-2df069131c43
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: frontend-9687b7d98-cl5sk-f829dc23
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7182"
+    uid: fc0db282-520e-4e1b-9a70-1a463c00cdd5
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 23311d7f-503e-4140-84d3-2df069131c43
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-cl5sk
+      namespace: edge
+      uid: f829dc23-721e-4438-9524-c066d12f8746
+    sourceNode: kwok-general-23
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23311d7f-503e-4140-84d3-2df069131c43
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: frontend-9687b7d98-fggvj-02f96c64
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7110"
+    uid: 77611138-9fdd-40ae-8454-17bd96304513
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 23311d7f-503e-4140-84d3-2df069131c43
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-fggvj
+      namespace: edge
+      uid: 02f96c64-aaac-4146-beed-0582e81054a5
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-4
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23311d7f-503e-4140-84d3-2df069131c43
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: frontend-9687b7d98-qgfcq-6920131f
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7142"
+    uid: 7742e281-ba08-4a57-b57f-057553fe442a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 23311d7f-503e-4140-84d3-2df069131c43
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-qgfcq
+      namespace: edge
+      uid: 6920131f-5de5-4b85-ac08-f80ac227eead
+    sourceNode: kwok-general-13
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:28Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 23311d7f-503e-4140-84d3-2df069131c43
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: frontend-9687b7d98-txpbz-4ee7d1d6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7190"
+    uid: 7e5b208e-ad44-46ca-8e50-f08de3a97bf3
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: frontend-9687b7d98
+      uid: 23311d7f-503e-4140-84d3-2df069131c43
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: frontend-9687b7d98-txpbz
+      namespace: edge
+      uid: 4ee7d1d6-d96f-43e9-b6c2-a1ab51098f90
+    sourceNode: kwok-general-2
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:28Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: inventory-787d949f6b-754m6-a0f8a927
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7187"
+    uid: 194051c6-83b2-4903-b3c3-eaa1d031a592
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: inventory-787d949f6b
+      uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: inventory-787d949f6b-754m6
+      namespace: platform
+      uid: a0f8a927-57b8-4b1d-b47e-48d953fa8f73
+    sourceNode: kwok-general-17
+    targetNode: kwok-general-16
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:32Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: inventory-787d949f6b-mgfws-7f53e2be
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7234"
+    uid: ef43df40-64f5-41d1-aefa-32652d07ee7a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: inventory-787d949f6b
+      uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: inventory-787d949f6b-mgfws
+      namespace: platform
+      uid: 7f53e2be-6797-41cc-8152-6fd2297d29a7
+    sourceNode: kwok-general-15
+    targetNode: kwok-general-3
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:23Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: inventory-787d949f6b-qr9l8-5b015848
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7157"
+    uid: b041aff3-24bb-4bd1-98c0-acd7f212815c
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: inventory-787d949f6b
+      uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: inventory-787d949f6b-qr9l8
+      namespace: platform
+      uid: 5b015848-8c00-4d6a-b7b7-442ee265177a
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:31Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: inventory-787d949f6b-zftb9-22e023bd
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7219"
+    uid: 3ac57bdf-5118-4d05-b1d7-f725c8552fbe
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: inventory-787d949f6b
+      uid: fd179728-9972-47c2-b56d-ec091a8b8d99
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: inventory-787d949f6b-zftb9
+      namespace: platform
+      uid: 22e023bd-f371-4abe-84da-48cc668edb88
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-17
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 991de715-d8d1-4294-8bba-3952299ec88c
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: jvm-service-594d9956fb-5xwlc-509dc508
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7107"
+    uid: 97c109ba-3146-437e-8597-db9cf04f1fed
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: jvm-service-594d9956fb
+      uid: 991de715-d8d1-4294-8bba-3952299ec88c
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: jvm-service-594d9956fb-5xwlc
+      namespace: platform
+      uid: 509dc508-346d-4207-b575-e4cc64c0d693
+    sourceNode: kwok-general-19
+    targetNode: kwok-general-22
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:27Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 991de715-d8d1-4294-8bba-3952299ec88c
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: jvm-service-594d9956fb-bzwdq-ce1596b7
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7179"
+    uid: ebd7ddbc-f12d-4318-8188-5661a6414ecb
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: jvm-service-594d9956fb
+      uid: 991de715-d8d1-4294-8bba-3952299ec88c
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: jvm-service-594d9956fb-bzwdq
+      namespace: platform
+      uid: ce1596b7-f850-4e5d-bcca-1b8e838a014a
+    sourceNode: kwok-general-2
+    targetNode: kwok-general-10
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 991de715-d8d1-4294-8bba-3952299ec88c
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: jvm-service-594d9956fb-xzgfr-fbd81638
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7106"
+    uid: 1a2358f5-b1f0-4511-9f58-9a33bf006304
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: jvm-service-594d9956fb
+      uid: 991de715-d8d1-4294-8bba-3952299ec88c
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: jvm-service-594d9956fb-xzgfr
+      namespace: platform
+      uid: fbd81638-b018-4eff-acde-fa91b5a82a74
+    sourceNode: kwok-general-15
+    targetNode: kwok-general-22
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:21Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: a8c9274d-1e02-4bc1-b236-fe4925214f22
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: media-bcf8c47d9-mjjsd-4b6c73f4
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7134"
+    uid: 2a49e90c-cd36-47c5-a4ef-575791539ecf
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: media-bcf8c47d9
+      uid: a8c9274d-1e02-4bc1-b236-fe4925214f22
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: media-bcf8c47d9-mjjsd
+      namespace: platform
+      uid: 4b6c73f4-bebc-412b-9054-cc85aa71737b
+    sourceNode: kwok-general-16
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:25Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: a8c9274d-1e02-4bc1-b236-fe4925214f22
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: media-bcf8c47d9-p4dc5-a775f0dc
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7167"
+    uid: 06893447-21e8-44ac-964d-6d24d05eae4a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: media-bcf8c47d9
+      uid: a8c9274d-1e02-4bc1-b236-fe4925214f22
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: media-bcf8c47d9-p4dc5
+      namespace: platform
+      uid: a775f0dc-ba14-4359-8b6c-13820117dccb
+    sourceNode: kwok-general-21
+    targetNode: kwok-general-11
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: a8c9274d-1e02-4bc1-b236-fe4925214f22
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: media-bcf8c47d9-s24zc-d6109523
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7117"
+    uid: 4390ed7a-9495-4c96-a3ae-c9c82fdb2d96
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: media-bcf8c47d9
+      uid: a8c9274d-1e02-4bc1-b236-fe4925214f22
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: media-bcf8c47d9-s24zc
+      namespace: platform
+      uid: d6109523-27cf-438a-859e-6142025e23f2
+    sourceNode: kwok-general-5
+    targetNode: kwok-general-4
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: notifications-77896b4cb8-68sjx-641b4b06
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7121"
+    uid: 32b87366-17f8-4d9b-beef-f6342e7c0984
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: notifications-77896b4cb8
+      uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: notifications-77896b4cb8-68sjx
+      namespace: platform
+      uid: 641b4b06-4ca0-42aa-94b1-49257f17e04a
+    sourceNode: kwok-general-12
+    targetNode: kwok-general-4
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:24Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: notifications-77896b4cb8-nq7d4-2390b32e
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7159"
+    uid: 424163e9-5173-4ee7-82e8-282141543ef4
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: notifications-77896b4cb8
+      uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: notifications-77896b4cb8-nq7d4
+      namespace: platform
+      uid: 2390b32e-8b0a-46e8-9f19-0c7c91276d64
+    sourceNode: kwok-general-8
+    targetNode: kwok-general-9
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: notifications-77896b4cb8-s2f95-e15e2571
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7103"
+    uid: 40022d2b-19b7-4c52-bdd0-59476e5a4639
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: notifications-77896b4cb8
+      uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: notifications-77896b4cb8-s2f95
+      namespace: platform
+      uid: e15e2571-73cd-4315-aaa4-fe1bae7a0c8a
+    sourceNode: kwok-general-2
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:29Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: notifications-77896b4cb8-vqs9p-2df1d4a9
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7195"
+    uid: f48c96ed-e48f-4560-ab11-e92e7e0cc5b1
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: notifications-77896b4cb8
+      uid: 95f29c42-ed9f-4057-b8cf-0654b5ee4334
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: notifications-77896b4cb8-vqs9p
+      namespace: platform
+      uid: 2df1d4a9-a4f2-4bf7-a832-5936d84c13aa
+    sourceNode: kwok-general-7
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:28Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 426316be-b22f-4519-b1c7-67bc4644638a
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: payments-api-658f54c46-2vscm-962a538e
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7192"
+    uid: 8df3104c-f566-4590-82f8-4adf7dd75f1c
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: payments-api-658f54c46
+      uid: 426316be-b22f-4519-b1c7-67bc4644638a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: payments-api-658f54c46-2vscm
+      namespace: payments
+      uid: 962a538e-71eb-4a9a-a8c7-c9c9ae59166c
+    sourceNode: kwok-general-2
+    targetNode: kwok-general-16
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:23Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 426316be-b22f-4519-b1c7-67bc4644638a
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: payments-api-658f54c46-rq4bc-0b3d325a
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7155"
+    uid: ce4a4663-b703-4bd6-8e07-99ebfbfee709
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: payments-api-658f54c46
+      uid: 426316be-b22f-4519-b1c7-67bc4644638a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: payments-api-658f54c46-rq4bc
+      namespace: payments
+      uid: 0b3d325a-400f-448b-a1f7-e9fa7bb0f8a0
+    sourceNode: kwok-general-10
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 426316be-b22f-4519-b1c7-67bc4644638a
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: payments-api-658f54c46-z4lbd-b7d9f5b5
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7108"
+    uid: 10319e6f-d431-44b8-9b53-5e3e2dc533ce
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: payments-api-658f54c46
+      uid: 426316be-b22f-4519-b1c7-67bc4644638a
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: payments-api-658f54c46-z4lbd
+      namespace: payments
+      uid: b7d9f5b5-1651-4e98-8602-0d128296109b
+    sourceNode: kwok-general-14
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:31Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: recommendations-cf75fd886-9mvg9-e9776217
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7218"
+    uid: 8f30ffde-8103-42b1-9ecf-bd27729aaa23
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: recommendations-cf75fd886
+      uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: recommendations-cf75fd886-9mvg9
+      namespace: recommendations
+      uid: e9776217-4e1c-4ced-ad2e-a9a408578061
+    sourceNode: kwok-general-20
+    targetNode: kwok-general-23
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:29Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: recommendations-cf75fd886-klpfz-79fb3ba6
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7197"
+    uid: a95f894d-72ca-4fb2-8109-39fe3eebe043
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: recommendations-cf75fd886
+      uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: recommendations-cf75fd886-klpfz
+      namespace: recommendations
+      uid: 79fb3ba6-e3b2-495e-8ec8-7f41d0edb717
+    sourceNode: kwok-general-22
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:32Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: recommendations-cf75fd886-qcbw2-15a55d84
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7231"
+    uid: fcfcd6f6-6a40-4713-abef-100a2cbf705e
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: recommendations-cf75fd886
+      uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: recommendations-cf75fd886-qcbw2
+      namespace: recommendations
+      uid: 15a55d84-35f3-47c4-9986-4989c28d3412
+    sourceNode: kwok-general-16
+    targetNode: kwok-general-3
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: recommendations-cf75fd886-wsmrd-49ba20e1
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7102"
+    uid: 07a43a7c-3b4a-42b0-9c46-cb74dbc2a628
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: recommendations-cf75fd886
+      uid: 5a548c25-526b-4b51-9129-86b951a74ff2
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: recommendations-cf75fd886-wsmrd
+      namespace: recommendations
+      uid: 49ba20e1-9cf3-4877-85af-849cdeb1d74e
+    sourceNode: kwok-general-13
+    targetNode: kwok-general-19
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:30Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 48d64de1-1ff5-4311-ba1d-94e01d5fd385
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-indexer-769f9bdb46-ltslv-6ed2144b
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7201"
+    uid: 653c18d0-33ce-43f1-9a50-a51333c8402a
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-indexer-769f9bdb46
+      uid: 48d64de1-1ff5-4311-ba1d-94e01d5fd385
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-indexer-769f9bdb46-ltslv
+      namespace: search
+      uid: 6ed2144b-49a3-4769-8b82-9349c212e9e3
+    sourceNode: kwok-general-18
+    targetNode: kwok-general-17
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:29Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 48d64de1-1ff5-4311-ba1d-94e01d5fd385
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-indexer-769f9bdb46-vnksf-ea7a2cf2
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7193"
+    uid: 548e2661-078a-47cf-8133-df19d7d8cfd5
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-indexer-769f9bdb46
+      uid: 48d64de1-1ff5-4311-ba1d-94e01d5fd385
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-indexer-769f9bdb46-vnksf
+      namespace: search
+      uid: ea7a2cf2-e676-48bc-8d42-d90e7f69430d
+    sourceNode: kwok-general-5
+    targetNode: kwok-general-18
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:20Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 48d64de1-1ff5-4311-ba1d-94e01d5fd385
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-indexer-769f9bdb46-wzsd8-db5e1c82
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7124"
+    uid: 7d214765-88fc-4d1c-bbb0-ce13ce3bfe78
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-indexer-769f9bdb46
+      uid: 48d64de1-1ff5-4311-ba1d-94e01d5fd385
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-indexer-769f9bdb46-wzsd8
+      namespace: search
+      uid: db5e1c82-4f73-4b43-964d-f703f9823798
+    sourceNode: kwok-general-17
+    targetNode: kwok-general-4
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-query-6578bc5bcc-h7mhl-9d71e432
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7141"
+    uid: 28998822-e59a-40a8-a233-f25b1d96e87e
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-query-6578bc5bcc
+      uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-query-6578bc5bcc-h7mhl
+      namespace: search
+      uid: 9d71e432-0059-491d-8a2e-bbf3ccea57a3
+    sourceNode: kwok-general-15
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:29Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-query-6578bc5bcc-kg5n8-04663ba1
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7194"
+    uid: 728c3cc3-f394-44e8-b1d5-cc6ae72a00c2
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-query-6578bc5bcc
+      uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-query-6578bc5bcc-kg5n8
+      namespace: search
+      uid: 04663ba1-4e91-400e-92b8-020d71a8ebe4
+    sourceNode: kwok-general-1
+    targetNode: kwok-general-16
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:24Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-query-6578bc5bcc-kzdx6-c66271bc
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7166"
+    uid: 460ecbe9-6087-4e57-af6f-a32cf042f3ba
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-query-6578bc5bcc
+      uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-query-6578bc5bcc-kzdx6
+      namespace: search
+      uid: c66271bc-fc81-491e-83a0-efab125eacda
+    sourceNode: kwok-general-11
+    targetNode: kwok-general-14
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:23Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: search-query-6578bc5bcc-vl2s5-e8f8a52d
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7158"
+    uid: 8da61f8d-6e7e-40a1-b7ef-91f8befd62bb
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: search-query-6578bc5bcc
+      uid: d876457a-bb8c-44b5-b099-da1420ac6c23
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: search-query-6578bc5bcc-vl2s5
+      namespace: search
+      uid: e8f8a52d-179b-4e57-b9eb-1becdc9c5190
+    sourceNode: kwok-general-0
+    targetNode: kwok-general-9
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:22Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 8b9781b1-3aca-4b5a-9a3f-00da4ea24f60
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: session-0-9ebcfe41
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7153"
+    uid: 1d938491-349a-4657-b6a7-dce1ad664119
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: session
+      uid: 8b9781b1-3aca-4b5a-9a3f-00da4ea24f60
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: session-0
+      namespace: platform
+      uid: 9ebcfe41-34ee-4c59-bf29-a570048d1363
+    sourceNode: kwok-general-22
+    targetNode: kwok-general-21
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:25Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 8b9781b1-3aca-4b5a-9a3f-00da4ea24f60
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: session-1-dae9a07b
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7168"
+    uid: 9a80c18d-b17b-4b91-b926-e7e71cab0590
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: session
+      uid: 8b9781b1-3aca-4b5a-9a3f-00da4ea24f60
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: session-1
+      namespace: platform
+      uid: dae9a07b-f256-43bd-9916-2cd63c69182a
+    sourceNode: kwok-general-12
+    targetNode: kwok-general-9
+- apiVersion: podtetris.io.podtetris.io/v1
+  kind: PodMove
+  metadata:
+    creationTimestamp: "2026-10-15T15:17:31Z"
+    generation: 1
+    labels:
+      podtetris.io/owner-uid: 8b9781b1-3aca-4b5a-9a3f-00da4ea24f60
+      podtetris.io/plan: consolidationplan-fxs6f
+    name: session-2-8062c3ea
+    namespace: podtetris
+    ownerReferences:
+    - apiVersion: podtetris.io.podtetris.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ConsolidationPlan
+      name: consolidationplan-fxs6f
+      uid: 89c97769-1c6d-4309-bda9-34adabe49289
+    resourceVersion: "7225"
+    uid: 895bbfca-4d0e-4800-9c1e-dd69864b982f
+  spec:
+    ownerRef:
+      apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: session
+      uid: 8b9781b1-3aca-4b5a-9a3f-00da4ea24f60
+    podRef:
+      apiVersion: v1
+      kind: Pod
+      name: session-2
+      namespace: platform
+      uid: 8062c3ea-654d-4c8a-9eba-883849bd8ba7
+    sourceNode: kwok-general-6
+    targetNode: kwok-general-23
+kind: List
+metadata:
+  resourceVersion: ""

@@ -1,0 +1,14 @@
+NAME                                       POD                               SOURCE            TARGET            PHASE
+catalog-api-b4c686854-nhcqq-b93bb87b       catalog-api-b4c686854-nhcqq       kwok-general-16   kwok-general-11   
+checkout-api-8c947447d-tqj2r-cb38d2a4      checkout-api-8c947447d-tqj2r      kwok-general-4    kwok-general-19   
+collector-7946b46f59-459mz-c6ce1ae0        collector-7946b46f59-459mz        kwok-general-9    kwok-general-13   
+collector-7946b46f59-9rv2n-4899797d        collector-7946b46f59-9rv2n        kwok-general-10   kwok-general-18   
+edge-proxy-6855968857-ff7s2-70d3e657       edge-proxy-6855968857-ff7s2       kwok-general-3    kwok-general-17   
+inventory-787d949f6b-mgfws-7f53e2be        inventory-787d949f6b-mgfws        kwok-general-15   kwok-general-13   
+jvm-service-594d9956fb-xzgfr-fbd81638      jvm-service-594d9956fb-xzgfr      kwok-general-15   kwok-general-18   
+media-bcf8c47d9-mjjsd-4b6c73f4             media-bcf8c47d9-mjjsd             kwok-general-16   kwok-general-11   
+payments-api-658f54c46-2gq2f-889e8510      payments-api-658f54c46-2gq2f      kwok-general-9    kwok-general-23   
+payments-api-658f54c46-rq4bc-0b3d325a      payments-api-658f54c46-rq4bc      kwok-general-10   kwok-general-2    
+recommendations-cf75fd886-qcbw2-15a55d84   recommendations-cf75fd886-qcbw2   kwok-general-16   kwok-general-22   
+search-query-6578bc5bcc-h7mhl-9d71e432     search-query-6578bc5bcc-h7mhl     kwok-general-15   kwok-general-19   
+search-query-6578bc5bcc-vl2s5-e8f8a52d     search-query-6578bc5bcc-vl2s5     kwok-general-0    kwok-general-23   

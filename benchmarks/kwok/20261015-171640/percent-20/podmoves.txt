@@ -1,0 +1,7 @@
+NAME                                       POD                               SOURCE            TARGET            PHASE
+batch-large-65fc5575-bs4t6-7285379b        batch-large-65fc5575-bs4t6        kwok-general-11   kwok-general-14   
+batch-worker-5ffd668fc-79x56-7c16dac2      batch-worker-5ffd668fc-79x56      kwok-general-20   kwok-general-5    
+edge-proxy-6855968857-ff7s2-70d3e657       edge-proxy-6855968857-ff7s2       kwok-general-3    kwok-general-17   
+recommendations-cf75fd886-9mvg9-e9776217   recommendations-cf75fd886-9mvg9   kwok-general-20   kwok-general-18   
+search-query-6578bc5bcc-kzdx6-c66271bc     search-query-6578bc5bcc-kzdx6     kwok-general-11   kwok-general-15   
+search-query-6578bc5bcc-vl2s5-e8f8a52d     search-query-6578bc5bcc-vl2s5     kwok-general-0    kwok-general-2    
