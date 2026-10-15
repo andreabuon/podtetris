@@ -150,6 +150,14 @@ func buildAdmissionResponse(ctx context.Context, req *admissionv1.AdmissionReque
 		}
 
 		claimed, err := claimReplacement(ctx, podMove, pod)
+		if apierrors.IsNotFound(err) {
+			log.Info("PodMove no longer exists; trying next candidate",
+				zap.String("namespace", pod.Namespace),
+				zap.String("pod", podDisplayName(pod)),
+				zap.String("podMove", podMove.Name),
+			)
+			continue
+		}
 		if err != nil {
 			log.Error("Error claiming PodMove; trying next candidate",
 				zap.String("namespace", pod.Namespace),
