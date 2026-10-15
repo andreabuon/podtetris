@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Apply every file in evaluation/planner/, then record the planner run.
 # Results land under benchmarks/<run-id>/<config-name>/.
-# A summary.csv is written in the run directory, including per-config timing
-# (planner_seconds from planner log timestamps, job_seconds from the Job status,
-# total_seconds for the whole config step including helm upgrade).
+# A summary.csv is written in the run directory from the planner "Run summary" log line
+# (outcome, best plan, simulation counts, planner phase timings), plus job_seconds from
+# the Job status and total_seconds for the whole config step including helm upgrade.
+# result is "fatal" if the planner crashed, "missing" if there is no summary line.
 # The planner CronJob must already be installed. Its values are captured once at the start
 # and layered under baseline.yaml + the config, so configs never inherit from each other.
 #
@@ -24,7 +25,7 @@ while [[ $# -gt 0 ]]; do
     --ns) NS="$2"; shift 2 ;;
     --release) RELEASE="$2"; shift 2 ;;
     -h|--help)
-      sed -n '2,12p' "$0"
+      sed -n '2,13p' "$0"
       exit 0
       ;;
     *) echo "error: unknown option: $1" >&2; exit 1 ;;
@@ -76,19 +77,21 @@ kubectl delete consolidationplans,podmoves -n "$NS" --all --ignore-not-found --w
 
 # Runs results Summary
 SUMMARY="$RUN_DIR/summary.csv"
-echo "run_id,config,strategy,freed_nodes,moves,cost,score,result,planner_seconds,job_seconds,total_seconds" >"$SUMMARY"
+echo "run_id,config,result,strategy,freed_nodes,moves,cost,score,worker_nodes,pods,candidate_nodes,candidate_sets,evicted_pods,simulations,simulations_failed,simulations_with_freed_nodes,cache_sync_seconds,simulation_seconds,apply_seconds,planner_seconds,job_seconds,total_seconds" >"$SUMMARY"
+
+# Columns taken from the planner "Run summary" log line, in header order (result .. planner_seconds).
+SUMMARY_FIELDS='def ms: if . == null then null else . * 1000 | round / 1000 end;
+  [.outcome, .strategy, .freedNodes, .moves, .cost, .score,
+   .workerNodes, .pods, .candidateNodes, .candidateSets, .evictedPods,
+   .simulations, .simulationsFailed, .simulationsWithFreedNodes,
+   (.cacheSyncSeconds | ms), (.simulationSeconds | ms), (.applySeconds | ms), (.totalSeconds | ms)]
+  | map(if . == null then "" else tostring end) | join(",")'
+EMPTY_FIELDS="$(printf ',%.0s' {1..17})"
 
 for config_dir in "$RUN_DIR"/*/; do
   [[ -d "$config_dir" ]] || continue
   config_name="$(basename "$config_dir")"
   planner="$config_dir/planner.log"
-  strategy=""
-  freed_nodes=""
-  moves=""
-  cost=""
-  score=""
-  result="missing"
-  planner_seconds=""
   job_seconds=""
   total_seconds=""
 
@@ -98,40 +101,22 @@ for config_dir in "$RUN_DIR"/*/; do
     total_seconds="$(jq -r '.total_seconds // empty' "$timing")"
   fi
 
+  run_summary=""
   if [[ -f "$planner" ]]; then
-    # Only the JSON log lines carry an epoch ts; klog lines are skipped.
-    planner_seconds="$( (grep '^{' "$planner" || true) \
-      | jq -rs 'map(.ts | numbers) | if length > 1 then (max - min) * 1000 | round / 1000 else empty end' 2>/dev/null || true)"
-    selected="$(grep "Selected best consolidation plan" "$planner" || true)"
-    not_worth="$(grep "Best plan is not worth the moves" "$planner" || true)"
-    if [[ -n "$not_worth" ]]; then
-      strategy="$(jq -r '.strategy' <<<"$not_worth")"
-      freed_nodes="$(jq -r '.freedNodes' <<<"$not_worth")"
-      moves="$(jq -r '.moves' <<<"$not_worth")"
-      cost="$(jq -r '.cost' <<<"$not_worth")"
-      score="$(jq -r '.score' <<<"$not_worth")"
-      result="not-worth"
-    elif [[ -n "$selected" ]]; then
-      strategy="$(jq -r '.strategy' <<<"$selected")"
-      freed_nodes="$(jq -r '.freedNodes' <<<"$selected")"
-      moves="$(jq -r '.moves' <<<"$selected")"
-      cost="$(jq -r '.cost' <<<"$selected")"
-      score="$(jq -r '.score' <<<"$selected")"
-      if grep -q "applying consolidation plan" "$planner"; then
-        result="applied"
-      elif grep -q "dry run is enabled" "$planner"; then
-        result="dry-run"
-      elif grep -q "skipping apply" "$planner"; then
-        result="skipped"
-      else
-        result="selected"
-      fi
-    elif grep -q "No viable consolidation plan found" "$planner"; then
-      result="none"
-    fi
+    # Only the zap JSON lines are parsed; klog lines are skipped.
+    run_summary="$( (grep '^{' "$planner" || true) \
+      | jq -c 'select(.msg == "Run summary")' 2>/dev/null | tail -n 1 || true)"
   fi
 
-  echo "$RUN_ID,$config_name,$strategy,$freed_nodes,$moves,$cost,$score,$result,$planner_seconds,$job_seconds,$total_seconds" >>"$SUMMARY"
+  if [[ -n "$run_summary" ]]; then
+    planner_fields="$(jq -r "$SUMMARY_FIELDS" <<<"$run_summary")"
+  elif [[ -f "$planner" ]] && grep -q '"level":"fatal"' "$planner"; then
+    planner_fields="fatal$EMPTY_FIELDS"
+  else
+    planner_fields="missing$EMPTY_FIELDS"
+  fi
+
+  echo "$RUN_ID,$config_name,$planner_fields,$job_seconds,$total_seconds" >>"$SUMMARY"
 done
 
 echo "Evaluation complete: $RUN_DIR"

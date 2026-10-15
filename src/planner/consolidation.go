@@ -34,11 +34,12 @@ func (pm PodMove) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 	return nil
 }
 
-func applyConsolidationStrategy(ctx context.Context, c client.Client, result *SimulationResult) {
+// applyConsolidationStrategy returns the created plan name and the number of PodMoves created and failed.
+func applyConsolidationStrategy(ctx context.Context, c client.Client, result *SimulationResult) (string, int, int, error) {
 	plan, err := createConsolidationPlan(ctx, c, result)
 	if err != nil {
 		log.Error("Failed to create ConsolidationPlan", zap.Error(err))
-		return
+		return "", 0, 0, err
 	}
 	log.Info("Created ConsolidationPlan", zap.String("namespace", plan.Namespace), zap.String("name", plan.Name))
 
@@ -66,6 +67,7 @@ func applyConsolidationStrategy(ctx context.Context, c client.Client, result *Si
 		zap.Int("created", createdCount),
 		zap.Int("errors", errorsCount),
 	)
+	return plan.Name, createdCount, errorsCount, nil
 }
 
 func permutationStrategyOf(result *SimulationResult) string {

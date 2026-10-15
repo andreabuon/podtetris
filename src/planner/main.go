@@ -36,6 +36,8 @@ var Config AppConfig
 const nonControlPlaneLabelSelector = "!node-role.kubernetes.io/control-plane"
 
 func main() {
+	summary := &RunSummary{Start: time.Now()}
+
 	logger, err := newLogger("info")
 	if err != nil {
 		panic(err)
@@ -66,6 +68,7 @@ func main() {
 		log.Fatal("Invalid logLevel", zap.Error(err), zap.String("logLevel", Config.LogLevel))
 	}
 	log = logger.Named("planner")
+	defer summary.Log()
 
 	rules, err := loadRulesConfig()
 	if err != nil {
@@ -111,8 +114,10 @@ func main() {
 	_ = csiNodeInformer.Informer()
 
 	stopCh := make(chan struct{})
+	cacheSyncStart := time.Now()
 	informerFactory.Start(stopCh)
 	informerFactory.WaitForCacheSync(stopCh)
+	summary.CacheSync = time.Since(cacheSyncStart)
 
 	schedulerConfig := loadSchedulerConfig()
 	fwHandle, err := framework.NewHandle(informerFactory, schedulerConfig, false, true)
@@ -159,6 +164,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to list node infos", zap.Error(err))
 	}
+	summary.WorkerNodes = len(nodeInfos)
+	summary.Pods = len(pods)
 
 	candidateNodesCounts, err := resolveCandidateNodesCounts(
 		len(nodeInfos),
@@ -201,6 +208,8 @@ func main() {
 		log.Fatal("Failed to select candidate nodes", zap.Error(err))
 	}
 
+	summary.CandidateNodes = candidateNodesCounts.Total()
+	summary.CandidateSets = len(candidateNodesSets)
 	log.Info("Generated candidate node sets", zap.Int("count", len(candidateNodesSets)))
 	for setIndex, candidateSet := range candidateNodesSets {
 		names := nodeInfoNames(candidateSet.UnsortedList())
@@ -210,6 +219,7 @@ func main() {
 
 	var bestSimulationResult *SimulationResult
 
+	simulationStart := time.Now()
 	for setIndex, candidateSet := range candidateNodesSets {
 		candidateNodes := candidateSet.UnsortedList()
 		log.Info("Starting simulations for candidate node set",
@@ -228,6 +238,8 @@ func main() {
 
 		evictedPods := virtuallyEvictPods(snapshot, candidateNodes, rules)
 		permutations := generatePermutations(evictedPods, Config.Permutations.EnabledStrategies, Config.Permutations.RandomCount)
+		summary.EvictedPods += len(evictedPods)
+		summary.Permutations += len(permutations)
 
 		schedulingSimulator := &SchedulingSimulator{
 			framework: realFramework,
@@ -251,6 +263,7 @@ func main() {
 					zap.String("strategy", podPermutation.Strategy),
 					zap.Error(err),
 				)
+				summary.SimulationsFailed++
 				continue
 			}
 
@@ -260,6 +273,7 @@ func main() {
 			if schedulingResult.FreedNodes < 1 {
 				continue
 			}
+			summary.SimulationsWithFreedNodes++
 
 			if bestSimulationResult == nil {
 				bestSimulationResult = schedulingResult
@@ -275,14 +289,18 @@ func main() {
 		snapshot.Revert()
 	}
 
+	summary.Simulation = time.Since(simulationStart)
 	log.Info("Finished simulations")
 
+	summary.Best = bestSimulationResult
 	if bestSimulationResult == nil {
+		summary.Outcome = OutcomeNone
 		log.Info("No viable consolidation plan found")
 		return
 	}
 
 	if bestSimulationResult.Score <= Config.Score.AutoConsolidationThreshold {
+		summary.Outcome = OutcomeNotWorth
 		log.Info("Best plan is not worth the moves",
 			zap.Int("set", bestSimulationResult.SetIndex),
 			zap.Int("perm", bestSimulationResult.PermIndex),
@@ -314,6 +332,7 @@ func main() {
 	log.Info("Chosen plan podmoves", zap.Objects("podMoves", bestSimulationResult.Moves))
 
 	if Config.DryRun {
+		summary.Outcome = OutcomeDryRun
 		log.Info("Skipping apply because dry run is enabled")
 		return
 	}
@@ -330,7 +349,14 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to create podtetris client", zap.Error(err))
 	}
-	applyConsolidationStrategy(ctx, crdClient, bestSimulationResult)
+	applyStart := time.Now()
+	summary.PlanName, summary.MovesCreated, summary.MovesFailed, err = applyConsolidationStrategy(ctx, crdClient, bestSimulationResult)
+	summary.Apply = time.Since(applyStart)
+	if err != nil || summary.MovesFailed > 0 {
+		summary.Outcome = OutcomeApplyFailed
+	} else {
+		summary.Outcome = OutcomeApplied
+	}
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[types.NamespacedName]string {
