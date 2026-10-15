@@ -1,0 +1,408 @@
+{
+  "nodes": [
+    {
+      "name": "kwok-control-plane",
+      "cpu": {
+        "requests": "950m",
+        "requestsPercent": "9%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "290Mi",
+        "requestsPercent": "2%",
+        "limits": "340Mi",
+        "limitsPercent": "2%"
+      }
+    },
+    {
+      "name": "kwok-general-0",
+      "cpu": {
+        "requests": "2470m",
+        "requestsPercent": "65%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "4434Mi",
+        "requestsPercent": "30%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-1",
+      "cpu": {
+        "requests": "2320m",
+        "requestsPercent": "61%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "7762Mi",
+        "requestsPercent": "54%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-10",
+      "cpu": {
+        "requests": "1920m",
+        "requestsPercent": "50%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "2130Mi",
+        "requestsPercent": "14%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-11",
+      "cpu": {
+        "requests": "2970m",
+        "requestsPercent": "78%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "4178Mi",
+        "requestsPercent": "29%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-12",
+      "cpu": {
+        "requests": "470m",
+        "requestsPercent": "12%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "466Mi",
+        "requestsPercent": "3%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-13",
+      "cpu": {
+        "requests": "2570m",
+        "requestsPercent": "67%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "2642Mi",
+        "requestsPercent": "18%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-14",
+      "cpu": {
+        "requests": "2120m",
+        "requestsPercent": "55%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "3154Mi",
+        "requestsPercent": "22%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-15",
+      "cpu": {
+        "requests": "2520m",
+        "requestsPercent": "66%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "4690Mi",
+        "requestsPercent": "32%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-16",
+      "cpu": {
+        "requests": "1470m",
+        "requestsPercent": "38%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "6610Mi",
+        "requestsPercent": "46%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-17",
+      "cpu": {
+        "requests": "1920m",
+        "requestsPercent": "50%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "7122Mi",
+        "requestsPercent": "49%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-18",
+      "cpu": {
+        "requests": "2120m",
+        "requestsPercent": "55%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "3154Mi",
+        "requestsPercent": "22%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-19",
+      "cpu": {
+        "requests": "2370m",
+        "requestsPercent": "62%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "2770Mi",
+        "requestsPercent": "19%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-2",
+      "cpu": {
+        "requests": "3420m",
+        "requestsPercent": "90%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "3666Mi",
+        "requestsPercent": "25%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-20",
+      "cpu": {
+        "requests": "2720m",
+        "requestsPercent": "71%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "3026Mi",
+        "requestsPercent": "21%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-21",
+      "cpu": {
+        "requests": "2120m",
+        "requestsPercent": "55%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "3666Mi",
+        "requestsPercent": "25%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-22",
+      "cpu": {
+        "requests": "820m",
+        "requestsPercent": "21%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "1106Mi",
+        "requestsPercent": "7%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-23",
+      "cpu": {
+        "requests": "1820m",
+        "requestsPercent": "47%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "1106Mi",
+        "requestsPercent": "7%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-3",
+      "cpu": {
+        "requests": "1120m",
+        "requestsPercent": "29%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "1106Mi",
+        "requestsPercent": "7%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-4",
+      "cpu": {
+        "requests": "1070m",
+        "requestsPercent": "28%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "1874Mi",
+        "requestsPercent": "13%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-5",
+      "cpu": {
+        "requests": "1920m",
+        "requestsPercent": "50%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "1234Mi",
+        "requestsPercent": "8%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-6",
+      "cpu": {
+        "requests": "970m",
+        "requestsPercent": "25%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "2130Mi",
+        "requestsPercent": "14%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-7",
+      "cpu": {
+        "requests": "2570m",
+        "requestsPercent": "67%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "4178Mi",
+        "requestsPercent": "29%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-8",
+      "cpu": {
+        "requests": "1620m",
+        "requestsPercent": "42%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "1618Mi",
+        "requestsPercent": "11%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-general-9",
+      "cpu": {
+        "requests": "3220m",
+        "requestsPercent": "84%",
+        "limits": "0m",
+        "limitsPercent": "0%"
+      },
+      "memory": {
+        "requests": "3666Mi",
+        "requestsPercent": "25%",
+        "limits": "0Mi",
+        "limitsPercent": "0%"
+      }
+    },
+    {
+      "name": "kwok-worker",
+      "cpu": {
+        "requests": "600m",
+        "requestsPercent": "6%",
+        "limits": "1000m",
+        "limitsPercent": "10%"
+      },
+      "memory": {
+        "requests": "306Mi",
+        "requestsPercent": "2%",
+        "limits": "512Mi",
+        "limitsPercent": "4%"
+      }
+    }
+  ],
+  "clusterTotals": {
+    "cpu": {
+      "requests": "50180m",
+      "requestsPercent": "45%",
+      "limits": "1000m",
+      "limitsPercent": "0%"
+    },
+    "memory": {
+      "requests": "78084Mi",
+      "requestsPercent": "21%",
+      "limits": "852Mi",
+      "limitsPercent": "0%"
+    }
+  }
+}
