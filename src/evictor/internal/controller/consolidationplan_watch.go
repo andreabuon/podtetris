@@ -80,7 +80,7 @@ func podBoundPredicate() predicate.Predicate {
 }
 
 // mapBoundPodToPlans enqueues ConsolidationPlans compromised by a newly bound Pod:
-// binds on nodesToFree abort the plan; binds on involved nodes re-check fit.
+// binds on nodesToFree or on nodes of non-terminal PodMoves cancel the plan.
 // Replacement pods and uninvolved binds are ignored.
 func (r *ConsolidationPlanReconciler) mapBoundPodToPlans(ctx context.Context, obj client.Object) []reconcile.Request {
 	pod, ok := obj.(*corev1.Pod)
@@ -156,17 +156,4 @@ func classifyBoundPod(plan *podtetrisiov1.ConsolidationPlan, nodeName string, mo
 		return bindImpactInvolved
 	}
 	return bindImpactIrrelevant
-}
-
-// remainingMovesFit reports whether the plan's unfinished PodMoves still fit
-// against live cluster placement after an unexpected bind on an involved node.
-//
-// The check is not implemented yet: departures first, then pending arrivals,
-// against a live snapshot. Until then every plan is treated as still viable.
-func (r *ConsolidationPlanReconciler) remainingMovesFit(ctx context.Context, plan *podtetrisiov1.ConsolidationPlan, moves []podtetrisiov1.PodMove) (bool, string) {
-	_ = r
-	_ = ctx
-	_ = plan
-	_ = moves
-	return false, "live fit check not implemented"
 }

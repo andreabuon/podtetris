@@ -61,13 +61,11 @@ func involvedNodes(moves []podtetrisiov1.PodMove) sets.Set[string] {
 	return nodes
 }
 
-// findUnexpectedPodOnNodesToFree returns a pod that appeared on a node the plan
-// intends to empty after the plan was created. Such a pod is not one the plan
-// evacuates: every source pod already existed when the planner snapshotted the
-// cluster. Its presence means the node can no longer be emptied.
-func findUnexpectedPodOnNodesToFree(ctx context.Context, c client.Client, plan *podtetrisiov1.ConsolidationPlan) (*corev1.Pod, error) {
-	toFree := sets.New(plan.Spec.NodesToFree...)
-	if toFree.Len() == 0 {
+// findUnexpectedPodOnNodes returns a non-replacement pod created after the plan
+// on one of nodes. Every source pod already existed when the planner snapshotted
+// the cluster, so such a pod was not accounted for by the plan.
+func findUnexpectedPodOnNodes(ctx context.Context, c client.Client, plan *podtetrisiov1.ConsolidationPlan, nodes sets.Set[string]) (*corev1.Pod, error) {
+	if nodes.Len() == 0 {
 		return nil, nil
 	}
 
@@ -78,7 +76,7 @@ func findUnexpectedPodOnNodesToFree(ctx context.Context, c client.Client, plan *
 
 	for i := range pods.Items {
 		pod := &pods.Items[i]
-		if !toFree.Has(pod.Spec.NodeName) {
+		if !nodes.Has(pod.Spec.NodeName) {
 			continue
 		}
 		if !pod.DeletionTimestamp.IsZero() || isReplacementPod(pod) {

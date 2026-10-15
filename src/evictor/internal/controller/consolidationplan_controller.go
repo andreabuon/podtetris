@@ -18,10 +18,14 @@ package controller
 
 import (
 	"context"
+	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -34,7 +38,7 @@ import (
 )
 
 // ConsolidationPlanReconciler cancels a ConsolidationPlan when an unexpected Pod
-// bind compromises it (nodesToFree occupancy, or remaining moves no longer fit).
+// bind compromises it (on a nodesToFree node, or on a node of a non-terminal PodMove).
 // Direct ConsolidationPlan watch events are ignored so plan creation itself does
 // not tear the plan down.
 type ConsolidationPlanReconciler struct {
@@ -45,12 +49,12 @@ type ConsolidationPlanReconciler struct {
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=consolidationplans,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=consolidationplans/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=consolidationplans/finalizers,verbs=update
-// +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves,verbs=get;list;watch
+// +kubebuilder:rbac:groups=podtetris.io.podtetris.io,resources=podmoves,verbs=get;list;watch;delete
 // +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
 
-// Reconcile aborts the ConsolidationPlan when an unexpected pod occupies a
-// nodesToFree node, or when remaining PodMoves no longer fit after a bind on an
-// involved node. Owned PodMoves are removed by garbage collection.
+// Reconcile cancels the ConsolidationPlan when an unexpected pod lands on a
+// nodesToFree node, or on the source or target node of a non-terminal PodMove.
+// Cancelling sets the Cancelled condition and deletes all of the plan's PodMoves.
 func (r *ConsolidationPlanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := logf.FromContext(ctx)
 
@@ -59,43 +63,58 @@ func (r *ConsolidationPlanReconciler) Reconcile(ctx context.Context, req ctrl.Re
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	intruder, err := findUnexpectedPodOnNodesToFree(ctx, r.Client, &plan)
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-	if intruder != nil {
-		log.Info("Cancelling ConsolidationPlan; unexpected Pod on nodesToFree",
-			"pod", client.ObjectKeyFromObject(intruder),
-			"node", intruder.Spec.NodeName,
-		)
-		if err := r.Delete(ctx, &plan); err != nil && !apierrors.IsNotFound(err) {
-			return ctrl.Result{}, err
-		}
-		return ctrl.Result{}, nil
-	}
-
 	moves, err := listPlanPodMoves(ctx, r.Client, &plan)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
 
-	ok, reason := r.remainingMovesFit(ctx, &plan, moves)
-	if ok {
-		log.Info("ConsolidationPlan remains viable after bound Pod on involved node",
-			"reason", reason,
+	// PodMoves may still be created by the planner after cancellation, so keep deleting them.
+	if meta.IsStatusConditionTrue(plan.Status.Conditions, podtetrisiov1.ConditionPlanCancelled) {
+		return ctrl.Result{}, r.deletePodMoves(ctx, moves)
+	}
+
+	toFree := sets.New(plan.Spec.NodesToFree...)
+	intruder, err := findUnexpectedPodOnNodes(ctx, r.Client, &plan, toFree.Union(involvedNodes(moves)))
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	if intruder == nil {
+		log.Info("ConsolidationPlan remains viable; no unexpected Pod on involved nodes",
 			"podMoves", len(moves),
 		)
 		return ctrl.Result{}, nil
 	}
 
-	log.Info("Cancelling ConsolidationPlan; remaining PodMoves no longer fit",
-		"reason", reason,
+	reason, what := podtetrisiov1.ReasonUnexpectedPodOnInvolvedNode, "node involved in a non-terminal PodMove"
+	if toFree.Has(intruder.Spec.NodeName) {
+		reason, what = podtetrisiov1.ReasonUnexpectedPodOnNodesToFree, "nodesToFree node"
+	}
+	log.Info("Cancelling ConsolidationPlan; unexpected Pod on "+what,
+		"pod", client.ObjectKeyFromObject(intruder),
+		"node", intruder.Spec.NodeName,
 		"podMoves", len(moves),
 	)
-	if err := r.Delete(ctx, &plan); err != nil && !apierrors.IsNotFound(err) {
-		return ctrl.Result{}, err
+
+	meta.SetStatusCondition(&plan.Status.Conditions, metav1.Condition{
+		Type:               podtetrisiov1.ConditionPlanCancelled,
+		Status:             metav1.ConditionTrue,
+		Reason:             reason,
+		Message:            fmt.Sprintf("Unexpected pod %s on %s %q", client.ObjectKeyFromObject(intruder), what, intruder.Spec.NodeName),
+		ObservedGeneration: plan.Generation,
+	})
+	if err := r.Status().Update(ctx, &plan); err != nil {
+		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
-	return ctrl.Result{}, nil
+	return ctrl.Result{}, r.deletePodMoves(ctx, moves)
+}
+
+func (r *ConsolidationPlanReconciler) deletePodMoves(ctx context.Context, moves []podtetrisiov1.PodMove) error {
+	for i := range moves {
+		if err := r.Delete(ctx, &moves[i]); err != nil && !apierrors.IsNotFound(err) {
+			return err
+		}
+	}
+	return nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

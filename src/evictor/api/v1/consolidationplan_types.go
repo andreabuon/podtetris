@@ -24,6 +24,16 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+const (
+	// ConditionPlanCancelled is True once the plan has been cancelled and its PodMoves deleted.
+	ConditionPlanCancelled = "Cancelled"
+
+	// ReasonUnexpectedPodOnNodesToFree is set when a pod not evacuated by the plan lands on a nodesToFree node.
+	ReasonUnexpectedPodOnNodesToFree = "UnexpectedPodOnNodesToFree"
+	// ReasonUnexpectedPodOnInvolvedNode is set when a pod lands on the source or target node of a non-terminal PodMove.
+	ReasonUnexpectedPodOnInvolvedNode = "UnexpectedPodOnInvolvedNode"
+)
+
 // ConsolidationPlanSpec defines the desired state of ConsolidationPlan
 type ConsolidationPlanSpec struct {
 	// freedNodes is how many nodes this plan empties.
