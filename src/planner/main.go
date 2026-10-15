@@ -282,6 +282,21 @@ func main() {
 		return
 	}
 
+	if bestSimulationResult.Score <= Config.Score.AutoConsolidationThreshold {
+		log.Info("Best plan is not worth the moves",
+			zap.Int("set", bestSimulationResult.SetIndex),
+			zap.Int("perm", bestSimulationResult.PermIndex),
+			zap.String("strategy", permutationStrategyOf(bestSimulationResult)),
+			zap.Int("freedNodes", bestSimulationResult.FreedNodes),
+			zap.Strings("nodesToFree", bestSimulationResult.NodesToFree),
+			zap.Int("moves", len(bestSimulationResult.Moves)),
+			zap.Int("cost", bestSimulationResult.Cost),
+			zap.Int("score", bestSimulationResult.Score),
+			zap.Int("threshold", Config.Score.AutoConsolidationThreshold),
+		)
+		return
+	}
+
 	bestCandidateNodes := nodeInfoNames(bestSimulationResult.CandidateNodes)
 	slices.Sort(bestCandidateNodes)
 	log.Info("Selected best consolidation plan",
@@ -303,26 +318,19 @@ func main() {
 		return
 	}
 
-	if bestSimulationResult.Score > Config.Score.AutoConsolidationThreshold {
-		log.Info("Score threshold reached, applying consolidation plan",
-			zap.Int("score", bestSimulationResult.Score),
-			zap.Int("threshold", Config.Score.AutoConsolidationThreshold),
-		)
-		scheme := runtime.NewScheme()
-		if err := podtetrisv1.AddToScheme(scheme); err != nil {
-			log.Fatal("Failed to register podtetris scheme", zap.Error(err))
-		}
-		crdClient, err := client.New(clusterConfig, client.Options{Scheme: scheme})
-		if err != nil {
-			log.Fatal("Failed to create podtetris client", zap.Error(err))
-		}
-		applyConsolidationStrategy(ctx, crdClient, bestSimulationResult)
-	} else {
-		log.Info("Best plan score below auto-consolidation threshold, skipping apply",
-			zap.Int("score", bestSimulationResult.Score),
-			zap.Int("threshold", Config.Score.AutoConsolidationThreshold),
-		)
+	log.Info("Score threshold reached, applying consolidation plan",
+		zap.Int("score", bestSimulationResult.Score),
+		zap.Int("threshold", Config.Score.AutoConsolidationThreshold),
+	)
+	scheme := runtime.NewScheme()
+	if err := podtetrisv1.AddToScheme(scheme); err != nil {
+		log.Fatal("Failed to register podtetris scheme", zap.Error(err))
 	}
+	crdClient, err := client.New(clusterConfig, client.Options{Scheme: scheme})
+	if err != nil {
+		log.Fatal("Failed to create podtetris client", zap.Error(err))
+	}
+	applyConsolidationStrategy(ctx, crdClient, bestSimulationResult)
 }
 
 func createPodAllocationsMap(candidateNodes []kubeframework.NodeInfo) map[types.NamespacedName]string {
