@@ -161,12 +161,12 @@ func classifyBoundPod(plan *podtetrisiov1.ConsolidationPlan, nodeName string, mo
 // remainingMovesFit reports whether the plan's unfinished PodMoves still fit
 // against live cluster placement after an unexpected bind on an involved node.
 //
-// The check is not implemented yet: departures first, then pending arrivals,
-// against a live snapshot. Until then every plan is treated as still viable.
+// The check is not implemented yet.
+// Until then every plan is treated as no longer viable.
 func (r *ConsolidationPlanReconciler) remainingMovesFit(ctx context.Context, plan *podtetrisiov1.ConsolidationPlan, moves []podtetrisiov1.PodMove) (bool, string) {
 	_ = r
 	_ = ctx
 	_ = plan
 	_ = moves
-	return true, "live fit check not implemented"
+	return false, "live fit check not implemented"
 }
