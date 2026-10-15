@@ -64,7 +64,7 @@ func setDefaultConfigValues() {
 	viper.SetDefault("candidates.mix.byMemory", 40)
 	viper.SetDefault("candidates.mix.random", 20)
 	viper.SetDefault("candidates.setsToCreate", 3)
-	viper.SetDefault("score.emptyNodesWeight", 1000)
+	viper.SetDefault("score.emptyNodesWeight", 800)
 	viper.SetDefault("score.costWeight", 1)
 	viper.SetDefault("score.autoConsolidationThreshold", 0)
 	viper.SetDefault("candidates.selectionMaxRetries", 15)
